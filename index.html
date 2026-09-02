@@ -1,0 +1,987 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Giovanni Pizzéria Pécs – Nagy Imre út 43. | Asztalfoglalás</title>
+<meta name="description" content="Pizza, roston sültek, csapolt sör és csocsó Pécs Kertvárosában. Terasz, különterem, játéksarok. Nyitás minden nap 12:00. Foglalj asztalt online.">
+<meta name="theme-color" content="#15181A">
+<link rel="canonical" href="https://giovannipecs.hu/">
+<meta property="og:type" content="restaurant.restaurant">
+<meta property="og:locale" content="hu_HU">
+<meta property="og:title" content="Giovanni Pizzéria Pécs – Nagy Imre út 43.">
+<meta property="og:description" content="Pizza, csapolt sör és csocsó Pécs Kertvárosában. Terasz, különterem, játéksarok.">
+<meta property="og:url" content="https://giovannipecs.hu/">
+
+<!--
+  PROTOTÍPUS — Giovanni Pizzéria, Pécs · UI/UX redesign
+  A stratégiai indoklás: redesign.md
+  A [szögletes zárójeles] értékek PLACEHOLDEREK: nincs róluk dokumentált adat.
+  Élesítés előtt a redesign.md §15 kérdéslistáját ki kell tölteni.
+
+  Éles környezetben a betűk önhosztolva, latin+latin-ext subsettel:
+  @font-face{font-family:"Bricolage Grotesque";src:url(/f/bricolage.woff2) format("woff2-variations");
+             font-weight:200 800;font-display:swap}
+  @font-face{font-family:"Source Sans 3";src:url(/f/ss3.woff2) format("woff2-variations");
+             font-weight:200 900;font-display:swap}
+  A prototípus szándékosan nem tölt le semmit: nulla külső függőség.
+-->
+
+<style>
+/* ============================================================
+   DESIGN SYSTEM — tokenek
+   ============================================================ */
+:root{
+  /* szín — a kontrasztértékek a redesign.md §7.1 táblázatában */
+  --szen:#15181A;          /* 14,71:1 a --liszt-en */
+  --grafit:#23292C;
+  --acel:#56616A;          /* 5,23:1 a --liszt-en */
+  --acel-vil:#A9B2B8;      /* 8,28:1 a --szen-en */
+  --liszt:#E7EAE7;
+  --lap:#FAFBFA;
+  --vonal:#767F85;         /* 3,37:1 a --liszt-en */
+  --parazs:#9C5406;        /* fehér szöveggel 5,49:1 */
+  --parazs-vil:#F0A93C;    /* 8,87:1 a --szen-en */
+  /* állapot — sosem egyedüli információhordozó */
+  --nyitva:#14663F;
+  --zarva:#96262B;
+  --vonal-halvany:#C9CFCB;
+
+  /* típus */
+  --f-display:"Bricolage Grotesque","Source Sans 3",system-ui,"Segoe UI",sans-serif;
+  --f-szoveg:"Source Sans 3",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --t-display:clamp(2.25rem,1.4rem + 3.6vw,4.5rem);
+  --t-h2:clamp(1.75rem,1.35rem + 1.8vw,2.75rem);
+  --t-h3:clamp(1.25rem,1.13rem + .55vw,1.5rem);
+  --t-lead:clamp(1.0625rem,1rem + .35vw,1.25rem);
+  --t-body:1rem; --t-small:.875rem; --t-label:.75rem;
+
+  /* térköz — 8px alap */
+  --s-1:4px; --s-2:8px; --s-3:16px; --s-4:24px; --s-5:32px;
+  --s-6:48px; --s-7:64px; --s-8:96px; --s-9:128px;
+
+  /* forma */
+  --r-sm:3px; --r-md:6px; --r-lg:10px; --r-pill:999px;
+  --e-0:0 0 0 1px var(--vonal-halvany);
+  --e-1:0 1px 2px rgb(21 24 26 / .07), 0 4px 12px -6px rgb(21 24 26 / .14);
+  --e-2:0 -1px 0 var(--vonal-halvany), 0 -8px 24px -12px rgb(21 24 26 / .28);
+
+  /* mozgás */
+  --gyors:120ms; --alap:200ms; --lassu:320ms;
+  --gorbe:cubic-bezier(.2,.7,.3,1);
+
+  --tartalom-max:1200px; --szoveg-max:66ch;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--liszt);color:var(--szen);
+  font-family:var(--f-szoveg);font-size:var(--t-body);line-height:1.6;
+  -webkit-text-size-adjust:100%;
+}
+h1,h2,h3{margin:0;line-height:1.1;font-weight:700;letter-spacing:-.015em}
+h1{font-family:var(--f-display);font-size:var(--t-display);line-height:1.02;letter-spacing:-.03em}
+h2{font-family:var(--f-display);font-size:var(--t-h2)}
+h3{font-size:var(--t-h3)}
+p{margin:0 0 var(--s-3);max-width:var(--szoveg-max)}
+a{color:var(--parazs);text-underline-offset:.18em}
+img,svg{max-width:100%}
+:focus-visible{outline:3px solid var(--parazs-vil);outline-offset:2px;border-radius:var(--r-sm)}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+.skip{position:absolute;left:var(--s-3);top:-4rem;z-index:99;background:var(--szen);color:var(--liszt);
+  padding:var(--s-2) var(--s-3);border-radius:var(--r-md);transition:top var(--gyors) var(--gorbe)}
+.skip:focus{top:var(--s-3)}
+
+.wrap{max-width:var(--tartalom-max);margin-inline:auto;padding-inline:var(--s-3)}
+@media(min-width:768px){.wrap{padding-inline:var(--s-5)}}
+section{padding-block:var(--s-7)}
+@media(min-width:900px){section{padding-block:var(--s-8)}}
+.cim-fej{margin-bottom:var(--s-5)}
+.cimke{font-size:var(--t-label);letter-spacing:.08em;text-transform:uppercase;
+  color:var(--acel);font-weight:600;margin:0 0 var(--s-2)}
+
+/* ---------- fejléc ---------- */
+.fejlec{border-bottom:1px solid var(--vonal-halvany);background:var(--liszt);position:relative;z-index:20}
+.fejlec .sor{display:flex;align-items:center;gap:var(--s-2);min-height:64px}
+.rovid{display:inline}.hosszu{display:none}
+@media(max-width:379px){.fejlec .gomb--elsod{display:none}.logo{font-size:1.25rem}}
+.logo{font-family:var(--f-display);font-size:1.5rem;font-weight:800;letter-spacing:-.04em;
+  text-decoration:none;color:var(--szen)}
+.fonav{display:none;margin-inline-start:auto}
+.fonav ul{display:flex;gap:var(--s-4);list-style:none;margin:0;padding:0}
+.fonav a{color:var(--szen);text-decoration:none;font-weight:600;font-size:var(--t-small);
+  padding:var(--s-2) 0;border-bottom:2px solid transparent;transition:border-color var(--gyors)}
+.fonav a:hover{border-bottom-color:var(--parazs)}
+.fejlec .tel{display:none;font-weight:700;color:var(--szen);text-decoration:none;white-space:nowrap}
+.menugomb{margin-inline-start:auto;background:none;border:1px solid var(--vonal);border-radius:var(--r-md);
+  padding:var(--s-2) var(--s-3);font:inherit;font-weight:600;color:var(--szen)}
+@media(min-width:900px){
+  .fejlec .sor{gap:var(--s-4)}
+  .fonav{display:block}.fejlec .tel{display:inline}.menugomb{display:none}
+  .rovid{display:none}.hosszu{display:inline}
+}
+#mobilmenu[hidden]{display:none}
+#mobilmenu{border-top:1px solid var(--vonal-halvany);padding-block:var(--s-3)}
+#mobilmenu ul{list-style:none;margin:0;padding:0;display:grid;gap:var(--s-1)}
+#mobilmenu a{display:block;padding:var(--s-2) 0;color:var(--szen);text-decoration:none;font-weight:600}
+
+/* ---------- gombok ---------- */
+.gomb{display:inline-flex;align-items:center;justify-content:center;gap:var(--s-2);
+  min-height:48px;padding:var(--s-2) var(--s-4);border-radius:var(--r-md);
+  font:inherit;font-weight:700;text-decoration:none;cursor:pointer;border:2px solid transparent;
+  transition:background-color var(--gyors) var(--gorbe),transform 60ms linear,border-color var(--gyors)}
+.gomb--elsod{background:var(--parazs);color:#fff}
+.gomb--elsod:hover{background:#874806}
+.gomb--masod{background:transparent;color:var(--szen);border-color:var(--szen)}
+.gomb--masod:hover{background:rgb(21 24 26 / .06)}
+.gomb:active{transform:translateY(1px)}
+
+/* ---------- hero ---------- */
+.hero{padding-block:var(--s-6) var(--s-7)}
+@media(min-width:900px){.hero{padding-block:var(--s-7) var(--s-8)}}
+.allapot{display:inline-flex;align-items:center;gap:var(--s-2);border:1px solid var(--vonal);
+  border-radius:var(--r-pill);padding:6px var(--s-3);font-size:var(--t-small);font-weight:700;
+  background:var(--lap);margin-bottom:var(--s-4)}
+.allapot .pont{width:9px;height:9px;border-radius:50%;background:var(--acel);flex:none}
+.allapot[data-all="nyitva"]{color:var(--nyitva)}
+.allapot[data-all="nyitva"] .pont{background:var(--nyitva);animation:lelegzik 2400ms ease-in-out infinite}
+.allapot[data-all="zarva"]{color:var(--zarva)}
+.allapot[data-all="zarva"] .pont{background:var(--zarva)}
+@keyframes lelegzik{0%,100%{opacity:1}50%{opacity:.45}}
+.hero .lead{font-size:var(--t-lead);color:var(--acel);max-width:52ch;margin-top:var(--s-4)}
+.hero-akciok{display:flex;flex-wrap:wrap;gap:var(--s-3);margin-block:var(--s-5)}
+.tenyek{display:grid;gap:1px;background:var(--vonal-halvany);border:1px solid var(--vonal-halvany);
+  border-radius:var(--r-lg);overflow:hidden;margin-top:var(--s-5)}
+@media(min-width:700px){.tenyek{grid-template-columns:repeat(3,1fr)}}
+.teny{background:var(--lap);padding:var(--s-4);margin:0}
+.teny b{display:block;font-family:var(--f-display);font-size:1.5rem;line-height:1.15;font-weight:700}
+.teny span{display:block;font-size:var(--t-small);color:var(--acel)}
+
+/* ---------- SZIGNATÚRA: Alaprajz ---------- */
+.alaprajz{background:var(--lap);border-block:1px solid var(--vonal-halvany)}
+.alaprajz-racs{display:grid;gap:var(--s-5)}
+@media(min-width:960px){.alaprajz-racs{grid-template-columns:1.5fr 1fr;align-items:start;gap:var(--s-6)}}
+.terkep{width:100%;height:auto;aspect-ratio:620/440;display:block;
+  background:var(--liszt);border:1px solid var(--vonal-halvany);border-radius:var(--r-lg)}
+.zona{cursor:pointer}
+.zona .fal{fill:rgb(21 24 26 / .05);stroke:var(--vonal);stroke-width:1.5;transition:fill var(--gyors) var(--gorbe),stroke var(--gyors)}
+.zona:hover .fal{fill:rgb(156 84 6 / .12)}
+.zona[aria-pressed="true"] .fal{fill:rgb(156 84 6 / .16);stroke:var(--parazs);stroke-width:3}
+.zona .cim{font-family:var(--f-display);font-size:15px;font-weight:700;fill:var(--szen);letter-spacing:.02em}
+.zona .butor{fill:none;stroke:var(--acel);stroke-width:1.5}
+.zona .asztal{fill:var(--acel)}
+.zona[aria-pressed="true"] .asztal{fill:var(--parazs)}
+.zona[aria-pressed="true"] .butor{stroke:var(--parazs)}
+.terkep .jelmagy{font-size:11px;fill:var(--acel);font-family:var(--f-szoveg)}
+/* mobilon a rajz kicsinyítve renderel: a zónanév nagyobb, a mikrofeliratok elrejtve
+   (tartalmuk a panelekben és a zónák akadálymentes nevében is ott van) */
+@media(max-width:760px){.zona .cim{font-size:26px}.terkep .jelmagy{display:none}}
+.zona:focus-visible{outline:3px solid var(--parazs-vil);outline-offset:2px}
+.panel{border:1px solid var(--vonal-halvany);border-radius:var(--r-lg);padding:var(--s-4);
+  background:var(--liszt);animation:panel var(--alap) var(--gorbe)}
+.panel+.panel{margin-top:var(--s-3)}
+@keyframes panel{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.panel h3{margin-bottom:var(--s-2)}
+.panel p{font-size:var(--t-small);color:var(--acel)}
+.panel .gomb{width:100%}
+.abra-jegyzet{font-size:var(--t-small);color:var(--acel);margin-top:var(--s-3)}
+
+/* ---------- listák, kártyák ---------- */
+.racs{display:grid;gap:var(--s-3)}
+@media(min-width:640px){.racs--2{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:900px){.racs--4{grid-template-columns:repeat(4,1fr)}.racs--2{grid-template-columns:repeat(2,1fr)}}
+.kartya{background:var(--lap);border:1px solid var(--vonal-halvany);border-radius:var(--r-lg);
+  padding:var(--s-4);transition:border-color var(--gyors)}
+.kartya:hover{border-color:var(--szen)}
+.kartya h3{margin-bottom:var(--s-1)}
+.kartya p{font-size:var(--t-small);color:var(--acel);margin:0}
+.ar{display:block;margin-top:var(--s-3);font-weight:700;font-variant-numeric:tabular-nums}
+.ikon{width:40px;height:40px;stroke:var(--parazs);fill:none;stroke-width:1.6;margin-bottom:var(--s-3)}
+
+/* ---------- sötét sáv ---------- */
+.sotet{background:var(--szen);color:var(--liszt)}
+.sotet h2{color:var(--liszt)}
+.sotet p{color:var(--acel-vil)}
+.sotet .cimke{color:var(--parazs-vil)}
+.italok{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.italok li{margin:0;display:flex;justify-content:space-between;gap:var(--s-3);
+  padding:var(--s-3) 0;border-bottom:1px solid rgb(233 236 234 / .16)}
+.italok b{font-family:var(--f-display);font-weight:700;font-size:1.125rem}
+.italok span{color:var(--acel-vil);font-size:var(--t-small);font-variant-numeric:tabular-nums}
+.sotet .gomb--masod{color:var(--liszt);border-color:var(--acel-vil)}
+.sotet .gomb--masod:hover{background:rgb(233 236 234 / .1)}
+
+/* ---------- űrlap ---------- */
+.urlap-racs{display:grid;gap:var(--s-5)}
+@media(min-width:960px){.urlap-racs{grid-template-columns:1.4fr 1fr;gap:var(--s-6);align-items:start}}
+form{background:var(--lap);border:1px solid var(--vonal-halvany);border-radius:var(--r-lg);padding:var(--s-4)}
+@media(min-width:640px){form{padding:var(--s-5)}}
+.mezok{display:grid;gap:var(--s-4)}
+@media(min-width:560px){.mezok{grid-template-columns:1fr 1fr}.teljes{grid-column:1/-1}}
+.mezo label{display:block;font-weight:700;font-size:var(--t-small);margin-bottom:var(--s-1)}
+.mezo input,.mezo select,.mezo textarea{
+  width:100%;font:inherit;font-size:16px;color:var(--szen);background:var(--lap);
+  border:1px solid var(--vonal);border-radius:var(--r-md);padding:12px var(--s-3);min-height:48px;
+  transition:border-color var(--alap),box-shadow var(--alap)}
+.mezo textarea{min-height:96px;resize:vertical}
+.mezo input:hover,.mezo select:hover{border-color:var(--szen)}
+.mezo .hiba{display:block;color:var(--zarva);font-size:var(--t-small);font-weight:600;margin-top:var(--s-1)}
+.mezo .hiba:empty{display:none}
+.mezo [aria-invalid="true"]{border-color:var(--zarva);box-shadow:inset 0 0 0 1px var(--zarva)}
+.opcio{grid-column:1/-1;display:flex;gap:var(--s-2);align-items:flex-start;font-size:var(--t-small)}
+.opcio input{width:20px;height:20px;min-height:0;flex:none;margin-top:2px}
+.mez-sug{font-size:var(--t-small);color:var(--acel);margin-top:var(--s-1)}
+.kuldes{margin-top:var(--s-5);display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-3)}
+.kuldes .gomb{flex:1 1 220px}
+.siker{background:var(--nyitva);color:#fff;border-radius:var(--r-md);padding:var(--s-3);margin-top:var(--s-4);font-weight:600}
+.pot{position:absolute;left:-9999px}
+.oldalpanel{border:1px solid var(--vonal-halvany);border-radius:var(--r-lg);padding:var(--s-4);background:var(--lap)}
+
+/* ---------- GYIK, nyitvatartás, lábléc ---------- */
+details{border-bottom:1px solid var(--vonal-halvany);padding:var(--s-3) 0}
+summary{cursor:pointer;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:var(--s-3)}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"⌄";color:var(--parazs);font-weight:700}
+details[open] summary::after{content:"⌃"}
+details p{margin:var(--s-2) 0 0;color:var(--acel);font-size:var(--t-small)}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+caption{text-align:left;font-size:var(--t-small);color:var(--acel);padding-bottom:var(--s-2)}
+th,td{text-align:left;padding:10px 0;border-bottom:1px solid var(--vonal-halvany);font-size:var(--t-small)}
+th{font-weight:700}
+tr[data-ma="1"]{background:rgb(240 169 60 / .18)}
+tr[data-ma="1"] th,tr[data-ma="1"] td{font-weight:700}
+.lablec{background:var(--grafit);color:var(--acel-vil);padding-block:var(--s-6)}
+.lablec h2{font-size:var(--t-small);color:var(--liszt);font-family:var(--f-szoveg);
+  text-transform:uppercase;letter-spacing:.08em;margin-bottom:var(--s-3)}
+.lablec a{color:var(--parazs-vil)}
+.lablec ul{list-style:none;margin:0;padding:0;display:grid;gap:var(--s-2);font-size:var(--t-small)}
+.lablec-racs{display:grid;gap:var(--s-5)}
+@media(min-width:700px){.lablec-racs{grid-template-columns:repeat(3,1fr)}}
+.jog{margin-top:var(--s-5);padding-top:var(--s-4);border-top:1px solid rgb(233 236 234 / .16);
+  font-size:var(--t-small)}
+
+/* ---------- sticky mobil sáv ---------- */
+.sticky{position:fixed;inset:auto 0 0 0;z-index:30;display:grid;grid-template-columns:1fr 1fr;gap:1px;
+  background:var(--vonal-halvany);box-shadow:var(--e-2);transform:translateY(100%);
+  transition:transform var(--lassu) var(--gorbe)}
+.sticky[data-lat="1"]{transform:none}
+.sticky a{min-height:56px;border-radius:0;border:0}
+@media(min-width:900px){.sticky{display:none}}
+body{padding-bottom:0}
+@media(max-width:899px){body:has(.sticky[data-lat="1"]){padding-bottom:56px}}
+
+/* ---------- mozgáscsökkentés ---------- */
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;
+    transition-duration:.01ms!important}
+  .allapot .pont{animation:none}
+}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#tartalom">Ugrás a tartalomra</a>
+
+<header class="fejlec">
+  <div class="wrap sor">
+    <a class="logo" href="/">GIOVANNI</a>
+    <nav class="fonav" aria-label="Fő navigáció">
+      <ul>
+        <li><a href="#etlap">Étlap</a></li>
+        <li><a href="#italok">Itallap</a></li>
+        <li><a href="#jatek">Játéksarok</a></li>
+        <li><a href="#kulonterem">Különterem</a></li>
+        <li><a href="#kapcsolat">Kapcsolat</a></li>
+      </ul>
+    </nav>
+    <a class="tel" href="tel:+3672446000">(06&nbsp;72) 446&nbsp;000</a>
+    <a class="gomb gomb--elsod" href="#foglalas"><span class="hosszu">Asztalt foglalok</span><span class="rovid">Foglalás</span></a>
+    <button class="menugomb" id="menugomb" aria-expanded="false" aria-controls="mobilmenu">Menü</button>
+  </div>
+  <nav class="wrap" id="mobilmenu" aria-label="Mobil navigáció" hidden>
+    <ul>
+      <li><a href="#etlap">Étlap</a></li>
+      <li><a href="#italok">Itallap</a></li>
+      <li><a href="#jatek">Játéksarok</a></li>
+      <li><a href="#kulonterem">Különterem</a></li>
+      <li><a href="#kapcsolat">Kapcsolat</a></li>
+      <li><a href="tel:+3672446000">(06 72) 446 000</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="tartalom">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="hero" aria-labelledby="cim">
+    <div class="wrap">
+      <p class="allapot" id="allapot" data-all="ismeretlen" aria-live="polite">
+        <span class="pont" aria-hidden="true"></span>
+        <span id="allapot-szoveg">Nyitvatartás betöltése…</span>
+      </p>
+      <h1 id="cim">Pizza, csapolt sör és csocsó Pécs Kertvárosában.</h1>
+      <p class="lead">
+        Nagy Imre út 43. Terasz, különterem és egy játéksarok, ahol biliárd, csocsó,
+        darts és flipper is van. Nyitás minden nap 12:00-kor.
+      </p>
+      <div class="hero-akciok">
+        <a class="gomb gomb--elsod" href="#foglalas">Asztalt foglalok</a>
+        <a class="gomb gomb--masod" href="tel:+3672446000">Hívás: (06&nbsp;72) 446&nbsp;000</a>
+      </div>
+      <div class="tenyek">
+        <p class="teny"><b>4,5 ★</b><span>1&nbsp;339 vélemény a Google-on <a href="https://www.google.com/maps" rel="nofollow noopener">(megnézem)</a></span></p>
+        <p class="teny"><b>2&nbsp;000–6&nbsp;000&nbsp;Ft</b><span>átlagos költés személyenként</span></p>
+        <p class="teny"><b>12:00</b><span>nyitás minden nap</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SZIGNATÚRA: ALAPRAJZ ============ -->
+  <section class="alaprajz" id="alaprajz" aria-labelledby="alaprajz-cim">
+    <div class="wrap">
+      <div class="cim-fej">
+        <p class="cimke">Mielőtt foglalsz</p>
+        <h2 id="alaprajz-cim">Hol ülnél?</h2>
+        <p>Négy különböző hely egy házban. Válassz a rajzon — a foglalási űrlap
+           automatikusan kitöltődik.</p>
+      </div>
+
+      <div class="alaprajz-racs">
+        <div>
+          <svg class="terkep" viewBox="0 0 620 440" role="group"
+               aria-labelledby="terkep-cim" aria-describedby="terkep-leiras">
+            <title id="terkep-cim">A Giovanni Pizzéria sematikus alaprajza négy zónával</title>
+            <desc id="terkep-leiras">Sematikus, nem méretarányos ábra. Zónák: terasz,
+              belső tér, játéksarok, különterem. Minden zóna kiválasztható.</desc>
+
+            <!-- TERASZ -->
+            <g class="zona" id="z-terasz" role="button" tabindex="0" aria-pressed="false"
+               data-zona="terasz" aria-label="Terasz kiválasztása">
+              <rect class="fal" x="24" y="24" width="244" height="156" rx="8"/>
+              <text class="cim" x="40" y="50">TERASZ</text>
+              <g class="asztal">
+                <circle cx="62" cy="88" r="11"/><circle cx="118" cy="88" r="11"/>
+                <circle cx="174" cy="88" r="11"/><circle cx="230" cy="88" r="11"/>
+                <circle cx="62" cy="140" r="11"/><circle cx="118" cy="140" r="11"/>
+                <circle cx="174" cy="140" r="11"/><circle cx="230" cy="140" r="11"/>
+              </g>
+              <path class="butor" d="M24 24 L268 24" stroke-dasharray="5 5"/>
+            </g>
+            <text class="jelmagy" x="34" y="18">utca felőli oldal</text>
+
+            <!-- BELSŐ TÉR -->
+            <g class="zona" id="z-belso" role="button" tabindex="0" aria-pressed="false"
+               data-zona="belso" aria-label="Belső tér kiválasztása">
+              <rect class="fal" x="292" y="24" width="304" height="212" rx="8"/>
+              <text class="cim" x="308" y="50">BELSŐ TÉR</text>
+              <g class="asztal">
+                <rect x="316" y="76" width="34" height="22" rx="4"/>
+                <rect x="380" y="76" width="34" height="22" rx="4"/>
+                <rect x="444" y="76" width="34" height="22" rx="4"/>
+                <rect x="508" y="76" width="34" height="22" rx="4"/>
+                <rect x="316" y="132" width="34" height="22" rx="4"/>
+                <rect x="380" y="132" width="34" height="22" rx="4"/>
+                <rect x="444" y="132" width="34" height="22" rx="4"/>
+                <rect x="508" y="132" width="34" height="22" rx="4"/>
+                <rect x="316" y="186" width="34" height="22" rx="4"/>
+                <rect x="380" y="186" width="34" height="22" rx="4"/>
+              </g>
+              <!-- pult -->
+              <path class="butor" d="M470 190 h108 a6 6 0 0 1 6 6 v14 h-114 z"/>
+              <text class="jelmagy" x="486" y="226">pult</text>
+            </g>
+
+            <!-- JÁTÉKSAROK -->
+            <g class="zona" id="z-jatek" role="button" tabindex="0" aria-pressed="false"
+               data-zona="jatek" aria-label="Játéksarok kiválasztása">
+              <rect class="fal" x="24" y="204" width="244" height="212" rx="8"/>
+              <text class="cim" x="40" y="230">JÁTÉKSAROK</text>
+              <!-- biliárdasztal -->
+              <rect class="butor" x="44" y="250" width="104" height="56" rx="6"/>
+              <g class="asztal">
+                <circle cx="52" cy="258" r="3"/><circle cx="96" cy="255" r="3"/>
+                <circle cx="140" cy="258" r="3"/><circle cx="52" cy="298" r="3"/>
+                <circle cx="96" cy="301" r="3"/><circle cx="140" cy="298" r="3"/>
+              </g>
+              <text class="jelmagy" x="44" y="322">biliárd</text>
+              <!-- csocsó -->
+              <rect class="butor" x="168" y="250" width="80" height="56" rx="4"/>
+              <path class="butor" d="M186 244 v68 M208 244 v68 M230 244 v68"/>
+              <text class="jelmagy" x="168" y="322">csocsó</text>
+              <!-- darts -->
+              <circle class="butor" cx="70" cy="362" r="19"/>
+              <circle class="butor" cx="70" cy="362" r="9"/>
+              <circle class="asztal" cx="70" cy="362" r="3"/>
+              <text class="jelmagy" x="46" y="398">darts</text>
+              <!-- flipper -->
+              <path class="butor" d="M168 338 h64 l10 16 v30 h-84 v-30 z"/>
+              <path class="butor" d="M178 366 l14 12 M232 366 l-14 12"/>
+              <text class="jelmagy" x="168" y="398">flipper</text>
+            </g>
+
+            <!-- KÜLÖNTEREM -->
+            <g class="zona" id="z-kulonterem" role="button" tabindex="0" aria-pressed="false"
+               data-zona="kulonterem" aria-label="Különterem kiválasztása">
+              <rect class="fal" x="292" y="260" width="304" height="156" rx="8"/>
+              <text class="cim" x="308" y="286">KÜLÖNTEREM</text>
+              <rect class="asztal" x="330" y="322" width="228" height="30" rx="6"/>
+              <g class="asztal">
+                <circle cx="352" cy="308" r="7"/><circle cx="396" cy="308" r="7"/>
+                <circle cx="440" cy="308" r="7"/><circle cx="484" cy="308" r="7"/>
+                <circle cx="528" cy="308" r="7"/>
+                <circle cx="352" cy="366" r="7"/><circle cx="396" cy="366" r="7"/>
+                <circle cx="440" cy="366" r="7"/><circle cx="484" cy="366" r="7"/>
+                <circle cx="528" cy="366" r="7"/>
+              </g>
+              <text class="jelmagy" x="330" y="398">hosszú asztal, egyben foglalható</text>
+            </g>
+
+            <!-- bejárat -->
+            <path class="butor" d="M276 190 v40" stroke="#767F85" stroke-width="3"/>
+            <text class="jelmagy" x="264" y="198" text-anchor="end">bejárat</text>
+          </svg>
+          <p class="abra-jegyzet">
+            Sematikus ábra: a zónák egymáshoz képesti elrendezése és az asztalszám
+            <strong>[egyeztetendő]</strong> — a végleges rajz a valós asztalkiosztásból készül.
+          </p>
+        </div>
+
+        <div id="zonapanelek">
+          <article class="panel" data-panel="terasz">
+            <h3>Terasz</h3>
+            <p>Kiülős rész az utca felőli oldalon, jellemzően a meleg hónapokban üzemel.
+               Kapacitás: <strong>[egyeztetendő]</strong> asztal.</p>
+            <a class="gomb gomb--elsod" href="#foglalas" data-valaszt="terasz">Ide foglalok</a>
+          </article>
+          <article class="panel" data-panel="belso">
+            <h3>Belső tér</h3>
+            <p>A fő étterem a pulttal. Egész évben nyitva, kisebb és nagyobb
+               társaságoknak is. Kapacitás: <strong>[egyeztetendő]</strong> fő.</p>
+            <a class="gomb gomb--elsod" href="#foglalas" data-valaszt="belso">Ide foglalok</a>
+          </article>
+          <article class="panel" data-panel="jatek">
+            <h3>Játéksarok</h3>
+            <p>Biliárd, csocsó, darts és flipper. Ha a társaság nem csak enni jön,
+               ide érdemes foglalni. Használati díj: <strong>[egyeztetendő]</strong>.</p>
+            <a class="gomb gomb--elsod" href="#foglalas" data-valaszt="jatek">Ide foglalok</a>
+          </article>
+          <article class="panel" data-panel="kulonterem">
+            <h3>Különterem</h3>
+            <p>Zárt tér céges vacsorára, ballagásra, szülinapra.
+               <strong>[X]</strong> főig, minimumfogyasztás <strong>[egyeztetendő]</strong>.</p>
+            <a class="gomb gomb--elsod" href="#foglalas" data-valaszt="kulonterem">Ajánlatot kérek</a>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ÉTLAP ============ -->
+  <section id="etlap" aria-labelledby="etlap-cim">
+    <div class="wrap">
+      <div class="cim-fej">
+        <p class="cimke">Konyha</p>
+        <h2 id="etlap-cim">Étlap</h2>
+        <p>Négy főcsoport. A teljes lista árakkal és allergénjelöléssel az étlap oldalon.</p>
+      </div>
+      <div class="racs racs--4">
+        <article class="kartya">
+          <h3>Pizzák</h3>
+          <p>A ház fő profilja, kemencéből.</p>
+          <span class="ar">[ár egyeztetendő]</span>
+        </article>
+        <article class="kartya">
+          <h3>Roston sültek</h3>
+          <p>Frissen sütött húsételek körettel.</p>
+          <span class="ar">[ár egyeztetendő]</span>
+        </article>
+        <article class="kartya">
+          <h3>Levesek</h3>
+          <p>Napi és állandó levesek.</p>
+          <span class="ar">[ár egyeztetendő]</span>
+        </article>
+        <article class="kartya">
+          <h3>Saláták</h3>
+          <p>Önálló fogásként vagy köretnek.</p>
+          <span class="ar">[ár egyeztetendő]</span>
+        </article>
+      </div>
+      <p style="margin-top:var(--s-5)">
+        <a class="gomb gomb--masod" href="/etlap/">Teljes étlap és allergének</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ ITALOK (sötét sáv) ============ -->
+  <section class="sotet" id="italok" aria-labelledby="italok-cim">
+    <div class="wrap">
+      <div class="cim-fej">
+        <p class="cimke">Pult</p>
+        <h2 id="italok-cim">Csapolva</h2>
+        <p>Három csap, plusz koktélok. A teljes itallap külön oldalon.</p>
+      </div>
+      <ul class="italok">
+        <li><b>Staropramen</b><span>[ár egyeztetendő]</span></li>
+        <li><b>Stella Artois</b><span>[ár egyeztetendő]</span></li>
+        <li><b>Jägermeister</b><span>[ár egyeztetendő]</span></li>
+        <li><b>Koktélok</b><span>a kínálat [egyeztetendő]</span></li>
+      </ul>
+      <p style="margin-top:var(--s-5)"><a class="gomb gomb--masod" href="/itallap/">Itallap</a></p>
+    </div>
+  </section>
+
+  <!-- ============ JÁTÉKSAROK ============ -->
+  <section id="jatek" aria-labelledby="jatek-cim">
+    <div class="wrap">
+      <div class="cim-fej">
+        <p class="cimke">Ami nem fér bele egy pizzásdobozba</p>
+        <h2 id="jatek-cim">Játéksarok</h2>
+        <p>Ez az a része a helynek, amit kiszállítással nem lehet megkapni.</p>
+      </div>
+      <div class="racs racs--4">
+        <article class="kartya">
+          <svg class="ikon" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+            <rect x="3" y="9" width="34" height="22" rx="4"/>
+            <circle cx="9" cy="15" r="1.6"/><circle cx="31" cy="25" r="1.6"/>
+            <circle cx="20" cy="20" r="3.4"/>
+          </svg>
+          <h3>Biliárd</h3><p>[asztalszám és díj egyeztetendő]</p>
+        </article>
+        <article class="kartya">
+          <svg class="ikon" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+            <rect x="6" y="10" width="28" height="20" rx="3"/>
+            <path d="M13 6v28M20 6v28M27 6v28"/>
+          </svg>
+          <h3>Csocsó</h3><p>[elérhetőség egyeztetendő]</p>
+        </article>
+        <article class="kartya">
+          <svg class="ikon" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+            <circle cx="20" cy="20" r="14"/><circle cx="20" cy="20" r="7"/>
+            <path d="M20 6v28M6 20h28"/>
+          </svg>
+          <h3>Darts</h3><p>[tábla típusa egyeztetendő]</p>
+        </article>
+        <article class="kartya">
+          <svg class="ikon" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+            <path d="M9 8h22l4 8v18H5V16z"/><path d="M12 27l6 5M28 27l-6 5"/>
+            <circle cx="20" cy="19" r="2.2"/>
+          </svg>
+          <h3>Flipper</h3><p>[gép típusa egyeztetendő]</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ KÜLÖNTEREM + VÉLEMÉNYEK ============ -->
+  <section id="kulonterem" aria-labelledby="kt-cim">
+    <div class="wrap racs racs--2">
+      <div>
+        <p class="cimke">Csoportnak</p>
+        <h2 id="kt-cim">Különterem</h2>
+        <p>Céges vacsora, ballagás, szülinap, klubest. Zárt tér, saját asztalrenddel,
+           <strong>[X]</strong> főig.</p>
+        <p>Fix menücsomagok és minimumfogyasztás: <strong>[egyeztetendő]</strong>.
+           Írd meg a dátumot és a létszámot, és visszahívunk konkrét ajánlattal.</p>
+        <p><a class="gomb gomb--elsod" href="#foglalas" data-valaszt="kulonterem">Ajánlatot kérek</a></p>
+      </div>
+      <div class="oldalpanel">
+        <h2 id="velemeny-cim" style="font-size:var(--t-h3);font-family:var(--f-szoveg)">Mit mondanak a vendégek</h2>
+        <p style="font-family:var(--f-display);font-size:2.5rem;font-weight:800;margin:var(--s-3) 0 0">4,5 ★</p>
+        <p><strong>1&nbsp;339 vélemény</strong> a Google Térképen, és további
+           <strong>206 vélemény</strong> a foodorán (4,7 ★).</p>
+        <p class="mez-sug">Forrás: Google Cégprofil és foodora, a lekérdezés napján.
+           A számok folyamatosan változnak; nem saját mérés.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOGLALÁS ============ -->
+  <section id="foglalas" aria-labelledby="foglalas-cim">
+    <div class="wrap">
+      <div class="cim-fej">
+        <p class="cimke">Egy perc</p>
+        <h2 id="foglalas-cim">Asztalfoglalás</h2>
+      </div>
+      <div class="urlap-racs">
+        <form id="foglalo" method="post" action="#" novalidate>
+          <div class="mezok">
+            <div class="mezo">
+              <label for="nev">Név <span aria-hidden="true">*</span></label>
+              <input id="nev" name="nev" type="text" autocomplete="name" required>
+              <span class="hiba" id="nev-hiba" role="alert"></span>
+            </div>
+            <div class="mezo">
+              <label for="telefon">Telefonszám <span aria-hidden="true">*</span></label>
+              <input id="telefon" name="telefon" type="tel" inputmode="tel"
+                     autocomplete="tel" required placeholder="+36 30 123 4567">
+              <span class="hiba" id="telefon-hiba" role="alert"></span>
+            </div>
+            <div class="mezo">
+              <label for="datum">Dátum <span aria-hidden="true">*</span></label>
+              <input id="datum" name="datum" type="date" required>
+              <span class="hiba" id="datum-hiba" role="alert"></span>
+            </div>
+            <div class="mezo">
+              <label for="ido">Időpont <span aria-hidden="true">*</span></label>
+              <input id="ido" name="ido" type="time" required min="12:00" value="19:00">
+              <span class="hiba" id="ido-hiba" role="alert"></span>
+              <p class="mez-sug">Nyitás 12:00-kor.</p>
+            </div>
+            <div class="mezo">
+              <label for="fo">Hány fő? <span aria-hidden="true">*</span></label>
+              <input id="fo" name="fo" type="number" inputmode="numeric" min="1" max="60" step="1" required>
+              <span class="hiba" id="fo-hiba" role="alert"></span>
+            </div>
+            <div class="mezo">
+              <label for="hol">Hol ülnétek?</label>
+              <select id="hol" name="hol">
+                <option value="">Mindegy, ti tudjátok</option>
+                <option value="terasz">Terasz</option>
+                <option value="belso">Belső tér</option>
+                <option value="jatek">Játéksarok</option>
+                <option value="kulonterem">Különterem (csoport)</option>
+              </select>
+            </div>
+            <div class="mezo teljes">
+              <label for="uzenet">Megjegyzés</label>
+              <textarea id="uzenet" name="uzenet"
+                rows="3" placeholder="Pl. gyerekszék kellene, vagy allergia."></textarea>
+            </div>
+            <div class="opcio teljes">
+              <input type="checkbox" id="gdpr" name="gdpr" required>
+              <label for="gdpr" style="font-weight:400">
+                Hozzájárulok, hogy a megadott adataimat a foglalás visszaigazolásához
+                felhasználják. <a href="/adatkezeles/">Adatkezelési tájékoztató</a>
+                <span aria-hidden="true">*</span>
+              </label>
+            </div>
+            <span class="hiba teljes" id="gdpr-hiba" role="alert"></span>
+          </div>
+          <!-- spamcsapda: valódi felhasználó sosem tölti ki -->
+          <div class="pot" aria-hidden="true">
+            <label for="cegnev">Cégnév</label>
+            <input id="cegnev" name="cegnev" type="text" tabindex="-1" autocomplete="off">
+          </div>
+          <div class="kuldes">
+            <button class="gomb gomb--elsod" type="submit">Foglalás elküldése</button>
+            <span>vagy hívj: <a href="tel:+3672446000"><strong>(06&nbsp;72) 446&nbsp;000</strong></a></span>
+          </div>
+          <p class="siker" id="siker" hidden role="status"></p>
+        </form>
+
+        <aside class="oldalpanel" aria-label="Tudnivalók a foglalásról">
+          <h3>Mi történik ezután?</h3>
+          <p class="mez-sug">A foglalás akkor él, ha visszaigazoltuk. Telefonon
+             keresünk, jellemzően <strong>[X] órán belül</strong>, nyitvatartási időben.</p>
+          <h3 style="margin-top:var(--s-4)">Az adataiddal</h3>
+          <p class="mez-sug">Csak a visszaigazoláshoz használjuk, aztán töröljük.
+             Hírlevelet nem küldünk, harmadik félnek nem adjuk át.</p>
+          <h3 style="margin-top:var(--s-4)">Nagyobb társaság?</h3>
+          <p class="mez-sug">[X] fő fölött a különterem foglalása külön egyeztetést
+             igényel — írd a megjegyzésbe az alkalmat.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GYIK + KAPCSOLAT ============ -->
+  <section id="kapcsolat" aria-labelledby="kapcsolat-cim">
+    <div class="wrap racs racs--2">
+      <div>
+        <h2 id="gyik-cim">Gyakori kérdések</h2>
+        <div style="margin-top:var(--s-4)">
+          <details>
+            <summary>Kell asztalt foglalni?</summary>
+            <p>Hétköznap általában nem, hétvégén és nagyobb társaságnál érdemes.
+               [Az étterem foglalási gyakorlata egyeztetendő.]</p>
+          </details>
+          <details>
+            <summary>Van parkolás a közelben?</summary>
+            <p>[Parkolási lehetőség és díjzóna egyeztetendő.]</p>
+          </details>
+          <details>
+            <summary>Lehet kártyával fizetni?</summary>
+            <p>[Elfogadott fizetési módok és SZÉP-kártya-zsebek egyeztetendők.]</p>
+          </details>
+          <details>
+            <summary>Gyerekkel is mehetünk?</summary>
+            <p>[Gyerekszék, pelenkázó és gyerekmenü megléte egyeztetendő.]</p>
+          </details>
+          <details>
+            <summary>Meddig lehet rendelni zárás előtt?</summary>
+            <p>[A konyha zárási időpontja egyeztetendő — ez eltérhet a hely zárásától.]</p>
+          </details>
+        </div>
+      </div>
+      <div>
+        <h2 id="kapcsolat-cim">Elérhetőség</h2>
+        <address style="font-style:normal;margin-top:var(--s-4)">
+          <p><strong>Giovanni Pizzéria</strong><br>
+             7632 Pécs, Nagy Imre út 43.<br>
+             <a href="tel:+3672446000">(06&nbsp;72) 446&nbsp;000</a></p>
+        </address>
+        <p><a class="gomb gomb--masod"
+              href="https://www.google.com/maps/search/?api=1&amp;query=Giovanni+Pizz%C3%A9ria+P%C3%A9cs+Nagy+Imre+%C3%BAt+43"
+              rel="noopener">Útvonaltervezés</a></p>
+        <table>
+          <caption>Nyitvatartás — az adat külső adatbázisokból származik, <strong>ellenőrizendő</strong>.</caption>
+          <tbody id="nyitva-tabla">
+            <tr data-nap="1"><th scope="row">Hétfő</th><td>12:00 – 23:00</td></tr>
+            <tr data-nap="2"><th scope="row">Kedd</th><td>12:00 – 23:00</td></tr>
+            <tr data-nap="3"><th scope="row">Szerda</th><td>12:00 – 23:00</td></tr>
+            <tr data-nap="4"><th scope="row">Csütörtök</th><td>12:00 – 23:00</td></tr>
+            <tr data-nap="5"><th scope="row">Péntek</th><td>12:00 – 24:00</td></tr>
+            <tr data-nap="6"><th scope="row">Szombat</th><td>12:00 – 24:00</td></tr>
+            <tr data-nap="0"><th scope="row">Vasárnap</th><td>12:00 – 22:00</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="lablec">
+  <div class="wrap lablec-racs">
+    <div>
+      <h2>Giovanni Pizzéria</h2>
+      <ul>
+        <li>7632 Pécs, Nagy Imre út 43.</li>
+        <li><a href="tel:+3672446000">(06 72) 446 000</a></li>
+        <li>Nyitás minden nap 12:00</li>
+      </ul>
+    </div>
+    <div>
+      <h2>Oldalak</h2>
+      <ul>
+        <li><a href="/etlap/">Étlap</a></li>
+        <li><a href="/itallap/">Itallap</a></li>
+        <li><a href="#kulonterem">Különterem</a></li>
+        <li><a href="#jatek">Játéksarok</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Rendelés és jog</h2>
+      <ul>
+        <li><a href="https://www.foodora.hu/restaurant/z28z/giovanni-pizzeria" rel="noopener">Kiszállítás – foodora</a></li>
+        <li><a href="https://www.facebook.com/giovannipecs/" rel="noopener">Facebook</a></li>
+        <li><a href="/impresszum/">Impresszum</a></li>
+        <li><a href="/adatkezeles/">Adatkezelési tájékoztató</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap jog">
+    <p>Prototípus. A [szögletes zárójeles] adatok pótlása után élesíthető.</p>
+  </div>
+</footer>
+
+<nav class="sticky" id="sticky" aria-label="Gyors műveletek">
+  <a class="gomb gomb--masod" href="tel:+3672446000">Hívás</a>
+  <a class="gomb gomb--elsod" href="#foglalas">Foglalás</a>
+</nav>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {"@type":"WebSite","@id":"https://giovannipecs.hu/#website",
+     "url":"https://giovannipecs.hu/","name":"Giovanni Pizzéria","inLanguage":"hu-HU",
+     "publisher":{"@id":"https://giovannipecs.hu/#restaurant"}},
+
+    {"@type":"WebPage","@id":"https://giovannipecs.hu/#webpage",
+     "url":"https://giovannipecs.hu/","name":"Giovanni Pizzéria Pécs – Nagy Imre út 43.",
+     "isPartOf":{"@id":"https://giovannipecs.hu/#website"},
+     "about":{"@id":"https://giovannipecs.hu/#restaurant"},
+     "breadcrumb":{"@id":"https://giovannipecs.hu/#breadcrumb"},
+     "inLanguage":"hu-HU"},
+
+    {"@type":"BreadcrumbList","@id":"https://giovannipecs.hu/#breadcrumb",
+     "itemListElement":[{"@type":"ListItem","position":1,"name":"Főoldal","item":"https://giovannipecs.hu/"}]},
+
+    {"@type":"Restaurant","@id":"https://giovannipecs.hu/#restaurant",
+     "name":"Giovanni Pizzéria",
+     "url":"https://giovannipecs.hu/",
+     "telephone":"+36-72-446-000",
+     "priceRange":"2000–6000 Ft",
+     "currenciesAccepted":"HUF",
+     "servesCuisine":["Pizza","Olasz","Magyar"],
+     "acceptsReservations":"True",
+     "address":{"@type":"PostalAddress","streetAddress":"Nagy Imre út 43.",
+       "addressLocality":"Pécs","postalCode":"7632","addressRegion":"Baranya","addressCountry":"HU"},
+     "openingHoursSpecification":[
+       {"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday"],
+        "opens":"12:00","closes":"23:00"},
+       {"@type":"OpeningHoursSpecification","dayOfWeek":["Friday","Saturday"],
+        "opens":"12:00","closes":"00:00"},
+       {"@type":"OpeningHoursSpecification","dayOfWeek":"Sunday","opens":"12:00","closes":"22:00"}],
+     "amenityFeature":[
+       {"@type":"LocationFeatureSpecification","name":"Szabadtéri asztalok","value":true},
+       {"@type":"LocationFeatureSpecification","name":"Terasz","value":true},
+       {"@type":"LocationFeatureSpecification","name":"Különterem","value":true},
+       {"@type":"LocationFeatureSpecification","name":"Biliárd","value":true},
+       {"@type":"LocationFeatureSpecification","name":"Csocsó","value":true},
+       {"@type":"LocationFeatureSpecification","name":"Darts","value":true},
+       {"@type":"LocationFeatureSpecification","name":"Flipper","value":true}],
+     "hasMenu":{"@id":"https://giovannipecs.hu/etlap/#menu"},
+     "potentialAction":{"@type":"ReserveAction",
+       "target":{"@type":"EntryPoint","urlTemplate":"https://giovannipecs.hu/#foglalas",
+         "inLanguage":"hu-HU","actionPlatform":[
+           "https://schema.org/DesktopWebPlatform","https://schema.org/MobileWebPlatform"]},
+       "result":{"@type":"FoodEstablishmentReservation","name":"Asztalfoglalás"}},
+     "sameAs":["https://www.facebook.com/giovannipecs/",
+       "https://www.foodora.hu/restaurant/z28z/giovanni-pizzeria"]},
+
+    {"@type":"Menu","@id":"https://giovannipecs.hu/etlap/#menu",
+     "name":"Giovanni Pizzéria étlap","inLanguage":"hu-HU",
+     "url":"https://giovannipecs.hu/etlap/",
+     "hasMenuSection":[
+       {"@type":"MenuSection","name":"Pizzák"},
+       {"@type":"MenuSection","name":"Roston sültek"},
+       {"@type":"MenuSection","name":"Levesek"},
+       {"@type":"MenuSection","name":"Saláták"},
+       {"@type":"MenuSection","name":"Csapolt sörök és koktélok",
+        "url":"https://giovannipecs.hu/itallap/"}]},
+
+    {"@type":"FAQPage","@id":"https://giovannipecs.hu/#faq",
+     "mainEntity":[
+      {"@type":"Question","name":"Kell asztalt foglalni?",
+       "acceptedAnswer":{"@type":"Answer","text":"Hétköznap általában nem, hétvégén és nagyobb társaságnál érdemes."}},
+      {"@type":"Question","name":"Van különterem?",
+       "acceptedAnswer":{"@type":"Answer","text":"Igen, zárt különterem céges vacsorára, ballagásra, szülinapra."}},
+      {"@type":"Question","name":"Milyen játékok vannak a helyszínen?",
+       "acceptedAnswer":{"@type":"Answer","text":"Biliárd, csocsó, darts és flipper."}},
+      {"@type":"Question","name":"Van terasz?",
+       "acceptedAnswer":{"@type":"Answer","text":"Igen, szabadtéri asztalokkal, jellemzően a meleg hónapokban."}},
+      {"@type":"Question","name":"Mikor nyit a Giovanni Pizzéria?",
+       "acceptedAnswer":{"@type":"Answer","text":"Minden nap 12:00-kor."}}]}
+  ]
+}
+</script>
+<!--
+  A JSON-LD-ből SZÁNDÉKOSAN kimarad az aggregateRating: a 4,5 csillag a Google
+  Cégprofilból származik, saját entitásra tett önkiszolgáló értékelés-jelölés
+  a Google irányelveibe ütközik. Lásd redesign.md §10.3.
+  Kitöltendő élesítés előtt: "geo" (GeoCoordinates), "image", "paymentAccepted",
+  a MenuItem-ek árakkal, és a valós nyitvatartás.
+-->
+
+<script>
+(function(){
+  "use strict";
+  var $=function(s,c){return (c||document).querySelector(s)};
+  var $$=function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))};
+
+  /* 1. Élő nyitva/zárva. nap: 0=vasárnap, [nyitás,zárás] percben. ADAT ELLENŐRIZENDŐ. */
+  var ORAK={0:[720,1320],1:[720,1380],2:[720,1380],3:[720,1380],4:[720,1380],5:[720,1440],6:[720,1440]};
+  function ket(n){return (n<10?"0":"")+n}
+  function ora(p){return ket(Math.floor(p/60)%24)+":"+ket(p%60)}
+  function allapot(){
+    var el=$("#allapot"),sz=$("#allapot-szoveg"); if(!el) return;
+    var d=new Date(),nap=d.getDay(),perc=d.getHours()*60+d.getMinutes(),t=ORAK[nap];
+    if(t && perc>=t[0] && perc<t[1]){
+      el.dataset.all="nyitva";
+      sz.textContent="Most nyitva · zárás "+ora(t[1])+"-kor";
+    } else {
+      el.dataset.all="zarva";
+      var kov=t&&perc<t[0]?ora(t[0]):ora(ORAK[(nap+1)%7][0]);
+      sz.textContent="Most zárva · nyitás "+kov+"-kor";
+    }
+    var sor=$('#nyitva-tabla tr[data-nap="'+nap+'"]');
+    if(sor) sor.setAttribute("data-ma","1");
+  }
+  allapot(); setInterval(allapot,60000);
+
+  /* 2. Alaprajz: zónaválasztás */
+  var zonak=$$(".zona"),panelek=$$("#zonapanelek .panel"),hol=$("#hol");
+  function valaszt(nev){
+    zonak.forEach(function(z){z.setAttribute("aria-pressed",z.dataset.zona===nev)});
+    panelek.forEach(function(p){p.hidden=p.dataset.panel!==nev});
+    if(hol) hol.value=nev;
+  }
+  if(zonak.length){
+    panelek.forEach(function(p,i){p.hidden=i!==0});
+    zonak.forEach(function(z){
+      z.addEventListener("click",function(){valaszt(z.dataset.zona)});
+      z.addEventListener("keydown",function(e){
+        if(e.key==="Enter"||e.key===" "){e.preventDefault();valaszt(z.dataset.zona)}
+      });
+    });
+    valaszt("terasz");
+  }
+  $$("[data-valaszt]").forEach(function(a){
+    a.addEventListener("click",function(){if(hol)hol.value=a.dataset.valaszt});
+  });
+
+  /* 3. Mobilmenü */
+  var mg=$("#menugomb"),mm=$("#mobilmenu");
+  if(mg) mg.addEventListener("click",function(){
+    var ny=mg.getAttribute("aria-expanded")==="true";
+    mg.setAttribute("aria-expanded",!ny); mm.hidden=ny;
+  });
+
+  /* 4. Sticky sáv a hero után */
+  var hero=$("#hero"),st=$("#sticky");
+  if(hero&&st&&"IntersectionObserver" in window){
+    new IntersectionObserver(function(e){
+      st.dataset.lat=e[0].isIntersecting?"0":"1";
+    },{threshold:0}).observe(hero);
+  }
+
+  /* 5. Űrlap: inline validáció */
+  var f=$("#foglalo"); if(!f) return;
+  var SZAB={
+    nev:function(v){return v.trim().length>=2?"":"Kérjük, add meg a neved."},
+    telefon:function(v){
+      if(!v.trim()) return "Telefonszám nélkül nem tudjuk visszaigazolni.";
+      return /^[+0-9 ()\-\/]{7,20}$/.test(v)?"":"Ez nem tűnik telefonszámnak. Pl. +36 30 123 4567";
+    },
+    datum:function(v){
+      if(!v) return "Válassz dátumot.";
+      var ma=new Date();ma.setHours(0,0,0,0);
+      return new Date(v)<ma?"Ez a nap már elmúlt.":"";
+    },
+    ido:function(v){return v?(v<"12:00"?"12:00 előtt zárva vagyunk.":""):"Válassz időpontot."},
+    fo:function(v){
+      var n=parseInt(v,10);
+      if(!v) return "Hányan jöttök?";
+      return (n>=1&&n<=60)?"":"1 és 60 fő között tudunk foglalni. Nagyobb csoport: hívj minket.";
+    },
+    gdpr:function(v,el){return el.checked?"":"A visszaigazoláshoz szükséges a hozzájárulás."}
+  };
+  function ellenoriz(el){
+    var sz=SZAB[el.id]; if(!sz) return true;
+    var uzi=sz(el.value,el),hiba=$("#"+el.id+"-hiba");
+    if(hiba) hiba.textContent=uzi;
+    el.setAttribute("aria-invalid",uzi?"true":"false");
+    if(hiba) el.setAttribute("aria-describedby",el.id+"-hiba");
+    return !uzi;
+  }
+  Object.keys(SZAB).forEach(function(id){
+    var el=$("#"+id); if(!el) return;
+    el.addEventListener("blur",function(){ellenoriz(el)});
+    el.addEventListener("input",function(){
+      if(el.getAttribute("aria-invalid")==="true") ellenoriz(el);
+    });
+    el.addEventListener("change",function(){
+      if(el.type==="checkbox"||el.type==="date"||el.type==="time") ellenoriz(el);
+    });
+  });
+  f.addEventListener("submit",function(e){
+    e.preventDefault();
+    var elso=null;
+    Object.keys(SZAB).forEach(function(id){
+      var el=$("#"+id); if(el&&!ellenoriz(el)&&!elso) elso=el;
+    });
+    if(elso){elso.focus();return}
+    if($("#cegnev").value) return;               /* spamcsapda */
+    var s=$("#siker");
+    s.hidden=false;
+    s.textContent="Köszönjük! A foglalási kérést megkaptuk. Telefonon visszaigazoljuk. "+
+      "(Prototípus: az űrlap most nem küld el adatot.)";
+  });
+})();
+</script>
+</body>
+</html>
