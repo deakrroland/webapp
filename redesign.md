@@ -646,17 +646,25 @@ segít eldönteni, hogy hova üljünk le vacsorázni.
 
 ### 9.1 Stack
 
-**Javaslat: statikusan generált oldal (Astro vagy 11ty) + egy szerver nélküli
-űrlap-végpont.**
+**Javaslat: Astro statikus build → GitLab → Netlify, Formspree űrlap-végponttal.**
+Ez a stúdió meglévő eszközkészlete; nincs benne semmi, amit külön be kellene vezetni
+vagy karbantartani.
 
 | Réteg | Választás | Indoklás | Elvetett alternatíva |
 |---|---|---|---|
-| Renderelés | statikus HTML build (Astro) | 9 oldal, ritkán változó tartalom. Nulla futásidejű PHP, nulla adatbázis, CDN-ről kiszolgálva. | **WordPress megtartása**: ismerős a tulajdonosnak, de minden látogató kifizeti a futásidőt (§3, Ok #5). Ha a szerkeszthetőség kritikus → §15. |
-| JS | vanilla, ~3–4 KB | Ennyi funkcióhoz (állapotóra, zónaválasztás, validáció, menü) a keretrendszer tiszta veszteség. | **React/Vue**: +40 KB minimum, semmiért. |
+| Renderelés | **Astro** statikus build | 9 oldal, ritkán változó tartalom. Nulla futásidejű PHP, nulla adatbázis. Az étlap komponensbe és `Menu` schemába is egy adatforrásból generálódik. | **WordPress megtartása**: ismerős a tulajdonosnak, de minden látogató kifizeti a futásidőt (§3, Ok #5). Ha a szerkeszthetőség kritikus → §15/19. **Sima HTML+CSS**: 9 oldalnál a fejléc/lábléc duplikálódna. |
+| Verziókezelés | **GitLab**, privát repó (`giovanni-web`) | Ügyfelenként külön repó; a Netlify erről deploy-ol. | — |
+| Hosting / deploy | **Netlify**, GitLab-ról auto-deploy | Ingyenes SSL, CDN, és **branch-enkénti preview URL** — az ügyfél éles domain előtt ezen látja az oldalt. | **FTP/kézi feltöltés**: nincs verzió, nincs preview, nincs visszaállítás. |
+| JS | vanilla, **4 976 B** (mért) | Ennyi funkcióhoz (állapotóra, zónaválasztás, validáció, menü) a keretrendszer tiszta veszteség. | **React/Vue**: +40 KB minimum, semmiért. |
 | CSS | egyetlen kézzel írt lap, custom property-kkel | A design system 30 tokenből áll, ehhez nem kell utility-keretrendszer. | **Tailwind**: build-lánc és osztálynév-zaj egy 9 oldalas oldalért. |
-| Tartalom | Markdown / JSON az étlaphoz | Az étlap adat, nem szöveg: egy JSON-ból generálódik a HTML **és** a `Menu` schema — nem lehet elcsúszni egymástól. | **Kézi HTML-szerkesztés**: az étlap és a schema garantáltan szétcsúszik. |
-| Űrlap | serverless függvény (pl. Cloudflare Worker) → e-mail + naplózás | Nem kell backend. GDPR: csak továbbít, nem tárol tartósan. | **`mailto:`**: mobilon a felhasználók fele elakad. **WP-plugin**: visszahozza a CMS-t. |
-| Hosting | statikus CDN + magyar/EU él | Pécsi közönségnél a TTFB számít. | — |
+| Animáció | **nincs könyvtár** | A teljes mozgáskészlet 3 CSS-tokenből elfér (§8). | **AOS / GSAP**: scroll-animációkhoz való, itt nincs egy sem — és a Lighthouse-célt (§11) rontaná. |
+| Tartalom | JSON az étlaphoz, Markdown a szövegoldalakhoz | Az étlap adat, nem szöveg: egy JSON-ból generálódik a HTML **és** a `Menu` schema — nem lehet elcsúszni egymástól. | **Kézi HTML-szerkesztés**: az étlap és a schema garantáltan szétcsúszik. |
+| Űrlap | **Formspree** végpont → e-mail az étterem címére | Nincs backend, nincs adattárolás, beépített spamszűrés, és az étterem bármikor átállíthatja a fogadó e-mail-címet. GDPR: csak továbbít, nem tárol tartósan. | **Cloudflare Worker / saját serverless**: több karbantartás, több hozzáférés, ugyanaz az eredmény. **`mailto:`**: mobilon a felhasználók fele elakad. |
+| Foglalás | **a saját űrlap**, nem foglalómotor | Az étterem foglalása nem időpontfoglalás: létszám + zóna + időpont, fix slothossz nélkül, és telefonos visszaigazolással zárul. | **Cal.com**: fix hosszú slotokra tervezett időpontfoglaló (konzultáció, fodrász). Egy asztaltársaságra ráerőltetve fals kapacitást ígér, amit az étterem nem tud tartani. Akkor jön szóba, ha az ügyfél tényleg slot-alapú foglalást akar (→ §15/5). |
+
+**Ha a foglalás volumene később indokolja** (napi 20+ online foglalás), a következő lépés
+Supabase-tábla + visszaigazoló e-mail, nem egy dobozos foglalórendszer — de ez a
+2. fázisban még biztosan felesleges.
 
 ### 9.2 Fontkezelés
 
@@ -887,7 +895,7 @@ akadályt bont el előle.
 | D4 | Szignatúra: interaktív SVG alaprajz | Fotómozaik / kemence-animáció / pizza-építő | Fotófüggő vagy kitalált tényre épülne; az alaprajz konverziót visz és 0 LCP. |
 | D5 | Hűvös krétaszürke alap, egy borostyán akcentus | Krém + serif + terrakotta | Fine-dining regisztert hazudna egy 2–6 e Ft-os helyre; ráadásul tiltott irány. |
 | D6 | Bricolage Grotesque + Source Sans 3 | Playfair + Inter; egy család | Az első a default AI-páros; az egy család esetén elvész a szignatúra súlya. |
-| D7 | Statikus generálás | WordPress megtartása | Minden látogató kifizeti a CMS futásidejét (§3 Ok #5). *Feltételes — §15.* |
+| D7 | Astro statikus build, Netlify-on | WordPress megtartása | Minden látogató kifizeti a CMS futásidejét (§3 Ok #5). *Feltételes — §15.* |
 | D8 | Hajszálvonal-alapú elevation, alig árnyék | Kártyás, árnyékos „app"-look | Nyomdai/szórólap-regiszter; kevesebb festési költség. |
 | D9 | `aggregateRating` nincs a schema-ban | Csillagok kiírása rich snippetért | Önkiszolgáló értékelés-jelölés, Google-irányelvbe ütközik. |
 | D10 | Meglévő URL-ek megtartása (`/etlap/`, `/itallap/`, `/elerhetoseg/`) | Új, „szebb" URL-struktúra | Indexelt oldalakat átirányítani ok nélkül nettó veszteség. |
