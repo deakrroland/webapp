@@ -115,7 +115,7 @@ section{padding-block:var(--s-7)}
   padding:var(--s-2) 0;border-bottom:2px solid transparent;transition:border-color var(--gyors)}
 .fonav a:hover{border-bottom-color:var(--parazs)}
 .fejlec .tel{display:none;font-weight:700;color:var(--szen);text-decoration:none;white-space:nowrap}
-.menugomb{margin-inline-start:auto;background:none;border:1px solid var(--vonal);border-radius:var(--r-md);
+.menugomb{margin-inline-start:auto;cursor:pointer;background:none;border:1px solid var(--vonal);border-radius:var(--r-md);
   padding:var(--s-2) var(--s-3);font:inherit;font-weight:600;color:var(--szen)}
 @media(min-width:900px){
   .fejlec .sor{gap:var(--s-4)}
@@ -125,7 +125,7 @@ section{padding-block:var(--s-7)}
 #mobilmenu[hidden]{display:none}
 #mobilmenu{border-top:1px solid var(--vonal-halvany);padding-block:var(--s-3)}
 #mobilmenu ul{list-style:none;margin:0;padding:0;display:grid;gap:var(--s-1)}
-#mobilmenu a{display:block;padding:var(--s-2) 0;color:var(--szen);text-decoration:none;font-weight:600}
+#mobilmenu a{display:flex;align-items:center;min-height:48px;color:var(--szen);text-decoration:none;font-weight:600}
 
 /* ---------- gombok ---------- */
 .gomb{display:inline-flex;align-items:center;justify-content:center;gap:var(--s-2);
@@ -137,6 +137,7 @@ section{padding-block:var(--s-7)}
 .gomb--masod{background:transparent;color:var(--szen);border-color:var(--szen)}
 .gomb--masod:hover{background:rgb(21 24 26 / .06)}
 .gomb:active{transform:translateY(1px)}
+.gomb[disabled]{opacity:.45;cursor:not-allowed;pointer-events:none}
 
 /* ---------- hero ---------- */
 .hero{padding-block:var(--s-6) var(--s-7)}
@@ -235,6 +236,11 @@ form{background:var(--lap);border:1px solid var(--vonal-halvany);border-radius:v
 .mez-sug{font-size:var(--t-small);color:var(--acel);margin-top:var(--s-1)}
 .kuldes{margin-top:var(--s-5);display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-3)}
 .kuldes .gomb{flex:1 1 220px}
+.hibaosszegzo{border:2px solid var(--zarva);border-radius:var(--r-md);padding:var(--s-3);
+  margin-bottom:var(--s-4);background:var(--lap)}
+.hibaosszegzo p{margin:0 0 var(--s-2);font-weight:700;color:var(--zarva)}
+.hibaosszegzo ul{margin:0;padding-left:var(--s-4);font-size:var(--t-small)}
+.hibaosszegzo a{color:var(--zarva)}
 .siker{background:var(--nyitva);color:#fff;border-radius:var(--r-md);padding:var(--s-3);margin-top:var(--s-4);font-weight:600}
 .pot{position:absolute;left:-9999px}
 .oldalpanel{border:1px solid var(--vonal-halvany);border-radius:var(--r-lg);padding:var(--s-4);background:var(--lap)}
@@ -256,7 +262,8 @@ tr[data-ma="1"] th,tr[data-ma="1"] td{font-weight:700}
 .lablec h2{font-size:var(--t-small);color:var(--liszt);font-family:var(--f-szoveg);
   text-transform:uppercase;letter-spacing:.08em;margin-bottom:var(--s-3)}
 .lablec a{color:var(--parazs-vil)}
-.lablec ul{list-style:none;margin:0;padding:0;display:grid;gap:var(--s-2);font-size:var(--t-small)}
+.lablec ul{list-style:none;margin:0;padding:0;display:grid;gap:var(--s-1);font-size:var(--t-small)}
+.lablec li a{display:inline-flex;align-items:center;min-height:44px}
 .lablec-racs{display:grid;gap:var(--s-5)}
 @media(min-width:700px){.lablec-racs{grid-template-columns:repeat(3,1fr)}}
 .jog{margin-top:var(--s-5);padding-top:var(--s-4);border-top:1px solid rgb(233 236 234 / .16);
@@ -265,12 +272,19 @@ tr[data-ma="1"] th,tr[data-ma="1"] td{font-weight:700}
 /* ---------- sticky mobil sáv ---------- */
 .sticky{position:fixed;inset:auto 0 0 0;z-index:30;display:grid;grid-template-columns:1fr 1fr;gap:1px;
   background:var(--vonal-halvany);box-shadow:var(--e-2);transform:translateY(100%);
+  padding-bottom:env(safe-area-inset-bottom,0px);
   transition:transform var(--lassu) var(--gorbe)}
 .sticky[data-lat="1"]{transform:none}
 .sticky a{min-height:56px;border-radius:0;border:0}
 @media(min-width:900px){.sticky{display:none}}
 body{padding-bottom:0}
-@media(max-width:899px){body:has(.sticky[data-lat="1"]){padding-bottom:56px}}
+@media(max-width:899px){
+  body:has(.sticky[data-lat="1"]){padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
+}
+/* :has() nélküli böngészőkben (Safari < 15.4) a sáv takarná a lap alját */
+@supports not selector(:has(*)){
+  @media(max-width:899px){body{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}}
+}
 
 /* ---------- mozgáscsökkentés ---------- */
 @media(prefers-reduced-motion:reduce){
@@ -607,32 +621,37 @@ body{padding-bottom:0}
       </div>
       <div class="urlap-racs">
         <form id="foglalo" method="post" action="#" novalidate>
+          <div class="hibaosszegzo" id="hibaosszegzo" tabindex="-1" hidden></div>
+          <fieldset style="border:0;padding:0;margin:0;min-width:0">
+          <legend class="sr">Foglalási adatok</legend>
+          <p class="mez-sug" style="margin:0 0 var(--s-4)">
+            A <span aria-hidden="true">*</span>-gal jelölt mezők kitöltése kötelező.</p>
           <div class="mezok">
             <div class="mezo">
               <label for="nev">Név <span aria-hidden="true">*</span></label>
-              <input id="nev" name="nev" type="text" autocomplete="name" required>
+              <input id="nev" name="nev" aria-describedby="nev-hiba" type="text" autocomplete="name" required>
               <span class="hiba" id="nev-hiba" role="alert"></span>
             </div>
             <div class="mezo">
               <label for="telefon">Telefonszám <span aria-hidden="true">*</span></label>
-              <input id="telefon" name="telefon" type="tel" inputmode="tel"
+              <input id="telefon" name="telefon" aria-describedby="telefon-hiba" type="tel" inputmode="tel"
                      autocomplete="tel" required placeholder="+36 30 123 4567">
               <span class="hiba" id="telefon-hiba" role="alert"></span>
             </div>
             <div class="mezo">
               <label for="datum">Dátum <span aria-hidden="true">*</span></label>
-              <input id="datum" name="datum" type="date" required>
+              <input id="datum" name="datum" aria-describedby="datum-hiba" type="date" required>
               <span class="hiba" id="datum-hiba" role="alert"></span>
             </div>
             <div class="mezo">
               <label for="ido">Időpont <span aria-hidden="true">*</span></label>
-              <input id="ido" name="ido" type="time" required min="12:00" value="19:00">
+              <input id="ido" name="ido" aria-describedby="ido-hiba" type="time" required min="12:00" value="19:00">
               <span class="hiba" id="ido-hiba" role="alert"></span>
               <p class="mez-sug">Nyitás 12:00-kor.</p>
             </div>
             <div class="mezo">
               <label for="fo">Hány fő? <span aria-hidden="true">*</span></label>
-              <input id="fo" name="fo" type="number" inputmode="numeric" min="1" max="60" step="1" required>
+              <input id="fo" name="fo" aria-describedby="fo-hiba" type="number" inputmode="numeric" min="1" max="60" step="1" required>
               <span class="hiba" id="fo-hiba" role="alert"></span>
             </div>
             <div class="mezo">
@@ -651,7 +670,7 @@ body{padding-bottom:0}
                 rows="3" placeholder="Pl. gyerekszék kellene, vagy allergia."></textarea>
             </div>
             <div class="opcio teljes">
-              <input type="checkbox" id="gdpr" name="gdpr" required>
+              <input type="checkbox" id="gdpr" name="gdpr" aria-describedby="gdpr-hiba" required>
               <label for="gdpr" style="font-weight:400">
                 Hozzájárulok, hogy a megadott adataimat a foglalás visszaigazolásához
                 felhasználják. <a href="/adatkezeles/">Adatkezelési tájékoztató</a>
@@ -660,13 +679,14 @@ body{padding-bottom:0}
             </div>
             <span class="hiba teljes" id="gdpr-hiba" role="alert"></span>
           </div>
+          </fieldset>
           <!-- spamcsapda: valódi felhasználó sosem tölti ki -->
           <div class="pot" aria-hidden="true">
             <label for="cegnev">Cégnév</label>
             <input id="cegnev" name="cegnev" type="text" tabindex="-1" autocomplete="off">
           </div>
           <div class="kuldes">
-            <button class="gomb gomb--elsod" type="submit">Foglalás elküldése</button>
+            <button class="gomb gomb--elsod" type="submit" id="kuldgomb">Foglalás elküldése</button>
             <span>vagy hívj: <a href="tel:+3672446000"><strong>(06&nbsp;72) 446&nbsp;000</strong></a></span>
           </div>
           <p class="siker" id="siker" hidden role="status"></p>
@@ -870,24 +890,19 @@ body{padding-bottom:0}
 <script>
 (function(){
   "use strict";
-  var $=function(s,c){return (c||document).querySelector(s)};
-  var $$=function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))};
+  var $=function(q){return document.querySelector(q)};
+  var $$=function(q){return [].slice.call(document.querySelectorAll(q))};
 
-  /* 1. Élő nyitva/zárva. nap: 0=vasárnap, [nyitás,zárás] percben. ADAT ELLENŐRIZENDŐ. */
+  /* 1. Nyitva/zárva. nap 0=vas., [nyitás,zárás] perc. ADAT ELLENŐRIZENDŐ! */
   var ORAK={0:[720,1320],1:[720,1380],2:[720,1380],3:[720,1380],4:[720,1380],5:[720,1440],6:[720,1440]};
-  function ket(n){return (n<10?"0":"")+n}
-  function ora(p){return ket(Math.floor(p/60)%24)+":"+ket(p%60)}
+  function ora(p){var h=Math.floor(p/60)%24,m=p%60;return (h<10?"0":"")+h+":"+(m<10?"0":"")+m}
   function allapot(){
     var el=$("#allapot"),sz=$("#allapot-szoveg"); if(!el) return;
-    var d=new Date(),nap=d.getDay(),perc=d.getHours()*60+d.getMinutes(),t=ORAK[nap];
-    if(t && perc>=t[0] && perc<t[1]){
-      el.dataset.all="nyitva";
-      sz.textContent="Most nyitva · zárás "+ora(t[1])+"-kor";
-    } else {
-      el.dataset.all="zarva";
-      var kov=t&&perc<t[0]?ora(t[0]):ora(ORAK[(nap+1)%7][0]);
-      sz.textContent="Most zárva · nyitás "+kov+"-kor";
-    }
+    var d=new Date(),nap=d.getDay(),perc=d.getHours()*60+d.getMinutes(),t=ORAK[nap],
+        ny=perc>=t[0]&&perc<t[1];
+    el.dataset.all=ny?"nyitva":"zarva";
+    sz.textContent=ny?"Most nyitva · zárás "+ora(t[1])+"-kor"
+      :"Most zárva · nyitás "+ora(perc<t[0]?t[0]:ORAK[(nap+1)%7][0])+"-kor";
     var sor=$('#nyitva-tabla tr[data-nap="'+nap+'"]');
     if(sor) sor.setAttribute("data-ma","1");
   }
@@ -916,12 +931,15 @@ body{padding-bottom:0}
 
   /* 3. Mobilmenü */
   var mg=$("#menugomb"),mm=$("#mobilmenu");
-  if(mg) mg.addEventListener("click",function(){
-    var ny=mg.getAttribute("aria-expanded")==="true";
-    mg.setAttribute("aria-expanded",!ny); mm.hidden=ny;
-  });
+  function menu(ny){mg.setAttribute("aria-expanded",ny);mm.hidden=!ny}
+  if(mg){
+    mg.addEventListener("click",function(){menu(mg.getAttribute("aria-expanded")!=="true")});
+    document.addEventListener("keydown",function(e){
+      if(e.key==="Escape"&&mg.getAttribute("aria-expanded")==="true"){menu(false);mg.focus()}
+    });
+  }
 
-  /* 4. Sticky sáv a hero után */
+  /* 4. Sticky sáv */
   var hero=$("#hero"),st=$("#sticky");
   if(hero&&st&&"IntersectionObserver" in window){
     new IntersectionObserver(function(e){
@@ -929,7 +947,7 @@ body{padding-bottom:0}
     },{threshold:0}).observe(hero);
   }
 
-  /* 5. Űrlap: inline validáció */
+  /* 5. Űrlap: blur-validáció + hibaösszegző */
   var f=$("#foglalo"); if(!f) return;
   var SZAB={
     nev:function(v){return v.trim().length>=2?"":"Kérjük, add meg a neved."},
@@ -955,31 +973,37 @@ body{padding-bottom:0}
     var uzi=sz(el.value,el),hiba=$("#"+el.id+"-hiba");
     if(hiba) hiba.textContent=uzi;
     el.setAttribute("aria-invalid",uzi?"true":"false");
-    if(hiba) el.setAttribute("aria-describedby",el.id+"-hiba");
     return !uzi;
   }
   Object.keys(SZAB).forEach(function(id){
     var el=$("#"+id); if(!el) return;
     el.addEventListener("blur",function(){ellenoriz(el)});
+    el.addEventListener("change",function(){ellenoriz(el)});
     el.addEventListener("input",function(){
-      if(el.getAttribute("aria-invalid")==="true") ellenoriz(el);
-    });
-    el.addEventListener("change",function(){
-      if(el.type==="checkbox"||el.type==="date"||el.type==="time") ellenoriz(el);
-    });
+      if(el.getAttribute("aria-invalid")==="true") ellenoriz(el)});
   });
+  var oss=$("#hibaosszegzo"),gomb=$("#kuldgomb");
   f.addEventListener("submit",function(e){
     e.preventDefault();
-    var elso=null;
+    var lista=[];
     Object.keys(SZAB).forEach(function(id){
-      var el=$("#"+id); if(el&&!ellenoriz(el)&&!elso) elso=el;
+      var el=$("#"+id);
+      if(el&&!ellenoriz(el)) lista.push([id,$("#"+id+"-hiba").textContent]);
     });
-    if(elso){elso.focus();return}
-    if($("#cegnev").value) return;               /* spamcsapda */
-    var s=$("#siker");
-    s.hidden=false;
-    s.textContent="Köszönjük! A foglalási kérést megkaptuk. Telefonon visszaigazoljuk. "+
-      "(Prototípus: az űrlap most nem küld el adatot.)";
+    if(lista.length){
+      oss.innerHTML="<p>"+lista.length+" mező javításra vár:</p><ul>"+lista.map(function(h){
+        return '<li><a href="#'+h[0]+'">'+h[1]+"</a></li>"}).join("")+"</ul>";
+      oss.hidden=false; oss.focus(); return;
+    }
+    oss.hidden=true;
+    if($("#cegnev").value) return;  /* spamcsapda */
+    gomb.disabled=true; gomb.textContent="Küldés…";
+    setTimeout(function(){          /* prototípus */
+      gomb.disabled=false; gomb.textContent="Foglalás elküldése";
+      var s=$("#siker"); s.hidden=false;
+      s.textContent="Köszönjük! A foglalási kérést megkaptuk. Telefonon visszaigazoljuk. "+
+        "(Prototípus: az űrlap most nem küld el adatot.)";
+    },600);
   });
 })();
 </script>

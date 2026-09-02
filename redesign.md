@@ -543,6 +543,7 @@ Kis lekerekítés (3–10px), mert a nagy radius „app-os"; ez nyomdai, nem app
 | Ikon (saját rajzú SVG) | biliárd, csocsó, darts, flipper | `currentColor`-t örököl |
 | Űrlapmező | szöveg / tel / dátum / idő / szám / select / textarea | rest / fókusz / **hiba** / kitöltött |
 | Hibaüzenet | inline, mező alatt | `role="alert"`, `aria-describedby` |
+| Hibaösszegző | űrlap tetején | rejtett / látható, `tabindex="-1"`, küldéskor fókuszt kap |
 | GYIK-tétel | `<details>` | nyitva / zárva |
 | Nyitvatartási táblázat | — | „ma" sor kiemelve |
 | Sticky mobil akciósáv | — | rejtett / látható |
@@ -628,7 +629,8 @@ minden időzítés `0.01ms`-ra esik (a `transitionend` eseményekre épülő log
 | Zónapanel | csere | opacitás 0→1 + `translateY(6px→0)` | `200ms` `--gorbe` | jelzi, hogy *új* tartalom jött, nem a régi módosult |
 | Állapot-chip pont | folyamatos | opacitás 1 → .45 → 1 | `2400ms` végtelen | „élő adat" jelzés. **Reduced motion esetén kikapcsol** — az információt a szöveg hordozza |
 | Sticky mobil sáv | hero elhagyása | `translateY(100%→0)` | `320ms` `--gorbe` | ne takarja a herót, de utána mindig kéznél legyen |
-| Űrlapmező | hiba megjelenése | keret szín + üzenet `max-height` 0→auto | `200ms` | a szöveg ne „villanjon be" olvashatatlanul |
+| Űrlapmező | hiba megjelenése | keret- és `box-shadow`-szín vált, a hibaszöveg **animáció nélkül** jelenik meg | `200ms` (csak a keret) | A szöveg magasságának animálása (`max-height`) reflow-t okoz, és ütközik a „csak `transform`/`opacity`" szabállyal. A keretszín-váltás elég visszajelzés. |
+| Küldés gomb | küldés alatt | `disabled`, opacitás .45, felirat → „Küldés…" | azonnali | Dupla beküldés megelőzése; a felhasználó látja, hogy történik valami. |
 | Űrlapmező | hiba javítása | keret vissza alapra | `200ms` | pozitív megerősítés |
 | GYIK `<details>` | nyitás | natív; `content-visibility` nélkül | natív | nem éri meg egyedi animációt írni rá |
 | Belső horgonyugrás | kattintás | `scroll-behavior: smooth` | natív, reduced-motion esetén `auto` | kontextusőrzés |
@@ -712,7 +714,13 @@ A kritikus CSS (~7 KB) **inline** a `<head>`-ben, a maradék elhalasztva
     üzenetet adjon (a böngésző saját szövege lokalizált, de generikus);
   - **`blur`-kor validál először, utána `input`-ra újraértékel** — nem
     kiabál gépelés közben;
-  - első hibás mezőre fókuszál küldéskor.
+  - küldéskor **hibaösszegzőt** épít az űrlap tetején (GOV.UK-minta): felsorolja,
+    hány mező hibás, mindegyikhez horgonylinkkel, és a fókuszt az összegzőre viszi.
+    Így a képernyőolvasó és a nagyítót használó felhasználó egyszerre látja az összes
+    hibát, nem csak az elsőt (WCAG G139).
+- **Dupla beküldés ellen**: a küldés gomb a beküldés idejére `disabled`, a felirata
+  „Küldés…", és csak a szerverválasz után áll vissza. Enélkül a lassú hálózaton
+  türelmetlen felhasználó két foglalást küld.
 - Minden mezőnek valódi `<label for>`; a placeholder soha nem címke.
 - Hiba: `aria-invalid="true"` + `aria-describedby` a hibaszövegre,
   a hibaszöveg `role="alert"`.
@@ -827,7 +835,7 @@ Lighthouse mobil profil; és mezei CrUX (75. percentilis).
 |---|---|
 | HTML (kritikus CSS inline-nal, JSON-LD-vel, az Alaprajz SVG-vel) | **≤ 18 KB** br |
 | Elhalasztott CSS | ≤ 6 KB br |
-| JS (összesen) | **≤ 5 KB** br |
+| JS (összesen) | **≤ 5 KB** — a prototípus tömörítetlenül **4 976 B** |
 | Font: Source Sans 3 VF (latin) | ≤ 26 KB |
 | Font: Source Sans 3 VF (latin-ext) | ≤ 12 KB |
 | Font: Bricolage Grotesque VF (latin+ext, `wght` tengelyre szűkítve) | ≤ 30 KB |
