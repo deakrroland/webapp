@@ -46,6 +46,7 @@
   --nyitva:#14663F;
   --zarva:#96262B;
   --vonal-halvany:#C9CFCB;
+  --acel-mely:#414A50;     /* 5,11:1 a legsötétebb zónatónuson */
 
   /* típus */
   --f-display:"Bricolage Grotesque","Source Sans 3",system-ui,"Segoe UI",sans-serif;
@@ -167,15 +168,20 @@ section{padding-block:var(--s-7)}
 .terkep{width:100%;height:auto;aspect-ratio:620/440;display:block;
   background:var(--liszt);border:1px solid var(--vonal-halvany);border-radius:var(--r-lg)}
 .zona{cursor:pointer}
-.zona .fal{fill:rgb(21 24 26 / .05);stroke:var(--vonal);stroke-width:1.5;transition:fill var(--gyors) var(--gorbe),stroke var(--gyors)}
-.zona:hover .fal{fill:rgb(156 84 6 / .12)}
-.zona[aria-pressed="true"] .fal{fill:rgb(156 84 6 / .16);stroke:var(--parazs);stroke-width:3}
+.zona .fal{stroke:var(--vonal);stroke-width:1.5;transition:fill var(--gyors) var(--gorbe),stroke var(--gyors)}
+/* a tónus a tér zártságát kódolja: minél sötétebb, annál zártabb */
+.zona[data-zona="terasz"] .fal{fill:rgb(21 24 26 / .03)}      /* nyitott, utcára néz */
+.zona[data-zona="belso"] .fal{fill:rgb(21 24 26 / .07)}
+.zona[data-zona="jatek"] .fal{fill:rgb(21 24 26 / .10)}
+.zona[data-zona="kulonterem"] .fal{fill:rgb(21 24 26 / .15)}  /* külön ajtó, zárt */
+.zona:hover .fal{fill:rgb(156 84 6 / .18)}
+.zona[aria-pressed="true"] .fal{fill:rgb(156 84 6 / .28);stroke:var(--parazs);stroke-width:3}
 .zona .cim{font-family:var(--f-display);font-size:15px;font-weight:700;fill:var(--szen);letter-spacing:.02em}
 .zona .butor{fill:none;stroke:var(--acel);stroke-width:1.5}
 .zona .asztal{fill:var(--acel)}
-.zona[aria-pressed="true"] .asztal{fill:var(--parazs)}
-.zona[aria-pressed="true"] .butor{stroke:var(--parazs)}
-.terkep .jelmagy{font-size:11px;fill:var(--acel);font-family:var(--f-szoveg)}
+.zona[aria-pressed="true"] .asztal{fill:var(--szen)}
+.zona[aria-pressed="true"] .butor{stroke:var(--szen)}
+.terkep .jelmagy{font-size:11px;fill:var(--acel-mely);font-family:var(--f-szoveg)}
 /* mobilon a rajz kicsinyítve renderel: a zónanév nagyobb, a mikrofeliratok elrejtve
    (tartalmuk a panelekben és a zónák akadálymentes nevében is ott van) */
 @media(max-width:760px){.zona .cim{font-size:26px}.terkep .jelmagy{display:none}}
@@ -458,7 +464,7 @@ body{padding-bottom:0}
             <text class="jelmagy" x="264" y="198" text-anchor="end">bejárat</text>
           </svg>
           <p class="abra-jegyzet">
-            Sematikus ábra: a zónák egymáshoz képesti elrendezése és az asztalszám
+            A sötétebb tónus zártabb teret jelöl: a terasz a legvilágosabb, a különterem a legsötétebb. Sematikus ábra: a zónák egymáshoz képesti elrendezése és az asztalszám
             <strong>[egyeztetendő]</strong> — a végleges rajz a valós asztalkiosztásból készül.
           </p>
         </div>
@@ -889,26 +895,21 @@ body{padding-bottom:0}
 
 <script>
 (function(){
-  "use strict";
   var $=function(q){return document.querySelector(q)};
   var $$=function(q){return [].slice.call(document.querySelectorAll(q))};
-
-  /* 1. Nyitva/zárva. nap 0=vas., [nyitás,zárás] perc. ADAT ELLENŐRIZENDŐ! */
+  /* nyitvatartás — egy forrás: állapotjelző + űrlap */
   var ORAK={0:[720,1320],1:[720,1380],2:[720,1380],3:[720,1380],4:[720,1380],5:[720,1440],6:[720,1440]};
   function ora(p){var h=Math.floor(p/60)%24,m=p%60;return (h<10?"0":"")+h+":"+(m<10?"0":"")+m}
   function allapot(){
-    var el=$("#allapot"),sz=$("#allapot-szoveg"); if(!el) return;
-    var d=new Date(),nap=d.getDay(),perc=d.getHours()*60+d.getMinutes(),t=ORAK[nap],
-        ny=perc>=t[0]&&perc<t[1];
+    var el=$("#allapot"),sz=$("#allapot-szoveg");if(!el)return;
+    var d=new Date(),nap=d.getDay(),p=d.getHours()*60+d.getMinutes(),t=ORAK[nap],ny=p>=t[0]&&p<t[1];
     el.dataset.all=ny?"nyitva":"zarva";
     sz.textContent=ny?"Most nyitva · zárás "+ora(t[1])+"-kor"
-      :"Most zárva · nyitás "+ora(perc<t[0]?t[0]:ORAK[(nap+1)%7][0])+"-kor";
-    var sor=$('#nyitva-tabla tr[data-nap="'+nap+'"]');
-    if(sor) sor.setAttribute("data-ma","1");
+      :"Most zárva · nyitás "+ora(p<t[0]?t[0]:ORAK[(nap+1)%7][0])+"-kor";
+    var s=$('#nyitva-tabla tr[data-nap="'+nap+'"]');if(s)s.setAttribute("data-ma","1");
   }
-  allapot(); setInterval(allapot,60000);
-
-  /* 2. Alaprajz: zónaválasztás */
+  allapot();setInterval(allapot,60000);
+  /* alaprajz */
   var zonak=$$(".zona"),panelek=$$("#zonapanelek .panel"),hol=$("#hol");
   function valaszt(nev){
     zonak.forEach(function(z){z.setAttribute("aria-pressed",z.dataset.zona===nev)});
@@ -916,7 +917,6 @@ body{padding-bottom:0}
     if(hol) hol.value=nev;
   }
   if(zonak.length){
-    panelek.forEach(function(p,i){p.hidden=i!==0});
     zonak.forEach(function(z){
       z.addEventListener("click",function(){valaszt(z.dataset.zona)});
       z.addEventListener("keydown",function(e){
@@ -928,8 +928,7 @@ body{padding-bottom:0}
   $$("[data-valaszt]").forEach(function(a){
     a.addEventListener("click",function(){if(hol)hol.value=a.dataset.valaszt});
   });
-
-  /* 3. Mobilmenü */
+  /* mobilmenü */
   var mg=$("#menugomb"),mm=$("#mobilmenu");
   function menu(ny){mg.setAttribute("aria-expanded",ny);mm.hidden=!ny}
   if(mg){
@@ -938,16 +937,14 @@ body{padding-bottom:0}
       if(e.key==="Escape"&&mg.getAttribute("aria-expanded")==="true"){menu(false);mg.focus()}
     });
   }
-
-  /* 4. Sticky sáv */
+  /* sticky sáv */
   var hero=$("#hero"),st=$("#sticky");
   if(hero&&st&&"IntersectionObserver" in window){
     new IntersectionObserver(function(e){
       st.dataset.lat=e[0].isIntersecting?"0":"1";
     },{threshold:0}).observe(hero);
   }
-
-  /* 5. Űrlap: blur-validáció + hibaösszegző */
+  /* űrlap */
   var f=$("#foglalo"); if(!f) return;
   var SZAB={
     nev:function(v){return v.trim().length>=2?"":"Kérjük, add meg a neved."},
@@ -957,38 +954,45 @@ body{padding-bottom:0}
     },
     datum:function(v){
       if(!v) return "Válassz dátumot.";
-      var ma=new Date();ma.setHours(0,0,0,0);
-      return new Date(v)<ma?"Ez a nap már elmúlt.":"";
+      return new Date(v+"T23:59")<new Date()?"Ez a nap már elmúlt.":"";
     },
-    ido:function(v){return v?(v<"12:00"?"12:00 előtt zárva vagyunk.":""):"Válassz időpontot."},
+    ido:function(v){
+      if(!v) return "Válassz időpontot.";
+      var dv=$("#datum").value; if(!dv) return "";
+      var d=new Date(dv),t=ORAK[d.getDay()],p=+v.slice(0,2)*60 + +v.slice(3),n=new Date();
+      if(p<t[0]||p>=t[1]) return "Aznap "+ora(t[0])+" és "+ora(t[1])+" között várunk.";
+      return d.toDateString()===n.toDateString()&&p<=n.getHours()*60+n.getMinutes()?"Ez az időpont ma már elmúlt.":"";
+    },
     fo:function(v){
       var n=parseInt(v,10);
       if(!v) return "Hányan jöttök?";
-      return (n>=1&&n<=60)?"":"1 és 60 fő között tudunk foglalni. Nagyobb csoport: hívj minket.";
+      return (n>=1&&n<=60)?"":"1–60 fő között foglalható. Nagyobb csoport: hívj minket.";
     },
     gdpr:function(v,el){return el.checked?"":"A visszaigazoláshoz szükséges a hozzájárulás."}
   };
+  var IDS=Object.keys(SZAB);
   function ellenoriz(el){
-    var sz=SZAB[el.id]; if(!sz) return true;
+    var sz=SZAB[el.id]; if(!sz) return "";
     var uzi=sz(el.value,el),hiba=$("#"+el.id+"-hiba");
     if(hiba) hiba.textContent=uzi;
     el.setAttribute("aria-invalid",uzi?"true":"false");
-    return !uzi;
+    return uzi;
   }
-  Object.keys(SZAB).forEach(function(id){
+  IDS.forEach(function(id){
     var el=$("#"+id); if(!el) return;
     el.addEventListener("blur",function(){ellenoriz(el)});
     el.addEventListener("change",function(){ellenoriz(el)});
     el.addEventListener("input",function(){
       if(el.getAttribute("aria-invalid")==="true") ellenoriz(el)});
   });
+  $("#datum").addEventListener("change",function(){if($("#ido").value)ellenoriz($("#ido"))});
   var oss=$("#hibaosszegzo"),gomb=$("#kuldgomb");
   f.addEventListener("submit",function(e){
     e.preventDefault();
     var lista=[];
-    Object.keys(SZAB).forEach(function(id){
-      var el=$("#"+id);
-      if(el&&!ellenoriz(el)) lista.push([id,$("#"+id+"-hiba").textContent]);
+    IDS.forEach(function(id){
+      var el=$("#"+id),u=el&&ellenoriz(el);
+      if(u) lista.push([id,u]);
     });
     if(lista.length){
       oss.innerHTML="<p>"+lista.length+" mező javításra vár:</p><ul>"+lista.map(function(h){
@@ -1001,8 +1005,8 @@ body{padding-bottom:0}
     setTimeout(function(){          /* prototípus */
       gomb.disabled=false; gomb.textContent="Foglalás elküldése";
       var s=$("#siker"); s.hidden=false;
-      s.textContent="Köszönjük! A foglalási kérést megkaptuk. Telefonon visszaigazoljuk. "+
-        "(Prototípus: az űrlap most nem küld el adatot.)";
+      s.textContent="Köszönjük! A kérést megkaptuk, telefonon visszaigazoljuk. "+
+        "(Prototípus: nem küld el adatot.)";
     },600);
   });
 })();

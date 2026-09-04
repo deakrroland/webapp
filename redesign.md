@@ -452,6 +452,16 @@ Alap: 9 tokenből álló skála. A kontrasztértékek WCAG 2.2 szerint számítv
 | `--parazs` | `#9C5406` | elsődleges CTA háttere, link világos alapon | fehér szöveg rajta **5,49 : 1**; szövegként a `--liszt`-en **4,70 : 1** | AA |
 | `--parazs-vil` | `#F0A93C` | akcentus sötét alapon, fókuszgyűrű, kiemelés | **8,87 : 1** a `--szen`-en; **7,33 : 1** a `--grafit`-on | AAA |
 
+**Felületfüggő variáns** (nem új márkaszín, hanem egy meglévő sötétebb változata):
+
+| Token | Hex | Szerep | Kontraszt |
+|---|---|---|---|
+| `--acel-mely` | `#414A50` | mikrofelirat az Alaprajz tintázott zónáin | **5,11 : 1** a legsötétebb (28% parázs) zónán; 7,47 : 1 a `--liszt`-en |
+
+Miért kellett: a `--acel` (#56616A) a `--liszt`-en 5,23:1, de a zónatónusokon 4,5 alá esik
+(15% tintán 3,84; 28% parázson 3,57). A 11px-es feliratok kis szövegnek számítanak, tehát
+4,5:1 kell. Ez a token csak az alaprajzon él.
+
 **Állapotszínek** (szemantikusak, nem márkaszínek — mindig ikonnal/szöveggel
 párosítva, sosem önmagukban hordoznak információt):
 
@@ -591,6 +601,22 @@ meg a többi asztal között.
 - Egyetlen valós költség: ~4 KB extra HTML a fő dokumentumban, ami a
   szerver-válaszidőhöz (TTFB) mérve mérhetetlen.
 
+**A tónus információt hordoz, nem díszít.** A négy zóna alapkitöltése a tér zártságát
+kódolja, ugyanabból a tintából, nem új színekből: terasz 3% (nyitott, utcára néz),
+belső tér 7%, játéksarok 10%, különterem 15% (külön ajtó). Így az ábra helyként olvasható,
+nem wireframe-ként. A kódot a rajz alatti jegyzet ki is mondja — a vizuális rendszer
+nem lehet fejtörő.
+
+**A kiválasztott állapot hangos.** Tömör parázs-kitöltés (28%), 3px parázs keret, és a
+bútor tintára vált. Miért nem marad parázs a bútor is: a parázs a 28%-os parázs alapon
+csak 3,22:1 lenne, a tinta 10,06:1. Az első verzió 16%-os kitöltése mobilon egy
+pillantásra alig látszott — a szignatúra-elem legfontosabb visszajelzése nem lehet halk.
+
+**Egy buktató, amibe beleestem:** a zónatónusokat először `#z-terasz`-szerű ID-szelektorral
+írtam meg. Az ID (1,0,1) legyőzte a `.zona[aria-pressed="true"] .fal` szabályt (0,3,0), így
+a kiválasztás vizuálisan nem történt meg, pedig az `aria-pressed` helyesen váltott. A javítás
+`[data-zona="…"]` attribútumszelektor, hogy mind (0,3,0) legyen és a forrássorrend döntsön.
+
 **Ami placeholder marad:** a valódi geometria és az asztalszámok. A prototípusban
 szándékosan `[egyeztetendő]` jelöléssel szerepelnek — nem találtam ki asztalszámot.
 
@@ -624,8 +650,8 @@ minden időzítés `0.01ms`-ra esik (a `transitionend` eseményekre épülő log
 | Gomb (elsődleges) | hover | háttér −6% világosság | `120ms` `--gorbe` | azonnali visszajelzés, nem játék |
 | Gomb | active | `translateY(1px)` | `60ms` linear | fizikai megnyomás-érzet |
 | Bármi fókuszálható | `:focus-visible` | 3px `--parazs-vil` gyűrű, 2px offset | **0ms** | a fókusz sosem animált — késleltetve nem látszik, hova ugrott |
-| Zónakártya (Alaprajz) | hover | kitöltés opacitás .06 → .14 | `120ms` | „ez kattintható" |
-| Zónakártya | kiválasztás | 2px keret + panel csere | `200ms` | az állapotváltás olvasható legyen |
+| Zónakártya (Alaprajz) | hover | parázs-kitöltés 18% | `120ms` | „ez kattintható" |
+| Zónakártya | kiválasztás | 28% parázs kitöltés + 3px keret + a bútor tintára vált | `200ms` | Az állapotváltás egy pillantásra olvasható legyen mobilon is. |
 | Zónapanel | csere | opacitás 0→1 + `translateY(6px→0)` | `200ms` `--gorbe` | jelzi, hogy *új* tartalom jött, nem a régi módosult |
 | Állapot-chip pont | folyamatos | opacitás 1 → .45 → 1 | `2400ms` végtelen | „élő adat" jelzés. **Reduced motion esetén kikapcsol** — az információt a szöveg hordozza |
 | Sticky mobil sáv | hero elhagyása | `translateY(100%→0)` | `320ms` `--gorbe` | ne takarja a herót, de utána mindig kéznél legyen |
@@ -722,6 +748,13 @@ A kritikus CSS (~7 KB) **inline** a `<head>`-ben, a maradék elhalasztva
     üzenetet adjon (a böngésző saját szövege lokalizált, de generikus);
   - **`blur`-kor validál először, utána `input`-ra újraértékel** — nem
     kiabál gépelés közben;
+  - **a nyitvatartásból validál, nem beégetett értékből.** A nyitvatartási táblázat
+    (`ORAK`) az oldal egyetlen forrása: ebből dolgozik az élő állapotjelző **és** az
+    űrlap is. Az időpont-mező a *kiválasztott dátum napjának* nyitva–zárva sávját nézi,
+    és a dátum megváltoztatása újraértékeli az időpontot. Enélkül vasárnap 22:30-ra
+    lehetett foglalni, pedig vasárnap 22:00-kor zár — az ilyen foglalást telefonon
+    kell visszamondani, ami rosszabb, mint el sem fogadni;
+  - **a mai napon a már elmúlt időpontot elutasítja;**
   - küldéskor **hibaösszegzőt** épít az űrlap tetején (GOV.UK-minta): felsorolja,
     hány mező hibás, mindegyikhez horgonylinkkel, és a fókuszt az összegzőre viszi.
     Így a képernyőolvasó és a nagyítót használó felhasználó egyszerre látja az összes
@@ -843,7 +876,7 @@ Lighthouse mobil profil; és mezei CrUX (75. percentilis).
 |---|---|
 | HTML (kritikus CSS inline-nal, JSON-LD-vel, az Alaprajz SVG-vel) | **≤ 18 KB** br |
 | Elhalasztott CSS | ≤ 6 KB br |
-| JS (összesen) | **≤ 5 KB** — a prototípus tömörítetlenül **4 976 B** |
+| JS (összesen) | cél **≤ 5 KB**; a prototípus tömörítetlenül **5 115 B** (≈1,8 KB brotli) — lásd a lenti jegyzetet |
 | Font: Source Sans 3 VF (latin) | ≤ 26 KB |
 | Font: Source Sans 3 VF (latin-ext) | ≤ 12 KB |
 | Font: Bricolage Grotesque VF (latin+ext, `wght` tengelyre szűkítve) | ≤ 30 KB |
@@ -854,6 +887,15 @@ Lighthouse mobil profil; és mezei CrUX (75. percentilis).
 
 **Kérésszám a hajtás fölött: 4** (HTML, 2 font, 1 JS). Nincs harmadik felű kérés
 az első nézetben — analitika `defer`-rel, a `load` után.
+
+**A JS-büdzsé túllépéséről.** Az 5 KB-os cél és a nyitvatartás-alapú űrlapvalidáció ezen
+a funkciókészleten kizárja egymást: a helyes validáció ~500 bájt. Kivettem, ami fájdalommentesen
+kivehető (a magyarázó kommentek átkerültek ebbe a dokumentumba, ahová valók; a validátor a
+hibaszöveget adja vissza, így a küldés nem kérdezi le újra a DOM-ot), és így **5 115 bájtnál**
+állt meg. A maradék 115 bájt csak a változónevek minifikálásával vagy a magyar hibaszövegek
+csonkolásával jönne ki — mindkettő rosszabb átadható prototípust ad, mint amennyit
+115 bájt ér. Hálózaton ez brotli után ~40 bájt különbség a 95 KB-os első nézetben.
+**Ha a limit kemény, a helyes lépés a build-lépcsőben minifikálni, nem a forrást rontani.**
 
 **Hogyan tartjuk:** a hero szándékosan **szöveges** (nincs hero-kép), így az LCP
 egy szövegcsomó, ami a fallback fonttal azonnal fest, és `size-adjust`-tal nem ugrik
@@ -875,6 +917,7 @@ akadályt bont el előle.
 | 5 | **4,5 ★ / 1 339 vélemény, forrásmegjelöléssel** | tényadat + külön szekció | A darabszám itt fontosabb, mint az átlag: 1 339 vélemény ellenőrizhetetlenül nagy szám egy kertvárosi helynél. A forrás megnevezése (Google) növeli a hitelt, nem csökkenti. |
 | 6 | **Rövid, 6 mezős űrlap** | 8. szekció | Minden extra mező mérhetően csökkenti a kitöltést. Csak az kerül bele, ami nélkül nem lehet asztalt lefoglalni: név, telefon, dátum, idő, létszám, zóna. E-mail **nem kötelező**. |
 | 7 | **Inline validáció `blur`-re, nem gépelés közben** | űrlap | A gépelés közbeni pirosítás büntetésként hat és növeli az elhagyást; a `blur`-validáció ugyanazt a hibát fogja el, negatív érzelem nélkül. |
+| 7b | **Az űrlap ismeri a nyitvatartást** | űrlap | A vendég nem tud olyan időpontot beküldeni, amikor zárva van — és rögtön megtudja, mikor mehet („Aznap 12:00 és 22:00 között várunk"). Egy visszamondott foglalás drágább, mint egy meg nem történt: az elsőnél a vendég már számított rátok. |
 | 8 | **„vagy hívj: (06 72) 446 000" a küldés gomb alatt** | űrlap | Kiút azoknak, akik megakadnak. Az űrlapot elhagyók egy része így is konvertál. |
 | 9 | **Adatkezelési mikroszöveg az űrlapnál** | űrlap | „Csak visszaigazolunk, aztán töröljük." — a magyar felhasználó legnagyobb űrlapfélelme, hogy hírlevelet kap. Egy mondat oldja. |
 | 10 | **Sticky mobil sáv (Hívás / Foglalás)** | mobil, hero után | Mobilon a látogatók többsége az oldal közepén dönt. Ne kelljen visszagörgetni. |
