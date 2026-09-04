@@ -435,6 +435,15 @@ pizzéria, ahol csapolt sör van és flipper. A vizuális rendszer ebből épül
 **Amit választottam:** világos alap (lisztpor), egyetlen sötét sáv az itallapnak
 (este, pult), és **egy** meleg akcentus. A merészség egy helyre megy: az Alaprajzba.
 
+**Korrekció, miután megkaptam a valódi fotókat (2026-09-04).** A hely melegebb, mint
+ahogy az anyagból kiolvastam: vörösre pácolt fateraszok, narancssárga falak, téglapult.
+A hűvös, kékes-zöldes szürke alap (`#E7EAE7`) ezekkel a képekkel hidegen ütközött.
+Ezért a semleges alapot **meleg irányba hangoltam** — `#E9E5E0` —, és vele az egész
+szürkeskálát. Ez **nem** a tiltott krém (`#F4F1EA` környéke): sötétebb, jóval kevésbé
+sárga, és továbbra is szürke, nem homok. A tipográfia (grotesque, nem serif) és az
+egyetlen akcentus változatlan, tehát a tiltott hármas nem áll össze. A semleges szín
+így nem örökölt, hanem választott: az akcentus felé billen, ahogy a képek is.
+
 ### 7.1 Színtokenek
 
 Alap: 9 tokenből álló skála. A kontrasztértékek WCAG 2.2 szerint számítva
@@ -442,21 +451,22 @@ Alap: 9 tokenből álló skála. A kontrasztértékek WCAG 2.2 szerint számítv
 
 | Token | Hex | Szerep | Kontraszt | Megfelelés |
 |---|---|---|---|---|
-| `--szen` | `#15181A` | fő szöveg világos alapon; sötét sáv háttere | **14,71 : 1** a `--liszt`-en; **17,19 : 1** a `--lap`-on | AAA |
-| `--grafit` | `#23292C` | emelt felület a sötét sávban (kártya) | `--liszt` szöveg rajta **12,15 : 1** | AAA |
-| `--acel` | `#56616A` | másodlagos szöveg, címkék világos alapon | **5,23 : 1** a `--liszt`-en; **6,11 : 1** a `--lap`-on | AA (normál), AAA (nagy) |
-| `--acel-vil` | `#A9B2B8` | másodlagos szöveg sötét alapon | **8,28 : 1** a `--szen`-en; **6,84 : 1** a `--grafit`-on | AAA |
-| `--liszt` | `#E7EAE7` | oldalháttér (hűvös krétaszürke, **nem** krém) | referencia-alap | — |
-| `--lap` | `#FAFBFA` | kártya, űrlapmező, emelt felület | referencia-alap | — |
-| `--vonal` | `#767F85` | input- és kártyakeret, elválasztó | **3,37 : 1** a `--liszt`-en; **3,93 : 1** a `--lap`-on | AA nem-szöveges UI (≥3:1) |
-| `--parazs` | `#9C5406` | elsődleges CTA háttere, link világos alapon | fehér szöveg rajta **5,49 : 1**; szövegként a `--liszt`-en **4,70 : 1** | AA |
-| `--parazs-vil` | `#F0A93C` | akcentus sötét alapon, fókuszgyűrű, kiemelés | **8,87 : 1** a `--szen`-en; **7,33 : 1** a `--grafit`-on | AAA |
+| `--szen` | `#191714` | fő szöveg világos alapon; sötét sáv háttere | **14,27 : 1** a `--liszt`-en; **17,15 : 1** a `--lap`-on | AAA |
+| `--grafit` | `#26221D` | emelt felület a sötét sávban | `--liszt` szöveg rajta **12,60 : 1** | AAA |
+| `--acel` | `#5C564E` | másodlagos szöveg világos alapon | **5,78 : 1** a `--liszt`-en; **6,95 : 1** a `--lap`-on | AA |
+| `--acel-vil` | `#B2AAA0` | másodlagos szöveg sötét alapon | **7,79 : 1** a `--szen`-en; **6,89 : 1** a `--grafit`-on | AAA |
+| `--liszt` | `#E9E5E0` | oldalháttér — **meleg** krétaszürke, nem krém | referencia-alap | — |
+| `--lap` | `#FBFAF8` | kártya, űrlapmező | referencia-alap | — |
+| `--vonal` | `#7D7770` | input- és kártyakeret | **3,53 : 1** a `--liszt`-en; **4,24 : 1** a `--lap`-on | AA nem-szöveges (≥3:1) |
+| `--parazs` | `#9C5406` | elsődleges CTA háttere, link | fehér szöveg rajta **5,70 : 1**; szövegként a `--liszt`-en **4,55 : 1** | AA |
+| `--parazs-vil` | `#F0A93C` | akcentus sötét alapon, fókuszgyűrű | **8,90 : 1** a `--szen`-en; **7,86 : 1** a `--grafit`-on | AAA |
+
 
 **Felületfüggő variáns** (nem új márkaszín, hanem egy meglévő sötétebb változata):
 
 | Token | Hex | Szerep | Kontraszt |
 |---|---|---|---|
-| `--acel-mely` | `#414A50` | mikrofelirat az Alaprajz tintázott zónáin | **5,11 : 1** a legsötétebb (28% parázs) zónán; 7,47 : 1 a `--liszt`-en |
+| `--acel-mely` | `#46413A` | mikrofelirat az Alaprajz tintázott zónáin | **5,53 : 1** a legsötétebb (28% parázs) zónán; 7,47 : 1 a `--liszt`-en |
 
 Miért kellett: a `--acel` (#56616A) a `--liszt`-en 5,23:1, de a zónatónusokon 4,5 alá esik
 (15% tintán 3,84; 28% parázson 3,57). A 11px-es feliratok kis szövegnek számítanak, tehát
@@ -467,8 +477,8 @@ párosítva, sosem önmagukban hordoznak információt):
 
 | Token | Hex | Szerep | Kontraszt a `--liszt`-en |
 |---|---|---|---|
-| `--nyitva` | `#14663F` | „Most nyitva" | **5,77 : 1** — AA |
-| `--zarva` | `#96262B` | „Most zárva" | **6,64 : 1** — AA |
+| `--nyitva` | `#14663F` | „Most nyitva" | **5,58 : 1** — AA |
+| `--zarva` | `#96262B` | „Most zárva" | **6,42 : 1** — AA |
 
 **Miért nem `--parazs` a zárt állapot is?** Mert akkor a CTA és a
 figyelmeztetés ugyanúgy nézne ki. Az akcentus *mindig* és *csak* cselekvést jelent.
@@ -723,8 +733,14 @@ Supabase-tábla + visszaigazoló e-mail, nem egy dobozos foglalórendszer — de
 - `loading="lazy"` + `decoding="async"` mindenen, ami a hajtás alatt van;
   a hajtás fölötti kép (ha lesz) `fetchpriority="high"`, `loading="eager"`.
 - `srcset` 3 lépcsőben (480 / 960 / 1440 px).
-- Ételfotó **csak saját, friss felvételből**. Stock nincs. Amíg nincs fotó, a
-  szekció fotó nélkül is teljes értékű (ezért nem építettem fotófüggő layoutot).
+- Ételfotó **csak saját, friss felvételből**. Stock nincs.
+- **Ami megvan (2026-09-04):** öt saját fotó — terasz kétféle nézetből, játéksarok
+  biliárdasztallal, téglapult, és a bejárat. Mind **600×450**, ami a felhasználást
+  behatárolja: hero oldalsó képként ~520 px-ig, zónapanelben ~340 px-ig, kapcsolatnál
+  ~420 px-ig marad éles. Teljes szélességű használat nem lehetséges.
+- **Ami nincs:** egyetlen ételfotó sem. Az étlap-szekció ezért ma is fotó nélküli —
+  és ez így helyes, mert stockkal helyettesíteni azonnal lebukna.
+- Méretek: AVIF 17–33 KB / kép, összesen **124 KB**; WebP fallback 143 KB.
 - Az ikonok mind inline SVG-k, `currentColor`-ral — nincs ikonfont, nincs sprite-kérés.
 
 ### 9.4 Cache
@@ -880,8 +896,9 @@ Lighthouse mobil profil; és mezei CrUX (75. percentilis).
 | Font: Source Sans 3 VF (latin) | ≤ 26 KB |
 | Font: Source Sans 3 VF (latin-ext) | ≤ 12 KB |
 | Font: Bricolage Grotesque VF (latin+ext, `wght` tengelyre szűkítve) | ≤ 30 KB |
-| Kép a hajtás fölött | **0** (szándékosan nincs) |
-| Hajtás alatti képek (lazy, AVIF) | ≤ 45 KB / kép |
+
+| Hajtás fölötti hero-kép (AVIF, 600×450) | **33 KB** — mért |
+| Hajtás alatti képek (lazy, AVIF) | 17–31 KB / kép, összesen 91 KB |
 | **Első nézet, hajtás fölött összesen** | **≤ 95 KB** |
 | Teljes főoldal, minden lusta erőforrással | ≤ 320 KB |
 
@@ -952,7 +969,7 @@ akadályt bont el előle.
 |---|---|---|---|
 | D1 | A redesign tárgya a saját oldal, a listing csak csatorna | A hovamenjek-listing „újratervezése" | Nincs hozzá hozzáférés; a layoutot a platform adja. |
 | D2 | Az oldal egy dolga: asztalfoglalás | Online rendelés/fizetés | A foodora ezt már megoldja 4,7 ★-gal; saját checkout ROI-ja negatív ezen a méreten. |
-| D3 | Szöveges hero, hero-kép nélkül | Nagy ételfotó a hajtásban | Nincs jogtiszta, jó fotókészlet; és a hero-kép a legdrágább LCP-tétel. |
+| D3 | ~~Szöveges hero, hero-kép nélkül~~ → **hero fotóval, kétoszlopos** | Teljes szélességű hero-kép | **Megfordítva 2026-09-04-én**, miután megkaptam az öt valódi fotót. A teraszkép a legerősebb meggyőző eszköz, amit egy étterem oldala használhat. Teljes szélességű hero mégsem lehet: **a rendelkezésre álló képek 600×450-esek**, nagyobb méretben elmosódnának. Ezért oldalsó kép ~520 px-en, ahol a forrásfelbontás még kitart. AVIF 33 KB, `fetchpriority=high`, fix `width`/`height` → CLS 0. |
 | D4 | Szignatúra: interaktív SVG alaprajz | Fotómozaik / kemence-animáció / pizza-építő | Fotófüggő vagy kitalált tényre épülne; az alaprajz konverziót visz és 0 LCP. |
 | D5 | Hűvös krétaszürke alap, egy borostyán akcentus | Krém + serif + terrakotta | Fine-dining regisztert hazudna egy 2–6 e Ft-os helyre; ráadásul tiltott irány. |
 | D6 | Bricolage Grotesque + Source Sans 3 | Playfair + Inter; egy család | Az első a default AI-páros; az egy család esetén elvész a szignatúra súlya. |
@@ -1014,7 +1031,10 @@ Fázis 1 és 2 párhuzamosítható; 1 azonnali hozamot ad, amíg 2 készül.
 12. Kutya bemehet? Gyerekszék, pelenkázó? Akadálymentes bejárat és mosdó?
 13. Parkolás: van saját parkoló? Fizetős zóna? Melyik buszjárat áll a legközelebb?
 14. Kártyás fizetés, SZÉP-kártya elfogadás (melyik zseb)?
-15. Van-e saját fotókészlet, és jogtiszta-e? Ha nincs: mikor fotózható a hely?
+15. ~~Van-e saját fotókészlet?~~ — **öt fotó megérkezett**, de mind 600×450, ami
+    hero-méretben kevés. Kérdés: **van-e nagyobb felbontású eredeti** ugyanezekről?
+    És: **készül-e ételfotó?** Ma egyetlen fogásról sincs képünk, pedig a pizza a
+    fő termék.
 
 **Technikai / hozzáférési:**
 
