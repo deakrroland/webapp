@@ -38,8 +38,8 @@ kapacitást, árat sehol nem találtam ki.
 | Ügyfél | Giovanni Pizzéria, Pécs, Nagy Imre út 43., 7632 (Kertváros) | listing + `giovannipecs.hu/elerhetoseg/` · **magas** |
 | Telefon | (06 72) 446 000 | listing + cégadatbázisok · **magas** |
 | Saját webhely | `giovannipecs.hu` — ismert URL-ek: `/`, `/etlap/`, `/itallap/`, `/elerhetoseg/` | keresőindex · **magas** |
-| Konyha | pizza, roston sültek, levesek, salátáink | foodora + saját oldal szövege · **magas** |
-| Csapolt | Staropramen, Stella Artois, Jägermeister | saját oldal szövege (idézett) · **közepes** |
+| Konyha | **teljes étlap megvan**: 15 kategória, 122 étel + 46 ital, árakkal | az étterem étlapja (10 oldal fotó, 2026-09-04) · **magas** |
+| Csapolt | **6 csap**: Staropramen, Stella Artois, Leffe Dark (belga apátsági), Belle-Vue Kriek (meggysör), Hoegaarden (búzasör), Vágott | itallap · **magas** |
 | Szórakozás | biliárd, csocsó, darts, flipper | saját oldal szövege; `etterem.hu` biliárd+darts+TV-t erősít meg · **közepes** |
 | Tér | terasz (nyáron), „kisebb összejövetelekre alkalmas"; a Google-attribútumok szerint **különterem** és **szabadtéri asztalok** | saját oldal + listing · **közepes** |
 | Értékelés | Google 4,5 ★ / ~1 339–1 400 vélemény; foodora 4,7 ★ / 206 vélemény | listing + foodora · **közepes** (a szám naponta változik) |
@@ -820,7 +820,7 @@ Egyetlen `<script type="application/ld+json">`, `@graph` szerkezetben,
 | `WebSite` | `#website` | `name`, `url`, `inLanguage: hu-HU`, `publisher` → `#restaurant` |
 | `WebPage` | `#webpage` | `isPartOf` → `#website`, `about` → `#restaurant`, `primaryImageOfPage`, `breadcrumb` |
 | `Restaurant` | `#restaurant` | `name`, `image`, `telephone`, `url`, `priceRange`, `servesCuisine: ["Pizza","Olasz","Magyar"]`, `currenciesAccepted: HUF`, `paymentAccepted`, `address` → `PostalAddress`, `geo` → `GeoCoordinates`, `openingHoursSpecification` (7 nap), `acceptsReservations: true`, `hasMenu` → `#menu`, `amenityFeature` → `LocationFeatureSpecification[]`, `potentialAction` → `ReserveAction`, `sameAs` (Facebook, foodora, Google) |
-| `Menu` | `#menu` | `hasMenuSection` → `MenuSection[]` (Pizzák, Roston sültek, Levesek, Saláták), azon belül `MenuItem` + `offers.price` |
+| `Menu` | `#menu` | **22 `MenuSection`, 168 `MenuItem`**, mind valós `offers.price` értékkel (HUF). A háromméretű pizzák három `Offer`-t kapnak, `name`-ben a mérettel. Élesben ez a `/etlap/` oldalra kerül, nem a főoldalra. |
 | `BreadcrumbList` | `#breadcrumb` | `Főoldal` (a főoldalon 1 elem) |
 | `FAQPage` | `#faq` | 5 `Question`/`Answer` |
 | `ImageObject` | `#logo` | logó, `width`/`height` |
@@ -874,7 +874,7 @@ Lighthouse mobil profil; és mezei CrUX (75. percentilis).
 
 | Erőforrás | Büdzsé |
 |---|---|
-| HTML (kritikus CSS inline-nal, JSON-LD-vel, az Alaprajz SVG-vel) | **≤ 18 KB** br |
+| HTML (kritikus CSS inline-nal, JSON-LD-vel, az Alaprajz SVG-vel) | **≤ 18 KB** br — a demó **18,8 KB**, lásd a jegyzetet |
 | Elhalasztott CSS | ≤ 6 KB br |
 | JS (összesen) | cél **≤ 5 KB**; a prototípus tömörítetlenül **5 115 B** (≈1,8 KB brotli) — lásd a lenti jegyzetet |
 | Font: Source Sans 3 VF (latin) | ≤ 26 KB |
@@ -887,6 +887,22 @@ Lighthouse mobil profil; és mezei CrUX (75. percentilis).
 
 **Kérésszám a hajtás fölött: 4** (HTML, 2 font, 1 JS). Nincs harmadik felű kérés
 az első nézetben — analitika `defer`-rel, a `load` után.
+
+**A demó HTML-mérete.** A prototípus a teljes étlapot (168 tétel) **és** a teljes
+`Menu` schemát egyetlen fájlban hordozza, hogy egy linkkel végignézhető legyen:
+117 KB nyersen, **18,8 KB brotli után**. Élesben ez a kettő nem a főoldalon él:
+
+| Rész | nyers | brotli |
+|---|---|---|
+| Teljes oldal (demó) | 117 KB | **18,8 KB** |
+| ebből: `Menu` JSON-LD → `/etlap/` | 34 KB | −4,2 KB |
+| ebből: nyitható teljes étlap → `/etlap/` | 26 KB | −3,7 KB |
+| ebből: teljes itallap → `/itallap/` | 9 KB | −1,5 KB |
+| **Éles főoldal (kivonattal)** | ~30 KB | **~10,9 KB** |
+
+Vagyis a §4-es információs architektúra nem esztétikai döntés: a menü saját URL-re
+mozgatása önmagában közel felezi a főoldal HTML-jét. A demó szándékosan sérti ezt,
+mert ott egy link a cél.
 
 **A JS-büdzsé túllépéséről.** Az 5 KB-os cél és a nyitvatartás-alapú űrlapvalidáció ezen
 a funkciókészleten kizárja egymást: a helyes validáció ~500 bájt. Kivettem, ami fájdalommentesen
@@ -913,7 +929,7 @@ akadályt bont el előle.
 | 1 | **Élő nyitva/zárva chip zárási idővel** | hero, első sor | Az első kérdésre válaszol, és az egyetlen valós ok, amiért a Google-ról átjön valaki. Ha „zárva", akkor is konverzió: „nyitás 12:00" + „foglalj mára" — nem elveszett látogató, hanem eltolt konverzió. |
 | 2 | **Két egyenrangú CTA: Foglalás / Hívás** | hero | A vendéglátásban a hívás valós konverzió, nem kudarc. Elrejteni a telefonszámot a foglalás javára = elvesztett foglalás. Egyenrangúak, nem versenyeznek. |
 | 3 | **Alaprajz mint választó** | 2. szekció | Zérus kognitív költséggel kvalifikálja a foglalást: a látogató kimondja magának, mit akar (terasz / különterem), és ezzel elköteleződik. A kiválasztás előtölti az űrlapot → megkezdett folyamat, amit nehezebb elhagyni. |
-| 4 | **Ársáv a hajtás fölött (2 000–6 000 Ft/fő)** | tényadat-kártya | Az ár elrejtése súrlódás. Kimondva kiszűri a rossz illeszkedésű látogatót, és a maradéknál eltünteti a legnagyobb belső ellenvetést. |
+| 4 | **Ársáv a hajtás fölött (2 000 Ft-tól)** | tényadat-kártya | Az ár elrejtése súrlódás. Kimondva kiszűri a rossz illeszkedésű látogatót, és a maradéknál eltünteti a legnagyobb belső ellenvetést. |
 | 5 | **4,5 ★ / 1 339 vélemény, forrásmegjelöléssel** | tényadat + külön szekció | A darabszám itt fontosabb, mint az átlag: 1 339 vélemény ellenőrizhetetlenül nagy szám egy kertvárosi helynél. A forrás megnevezése (Google) növeli a hitelt, nem csökkenti. |
 | 6 | **Rövid, 6 mezős űrlap** | 8. szekció | Minden extra mező mérhetően csökkenti a kitöltést. Csak az kerül bele, ami nélkül nem lehet asztalt lefoglalni: név, telefon, dátum, idő, létszám, zóna. E-mail **nem kötelező**. |
 | 7 | **Inline validáció `blur`-re, nem gépelés közben** | űrlap | A gépelés közbeni pirosítás büntetésként hat és növeli az elhagyást; a `blur`-validáció ugyanazt a hibát fogja el, negatív érzelem nélkül. |
@@ -924,6 +940,8 @@ akadályt bont el előle.
 | 11 | **Különterem-blokk saját CTA-val** | 6. szekció | A legmagasabb kosárértékű szegmens külön útvonalat kap, mert más a szándéka (ajánlatkérés, nem foglalás). |
 | 12 | **GYIK a foglalás után** | 9. szekció | Az itt maradt kifogásokat (parkolás, gyerekek, kutya, saját torta, kártyás fizetés) *az űrlap után* oldjuk fel, hogy a kifogások ne előzzék meg a döntést. |
 | 13 | **Nyitvatartási táblázat kiemelt „ma" sorral** | 10. szekció | Csökkenti a „mikor mehetek?" miatti visszalépést a Google-hoz. |
+| 13b | **A teljes étlap minden ára kiírva, a főoldalról nyithatóan** | étlap-szekció | Az étterem-keresés legnagyobb súrlódása a „mennyibe fog kerülni". 168 kiírt ár ezt megszünteti, és három olyan tényt hoz felszínre, ami eddig sehol nem szerepelt: **fél adag a teljes ár 70%-áért**, **háromféle pizzaalap** (paradicsomos / tejfölös / csípős), és a **40 cm-es méret**. Mindhárom vásárlási érv, és mindhárom ingyen volt — csak le kellett írni. |
+| 13c | **„Hat csap, és két villányi pincészet"** | italok sávja | Leffe Dark, Belle-Vue Kriek és Hoegaarden csapon egy kertvárosi pizzériában szokatlan; a folyóborok a Lelovits és a Kovács-Harmath pincészettől jönnek. Ez a szekció eddig három sör nevét sorolta — most egy állítás, amit a konkurencia nem tud lemásolni. |
 | 14 | **Egyetlen akcentusszín, csak cselekvésre** | mindenütt | Ha minden kiemelt, semmi sem az. A `--parazs` kizárólag kattintható dolgokon jelenik meg — az oldal így „megtanítja", hova kell nyúlni. |
 
 ---
@@ -980,7 +998,7 @@ Fázis 1 és 2 párhuzamosítható; 1 azonnali hozamot ad, amíg 2 készül.
    lemondási feltétel, fix menücsomagok és áraik.
 5. **Fogadtok-e egyáltalán asztalfoglalást?** Ha igen: telefonon, e-mailben, vagy
    mindkettőn? Ki és mikor igazolja vissza? *(Az egész oldal fő konverziója ez.)*
-6. **Étlap + itallap tételek, aktuális árakkal**, és **allergénadatok** tételenként.
+6. ~~Étlap és itallap árakkal~~ — **megvan** (2026-09-04). Ami továbbra sem: **allergénadat tételenként**, és hogy az árak meddig érvényesek.
 7. **A két foodora-listing** („Giovanni Pizzéria" és „Giovanni étterem") — ugyanaz a
    konyha? Melyik az elsődleges? Összevonható?
 
