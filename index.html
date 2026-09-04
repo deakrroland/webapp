@@ -386,6 +386,12 @@ html[data-tema="sotet"] .szekcio--lap{background:#221C18;border-block:1px solid 
 @media(min-width:720px){.racs3{grid-template-columns:repeat(3,1fr);gap:var(--s6)}}
 .konyha{padding:var(--s5);border:1px solid rgba(255,255,255,.12);border-radius:var(--r-l);
   background:rgba(255,255,255,.03)}
+/* Illusztrációk: kézzel rajzolt SVG, nem fotó — lásd redesign.md §9.3.
+   Nulla hálózati kérés, nulla jogi kockázat, és a paletta színeiből épül. */
+.konyha__kep{margin:0 0 var(--s5)}
+.konyha__kep svg{width:100%;max-width:148px;height:auto;display:block}
+.konyha__kep figcaption{margin-top:var(--s3);font-size:var(--t-mikro);font-weight:600;
+  letter-spacing:.11em;text-transform:uppercase;color:#8A7D72}
 .konyha h3{margin-bottom:var(--s3)}
 .konyha p{color:#B0A69C;font-size:var(--t-kis);margin-bottom:var(--s4)}
 .konyha ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:var(--s2)}
@@ -536,7 +542,13 @@ html[data-tema="sotet"] .szekcio--lap{background:#221C18;border-block:1px solid 
 
 <!-- A tárolt témaválasztás még az első festés előtt bekerül: nincs villanás.
      JS nélkül a @media (prefers-color-scheme) veszi át, tehát ez csak felülbírálat. -->
-<script>try{var t=localStorage.getItem("pg-tema");if(t)document.documentElement.setAttribute("data-tema",t)}catch(e){}</script>
+<script>(function(){var d=document.documentElement,t=null;
+try{t=localStorage.getItem("pg-tema")}catch(e){}
+/* Ha nincs mentett választás, átvesszük a beágyazó felület témajelzését
+   (a claude.ai artifact-nézet data-theme="dark|light"-ot bélyegez a gyökérre).
+   Sima böngészőben ez az ág nem fut le, ott a prefers-color-scheme dönt. */
+if(!t){var h=d.getAttribute("data-theme");if(h==="dark")t="sotet";else if(h==="light")t="vilagos"}
+if(t)d.setAttribute("data-tema",t)})();</script>
 </head>
 <body>
 <a class="atugras" href="#fo">Ugrás a tartalomra</a>
@@ -654,9 +666,38 @@ html[data-tema="sotet"] .szekcio--lap{background:#221C18;border-block:1px solid 
       <h2 id="konyha-cim">Kemence, lap, <em>nyárs.</em></h2>
       <p>Az étlap három technikából áll össze. Ez a három dönti el, mit mennyi idő alatt
          adunk ki — és hogy mit érdemes rendelned, ha sietsz.</p>
+      <p style="font-size:var(--t-kis);margin-top:var(--s3)">A képek rajzolt
+         <strong>illusztrációk</strong>, nem az itt készült ételek fotói. Élesítés előtt
+         az étterem saját fotóira cseréljük.</p>
     </div>
     <div class="racs3">
       <article class="konyha">
+        <figure class="konyha__kep">
+          <svg viewBox="0 0 160 160" role="img"
+               aria-label="Pizza felülnézetből, szalámival és bazsalikommal – rajzolt illusztráció">
+            <circle cx="80" cy="80" r="66" fill="#D9963A"/>
+            <circle cx="80" cy="80" r="55" fill="#C6470B"/>
+            <g fill="#F0C040" opacity=".9">
+              <ellipse cx="59" cy="57" rx="16" ry="11"/><ellipse cx="101" cy="64" rx="13" ry="9"/>
+              <ellipse cx="68" cy="101" rx="15" ry="10"/><ellipse cx="105" cy="99" rx="11" ry="8"/>
+              <ellipse cx="82" cy="78" rx="10" ry="7"/>
+            </g>
+            <g fill="#8E2708">
+              <circle cx="61" cy="71" r="9"/><circle cx="99" cy="51" r="8"/>
+              <circle cx="109" cy="85" r="9"/><circle cx="79" cy="110" r="8"/>
+              <circle cx="53" cy="97" r="7"/>
+            </g>
+            <g fill="#7E9455">
+              <ellipse cx="89" cy="79" rx="7" ry="4" transform="rotate(-25 89 79)"/>
+              <ellipse cx="65" cy="86" rx="6" ry="3.5" transform="rotate(30 65 86)"/>
+              <ellipse cx="93" cy="112" rx="6" ry="3.5" transform="rotate(-12 93 112)"/>
+            </g>
+            <g stroke="#17120E" stroke-width="2.5" opacity=".28" fill="none" stroke-linecap="round">
+              <path d="M80 26 V80"/><path d="M80 80 L127 106"/><path d="M80 80 L33 106"/>
+            </g>
+          </svg>
+          <figcaption>Illusztráció</figcaption>
+        </figure>
         <h3>A kemencéből</h3>
         <p>Kézzel nyújtott tészta, két méret. A 45 centis korong területe több mint
            kétszerese a 30 centisnek — ketten is jóllaktok belőle.</p>
@@ -665,6 +706,28 @@ html[data-tema="sotet"] .szekcio--lap{background:#221C18;border-block:1px solid 
         <b class="konyha__ar szam">30 cm 1 950–3 000 Ft · 45 cm 3 450–5 800 Ft</b>
       </article>
       <article class="konyha">
+        <figure class="konyha__kep">
+          <svg viewBox="0 0 160 160" role="img"
+               aria-label="Hamburger oldalnézetből, húspogácsával és sajttal – rajzolt illusztráció">
+            <path d="M24 64c0-23 19-38 56-38s56 15 56 38z" fill="#D9963A"/>
+            <g fill="#F6E6BC"><ellipse cx="60" cy="44" rx="6" ry="3.5" transform="rotate(-18 60 44)"/>
+              <ellipse cx="86" cy="38" rx="6" ry="3.5" transform="rotate(8 86 38)"/>
+              <ellipse cx="108" cy="50" rx="6" ry="3.5" transform="rotate(24 108 50)"/></g>
+            <path d="M22 64h116c0 8-9 11-18 8-8 6-16 6-24 1-9 7-18 7-26 1-9 5-19 4-24-2-8 2-16-1-24-8z"
+                  fill="#7E9455"/>
+            <rect x="26" y="78" width="108" height="10" rx="5" fill="#C6470B"/>
+            <path d="M24 90h112v7c0 4-3 7-7 7h-9l-7 12-7-12h-19l-8 14-8-14H30c-4 0-6-3-6-7z"
+                  fill="#F0C040"/>
+            <rect x="20" y="104" width="120" height="24" rx="11" fill="#5E3218"/>
+            <g fill="#331A08" opacity=".55">
+              <rect x="34" y="111" width="20" height="4" rx="2"/>
+              <rect x="66" y="117" width="26" height="4" rx="2"/>
+              <rect x="102" y="110" width="18" height="4" rx="2"/>
+            </g>
+            <path d="M26 126h108v4c0 12-11 20-26 20H52c-15 0-26-8-26-20z" fill="#C9862F"/>
+          </svg>
+          <figcaption>Illusztráció</figcaption>
+        </figure>
         <h3>A lapról</h3>
         <p>Öntöttvas lapsütő, rendelésre sütve. Ez a leggyorsabb sáv: a hús a lapon
            kap kérget, addig pirul a bucija mellette.</p>
@@ -673,6 +736,31 @@ html[data-tema="sotet"] .szekcio--lap{background:#221C18;border-block:1px solid 
         <b class="konyha__ar szam">Kebabburger 2 000 Ft · menüben 2 900 Ft</b>
       </article>
       <article class="konyha">
+        <figure class="konyha__kep">
+          <svg viewBox="0 0 160 160" role="img"
+               aria-label="Gyros pitában, papírba csomagolva – rajzolt illusztráció">
+            <path d="M28 44 L132 44 L90 138a10 10 0 0 1-20 0z" fill="#E0BF83"/>
+            <path d="M28 44 H132 L127 61 H33z" fill="#CBA463"/>
+            <path d="M32 46c3-17 20-27 48-27s45 10 48 27z" fill="#8A4A20"/>
+            <g fill="#6B3312" opacity=".5">
+              <rect x="45" y="30" width="24" height="5" rx="2.5" transform="rotate(-9 45 30)"/>
+              <rect x="80" y="26" width="28" height="5" rx="2.5" transform="rotate(7 80 26)"/>
+              <rect x="58" y="40" width="30" height="5" rx="2.5"/>
+            </g>
+            <circle cx="45" cy="38" r="9" fill="#C6470B"/>
+            <circle cx="117" cy="39" r="8" fill="#C6470B"/>
+            <ellipse cx="82" cy="21" rx="16" ry="7" fill="#EDE3D2"/>
+            <ellipse cx="60" cy="24" rx="13" ry="6" fill="#7E9455"/>
+            <ellipse cx="104" cy="25" rx="12" ry="6" fill="#7E9455"/>
+            <path d="M40 34c12 6 26 9 40 9s28-3 40-9" stroke="#F0C040" stroke-width="4"
+                  fill="none" stroke-linecap="round" opacity=".9"/>
+            <path d="M50 92 L107 101 L90 138a10 10 0 0 1-20 0z" fill="#F2EDE4"/>
+            <g stroke="#CDC4B6" stroke-width="2" fill="none" stroke-linecap="round">
+              <path d="M78 96v40"/><path d="M62 94l5 36"/><path d="M95 99l-6 32"/>
+            </g>
+          </svg>
+          <figcaption>Illusztráció</figcaption>
+        </figure>
         <h3>A nyársról</h3>
         <p>Gyros és kebab a forgó nyársról, pitában vagy tálon. Mellé saláta, ha
            könnyebbet szeretnél.</p>
