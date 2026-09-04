@@ -17,6 +17,177 @@
    ],
    "tetelek": [
     {
+     "nev": "Bacon",
+     "osszetevok": "alap, sajt, bacon, hagyma, 1 db tükörtojás",
+     "arak": [
+      2000,
+      3300,
+      5300
+     ]
+    },
+    {
+     "nev": "Bahako",
+     "osszetevok": "alap, sajt, bacon, hagyma, füstölt kolbász, feta sajt",
+     "arak": [
+      2000,
+      3300,
+      5300
+     ]
+    },
+    {
+     "nev": "Betyár",
+     "osszetevok": "alap, sajt, szalonna, szalámi, hagyma",
+     "arak": [
+      2000,
+      3300,
+      5300
+     ]
+    },
+    {
+     "nev": "Bolognai",
+     "osszetevok": "alap, sajt, bolognai szósz",
+     "arak": [
+      2000,
+      3300,
+      5300
+     ]
+    },
+    {
+     "nev": "Brassói",
+     "osszetevok": "alap, dupla sajt, sonka, fokhagymás sertéscomb",
+     "arak": [
+      2000,
+      3300,
+      5300
+     ]
+    },
+    {
+     "nev": "Csípős",
+     "osszetevok": "csípős alap, sajt, füstölt kolbász, szalonna, hagyma, jalapeño",
+     "arak": [
+      2000,
+      3300,
+      5300
+     ]
+    },
+    {
+     "nev": "Etna",
+     "osszetevok": "alap, sajt, fokhagymás sertéscomb, szalámi, jalapeño",
+     "arak": [
+      2000,
+      3300,
+      5300
+     ]
+    },
+    {
+     "nev": "Fecsis",
+     "osszetevok": "alap, sajt, feta sajt, roston csirkemell, aszalt paradicsom",
+     "arak": [
+      2000,
+      3300,
+      5300
+     ]
+    },
+    {
+     "nev": "Firenze",
+     "osszetevok": "alap, sajt, bolognai szósz, szalámi, paprika",
+     "arak": [
+      2000,
+      3300,
+      5300
+     ]
+    },
+    {
+     "nev": "Fücsis",
+     "osszetevok": "alap, sajt, füstölt sajt, roston csirkemell, olajbogyó",
+     "arak": [
+      2000,
+      3300,
+      5300
+     ]
+    },
+    {
+     "nev": "Giovanni",
+     "osszetevok": "alap, sajt, csirkemáj, sonka, hagyma",
+     "arak": [
+      2000,
+      3300,
+      5300
+     ]
+    },
+    {
+     "nev": "Gombás",
+     "osszetevok": "alap, dupla sajt, gomba",
+     "arak": [
+      2000,
+      3300,
+      5300
+     ]
+    },
+    {
+     "nev": "Görög",
+     "osszetevok": "alap, sajt, paradicsom, paprika, hagyma, olajbogyó, feta sajt",
+     "arak": [
+      2000,
+      3300,
+      5300
+     ]
+    },
+    {
+     "nev": "Ham and eggs",
+     "osszetevok": "alap, sajt, füstölt sonka, 2 db tükörtojás",
+     "arak": [
+      2000,
+      3300,
+      5300
+     ]
+    },
+    {
+     "nev": "Hawaii",
+     "osszetevok": "alap, sajt, sonka, ananász",
+     "arak": [
+      2000,
+      3300,
+      5300
+     ]
+    },
+    {
+     "nev": "Húsimádó I.",
+     "osszetevok": "alap, sajt, sonka, szalámi, szalonna, csirkemell, csemegeuborka",
+     "arak": [
+      2300,
+      3700,
+      5600
+     ]
+    },
+    {
+     "nev": "Húsimádó II.",
+     "osszetevok": "alap, sajt, sonka, szalámi, szalonna, sertéscomb, hagyma, jalapeño",
+     "arak": [
+      2300,
+      3700,
+      5600
+     ]
+    },
+    {
+     "nev": "Kalifornia",
+     "osszetevok": "alap, sajt, sonka, kukorica",
+     "arak": [
+      2000,
+      3300,
+      5300
+     ]
+    },
+    {
+     "nev": "Kukoricás",
+     "osszetevok": "alap, sajt, kukorica",
+     "arak": [
+      2000,
+      3300,
+      5300
+     ]
+    },
+    {
      "nev": "Magyaros",
      "osszetevok": "alap, sajt, szalámi, paradicsom, paprika",
      "arak": [
@@ -906,6 +1077,406 @@
      }
     ],
     "lablec": "Üveges bor kínálatunkat lásd a borlapunkon."
+   },
+   {
+    "nev": "Pezsgők",
+    "tetelek": [
+     {
+      "nev": "Törley félszáraz",
+      "jelzo": "0,75 l",
+      "ar": 3600
+     },
+     {
+      "nev": "Törley édes",
+      "jelzo": "0,75 l",
+      "ar": 3600
+     },
+     {
+      "nev": "Montelvini száraz",
+      "jelzo": "0,75 l",
+      "ar": 4500
+     },
+     {
+      "nev": "Paulus Honey Sweet édes",
+      "jelzo": "0,75 l",
+      "ar": 4500
+     }
+    ]
+   },
+   {
+    "nev": "Rövid italok",
+    "oszlopok": [
+     "2 cl",
+     "4 cl"
+    ],
+    "tetelek": [
+     {
+      "nev": "Beefeater Gin",
+      "meretek": [
+       "2 cl",
+       "4 cl"
+      ],
+      "arak": [
+       1100,
+       1800
+      ],
+      "jelzo": "40% · angol prémium gin"
+     },
+     {
+      "nev": "Balaton Gin",
+      "meretek": [
+       "2 cl",
+       "4 cl"
+      ],
+      "arak": [
+       1100,
+       1800
+      ],
+      "jelzo": "magyar prémium gin"
+     },
+     {
+      "nev": "Bombay Gin",
+      "meretek": [
+       "2 cl",
+       "4 cl"
+      ],
+      "arak": [
+       1100,
+       1800
+      ]
+     },
+     {
+      "nev": "Gordon's Pink Gin",
+      "meretek": [
+       "2 cl",
+       "4 cl"
+      ],
+      "arak": [
+       1100,
+       1800
+      ]
+     },
+     {
+      "nev": "Unicum",
+      "meretek": [
+       "2 cl",
+       "4 cl"
+      ],
+      "arak": [
+       750,
+       1300
+      ]
+     },
+     {
+      "nev": "Unicum Szilva",
+      "meretek": [
+       "2 cl",
+       "4 cl"
+      ],
+      "arak": [
+       750,
+       1300
+      ]
+     },
+     {
+      "nev": "Unicum Barista",
+      "meretek": [
+       "2 cl",
+       "4 cl"
+      ],
+      "arak": [
+       750,
+       1300
+      ]
+     },
+     {
+      "nev": "Unicum Orange",
+      "meretek": [
+       "2 cl",
+       "4 cl"
+      ],
+      "arak": [
+       750,
+       1300
+      ]
+     },
+     {
+      "nev": "Unicum Riserva",
+      "meretek": [
+       "2 cl",
+       "4 cl"
+      ],
+      "arak": [
+       1100,
+       1800
+      ],
+      "jelzo": "tokaji hordóban érlelve"
+     },
+     {
+      "nev": "Jägermeister",
+      "meretek": [
+       "2 cl",
+       "4 cl"
+      ],
+      "arak": [
+       750,
+       1300
+      ]
+     },
+     {
+      "nev": "Jägermeister Orange",
+      "meretek": [
+       "2 cl",
+       "4 cl"
+      ],
+      "arak": [
+       750,
+       1300
+      ]
+     },
+     {
+      "nev": "Baileys",
+      "meretek": [
+       "2 cl",
+       "4 cl"
+      ],
+      "arak": [
+       750,
+       1300
+      ]
+     },
+     {
+      "nev": "Bumbu",
+      "meretek": [
+       "2 cl",
+       "4 cl"
+      ],
+      "arak": [
+       1200,
+       1900
+      ]
+     },
+     {
+      "nev": "Captain Morgan",
+      "meretek": [
+       "2 cl",
+       "4 cl"
+      ],
+      "arak": [
+       750,
+       1300
+      ]
+     },
+     {
+      "nev": "Portorico",
+      "meretek": [
+       "2 cl",
+       "4 cl"
+      ],
+      "arak": [
+       1100,
+       1800
+      ],
+      "jelzo": "60%"
+     },
+     {
+      "nev": "Kraken Rum",
+      "meretek": [
+       "2 cl",
+       "4 cl"
+      ],
+      "arak": [
+       1100,
+       1800
+      ],
+      "jelzo": "40% · karibi fűszeres rum"
+     },
+     {
+      "nev": "Ouzo",
+      "meretek": [
+       "2 cl",
+       "4 cl"
+      ],
+      "arak": [
+       750,
+       1300
+      ]
+     },
+     {
+      "nev": "Finlandia vodka",
+      "meretek": [
+       "2 cl",
+       "4 cl"
+      ],
+      "arak": [
+       1100,
+       1800
+      ]
+     },
+     {
+      "nev": "Absolut vodka",
+      "meretek": [
+       "2 cl",
+       "4 cl"
+      ],
+      "arak": [
+       1100,
+       1800
+      ]
+     },
+     {
+      "nev": "Malibu",
+      "meretek": [
+       "2 cl",
+       "4 cl"
+      ],
+      "arak": [
+       750,
+       1300
+      ]
+     },
+     {
+      "nev": "Bacardi",
+      "meretek": [
+       "2 cl",
+       "4 cl"
+      ],
+      "arak": [
+       750,
+       1300
+      ]
+     },
+     {
+      "nev": "Metaxa *****",
+      "meretek": [
+       "2 cl",
+       "4 cl"
+      ],
+      "arak": [
+       750,
+       1300
+      ]
+     },
+     {
+      "nev": "Jose Cuervo tequila",
+      "meretek": [
+       "2 cl",
+       "4 cl"
+      ],
+      "arak": [
+       1200,
+       1900
+      ],
+      "jelzo": "silver, gold"
+     },
+     {
+      "nev": "Ballantine's",
+      "meretek": [
+       "2 cl",
+       "4 cl"
+      ],
+      "arak": [
+       1100,
+       1800
+      ]
+     },
+     {
+      "nev": "Johnnie Walker",
+      "meretek": [
+       "2 cl",
+       "4 cl"
+      ],
+      "arak": [
+       1100,
+       1800
+      ]
+     },
+     {
+      "nev": "Jim Beam",
+      "meretek": [
+       "2 cl",
+       "4 cl"
+      ],
+      "arak": [
+       1100,
+       1800
+      ]
+     },
+     {
+      "nev": "Jameson",
+      "meretek": [
+       "2 cl",
+       "4 cl"
+      ],
+      "arak": [
+       1200,
+       1900
+      ]
+     },
+     {
+      "nev": "Jack Daniel's",
+      "meretek": [
+       "2 cl",
+       "4 cl"
+      ],
+      "arak": [
+       1200,
+       1900
+      ]
+     },
+     {
+      "nev": "Magna Cum Laude",
+      "meretek": [
+       "2 cl",
+       "4 cl"
+      ],
+      "arak": [
+       1200,
+       1900
+      ],
+      "jelzo": "mákpálinkák · 30%, 50%"
+     },
+     {
+      "nev": "TatraTea",
+      "meretek": [
+       "2 cl",
+       "4 cl"
+      ],
+      "arak": [
+       1200,
+       1900
+      ],
+      "jelzo": "több ízben"
+     },
+     {
+      "nev": "Cornus pálinka",
+      "meretek": [
+       "2 cl",
+       "4 cl"
+      ],
+      "arak": [
+       1200,
+       1900
+      ],
+      "jelzo": "többféle gyümölcsből"
+     },
+     {
+      "nev": "Martini Bianco",
+      "ar": 1300,
+      "egyseg": "dl"
+     },
+     {
+      "nev": "Aperol spritz",
+      "ar": 1800,
+      "egyseg": "pohár"
+     },
+     {
+      "nev": "Martini Fiero",
+      "jelzo": "1 dl Martini Fiero, 1 dl tonic",
+      "ar": 1600,
+      "egyseg": "pohár"
+     }
+    ]
    },
    {
     "nev": "Üveges és dobozos sörök, ciderek",
