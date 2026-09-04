@@ -355,6 +355,30 @@ labelle-prototipus.zip
 └── assets/            megjelenés és működés
 ```
 
+**Linkes változat.** A csomag mellett készült egy egyfájlos, megosztható
+verzió is (`link-verzio.html`): a 14 oldal egyetlen dokumentumban él, és egy
+hash-útvonalválasztó mutatja őket (`#!arak`, `#!kez-prp`,
+`#!kez-sminktetovalas:…gyogyulas`). Ez **kizárólag az átadásé** — az éles
+site-on minden oldal külön URL-en van, router nélkül, mert a 4.2-es sitemap
+egész SEO-logikája erre épül.
+
+Két dolog került bele a linkes változatba, ami a fájlos verzióban nincs:
+
+1. **Állandó, sötét prototípus-sáv** a lap tetején. Egy megosztható link
+   könnyebben téveszthető össze az éles oldallal, mint egy ZIP — ezért a
+   figyelmeztetés nem elrejthető, és minden útvonalon ott van.
+2. **`#!hianyzik` útvonal**: az adatkezelési tájékoztató és az impresszum
+   linkje ide fut, és megmondja, miért nincs még meg. Halott link helyett
+   magyarázat.
+
+Egy hibát a linkesítés hozott felszínre, és a fájlos verzióban is javítva
+lett: a design system eddig csak a saját `data-tema` kapcsolóját és a
+`prefers-color-scheme`-et ismerte. A hosztoló felület viszont **`data-theme`**
+attribútumot bélyegez a gyökérre, ha a néző explicit témát választott — ilyenkor
+az oldal az egyik téma szövegét rajzolta volna a másik téma alapjára. A 7.1-es
+tokenkészlet mostantól mindhárom állapotot kiszolgálja, ebben a sorrendben:
+rendszerbeállítás → hosztoló választása → a mi kapcsolónk.
+
 A `demo.html` szándékosan **nem** a weboldal része. Három dolgot csinál:
 (1) elöl, félreérthetetlenül kimondja, hogy ez prototípus, és mi valódi
 benne; (2) egy kattintással elérhetővé tesz minden oldalt; (3) a végén

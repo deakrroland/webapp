@@ -53,9 +53,17 @@
   --ki:cubic-bezier(.4,0,1,1);
 }
 
-/* Sötét mód: nem invertálás. A kő kihűl, a lámpa marad meleg — sőt melegebb. */
+/* Sötét mód: nem invertálás. A kő kihűl, a lámpa marad meleg — sőt melegebb.
+
+   HÁROM ÁLLAPOTOT kell kiszolgálni, nem kettőt:
+   · a látogató rendszerbeállítása (prefers-color-scheme) — ilyenkor semmi
+     nincs a gyökérre bélyegezve;
+   · a HOSZTOLÓ felület explicit választása — ez `data-theme` attribútumot
+     tesz a gyökérre (a linkes, beágyazott változatban ez él);
+   · a MI kapcsolónk — ez `data-tema`-t ír, és mindkettőnél erősebb.
+   A sorrend számít: minden későbbi blokk felülírja az előzőt. */
 @media (prefers-color-scheme: dark){
-  :root:not([data-tema="vilagos"]){
+  :root:not([data-tema="vilagos"]):not([data-theme="light"]){
     color-scheme: dark;
     --marvany:#15181B; --lap:#1E2227;
     --grafit:#E8E7E3;  --halk:#A3A9B0;
@@ -68,17 +76,55 @@
     --e-3:0 -2px 16px rgba(0,0,0,.55);
   }
 }
+/* A hosztoló felület explicit választása */
+:root[data-theme="dark"]:not([data-tema="vilagos"]){
+    color-scheme: dark;
+    --marvany:#15181B; --lap:#1E2227;
+    --grafit:#E8E7E3;  --halk:#A3A9B0;
+    --lampafeny:#E0A868; --lampafeny-halk:#2A2119;
+    --acel:#333A41;    --mezsgye:#6A727A;
+    --hiba:#FF9C8A;    --akcens-szoveg:#15181B;
+    --scrim:rgba(0,0,0,.65);
+    --e-1:0 1px 2px rgba(0,0,0,.5);
+    --e-2:0 2px 4px rgba(0,0,0,.5), 0 8px 24px rgba(0,0,0,.4);
+    --e-3:0 -2px 16px rgba(0,0,0,.55);
+}
+:root[data-theme="light"]:not([data-tema="sotet"]){
+    color-scheme: light;
+    --marvany:#F6F5F2; --lap:#FFFFFF;
+    --grafit:#1C2024;  --halk:#5A626B;
+    --lampafeny:#8A5A28; --lampafeny-halk:#F3EBE0;
+    --acel:#DEDBD4;    --mezsgye:#8C8A83;
+    --hiba:#A62A1F;    --akcens-szoveg:#FFFFFF;
+    --scrim:rgba(20,22,25,.5);
+    --e-1:0 1px 2px rgba(28,32,36,.05), 0 2px 8px rgba(28,32,36,.04);
+    --e-2:0 2px 4px rgba(28,32,36,.06), 0 8px 24px rgba(28,32,36,.07);
+    --e-3:0 -2px 16px rgba(28,32,36,.09);
+}
+/* A mi kapcsolónk — mindent felülír */
 :root[data-tema="sotet"]{
-  color-scheme: dark;
-  --marvany:#15181B; --lap:#1E2227;
-  --grafit:#E8E7E3;  --halk:#A3A9B0;
-  --lampafeny:#E0A868; --lampafeny-halk:#2A2119;
-  --acel:#333A41;    --mezsgye:#6A727A;
-  --hiba:#FF9C8A;    --akcens-szoveg:#15181B;
-  --scrim:rgba(0,0,0,.65);
-  --e-1:0 1px 2px rgba(0,0,0,.5);
-  --e-2:0 2px 4px rgba(0,0,0,.5), 0 8px 24px rgba(0,0,0,.4);
-  --e-3:0 -2px 16px rgba(0,0,0,.55);
+    color-scheme: dark;
+    --marvany:#15181B; --lap:#1E2227;
+    --grafit:#E8E7E3;  --halk:#A3A9B0;
+    --lampafeny:#E0A868; --lampafeny-halk:#2A2119;
+    --acel:#333A41;    --mezsgye:#6A727A;
+    --hiba:#FF9C8A;    --akcens-szoveg:#15181B;
+    --scrim:rgba(0,0,0,.65);
+    --e-1:0 1px 2px rgba(0,0,0,.5);
+    --e-2:0 2px 4px rgba(0,0,0,.5), 0 8px 24px rgba(0,0,0,.4);
+    --e-3:0 -2px 16px rgba(0,0,0,.55);
+}
+:root[data-tema="vilagos"]{
+    color-scheme: light;
+    --marvany:#F6F5F2; --lap:#FFFFFF;
+    --grafit:#1C2024;  --halk:#5A626B;
+    --lampafeny:#8A5A28; --lampafeny-halk:#F3EBE0;
+    --acel:#DEDBD4;    --mezsgye:#8C8A83;
+    --hiba:#A62A1F;    --akcens-szoveg:#FFFFFF;
+    --scrim:rgba(20,22,25,.5);
+    --e-1:0 1px 2px rgba(28,32,36,.05), 0 2px 8px rgba(28,32,36,.04);
+    --e-2:0 2px 4px rgba(28,32,36,.06), 0 8px 24px rgba(28,32,36,.07);
+    --e-3:0 -2px 16px rgba(28,32,36,.09);
 }
 
 @media (min-width:768px){:root{--gutter:var(--s-6);--ritmus:var(--s-8)}}
