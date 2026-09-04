@@ -712,6 +712,13 @@ Indoklás:
 - Az űrlap háttere lehet egy Cloudflare Worker vagy Netlify Function, ami SMS-t
   vagy e-mailt küld. Ez a rendszer egyetlen szerveroldali darabja.
 
+**Megosztható változat.** A `build-artifact.py` egyetlen forrásból (`index.html`)
+állítja elő a burok nélküli, claude.ai Artifactként publikálható változatot — hogy
+az ügyfélnek küldött link és a fejlesztett fájl ne csússzon szét kézi másolgatástól.
+A generált fájl mindenben azonos, két kivétellel: nincs benne `<!doctype>`/`<html>`/
+`<head>`/`<body>` és `<meta>` (azokat a beágyazó felület adja), és a `<title>` rövid
+névre cserélve — az éles, keresőoptimalizált title a §10.1-ben van.
+
 **Elvetve:** WordPress (havi karbantartás, plugin-sebezhetőségek, és nincs, aki
 frissítse); Next.js (túlméretezett); maradás a Webnode-on (§2 fele nem javítható
 belőle).
@@ -731,8 +738,23 @@ belőle).
 
 ### 9.3 Képek
 
-A prototípusban **szándékosan nincs kép** — nem azért, mert nem kell, hanem mert
-nincs jogtiszta, jó minőségű fotóm az étteremről (§15/6). Az éles oldal képspecifikációja:
+A prototípusban **nincs fotó**, viszont a három konyhakártyán **rajzolt SVG-illusztráció**
+áll (pizza, burger, gyros pitában), mindegyik alatt látható „ILLUSZTRÁCIÓ" felirattal,
+és a jelölés az `aria-label`-ekben is szerepel.
+
+Miért rajz és nem stockfotó: a képhosztok (Wikimedia Commons, Unsplash, Pexels) ebben
+a környezetben egress-policy alapján tiltottak, tehát fotót nem tudtam letölteni. De
+még ha tudtam volna is, egy street food étterem oldalán **idegen stockfotó kifejezetten
+káros**: a vendég azt hiszi, azt kapja, amit lát, és az első csalódás egy egycsillagos
+értékelés. A rajz nem tesz úgy, mintha fotó lenne. Emellett nulla hálózati kérés és
+nulla jogi kockázat.
+
+Az illusztrációk a paletta színeiből épülnek (`--parazs`, `--mustar`, `--olaj` és a
+kéreg-arany `#D9963A`), tehát a design system részei, nem külső elemek. **Az éles
+oldalon az étterem saját fotóira cserélendők** (§15/6) — a rajzok addig tartják a
+helyet, hogy a layout ne fotó nélkül készüljön el.
+
+Az éles oldal képspecifikációja:
 
 | Hely | Formátum | Méretek | Betöltés |
 |---|---|---|---|
