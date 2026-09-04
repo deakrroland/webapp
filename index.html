@@ -217,7 +217,10 @@ img,svg{display:block;max-width:100%}
    4 · FEJLÉC + NAVIGÁCIÓ
    ══════════════════════════════════════════════════════════════════════════ */
 .fejlec{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--papir) 88%,transparent);
-  backdrop-filter:blur(10px);border-bottom:1px solid var(--hatar)}
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--hatar);
+  transition:box-shadow var(--alap) linear}
+/* „elhagytad a lap tetejét" — egyetlen IntersectionObserver, nulla scroll-listener */
+body[data-gorgetve] .fejlec{box-shadow:0 8px 24px -16px rgba(var(--arny-szin),.6)}
 @supports not (backdrop-filter:blur(1px)){.fejlec{background:var(--papir)}}
 .fejlec__sor{display:flex;align-items:center;justify-content:space-between;
   gap:var(--s3);min-height:60px}
@@ -334,6 +337,20 @@ html:not([data-tema="sotet"]) .tema__hold{display:none}
 .nap[data-ma][data-nyitva="igen"] .nap__ablak{animation:izzas 5s ease-in-out infinite alternate}
 @keyframes izzas{from{filter:brightness(.94)}to{filter:brightness(1.12)}}
 
+/* Az oldal EGYETLEN orkesztrált mozdulata: első betöltéskor a lap begyullad.
+   A szolgálati ablakok balról nőnek ki, naponként 55ms csúszással, aztán
+   megjelenik a „most" jelölő. 780ms az egész, egyszer, sosem ismétlődik —
+   a percenkénti újrarajzolás nem indítja újra (a JS leveszi az osztályt). */
+.parazs--gyullad .nap__ablak{transform-origin:left center;
+  animation:gyullad 400ms var(--be) both;animation-delay:calc(var(--k) * 55ms)}
+@keyframes gyullad{from{transform:scaleX(0);opacity:.3}to{transform:scaleX(1);opacity:1}}
+.parazs--gyullad .nap[data-ma][data-nyitva="igen"] .nap__ablak{
+  animation:gyullad 400ms var(--be) both,
+            izzas 5s ease-in-out 800ms infinite alternate;
+  animation-delay:calc(var(--k) * 55ms), 800ms}
+.parazs--gyullad .most{animation:jelolo-be 260ms var(--be) both;animation-delay:560ms}
+@keyframes jelolo-be{from{opacity:0;transform:scaleY(.4)}to{opacity:1;transform:none}}
+
 /* a „most" jelölő — fehér vonal a parázson, mellette az óra */
 .most{position:absolute;top:-6px;bottom:-6px;width:2px;z-index:2;
   background:#FFF;border-radius:1px;box-shadow:0 0 8px rgba(0,0,0,.6)}
@@ -384,8 +401,19 @@ html[data-tema="sotet"] .szekcio--lap{background:#221C18;border-block:1px solid 
 
 .racs3{display:grid;gap:var(--s5)}
 @media(min-width:720px){.racs3{grid-template-columns:repeat(3,1fr);gap:var(--s6)}}
-.konyha{padding:var(--s5);border:1px solid rgba(255,255,255,.12);border-radius:var(--r-l);
-  background:rgba(255,255,255,.03)}
+.konyha{display:flex;flex-direction:column;padding:var(--s5);
+  border:1px solid rgba(255,255,255,.12);border-radius:var(--r-l);
+  background:rgba(255,255,255,.03);color:inherit;text-decoration:none;
+  transition:border-color var(--alap) linear,background-color var(--alap) linear}
+.konyha:hover{border-color:rgba(255,138,85,.55);background:rgba(255,255,255,.06)}
+.konyha:focus-visible{outline:3px solid #FF8A55;outline-offset:3px}
+.konyha__kep svg{transition:transform var(--lassu) var(--be)}
+.konyha:hover .konyha__kep svg{transform:translateY(-5px) scale(1.05)}
+.konyha__tovabb{display:inline-flex;align-items:center;gap:var(--s2);margin-top:var(--s4);
+  font-size:var(--t-kis);font-weight:600;color:#FF8A55}
+.konyha__tovabb svg{width:16px;height:16px;
+  transition:transform var(--alap) var(--be)}
+.konyha:hover .konyha__tovabb svg{transform:translate(3px,-3px)}
 /* Illusztrációk: kézzel rajzolt SVG, nem fotó — lásd redesign.md §9.3.
    Nulla hálózati kérés, nulla jogi kockázat, és a paletta színeiből épül. */
 .konyha__kep{margin:0 0 var(--s5)}
@@ -465,7 +493,8 @@ html[data-tema="sotet"] .szekcio--lap{background:#221C18;border-block:1px solid 
 
 .siker{display:none;padding:var(--s5);border-radius:var(--r-m);
   border:2px solid var(--rendben);background:color-mix(in srgb,var(--rendben) 9%,transparent)}
-.siker[data-lathato]{display:block}
+.siker[data-lathato]{display:block;animation:panel-be 260ms var(--be) both}
+@keyframes panel-be{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .siker h3{color:var(--rendben);margin-bottom:var(--s3)}
 .siker p{font-size:var(--t-kis);margin-bottom:var(--s4)}
 
@@ -504,6 +533,14 @@ html[data-tema="sotet"] .szekcio--lap{background:#221C18;border-block:1px solid 
 .gyik details[open] summary::after{rotate:225deg;translate:0 3px}
 .gyik div{padding-bottom:var(--s5);color:var(--fust);max-width:var(--max-szoveg);
   font-size:var(--t-kis)}
+/* A nyitás animálva ott, ahol a böngésző tudja. Ahol nem, ugrik — ugyanaz a
+   tartalom, ugyanaz a viselkedés, csak átmenet nélkül. */
+@supports (interpolate-size: allow-keywords){
+  :root{interpolate-size:allow-keywords}
+  .gyik details::details-content{block-size:0;overflow:hidden;content-visibility:hidden;
+    transition:block-size var(--alap) var(--be), content-visibility var(--alap) allow-discrete}
+  .gyik details[open]::details-content{block-size:auto;content-visibility:visible}
+}
 
 .lablec{padding-block:var(--s8) var(--s7);font-size:var(--t-kis)}
 .lablec__racs{display:grid;gap:var(--s6)}
@@ -532,6 +569,9 @@ html[data-tema="sotet"] .szekcio--lap{background:#221C18;border-block:1px solid 
   *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;
     transition-duration:.01ms !important;scroll-behavior:auto !important}
   .nap[data-ma][data-nyitva="igen"] .nap__ablak{animation:none;filter:brightness(1.1)}
+  /* a begyulladás elmarad, de a sávok a végállapotban jelennek meg */
+  .parazs--gyullad .nap__ablak,.parazs--gyullad .most{animation:none;transform:none;opacity:1}
+  .konyha:hover .konyha__kep svg,.konyha:hover .konyha__tovabb svg{transform:none}
 }
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 @media print{
@@ -598,6 +638,7 @@ if(t)d.setAttribute("data-tema",t)})();</script>
 </nav>
 
 <main id="fo" tabindex="-1" style="outline:none">
+<div id="tetejen" aria-hidden="true" style="height:1px;margin-bottom:-1px"></div>
 
 <!-- ══ HERO ══════════════════════════════════════════════════════════════ -->
 <section class="hero">
@@ -671,7 +712,7 @@ if(t)d.setAttribute("data-tema",t)})();</script>
          az étterem saját fotóira cseréljük.</p>
     </div>
     <div class="racs3">
-      <article class="konyha">
+      <a class="konyha" href="/etlap/#pizza">
         <figure class="konyha__kep">
           <svg viewBox="0 0 160 160" role="img"
                aria-label="Pizza felülnézetből, szalámival és bazsalikommal – rajzolt illusztráció">
@@ -704,8 +745,9 @@ if(t)d.setAttribute("data-tema",t)})();</script>
         <ul><li>Papa</li><li>Son-Go-Ku</li><li>Baros</li><li>Éden</li><li>Maffia</li>
             <li>Diablo</li><li>Vadász</li></ul>
         <b class="konyha__ar szam">30 cm 1 950–3 000 Ft · 45 cm 3 450–5 800 Ft</b>
-      </article>
-      <article class="konyha">
+        <span class="konyha__tovabb">Minden pizza és feltét<svg aria-hidden="true"><use href="#i-nyil"/></svg></span>
+      </a>
+      <a class="konyha" href="/etlap/#lap">
         <figure class="konyha__kep">
           <svg viewBox="0 0 160 160" role="img"
                aria-label="Hamburger oldalnézetből, húspogácsával és sajttal – rajzolt illusztráció">
@@ -734,8 +776,9 @@ if(t)d.setAttribute("data-tema",t)})();</script>
         <ul><li>Hamburger</li><li>Sajtburger</li><li>Kebabburger</li><li>Pljeskavica</li>
             <li>Hot dog</li></ul>
         <b class="konyha__ar szam">Kebabburger 2 000 Ft · menüben 2 900 Ft</b>
-      </article>
-      <article class="konyha">
+        <span class="konyha__tovabb">Minden burger és hot dog<svg aria-hidden="true"><use href="#i-nyil"/></svg></span>
+      </a>
+      <a class="konyha" href="/etlap/#nyars">
         <figure class="konyha__kep">
           <svg viewBox="0 0 160 160" role="img"
                aria-label="Gyros pitában, papírba csomagolva – rajzolt illusztráció">
@@ -766,7 +809,8 @@ if(t)d.setAttribute("data-tema",t)})();</script>
            könnyebbet szeretnél.</p>
         <ul><li>Gyros</li><li>Kebab</li><li>Csirke box</li><li>Saláta</li><li>Szendvics</li></ul>
         <b class="konyha__ar szam">Csirkés saláta 2 700 Ft</b>
-      </article>
+        <span class="konyha__tovabb">Gyros, kebab, saláta<svg aria-hidden="true"><use href="#i-nyil"/></svg></span>
+      </a>
     </div>
   </div>
 </section>
@@ -1307,6 +1351,8 @@ function q(s,ny){ return (ny||document).querySelector(s); }
 
 /* ── 2 · Téma ─────────────────────────────────────────────────────────── */
 var gyoker = document.documentElement, valto = q("#tema-valto");
+var MOZGAS_OK = !matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 function temaAllit(t, ment){
   if(t) gyoker.setAttribute("data-tema", t); else gyoker.removeAttribute("data-tema");
   var sotet = t ? t==="sotet"
@@ -1320,7 +1366,11 @@ temaAllit(gyoker.getAttribute("data-tema"), false);
 valto.addEventListener("click", function(){
   var most = gyoker.getAttribute("data-tema");
   if(!most) most = matchMedia("(prefers-color-scheme: dark)").matches ? "sotet" : "vilagos";
-  temaAllit(most==="sotet" ? "vilagos" : "sotet", true);
+  var csere = function(){ temaAllit(most==="sotet" ? "vilagos" : "sotet", true); };
+  /* Ahol van View Transition, ott a témaváltás átúszik ahelyett, hogy villanna.
+     Ahol nincs, pontosan ugyanaz történik, csak azonnal. */
+  if(MOZGAS_OK && document.startViewTransition) document.startViewTransition(csere);
+  else csere();
 });
 
 /* ── 3 · SZIGNATÚRA · Parázs-sáv ──────────────────────────────────────────
@@ -1367,6 +1417,7 @@ function rajzol(){
       jel.appendChild(jc);
       sav.appendChild(jel);
     }
+    sor.style.setProperty("--k", String(racs.children.length));
     sor.appendChild(cimke); sor.appendChild(sav); racs.appendChild(sor);
   });
 
@@ -1399,8 +1450,24 @@ function rajzol(){
     else li.removeAttribute("data-ma");
   });
 }
+/* Az egyetlen orkesztrált mozdulat: első betöltéskor begyullad a lap.
+   Az osztály 1,4s után lekerül, így a percenkénti újrarajzolás nem játssza újra. */
+if(MOZGAS_OK){
+  doboz.classList.add("parazs--gyullad");
+  setTimeout(function(){ doboz.classList.remove("parazs--gyullad"); }, 1400);
+}
 rajzol();
 setInterval(rajzol, 60000);
+
+/* Fejléc-visszajelzés: egyetlen megfigyelő egy 1px-es őrszemen.
+   Görgetéskezelő nincs — az minden képkockán a fő szálat terhelné. */
+(function(){
+  var or = document.getElementById("tetejen");
+  if(!or || !window.IntersectionObserver) return;
+  new IntersectionObserver(function(b){
+    document.body.toggleAttribute("data-gorgetve", !b[0].isIntersecting);
+  }).observe(or);
+})();
 /* fülváltáskor azonnal frissít — ne mutasson tegnapi állapotot */
 document.addEventListener("visibilitychange", function(){ if(!document.hidden) rajzol(); });
 

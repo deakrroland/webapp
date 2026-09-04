@@ -667,8 +667,23 @@ Mozgás-tokenek: `--gyors 120ms` · `--alap 200ms` · `--lassu 320ms` ·
 belépő görbe `cubic-bezier(.16,1,.3,1)` · kilépő `cubic-bezier(.4,0,1,1)`.
 A kilépés mindig rövidebb, mint a belépés.
 
+**A rendszer szabálya: egy orkesztrált mozdulat, minden más állapot-visszajelzés.**
+Az oldalon pontosan egy dolog animál önmagáért — a Parázs-sáv begyulladása
+betöltéskor, mert az a szignatúra elem saját belépője (§7.6). Minden további
+mozgás valamilyen *változásra* válaszol: elhagytad a lap tetejét, egy kártya fölé
+vittél, kinyitottál egy kérdést, témát váltottál, elküldted az űrlapot. Dekoratív
+mozgás — görgetésre beúszó szekciók, számláló animációk, parallax — **szándékosan
+nincs**: ezek a leggyakoribb jelei az alapértelmezett AI-designnak, és egy street
+food oldalon, ahol a látogató 30 másodpercet szán a döntésre, aktívan útban vannak.
+
 | Elem | Interakció | Tulajdonság | Időzítés / görbe | Mit közöl |
 |---|---|---|---|---|
+| **Parázs-sáv — betöltéskor** | oldalbetöltés, **egyszer** | `transform: scaleX(0→1)` balról, naponként **55ms** csúszással; a „most” jelölő 560ms-nál úszik be | 400ms belépő, összesen ~780ms | **Az oldal egyetlen orkesztrált mozdulata: begyullad a lap.** Az osztály 1,4s után lekerül, így a percenkénti újrarajzolás nem játssza újra |
+| Fejléc | elhagytad a lap tetejét | `box-shadow` | 200ms `linear` | „görgetsz, a fejléc lebeg”. **Egyetlen `IntersectionObserver`** egy 1px-es őrszemen — görgetéskezelő nincs, az minden képkockán a fő szálat terhelné |
+| Konyhakártya | hover / fókusz | `border-color`, `background`; az illusztráció `translateY(-5px) scale(1.05)`; a nyíl 3px-t lép | 200ms / 320ms belépő | A kártya **link** (`/etlap/#pizza` stb.) — a mozgás ezért nem hazugság. Ez volt a feltétele: előbb lett kattintható, utána animált |
+| GYIK | nyitás / zárás | `::details-content` `block-size` + `content-visibility` | 200ms belépő | A tartalom kibomlik. `@supports (interpolate-size: allow-keywords)` mögött: ahol a böngésző nem tudja, ugrik — ugyanaz a tartalom, csak átmenet nélkül |
+| Témaváltó | kattintás | teljes oldal keresztúsztatás `document.startViewTransition`-nel | natív, ~250ms | A téma nem villan, hanem átúszik. Ahol nincs View Transition API, pontosan ugyanaz történik, csak azonnal |
+| Sikerpanel | beküldés | `opacity` + `translateY(10px→0)` | 260ms belépő | Állapotváltás: az űrlap helyére valami más lépett |
 | Gomb (mind) | hover | `background`, `border-color` | 120ms `linear` | „kattintható" |
 | Gomb | `:active` | — (**szándékosan semmi**) | 0 | Mobilon a transzform-visszajelzés a scrollal ütközik; a natív tap-highlight kikapcsolva, helyette a színváltás azonnali |
 | Minden fókuszálható | `:focus-visible` | 3px `outline`, 3px offset | azonnali | Billentyűzetes pozíció. Soha nincs átmenet — a fókuszgyűrűnek azonnal ott kell lennie |
@@ -679,16 +694,24 @@ A kilépés mindig rövidebb, mint a belépés.
 | GYIK-nyíl | `open` váltás | `rotate: 45deg → 225deg` | 200ms belépő | A tartalom iránya |
 | Űrlapmező | `:focus` | `border-color` + 3px gyűrű | 120ms `linear` | Aktív mező |
 | Űrlapmező hiba | `blur` után | megjelenés, nincs mozgás | azonnali | A hiba nem játék; a késleltetett animáció itt idegesítő |
-| Hibaösszegző | beküldés | megjelenés + `focus()` | azonnali | A fókusz odalép; a görgetés a `scroll-behavior: smooth` miatt lágy |
+| Hibaösszegző | beküldés | megjelenés + `focus()` | **azonnali, szándékosan** | A hiba nem várhat egy animációra. A fókusz odalép; a görgetés a `scroll-behavior: smooth` miatt lágy |
 | Sikerpanel | beküldés | űrlap `display:none` → panel + `focus()` | azonnali | Állapotváltás, nem díszítés |
 | Fejléc | görgetés | `backdrop-filter: blur(10px)` | statikus | Nem animált — a görgetéshez kötött animáció a fő szálat terheli |
 | Horgonyugrás | link | `scroll-behavior: smooth` | natív | Térbeli folytonosság |
 
 **`prefers-reduced-motion: reduce` esetén:** minden `animation-duration` és
 `transition-duration` 0,01ms-ra esik, a `scroll-behavior` `auto` lesz, a parázs
-lélegzése leáll — **de a mai sor `filter: brightness(1.1)`-en marad**, tehát a
-kiemelés információként megmarad. Ez a lényeg: a mozgáscsökkentés a mozgást veszi
-el, nem az információt. Chromiumban ellenőrizve: `animationName: none`.
+lélegzése leáll, a begyulladás **el sem indul** (a JS a `MOZGAS_OK` kapcsolón meg
+sem kapja az osztályt), a View Transition kimarad, a hover-elmozdulások `none`-ra
+állnak — **de a mai sor `filter: brightness(1.1)`-en marad, és minden sáv a
+végállapotában jelenik meg.** Ez a lényeg: a mozgáscsökkentés a mozgást veszi el,
+nem az információt.
+
+Chromiumban ellenőrizve, `reducedMotion: reduce` kontextusban: `animationName: none`,
+`transform: none`, a `parazs--gyullad` osztály sosem kerül fel. Normál kontextusban
+160ms-nál a sávok `scaleX` értéke `0.74 / 0.32 / 1.00 …` — a csúszás tehát valóban
+naponként lépcsőzik —, 1,8s-nál pedig már mind a végállapotban van, és az osztály
+lekerült.
 
 ---
 
@@ -1074,3 +1097,51 @@ az ellen, hogy valaki ellenőrzés nélkül élesítse.
 és a `/kapcsolat/` oldalról csak szekciótábla és indoklás készült, prototípus nem —
 a brief egy oldal működő prototípusát kérte. A design system minden komponense
 megvan hozzájuk; a három oldal megépítése kivitelezés, nem tervezés.
+
+---
+
+## 17. Fejlesztési javaslatok
+
+Prioritás szerint. A ráfordítás nagyságrendi becslés egy fejlesztőre, nem ajánlat.
+
+### 17.1 A jelenlegi kód ismert adóssága — ezt kell először
+
+| # | Javaslat | Miért | Ráfordítás |
+|---|---|---|---|
+| **J1** | **Kivételes nyitvatartás kezelése.** A mostani modell (`NYIT`) csak heti ismétlődést tud. Kell mellé egy `kivetelek: [{nap:"2026-12-24", nyit:null, uzenet:"Szenteste zárva"}]` tömb, amit a Parázs-sáv, a nyitvatartás-táblázat, az űrlap validációja **és** az `openingHoursSpecification` séma egyaránt figyelembe vesz. | **Ez a legfontosabb technikai adósság.** A szignatúra elem magabiztosan állítja, hogy nyitva vagyunk — december 24-én ez aktív félrevezetés, és pont az az elem hazudik, ami az oldal legjobban megjegyezhető része. | 0,5–1 nap |
+| **J2** | **Szerkeszthető nyitvatartás.** A `NYIT` ma a kódban van. Ki kell emelni egy `nyitvatartas.json`-be, amit az étterem is át tud írni (git, vagy egy egyszerű admin). | Ha a nyitvatartás módosításához fejlesztő kell, nem fogják módosítani — és visszatér a mai állapot (§2/K3). | 0,5 nap + admin esetén több |
+| **J3** | **Kontraszt-ellenőrzés a buildben.** A §7.1 tokenpárjaira automatikus WCAG-teszt, ami megbukik, ha egy szín alá csúszik a küszöbnek. | A paletta 9 tokenje kézzel lett kimérve. A következő „csak egy kicsit melegebbre veszem a parazsat” ezt csendben eltöri. | 2–3 óra |
+| **J4** | **Lighthouse CI + bájtköltségvetés.** A §11-es 80 KB-os keret ellenőrzése minden buildnél. | Költségvetés ellenőrzés nélkül fél éven belül elolvad. | 2–3 óra |
+
+### 17.2 Az első éles verzió után — kis ráfordítás, nagy hatás
+
+| # | Javaslat | Miért | Ráfordítás |
+|---|---|---|---|
+| **J5** | **Eseményszintű analitika, sütimentes eszközzel** (Plausible, Umami vagy szerveroldali napló): `tel:` kattintás, űrlapbeküldés, foodora/Falatozz kimenő, étlap-görgetési mélység. | Enélkül nem tudjuk, melyik a három csatorna közül működik, és a §12 minden állítása hiedelem marad. A sütimentes eszköz **megspórolja a sütibannert** is — ami maga is konverziót ront. | 0,5 nap |
+| **J6** | **Statikus térkép beágyazott iframe helyett.** Egy kattintható kép, ami a Google Térképre visz. | Egy beágyazott Google-térkép ~500 KB-ot, harmadik feles sütiket és sütibannert hoz — egyetlen gomb kedvéért, amit úgyis a telefon térképalkalmazása nyit meg. | 1–2 óra |
+| **J7** | **„Ismételd meg a legutóbbi rendelésem”** az előrendelő űrlapon, `localStorage`-ból. | Az ebédidős szegmens ismétlődően rendel. Egy koppintás öt mező helyett. Szerver nem kell hozzá. | 0,5 nap |
+| **J8** | **Étlapszűrő az `/etlap/` oldalon**, három szűrővel: *gyors (a lapról)*, *húsmentes*, *ár alatt*. | A „gyors” szűrő az ebédidős szegmensnek szól, akinek 25 perce van. Ilyet a versenytárs-oldalak nem adnak. | 1 nap |
+| **J9** | **Web App Manifest + ikon** („Hozzáadás a kezdőképernyőhöz”). | Visszatérő ebédelőknek egy ikon a telefonon többet ér, mint bármilyen SEO. Néhány sor JSON. | 1–2 óra |
+| **J10** | **QR-kód a pultnál és a csomagoláson** → `/etlap/` vagy közvetlenül az előrendelő űrlap. | Offline→online híd: aki már evett és elégedett, egy koppintással lesz visszatérő. A leggyengébb pont ma az, hogy a vendég sosem találkozik a weboldallal. | 1 óra |
+| **J11** | **Nyomtatható étlap ugyanabból a JSON-ból** (`@media print` vagy külön PDF-generálás). | Az étterem egy helyen írja át az árat, és a pult fölötti tábla is frissül. Ez az az érv, amitől az `etlap.json` karban is marad. | 0,5 nap |
+
+### 17.3 Ha az adat indokolja — ne előre
+
+Ezek **feltételhez kötöttek**. Mindegyik előtt ott a feltétel: ha az nem teljesül,
+ne épüljön meg.
+
+| # | Javaslat | Feltétel, ami nélkül ne épüljön meg |
+|---|---|---|
+| **J12** | **Csúcsidő-réteg a Parázs-sávban** — a sávban jelölve, mikor van sor („ne 12:15-kor gyere”). | Csak akkor, ha van legalább 3 hónapnyi valódi rendelési adat. Kitalált csúcsidő rosszabb, mint a semmi — és ez az elem pont a hitelességéből él. |
+| **J13** | **Saját véleménygyűjtés**, hogy az `aggregateRating` legálisan bekerülhessen a sémába (§10.3). | Csak ha valaki tényleg kezeli a beérkező véleményeket. Egy elhagyott véleményrendszer 2 db egycsillagossal rosszabb, mint a semmi. |
+| **J14** | **Service worker offline étlappal.** | Csak ha a mérés (J5) mutat rossz hálózaton érkező forgalmat. A Krisztina téren állva, gyenge térerővel ez valós előny — de ez feltételezés, amíg nincs adat. |
+| **J15** | **Angol nyelvű változat (`/en/`).** | Csak ha az analitika érdemi külföldi forgalmat mutat. Pécs egyetemváros, tehát nem kizárt — de ne a megérzés döntse el. |
+| **J16** | **„Mai ajánlat” sáv** a hero alatt, ami csak akkor jelenik meg, ha ki van töltve. | Csak ha van, aki naponta kitölti. Egy háromhetes „mai ajánlat” hitelrontó. |
+| **J17** | **`/etlap/pizza/` és `/etlap/burger/` aloldalak** (§4.3). | Csak ha van hozzájuk **egyedi tartalom** — tésztakészítés, feltétlogika, méretválasztás —, nem pusztán kulcsszó. Enélkül vékony kapuoldal. |
+
+### 17.4 Amit továbbra sem javaslok
+
+Felugró ablak · visszaszámláló · „még 3 adag maradt” · hírlevél-modál · chatbot ·
+saját kosaras rendelési motor · görgetésre beúszó szekciók · számláló animációk ·
+hero-videó. Az indoklás a §12 végén és a §8 elején — összefoglalva: mind
+a látogató 30 másodpercéből vesz el, cserébe semmit nem ad.
