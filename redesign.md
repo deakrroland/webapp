@@ -307,6 +307,19 @@ blog rosszabb, mint a hiánya. A 14. fejezetben a 3. fázisba kerül.
 | `/idopont/` | űrlap · mi történik a küldés után · válaszidő · telefonos alternatíva |
 | `/gyik/` | témacsoportok · `<details>` · `FAQPage` schema |
 
+### 5.3 A prototípusban ténylegesen megépült oldalak
+
+| Fájl | URL élesben | Mit demonstrál |
+|---|---|---|
+| `index.html` | `/` | teljes főoldal + a szignatúra elem |
+| `arak/index.html` | `/arak/` | a `2025 árak` story kiváltása: kereshető, linkelhető, dátumozott árlista ugrósávval és feltételekkel |
+| `kezelesek/ajakfeltoltes/index.html` | `/kezelesek/ajakfeltoltes/` | a kezelésoldal-sablon: mire jó / mire nem / kinek nem ajánlott / mi történik / **gyógyulási idővonal** / mennyiség / ár / GYIK |
+| `assets/labelle.css` | `/assets/…` | a design system egyetlen forrásból, mindhárom oldalon |
+| `assets/labelle.js` | `/assets/…` | az öt viselkedés, oldalanként önmagát kikapcsolva, ha az elem nincs ott |
+
+A többi URL a 4.2-es sitemapből a 2. és 3. fázisban épül, ugyanezzel a
+sablonnal.
+
 **A „kinek nem ajánlott" szekció szándékos.** Ez az egyetlen elem, ami egy kozmetikus
 oldalán soha nincs ott, és amitől orvosinak érződik az egész. Konverziót nem csökkent:
 kockázatérzetet csökkent.
@@ -688,6 +701,12 @@ Lekerekítés: `--r-1:4px` (címke, chip) · `--r-2:8px` (mező, gomb) · `--r-3
 | `Fix alsó sáv` (mobil) | — | safe-area-inset |
 | `Skip-link` | rejtett / fókuszban | első fókuszálható elem |
 | `Toast` (űrlap-visszajelzés) | siker, hiba | `role="status"` / `role="alert"` |
+| `Morzsa` | statikus | az utolsó elem nem link, `aria-current="page"` |
+| `Ugrósáv` (horgonysáv) | alap, hover, **aktív** | ragadós a fejléc alatt; az aktív szakaszt `IntersectionObserver` jelöli `aria-current="true"`-val |
+| `Ártáblázat` | hover soronként | saját `overflow-x` konténer, `tabular-nums`, jobbra zárt ár |
+| `Gyógyulási idővonal` | statikus | a sáv hossza = idő, tónusa = láthatóság; minden fokozat szövegben is |
+| `Állítás/korlát dobozpár` | statikus | akcentus = állítás, halk tónus = korlát |
+| `Tényszalag-chip` (`.tenysor`) | statikus | aloldali fejléc alatti kulcsadatok |
 
 ### 7.6 SZIGNATÚRA ELEM — „Az egy milliliter"
 
@@ -779,6 +798,31 @@ hanem közvetlen visszajelzés); a küldés-tárcsa statikus szöveggé válik (
 | JS | **Vanilla, `type="module"`, progresszív** | A funkciók: téma-kapcsoló, mobil fiók, űrlap-validáció, csúszka, lépcsőzött megjelenés. Ez összesen <6 KB. | **Bármely keretrendszer:** 40–120 KB alapdíj öt apró viselkedésért. |
 | Űrlap-backend | **Szerveroldali végpont saját domainen** + rate limit + honeypot + időbélyeg-ellenőrzés | **Egészségügyi kontextusban a beérkező adat különleges adat lehet.** Harmadik feles űrlapszolgáltatóhoz (Formspree, Netlify Forms) küldeni adatfeldolgozói szerződés nélkül kockázat. | **reCAPTCHA:** külső szkript + adattovábbítás; helyette honeypot + időzítés + rate limit. |
 | Hosztolás | **CDN-es statikus tárhely**, magyar/EU régió, HTTP/2 vagy /3, brotli | LCP a szekszárdi és pécsi mobilhálózaton dől el | — |
+
+### 9.1b A prototípus fájlszerkezete — és egy konkrét korlát
+
+```
+index.html                         →  /
+arak/index.html                    →  /arak/
+kezelesek/ajakfeltoltes/index.html →  /kezelesek/ajakfeltoltes/
+assets/labelle.css                 →  a teljes design system, egy forrásból
+assets/labelle.js                  →  a viselkedés, egy forrásból
+```
+
+Három oldalnál a CSS beágyazása már triplikáció lenne, ezért a design system
+külön fájlba került. Ez egyben a 9.4-es cache-táblázat feltételezéseit is
+teljesíti (a HTML revalidál, az eszközök egy évig állnak).
+
+**Konkrét korlát, amit tudni kell:** a JS **nem** `type="module"`, hanem
+klasszikus `<script defer>`. Oka: a `file://` protokoll alól a modulbetöltés
+CORS-hibára fut minden Chromium-alapú böngészőben, a prototípusnak viszont
+dupla kattintásra is működnie kell. Éles környezetben (HTTP) a modul is jó,
+és `type="module"`-lal a `defer` viselkedés alapból megvan.
+
+A belső hivatkozások relatívak (`../index.html`), hogy a prototípus fájlból
+is bejárható legyen. Éles környezetben ezek tiszta URL-ekre íródnak át
+(`/`, `/arak/`, `/kezelesek/ajakfeltoltes/`) — ez a statikus generátor dolga,
+nem kézi munka.
 
 ### 9.2 Betűkezelés
 
@@ -988,9 +1032,9 @@ A célok a **75. percentilisre** vonatkoznak.
 
 | Erőforrás | Büdzsé | Megjegyzés |
 |---|---|---|
-| HTML (kritikus CSS-sel) | **≤ 18 KB** | a prototípus egyfájlos, éles környezetben a CSS kiemelhető |
-| CSS (nem kritikus, aszinkron) | ≤ 8 KB | |
-| JS (összes) | **≤ 6 KB** | öt viselkedés, nulla függőség |
+| HTML (kritikus CSS-sel) | **≤ 18 KB** | a prototípusban a CSS már külön fájl; élesben a hajtás feletti rész inline-olandó |
+| CSS (megosztott, `assets/labelle.css`) | ≤ 8 KB | 42 KB nyers, brotli után ennek töredéke; oldalak közt cache-elt |
+| JS (összes, `assets/labelle.js`) | **≤ 6 KB** | 10,0 KB nyers / **~3,4 KB gzip**, hét viselkedés, nulla függőség |
 | Betűk (2 × variable woff2, latin+latin-ext) | ≤ 70 KB | ez a legnagyobb tétel — indokolt |
 | Hero kép AVIF | ≤ 45 KB | 1440px szélességnél |
 | Egyéb képek (lusta) | nem számít az elsődleges terhelésbe | |
@@ -1047,6 +1091,11 @@ pozicionálás épül.
 | D14 | Nincs karusszel sehol | eredmény- és véleménykarusszel | Rejtett tartalom + gesztusütközés mobilon |
 | D15 | Az LCP-jelölt a H1 szöveg, a hero kép mobilon a szöveg **alatt** van | képes hero felül, szöveggel ráírva | Szövegre írt kép: kontrasztkockázat, LCP-terhelés, és mobilon a felső 100vh-ból kiszorul a lényeg |
 | D16 | Márkanév-tiltás a ráncfeltöltésnél, vállalt SEO-veszteséggel | a keresett márkanév használata | Gyftv. — vényköteles készítmény nem reklámozható a lakosságnak (10.6) |
+| D17 | Az `/arak/` **katalógus-táblázat**, kategóriánként | 3 sávos „csomagkártya" a legnépszerűbbet kiemelve (a `ui-ux-pro-max` landing-domain `Pricing Page + CTA` mintája) | Az a minta SaaS-előfizetésre való: ott a felhasználó *csomagot választ*. A klinikán a páciens nem csomagot választ, hanem **egy kezelést keres és megnézi az árát**. A csomagkártya itt hamis választást kényszerítene, és eltakarná a 40+ tételes valóságot. A táblázat viszont Ctrl+F-elhető, oszlopba állítja a számokat és nyomtatható. |
+| D18 | Ugrósáv (horgonysáv) ragadósan a fejléc alatt, `IntersectionObserver`-es aktív állapottal | oldalsó tartalomjegyzék; vagy semmi | A skill `Navigation / Active State` szabálya: a jelenlegi hely legyen jelölve. Oldalsó TOC mobilon eltűnne — az ugrósáv mindkét nézetben ugyanaz a komponens, +0,4 KB JS. |
+| D19 | **Gyógyulási idővonal** a kezelésoldalon, nem szövegbekezdés | „a duzzanat 2–3 nap alatt lemegy" mondat a folyószövegben | A „mikor mehetek vissza dolgozni" gyakran fontosabb az árnál (12/C7). Sávként az idő és a láthatóság *egyszerre* leolvasható; szövegben nem. Tiszta CSS, nulla JS, nulla kép. |
+| D20 | Az akcentusszín az **állítást** jelöli, a halk tónus a **korlátot** | pipa és X ugyanabban az akcentusban | Ha a „mire jó" és a „mire nem" listája azonos színű, a szín elveszti a jelentését. A forma (pipa/X) és a tónus együtt hordozza — a szín soha nem egyedüli hordozó. |
+| D21 | A design system külön `assets/labelle.css`-be | oldalanként beágyazott `<style>` | Három oldalnál a beágyazás triplikáció, és a tokenek szétcsúsznának. Éles környezetben a kritikus CSS ebből emelhető ki inline-ba (11. fejezet). |
 
 ---
 
@@ -1170,6 +1219,45 @@ Konkrétan:
    esik vissza, ha nincs telepítve a Source Serif 4 / Schibsted Grotesk. A tipográfiai
    döntés (7.2) tehát a prototípusban **nem látszik teljes valójában** — ezt a fájl
    fejlécének megjegyzése is kimondja. Az élesítés első lépése a két woff2 subsetelése.
+
+### 16.1 Ami a második körben (aloldalak) romlott vagy nem oldódott meg
+
+7. **A kezelésoldal szerkezete kész, a tartalma nem.** Az `/kezelesek/ajakfeltoltes/`
+   oldalon a komponensek élesek (idővonal, dobozpár, lépéslista, GYIK, schema),
+   de a **szakmai szöveg minden pontján placeholder áll**: javallat,
+   ellenjavallat, fájdalom, downtime, tartósság. Ezt szándékosan nem töltöttem
+   ki — orvosi állítást kitalálni ennél a szolgáltatásnál nem apró hiba, hanem
+   a legsúlyosabb, amit egy ilyen oldalon el lehet követni. **Következmény:
+   az oldal jelen állapotában nem élesíthető, csak bemutatható.**
+
+8. **A gyógyulási idővonal fokozatai (0–2 óra … 2 hét) az én becsléseim
+   a szakma általános gyakorlatáról.** A komponens működik, a beosztás
+   szemléltető. Ha az orvos más ütemet ad meg, a sávok és a `datetime`
+   attribútumok is átírandók — nem csak a szöveg.
+
+9. **Az árlista 40+ tétele rekonstruált kezeléslista.** Az IG-tartalomból és
+   a katalógusokból következtettem rá, hogy mit csinál a klinika, és ebből
+   képeztem az egységeket (0,5 ml / 1 ml / 1 alkalom / 4 alkalom / testtáj).
+   Elképzelhető, hogy a klinika máshogy tagolja az árait — pl. testtájankénti
+   bérletekkel vagy csomagokkal, amikről nincs adatom. **A táblázat
+   szerkezete könnyen átrendezhető, de az egységek megválasztása feltevés.**
+
+10. **Az ugrósáv aktív állapota `IntersectionObserver`-rel dolgozik, nem a
+    görgetési pozícióval.** Rövid szakaszoknál (pl. `#mennyiseg`) ez pontatlan
+    lehet: ha két szakasz egyszerre látszik, az elsőt jelöli. Ez tudatos
+    egyszerűsítés a JS-büdzsé miatt; ha zavaró, egy pontosabb megoldás
+    ~0,6 KB-tal többe kerül.
+
+11. **A `web-artifacts-builder` skillt nem használtam, és ezt vállalom.**
+    A most telepített új skill React + Tailwind + shadcn/ui alapú, összetett
+    claude.ai-artifactekre való, és a saját leírása is kimondja, hogy nem
+    egyszerű, egyfájlos HTML-hez készült. Ez a projekt viszont éppen arra
+    épül, hogy **nulla külső függőség, nulla harmadik felű kérés és ≤6 KB JS**
+    legyen (11. fejezet) — egy React+Tailwind réteg ennek a specifikációnak
+    mindhárom pontját megsértené egy 20 oldalas statikus klinikaoldalon.
+    A `ui-ux-pro-max` skillt viszont ténylegesen lekérdeztem, és a
+    D17–D20 döntések ebből származnak — a `Pricing Page` mintáját is
+    megnéztem, és **indoklással elvetettem**, nem figyelmen kívül hagytam.
 
 **Amit ebből érdemes elvinni:** a stratégiai váz (kategóriaváltás kozmetikusból
 klinikába, aszinkron kapacitás, kezelésenkénti URL) még akkor is áll, ha a fenti hat
