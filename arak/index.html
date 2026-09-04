@@ -40,7 +40,7 @@ document.documentElement.dataset.tema=t;}catch(e){}})();
     </a>
 
     <nav class="fonav" aria-label="Fő navigáció">
-      <a href="../index.html#kezelesek" data-oldal="kezelesek">Kezelések</a>
+      <a href="../kezelesek/index.html" data-oldal="kezelesek">Kezelések</a>
       <a href="../arak/index.html" data-oldal="arak">Árak</a>
       <a href="../index.html#milliliter">Az 1 ml</a>
       <a href="../index.html#orvos">Dr. Imre Laura</a>
@@ -89,7 +89,7 @@ document.documentElement.dataset.tema=t;}catch(e){}})();
     </button>
   </div>
   <nav aria-label="Mobil navigáció">
-    <a href="../index.html#kezelesek" data-oldal="kezelesek">Kezelések</a>
+    <a href="../kezelesek/index.html" data-oldal="kezelesek">Kezelések</a>
     <a href="../arak/index.html" data-oldal="arak">Árak</a>
     <a href="../index.html#milliliter">Az egy milliliter</a>
     <a href="../index.html#orvos">Dr. Imre Laura</a>
@@ -101,7 +101,6 @@ document.documentElement.dataset.tema=t;}catch(e){}})();
   </nav>
   <a class="gomb gomb--fo" href="../index.html#idopont">Időpontkérés</a>
 </div>
-
 
 <nav class="morzsa keret" aria-label="Morzsamenü">
   <ol>
@@ -337,7 +336,7 @@ document.documentElement.dataset.tema=t;}catch(e){}})();
       <div>
         <h2>Kezelések</h2>
         <ul>
-          <li><a href="../kezelesek/ajakfeltoltes/index.html">Ajakfeltöltés</a></li>
+          <li><a href="../kezelesek/index.html">Összes kezelés</a></li>
           <li><a href="../arak/index.html">Árlista</a></li>
           <li><a href="../index.html#kezelesek">Bőrkezelések</a></li>
           <li><a href="../index.html#kezelesek">Lézeres szőrtelenítés</a></li>
@@ -389,6 +388,310 @@ document.documentElement.dataset.tema=t;}catch(e){}})();
          érték helyett inkább hiányzik; §15 kitöltése után pótlandó.
      A [szögletes zárójeles] mezők placeholderek: §15.
      ══════════════════════════════════════════════════════════════════════════ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://labelleklinika.hu/#site",
+      "url": "https://labelleklinika.hu/",
+      "name": "La' Belle orvos-esztétikai klinika",
+      "inLanguage": "hu-HU",
+      "publisher": { "@id": "https://labelleklinika.hu/#klinika" }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://labelleklinika.hu/#lap",
+      "url": "https://labelleklinika.hu/",
+      "name": "Orvos-esztétika Szekszárdon – La' Belle klinika",
+      "description": "Tolna vármegye első orvos-esztétikai klinikája. Kezelőorvos: Dr. Imre Laura fogorvos, szájsebész, esztétikai orvos.",
+      "isPartOf": { "@id": "https://labelleklinika.hu/#site" },
+      "about": { "@id": "https://labelleklinika.hu/#klinika" },
+      "inLanguage": "hu-HU",
+      "breadcrumb": { "@id": "https://labelleklinika.hu/#morzsa" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://labelleklinika.hu/#morzsa",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Főoldal",
+          "item": "https://labelleklinika.hu/" }
+      ]
+    },
+    {
+      "@type": ["MedicalClinic", "LocalBusiness"],
+      "@id": "https://labelleklinika.hu/#klinika",
+      "name": "La' Belle orvos-esztétikai klinika",
+      "alternateName": "La'Belle Orvos-esztétikai Klinika",
+      "description": "Tolna vármegye első orvos-esztétikai klinikája Szekszárdon. Injektálásos és készülékes orvos-esztétikai kezelések orvosi felügyelettel.",
+      "url": "https://labelleklinika.hu/",
+      "telephone": "+36-30-719-1991",
+      "currenciesAccepted": "HUF",
+      "medicalSpecialty": ["Dermatology", "PlasticSurgery"],
+      "address": { "@id": "https://labelleklinika.hu/#cim" },
+      "areaServed": [
+        { "@type": "AdministrativeArea", "name": "Tolna vármegye" },
+        { "@type": "City", "name": "Szekszárd" }
+      ],
+      "employee": { "@id": "https://labelleklinika.hu/#orvos" },
+      "sameAs": [
+        "https://www.instagram.com/labelle_orvosesztetika/",
+        "https://www.facebook.com/p/LaBelle-orvos-esztétikai-klinika-61562055876890/"
+      ],
+      "hasOfferCatalog": { "@id": "https://labelleklinika.hu/#katalogus" }
+    },
+    {
+      "@type": "PostalAddress",
+      "@id": "https://labelleklinika.hu/#cim",
+      "streetAddress": "Csalogány u. 2.",
+      "addressLocality": "Szekszárd",
+      "postalCode": "7100",
+      "addressRegion": "Tolna vármegye",
+      "addressCountry": "HU"
+    },
+    {
+      "@type": "Physician",
+      "@id": "https://labelleklinika.hu/#orvos",
+      "name": "Dr. Imre Laura",
+      "jobTitle": "fogorvos, szájsebész, esztétikai orvos",
+      "medicalSpecialty": ["Dentistry", "OralAndMaxillofacialSurgery"],
+      "worksFor": { "@id": "https://labelleklinika.hu/#klinika" },
+      "address": { "@id": "https://labelleklinika.hu/#cim" },
+      "telephone": "+36-30-719-1991"
+    },
+    {
+      "@type": "OfferCatalog",
+      "@id": "https://labelleklinika.hu/#katalogus",
+      "name": "Kezelések",
+      "itemListElement": [
+        { "@type": "Offer", "priceCurrency": "HUF",
+          "itemOffered": { "@id": "https://labelleklinika.hu/#kezeles-ajakfeltoltes" } },
+        { "@type": "Offer", "priceCurrency": "HUF",
+          "itemOffered": { "@id": "https://labelleklinika.hu/#kezeles-arcfeltoltes" } },
+        { "@type": "Offer", "priceCurrency": "HUF",
+          "itemOffered": { "@id": "https://labelleklinika.hu/#kezeles-prp" } },
+        { "@type": "Offer", "priceCurrency": "HUF",
+          "itemOffered": { "@id": "https://labelleklinika.hu/#kezeles-szortelenites" } }
+      ]
+    },
+    {
+      "@type": "MedicalProcedure",
+      "@id": "https://labelleklinika.hu/#kezeles-ajakfeltoltes",
+      "name": "Ajakfeltöltés",
+      "procedureType": "https://schema.org/NoninvasiveProcedure",
+      "bodyLocation": "Ajak",
+      "howPerformed": "Hyaluronsavas töltőanyag injektálása az ajakba, orvosi felügyelettel.",
+      "preparation": "[felkészülési tudnivalók az orvostól]",
+      "followup": "[utókezelési tudnivalók az orvostól]"
+    },
+    {
+      "@type": "MedicalProcedure",
+      "@id": "https://labelleklinika.hu/#kezeles-arcfeltoltes",
+      "name": "Arcfeltöltés",
+      "procedureType": "https://schema.org/NoninvasiveProcedure",
+      "bodyLocation": "Arc",
+      "howPerformed": "Hyaluronsavas töltőanyag injektálása az arc kontúrjaiba.",
+      "preparation": "[felkészülési tudnivalók az orvostól]",
+      "followup": "[utókezelési tudnivalók az orvostól]"
+    },
+    {
+      "@type": "MedicalProcedure",
+      "@id": "https://labelleklinika.hu/#kezeles-prp",
+      "name": "PRP — saját vérplazmás kezelés",
+      "procedureType": "https://schema.org/NoninvasiveProcedure",
+      "bodyLocation": ["Arc", "Hajas fejbőr"],
+      "howPerformed": "A pácienstől vett vérből előállított trombocitadús plazma visszajuttatása.",
+      "preparation": "[felkészülési tudnivalók az orvostól]",
+      "followup": "[utókezelési tudnivalók az orvostól]"
+    },
+    {
+      "@type": "MedicalProcedure",
+      "@id": "https://labelleklinika.hu/#kezeles-szortelenites",
+      "name": "Lézeres szőrtelenítés",
+      "procedureType": "https://schema.org/NoninvasiveProcedure",
+      "howPerformed": "Lézeres szőreltávolítás testtájanként, sorozatkezelésben.",
+      "preparation": "[felkészülési tudnivalók az orvostól]",
+      "followup": "[utókezelési tudnivalók az orvostól]"
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://labelleklinika.hu/#gyik",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Meg fog látszani, hogy csináltattam?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ez mennyiség kérdése. Az oldalon életnagyságú dózisskálán állítható be, mennyi az 1 milliliter. A konkrét mennyiséget a konzultáción, a kezelés előtt határozzuk meg."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Melyik számot hívjam?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Esztétikai időpontért a 06 30 719 1991, fogászati időpontért a 06 74 512 222 számot. A két rendelés külön naptárral dolgozik."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://labelleklinika.hu/#site",
+      "url": "https://labelleklinika.hu/",
+      "name": "La' Belle orvos-esztétikai klinika",
+      "inLanguage": "hu-HU",
+      "publisher": { "@id": "https://labelleklinika.hu/#klinika" }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://labelleklinika.hu/#lap",
+      "url": "https://labelleklinika.hu/",
+      "name": "Orvos-esztétika Szekszárdon – La' Belle klinika",
+      "description": "Tolna vármegye első orvos-esztétikai klinikája. Kezelőorvos: Dr. Imre Laura fogorvos, szájsebész, esztétikai orvos.",
+      "isPartOf": { "@id": "https://labelleklinika.hu/#site" },
+      "about": { "@id": "https://labelleklinika.hu/#klinika" },
+      "inLanguage": "hu-HU",
+      "breadcrumb": { "@id": "https://labelleklinika.hu/#morzsa" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://labelleklinika.hu/#morzsa",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Főoldal",
+          "item": "https://labelleklinika.hu/" }
+      ]
+    },
+    {
+      "@type": ["MedicalClinic", "LocalBusiness"],
+      "@id": "https://labelleklinika.hu/#klinika",
+      "name": "La' Belle orvos-esztétikai klinika",
+      "alternateName": "La'Belle Orvos-esztétikai Klinika",
+      "description": "Tolna vármegye első orvos-esztétikai klinikája Szekszárdon. Injektálásos és készülékes orvos-esztétikai kezelések orvosi felügyelettel.",
+      "url": "https://labelleklinika.hu/",
+      "telephone": "+36-30-719-1991",
+      "currenciesAccepted": "HUF",
+      "medicalSpecialty": ["Dermatology", "PlasticSurgery"],
+      "address": { "@id": "https://labelleklinika.hu/#cim" },
+      "areaServed": [
+        { "@type": "AdministrativeArea", "name": "Tolna vármegye" },
+        { "@type": "City", "name": "Szekszárd" }
+      ],
+      "employee": { "@id": "https://labelleklinika.hu/#orvos" },
+      "sameAs": [
+        "https://www.instagram.com/labelle_orvosesztetika/",
+        "https://www.facebook.com/p/LaBelle-orvos-esztétikai-klinika-61562055876890/"
+      ],
+      "hasOfferCatalog": { "@id": "https://labelleklinika.hu/#katalogus" }
+    },
+    {
+      "@type": "PostalAddress",
+      "@id": "https://labelleklinika.hu/#cim",
+      "streetAddress": "Csalogány u. 2.",
+      "addressLocality": "Szekszárd",
+      "postalCode": "7100",
+      "addressRegion": "Tolna vármegye",
+      "addressCountry": "HU"
+    },
+    {
+      "@type": "Physician",
+      "@id": "https://labelleklinika.hu/#orvos",
+      "name": "Dr. Imre Laura",
+      "jobTitle": "fogorvos, szájsebész, esztétikai orvos",
+      "medicalSpecialty": ["Dentistry", "OralAndMaxillofacialSurgery"],
+      "worksFor": { "@id": "https://labelleklinika.hu/#klinika" },
+      "address": { "@id": "https://labelleklinika.hu/#cim" },
+      "telephone": "+36-30-719-1991"
+    },
+    {
+      "@type": "OfferCatalog",
+      "@id": "https://labelleklinika.hu/#katalogus",
+      "name": "Kezelések",
+      "itemListElement": [
+        { "@type": "Offer", "priceCurrency": "HUF",
+          "itemOffered": { "@id": "https://labelleklinika.hu/#kezeles-ajakfeltoltes" } },
+        { "@type": "Offer", "priceCurrency": "HUF",
+          "itemOffered": { "@id": "https://labelleklinika.hu/#kezeles-arcfeltoltes" } },
+        { "@type": "Offer", "priceCurrency": "HUF",
+          "itemOffered": { "@id": "https://labelleklinika.hu/#kezeles-prp" } },
+        { "@type": "Offer", "priceCurrency": "HUF",
+          "itemOffered": { "@id": "https://labelleklinika.hu/#kezeles-szortelenites" } }
+      ]
+    },
+    {
+      "@type": "MedicalProcedure",
+      "@id": "https://labelleklinika.hu/#kezeles-ajakfeltoltes",
+      "name": "Ajakfeltöltés",
+      "procedureType": "https://schema.org/NoninvasiveProcedure",
+      "bodyLocation": "Ajak",
+      "howPerformed": "Hyaluronsavas töltőanyag injektálása az ajakba, orvosi felügyelettel.",
+      "preparation": "[felkészülési tudnivalók az orvostól]",
+      "followup": "[utókezelési tudnivalók az orvostól]"
+    },
+    {
+      "@type": "MedicalProcedure",
+      "@id": "https://labelleklinika.hu/#kezeles-arcfeltoltes",
+      "name": "Arcfeltöltés",
+      "procedureType": "https://schema.org/NoninvasiveProcedure",
+      "bodyLocation": "Arc",
+      "howPerformed": "Hyaluronsavas töltőanyag injektálása az arc kontúrjaiba.",
+      "preparation": "[felkészülési tudnivalók az orvostól]",
+      "followup": "[utókezelési tudnivalók az orvostól]"
+    },
+    {
+      "@type": "MedicalProcedure",
+      "@id": "https://labelleklinika.hu/#kezeles-prp",
+      "name": "PRP — saját vérplazmás kezelés",
+      "procedureType": "https://schema.org/NoninvasiveProcedure",
+      "bodyLocation": ["Arc", "Hajas fejbőr"],
+      "howPerformed": "A pácienstől vett vérből előállított trombocitadús plazma visszajuttatása.",
+      "preparation": "[felkészülési tudnivalók az orvostól]",
+      "followup": "[utókezelési tudnivalók az orvostól]"
+    },
+    {
+      "@type": "MedicalProcedure",
+      "@id": "https://labelleklinika.hu/#kezeles-szortelenites",
+      "name": "Lézeres szőrtelenítés",
+      "procedureType": "https://schema.org/NoninvasiveProcedure",
+      "howPerformed": "Lézeres szőreltávolítás testtájanként, sorozatkezelésben.",
+      "preparation": "[felkészülési tudnivalók az orvostól]",
+      "followup": "[utókezelési tudnivalók az orvostól]"
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://labelleklinika.hu/#gyik",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Meg fog látszani, hogy csináltattam?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ez mennyiség kérdése. Az oldalon életnagyságú dózisskálán állítható be, mennyi az 1 milliliter. A konkrét mennyiséget a konzultáción, a kezelés előtt határozzuk meg."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Melyik számot hívjam?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Esztétikai időpontért a 06 30 719 1991, fogászati időpontért a 06 74 512 222 számot. A két rendelés külön naptárral dolgozik."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",

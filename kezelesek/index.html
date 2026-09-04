@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kezelések – La&#x27; Belle orvos-esztétikai klinika, Szekszárd</title>
+<meta name="description" content="A La&#x27; Belle klinika összes orvos-esztétikai kezelése egy oldalon: injektálás, bőrkezelés, lézeres szőrtelenítés, sminktetoválás. Szekszárd, Csalogány u. 2.">
+<meta name="theme-color" content="#F6F5F2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#15181B" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://labelleklinika.hu/kezelesek/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="hu_HU">
+<meta property="og:site_name" content="La' Belle orvos-esztétikai klinika">
+<meta property="og:title" content="Kezelések – La&#x27; Belle orvos-esztétikai klinika, Szekszárd">
+<meta property="og:description" content="A La&#x27; Belle klinika összes orvos-esztétikai kezelése egy oldalon: injektálás, bőrkezelés, lézeres szőrtelenítés, sminktetoválás. Szekszárd, Csalogány u. 2.">
+<meta property="og:url" content="https://labelleklinika.hu/kezelesek/">
+
+<!--
+  PROTOTÍPUS · La' Belle orvos-esztétikai klinika · redesign.md
+  A [szögletes zárójeles] tartalom PLACEHOLDER.
+  ORVOSI ÁLLÍTÁST (javallat, ellenjavallat, fájdalom, gyógyulási idő,
+  tartósság) SZÁNDÉKOSAN NEM TÖLTÖTTEM KI: ezek kizárólag a kezelőorvostól
+  származhatnak. A szerkezet és a komponensek élesek, a szakmai szöveg nem.
+-->
+
+<script>
+(function(){try{var t=localStorage.getItem('lb-tema');if(t==='vilagos'||t==='sotet')
+document.documentElement.dataset.tema=t;}catch(e){}})();
+</script>
+<link rel="stylesheet" href="../assets/labelle.css">
+</head>
+<body data-oldal="kezelesek">
+<a class="atugro" href="#tartalom">Ugrás a tartalomra</a>
+<header class="fejlec">
+  <div class="keret fejlec__sor">
+    <a class="logo" href="../index.html">
+      <span class="logo__jel" aria-hidden="true">LB</span>
+      <span class="logo__nev">La'&nbsp;Belle
+        <span class="logo__alcim">orvos-esztétikai klinika</span></span>
+    </a>
+
+    <nav class="fonav" aria-label="Fő navigáció">
+      <a href="../kezelesek/index.html" data-oldal="kezelesek">Kezelések</a>
+      <a href="../arak/index.html" data-oldal="arak">Árak</a>
+      <a href="../index.html#milliliter">Az 1 ml</a>
+      <a href="../index.html#orvos">Dr. Imre Laura</a>
+      <a href="../index.html#elerhetoseg">Kapcsolat</a>
+    </nav>
+
+    <div class="tema" role="group" aria-label="Színséma">
+      <button type="button" data-tema-valto="auto" aria-pressed="true"
+              title="Rendszerbeállítás szerint">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4" width="19"
+          height="14" rx="2"/><path d="M8 21h8M12 18v3"/></svg>
+        <span class="rejtve">Rendszerbeállítás szerint</span>
+      </button>
+      <button type="button" data-tema-valto="vilagos" aria-pressed="false"
+              title="Világos">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/>
+          <path d="M12 2.5v2.2M12 19.3v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6
+          M2.5 12h2.2M19.3 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/></svg>
+        <span class="rejtve">Világos</span>
+      </button>
+      <button type="button" data-tema-valto="sotet" aria-pressed="false"
+              title="Sötét">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.2A8.4 8.4 0 0
+          1 9.8 4 8.4 8.4 0 1 0 20 14.2Z"/></svg>
+        <span class="rejtve">Sötét</span>
+      </button>
+    </div>
+
+    <a class="gomb gomb--fo" href="../index.html#idopont" data-asztali-cta>Időpontkérés</a>
+
+    <button class="menugomb" type="button" id="menugomb" aria-expanded="false"
+            aria-controls="fiok">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      <span class="rejtve">Menü megnyitása</span>
+    </button>
+  </div>
+</header>
+
+<button class="scrim" id="scrim" hidden tabindex="-1" aria-label="Menü bezárása"></button>
+
+<div class="fiok" id="fiok" hidden role="dialog" aria-modal="true" aria-label="Menü">
+  <div class="fiok__fej">
+    <button class="menugomb" type="button" id="fiokzar">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      <span class="rejtve">Menü bezárása</span>
+    </button>
+  </div>
+  <nav aria-label="Mobil navigáció">
+    <a href="../kezelesek/index.html" data-oldal="kezelesek">Kezelések</a>
+    <a href="../arak/index.html" data-oldal="arak">Árak</a>
+    <a href="../index.html#milliliter">Az egy milliliter</a>
+    <a href="../index.html#orvos">Dr. Imre Laura</a>
+    <a href="../index.html#eredmenyek">Eredmények</a>
+    <a href="../index.html#folyamat">A folyamat</a>
+    <a href="../index.html#elerhetoseg">Elérhetőség</a>
+    <a href="../index.html#velemenyek">Vélemények</a>
+    <a href="../index.html#gyik">Gyakori kérdések</a>
+  </nav>
+  <a class="gomb gomb--fo" href="../index.html#idopont">Időpontkérés</a>
+</div>
+
+
+<nav class="morzsa keret" aria-label="Morzsamenü">
+  <ol>
+    <li><a href="../index.html">Főoldal</a></li>
+    <li><span aria-current="page">Kezelések</span></li>
+  </ol>
+</nav>
+
+<main id="tartalom" class="tartalom" tabindex="-1">
+
+<section class="oldalfej">
+  <div class="keret">
+    <span class="cimke">Kezelések</span>
+    <h1>Amit a klinikán csinálunk</h1>
+    <p class="lead">Tizenegy kezelés, mindegyikhez saját oldal. Minden oldalon
+      ugyanaz a hat kérdés van megválaszolva: mire jó, mire nem, kinek nem
+      ajánlott, mi történik a székben, mikor mehetsz vissza dolgozni, és
+      mennyibe kerül.</p>
+    <ul class="tenysor">
+      <li>Kezelőorvos: <b>Dr. Imre Laura</b></li>
+      <li>fogorvos · szájsebész · esztétikai orvos</li>
+      <li><b>5,0 ★</b> / 52 Google-értékelés</li>
+    </ul>
+  </div>
+</section>
+
+<nav class="ugrosav" aria-label="Ugrás kategóriára">
+  <div class="keret ugrosav__belso">
+    <a href="#injektalas">Injektálás</a>
+    <a href="#borkezeles">Bőrkezelés</a>
+    <a href="#keszulekes">Készülékes</a>
+    <a href="#egyeb">Egyéb</a>
+    <a href="#valasztas">Nem tudom, mi kell</a>
+  </div>
+</nav>
+
+<section aria-labelledby="lista-cim">
+  <div class="keret">
+    <h2 id="lista-cim" class="rejtve">A kezelések listája</h2>
+
+    <h3 class="alcsoport" id="injektalas">Injektálásos kezelések</h3>
+    <ul class="racs racs--4">
+      <li class="kartya"><h4><a href="ajakfeltoltes/index.html">Ajakfeltöltés</a></h4>
+        <p>Hyaluronsavas ajakkezelés orvosi kézben.</p>
+        <span class="ar szam">[ár] Ft-tól</span></li>
+      <li class="kartya"><h4><a href="arcfeltoltes/index.html">Arcfeltöltés</a></h4>
+        <p>Hyaluronsavas arcváz-korrekció: áll, járomcsont, nasolabialis redő.</p>
+        <span class="ar szam">[ár] Ft-tól</span></li>
+      <li class="kartya"><h4><a href="rancfeltoltes/index.html">Ráncfeltöltés</a></h4>
+        <p>Homlokránc, szemöldökközti ránc, szemráncok.</p>
+        <span class="ar szam">[ár] Ft-tól</span></li>
+      <li class="kartya"><h4><a href="biostimulacio/index.html">Biostimuláció</a></h4>
+        <p>Mezoterápia és skin booster: a bőr minőségét javítja, nem a térfogatát növeli.</p>
+        <span class="ar szam">[ár] Ft-tól</span></li>
+    </ul>
+
+    <h3 class="alcsoport" id="borkezeles">Bőrkezelések</h3>
+    <ul class="racs racs--4">
+      <li class="kartya"><h4><a href="prp/index.html">PRP</a></h4>
+        <p>A kezeléshez a saját véredből készül a hatóanyag: vérvétel a helyszínen, majd a…</p>
+        <span class="ar szam">[ár] Ft-tól</span></li>
+      <li class="kartya"><h4><a href="carbon-peeling/index.html">Carbon peeling</a></h4>
+        <p>Lézeres bőrkezelés szénmaszkkal.</p>
+        <span class="ar szam">[ár] Ft-tól</span></li>
+      <li class="kartya"><h4><a href="hydra-beauty/index.html">Hydra Beauty</a></h4>
+        <p>Mélyhidratálás, bőrtisztítás és bőrnyugtatás egy menetben.</p>
+        <span class="ar szam">[ár] Ft-tól</span></li>
+      <li class="kartya"><h4><a href="calecim/index.html">CALECIM</a></h4>
+        <p>Regenerációt támogató kezelés, amit a klinika jellemzően más kezelés után vagy mellé…</p>
+        <span class="ar szam">[ár] Ft-tól</span></li>
+      <li class="kartya"><h4><a href="orvosi-kozmetika/index.html">Orvosi kozmetika</a></h4>
+        <p>Kozmetikai kezelés orvosi háttérrel: a különbség nem a kézben van, hanem abban, hogy…</p>
+        <span class="ar szam">[ár] Ft-tól</span></li>
+    </ul>
+
+    <h3 class="alcsoport" id="keszulekes">Készülékes kezelések</h3>
+    <ul class="racs racs--4">
+      <li class="kartya"><h4><a href="lezeres-szortelenites/index.html">Lézeres szőrtelenítés</a></h4>
+        <p>Testtájanként, sorozatban.</p>
+        <span class="ar szam">[ár] Ft-tól</span></li>
+    </ul>
+
+    <h3 class="alcsoport" id="egyeb">Egyéb kezelések</h3>
+    <ul class="racs racs--4">
+      <li class="kartya"><h4><a href="sminktetovalas/index.html">Sminktetoválás</a></h4>
+        <p>Szemöldök, szemhéj, ajakkontúr.</p>
+        <span class="ar szam">[ár] Ft-tól</span></li>
+    </ul>
+
+    <p style="margin-top:var(--s-6)">
+      <a href="../arak/index.html">Teljes árlista egy oldalon →</a></p>
+  </div>
+</section>
+
+<section id="valasztas" class="sav" aria-labelledby="valasztas-cim">
+  <div class="keret">
+    <div class="szakaszfej">
+      <span class="cimke">Ha nem tudod, mi kell</span>
+      <h2 id="valasztas-cim">Nem kell előre eldöntened</h2>
+    </div>
+    <div class="parban">
+      <div class="doboz">
+        <h3>Ezt csináljuk a konzultáción</h3>
+        <ul>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>
+            <span>Megnézzük a bőrödet és felvesszük a kórtörténetet</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>
+            <span>Megmondjuk, melyik kezelés hoz nálad eredményt — és melyik nem</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>
+            <span>Konkrét mennyiséget és konkrét összeget mondunk, a kezelés előtt</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>
+            <span>Ha nem javasoljuk a kezelést, azt is megmondjuk</span></li>
+        </ul>
+      </div>
+      <div class="doboz doboz--figyelem">
+        <h3>Amit nem csinálunk</h3>
+        <ul>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            <span>Nem beszélünk rá semmire a konzultáción</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            <span>Nem kezelünk aznap döntéskényszerben — hazamehetsz gondolkodni</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            <span>Nem ígérünk olyan eredményt, amit a kezelés nem tud</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="zaro-cta" style="margin-top:var(--s-7)">
+      <div>
+        <h2>Kezdd a konzultációval</h2>
+        <p>A konzultáció díja <b>[ár]</b>, és beszámít a kezelés árába.
+          Ha utána nem kéred a kezelést, csak ezt fizeted.</p>
+      </div>
+      <a class="gomb gomb--fo" href="../index.html#idopont">Időpontot kérek</a>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer class="lablec">
+  <div class="keret">
+    <div class="lablec__racs">
+      <div>
+        <a class="logo" href="../index.html" style="margin-bottom:var(--s-4)">
+          <span class="logo__jel" aria-hidden="true">LB</span>
+          <span class="logo__nev">La'&nbsp;Belle
+            <span class="logo__alcim">orvos-esztétikai klinika</span></span>
+        </a>
+        <address>
+          Csalogány u. 2.<br>
+          7100 Szekszárd<br>
+          <a href="tel:+36307191991" class="szam">06 30 719 1991</a>
+          <span style="color:var(--halk)"> — esztétika</span><br>
+          <a href="tel:+3674512222" class="szam">06 74 512 222</a>
+          <span style="color:var(--halk)"> — fogászat</span>
+        </address>
+      </div>
+      <div>
+        <h2>Kezelések</h2>
+        <ul>
+          <li><a href="../kezelesek/index.html">Összes kezelés</a></li>
+          <li><a href="../arak/index.html">Árlista</a></li>
+          <li><a href="../index.html#kezelesek">Bőrkezelések</a></li>
+          <li><a href="../index.html#kezelesek">Lézeres szőrtelenítés</a></li>
+          <li><a href="../index.html#kezelesek">Sminktetoválás</a></li>
+          <li><a href="../index.html#kezelesek">ZO Skin Health</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Klinika</h2>
+        <ul>
+          <li><a href="../index.html#orvos">Dr. Imre Laura</a></li>
+          <li><a href="../index.html#eredmenyek">Eredmények</a></li>
+          <li><a href="../index.html#gyik">Gyakori kérdések</a></li>
+          <li><a href="../index.html#idopont">Időpontkérés</a></li>
+          <li><a href="https://www.instagram.com/labelle_orvosesztetika/"
+                 rel="me noopener">Instagram</a></li>
+          <li><a href="../adatkezelesi-tajekoztato/">Adatkezelési tájékoztató</a></li>
+          <li><a href="../impresszum/">Impresszum</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="lablec__zaro">
+      <span>© 2026 La'&nbsp;Belle orvos-esztétikai klinika</span>
+      <span>Prototípus — a [szögletes zárójeles] értékek placeholderek.</span>
+    </p>
+  </div>
+</footer>
+
+<!-- ══════════════════════ MOBIL FIX ALSÓ SÁV (CRO: C10) ══════════════════════ -->
+<div class="also">
+  <a class="gomb gomb--mellek" href="tel:+36307191991">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 3h3l1.5 4-2 1.5a12
+      12 0 0 0 6.5 6.5L17 13l4 1.5v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4.5 5.2
+      2 2 0 0 1 6.5 3Z"/></svg>
+    Hívás
+  </a>
+  <a class="gomb gomb--fo" href="../index.html#idopont">Időpontkérés</a>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     STRUKTURÁLT ADAT — redesign.md §10.3
+     Két csomópont SZÁNDÉKOSAN KI VAN HAGYVA:
+       · aggregateRating — a Google-értékelés saját oldalon való schema-közlése
+         csak saját véleménygyűjtés esetén jogszerű (§10.3). A vizuális 5,0 ★
+         ezért forrásmegjelöléssel szerepel, schema nélkül.
+       · openingHoursSpecification — csak a 16:00-s zárás dokumentált, a nyitás
+         nem. Hiányos nyitvatartás rosszabb, mint a hiánya.
+       · geo és priceRange — nincs dokumentált koordináta és árszint. Kitalált
+         érték helyett inkább hiányzik; §15 kitöltése után pótlandó.
+     A [szögletes zárójeles] mezők placeholderek: §15.
+     ══════════════════════════════════════════════════════════════════════════ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://labelleklinika.hu/#site",
+      "url": "https://labelleklinika.hu/",
+      "name": "La' Belle orvos-esztétikai klinika",
+      "inLanguage": "hu-HU",
+      "publisher": { "@id": "https://labelleklinika.hu/#klinika" }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://labelleklinika.hu/#lap",
+      "url": "https://labelleklinika.hu/",
+      "name": "Orvos-esztétika Szekszárdon – La' Belle klinika",
+      "description": "Tolna vármegye első orvos-esztétikai klinikája. Kezelőorvos: Dr. Imre Laura fogorvos, szájsebész, esztétikai orvos.",
+      "isPartOf": { "@id": "https://labelleklinika.hu/#site" },
+      "about": { "@id": "https://labelleklinika.hu/#klinika" },
+      "inLanguage": "hu-HU",
+      "breadcrumb": { "@id": "https://labelleklinika.hu/#morzsa" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://labelleklinika.hu/#morzsa",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Főoldal",
+          "item": "https://labelleklinika.hu/" }
+      ]
+    },
+    {
+      "@type": ["MedicalClinic", "LocalBusiness"],
+      "@id": "https://labelleklinika.hu/#klinika",
+      "name": "La' Belle orvos-esztétikai klinika",
+      "alternateName": "La'Belle Orvos-esztétikai Klinika",
+      "description": "Tolna vármegye első orvos-esztétikai klinikája Szekszárdon. Injektálásos és készülékes orvos-esztétikai kezelések orvosi felügyelettel.",
+      "url": "https://labelleklinika.hu/",
+      "telephone": "+36-30-719-1991",
+      "currenciesAccepted": "HUF",
+      "medicalSpecialty": ["Dermatology", "PlasticSurgery"],
+      "address": { "@id": "https://labelleklinika.hu/#cim" },
+      "areaServed": [
+        { "@type": "AdministrativeArea", "name": "Tolna vármegye" },
+        { "@type": "City", "name": "Szekszárd" }
+      ],
+      "employee": { "@id": "https://labelleklinika.hu/#orvos" },
+      "sameAs": [
+        "https://www.instagram.com/labelle_orvosesztetika/",
+        "https://www.facebook.com/p/LaBelle-orvos-esztétikai-klinika-61562055876890/"
+      ],
+      "hasOfferCatalog": { "@id": "https://labelleklinika.hu/#katalogus" }
+    },
+    {
+      "@type": "PostalAddress",
+      "@id": "https://labelleklinika.hu/#cim",
+      "streetAddress": "Csalogány u. 2.",
+      "addressLocality": "Szekszárd",
+      "postalCode": "7100",
+      "addressRegion": "Tolna vármegye",
+      "addressCountry": "HU"
+    },
+    {
+      "@type": "Physician",
+      "@id": "https://labelleklinika.hu/#orvos",
+      "name": "Dr. Imre Laura",
+      "jobTitle": "fogorvos, szájsebész, esztétikai orvos",
+      "medicalSpecialty": ["Dentistry", "OralAndMaxillofacialSurgery"],
+      "worksFor": { "@id": "https://labelleklinika.hu/#klinika" },
+      "address": { "@id": "https://labelleklinika.hu/#cim" },
+      "telephone": "+36-30-719-1991"
+    },
+    {
+      "@type": "OfferCatalog",
+      "@id": "https://labelleklinika.hu/#katalogus",
+      "name": "Kezelések",
+      "itemListElement": [
+        { "@type": "Offer", "priceCurrency": "HUF",
+          "itemOffered": { "@id": "https://labelleklinika.hu/#kezeles-ajakfeltoltes" } },
+        { "@type": "Offer", "priceCurrency": "HUF",
+          "itemOffered": { "@id": "https://labelleklinika.hu/#kezeles-arcfeltoltes" } },
+        { "@type": "Offer", "priceCurrency": "HUF",
+          "itemOffered": { "@id": "https://labelleklinika.hu/#kezeles-prp" } },
+        { "@type": "Offer", "priceCurrency": "HUF",
+          "itemOffered": { "@id": "https://labelleklinika.hu/#kezeles-szortelenites" } }
+      ]
+    },
+    {
+      "@type": "MedicalProcedure",
+      "@id": "https://labelleklinika.hu/#kezeles-ajakfeltoltes",
+      "name": "Ajakfeltöltés",
+      "procedureType": "https://schema.org/NoninvasiveProcedure",
+      "bodyLocation": "Ajak",
+      "howPerformed": "Hyaluronsavas töltőanyag injektálása az ajakba, orvosi felügyelettel.",
+      "preparation": "[felkészülési tudnivalók az orvostól]",
+      "followup": "[utókezelési tudnivalók az orvostól]"
+    },
+    {
+      "@type": "MedicalProcedure",
+      "@id": "https://labelleklinika.hu/#kezeles-arcfeltoltes",
+      "name": "Arcfeltöltés",
+      "procedureType": "https://schema.org/NoninvasiveProcedure",
+      "bodyLocation": "Arc",
+      "howPerformed": "Hyaluronsavas töltőanyag injektálása az arc kontúrjaiba.",
+      "preparation": "[felkészülési tudnivalók az orvostól]",
+      "followup": "[utókezelési tudnivalók az orvostól]"
+    },
+    {
+      "@type": "MedicalProcedure",
+      "@id": "https://labelleklinika.hu/#kezeles-prp",
+      "name": "PRP — saját vérplazmás kezelés",
+      "procedureType": "https://schema.org/NoninvasiveProcedure",
+      "bodyLocation": ["Arc", "Hajas fejbőr"],
+      "howPerformed": "A pácienstől vett vérből előállított trombocitadús plazma visszajuttatása.",
+      "preparation": "[felkészülési tudnivalók az orvostól]",
+      "followup": "[utókezelési tudnivalók az orvostól]"
+    },
+    {
+      "@type": "MedicalProcedure",
+      "@id": "https://labelleklinika.hu/#kezeles-szortelenites",
+      "name": "Lézeres szőrtelenítés",
+      "procedureType": "https://schema.org/NoninvasiveProcedure",
+      "howPerformed": "Lézeres szőreltávolítás testtájanként, sorozatkezelésben.",
+      "preparation": "[felkészülési tudnivalók az orvostól]",
+      "followup": "[utókezelési tudnivalók az orvostól]"
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://labelleklinika.hu/#gyik",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Meg fog látszani, hogy csináltattam?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ez mennyiség kérdése. Az oldalon életnagyságú dózisskálán állítható be, mennyi az 1 milliliter. A konkrét mennyiséget a konzultáción, a kezelés előtt határozzuk meg."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Melyik számot hívjam?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Esztétikai időpontért a 06 30 719 1991, fogászati időpontért a 06 74 512 222 számot. A két rendelés külön naptárral dolgozik."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": "https://labelleklinika.hu/kezelesek/#lap",
+      "url": "https://labelleklinika.hu/kezelesek/",
+      "name": "Kezelések – La' Belle orvos-esztétikai klinika",
+      "inLanguage": "hu-HU",
+      "about": {
+        "@id": "https://labelleklinika.hu/#klinika"
+      },
+      "breadcrumb": {
+        "@id": "https://labelleklinika.hu/kezelesek/#morzsa"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://labelleklinika.hu/kezelesek/#morzsa",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Főoldal",
+          "item": "https://labelleklinika.hu/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Kezelések",
+          "item": "https://labelleklinika.hu/kezelesek/"
+        }
+      ]
+    },
+    {
+      "@type": "ItemList",
+      "@id": "https://labelleklinika.hu/kezelesek/#lista",
+      "numberOfItems": 11,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Ajakfeltöltés",
+          "url": "https://labelleklinika.hu/kezelesek/ajakfeltoltes/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Arcfeltöltés",
+          "url": "https://labelleklinika.hu/kezelesek/arcfeltoltes/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Ráncfeltöltés",
+          "url": "https://labelleklinika.hu/kezelesek/rancfeltoltes/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "Biostimuláció",
+          "url": "https://labelleklinika.hu/kezelesek/biostimulacio/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "PRP",
+          "url": "https://labelleklinika.hu/kezelesek/prp/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "name": "Carbon peeling",
+          "url": "https://labelleklinika.hu/kezelesek/carbon-peeling/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 7,
+          "name": "Hydra Beauty",
+          "url": "https://labelleklinika.hu/kezelesek/hydra-beauty/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 8,
+          "name": "CALECIM",
+          "url": "https://labelleklinika.hu/kezelesek/calecim/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 9,
+          "name": "Lézeres szőrtelenítés",
+          "url": "https://labelleklinika.hu/kezelesek/lezeres-szortelenites/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 10,
+          "name": "Sminktetoválás",
+          "url": "https://labelleklinika.hu/kezelesek/sminktetovalas/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 11,
+          "name": "Orvosi kozmetika",
+          "url": "https://labelleklinika.hu/kezelesek/orvosi-kozmetika/"
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<script src="../assets/labelle.js" defer></script>
+</body>
+</html>

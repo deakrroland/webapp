@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La' Belle — weboldal-prototípus, bemutató</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#F6F5F2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#15181B" media="(prefers-color-scheme: dark)">
+
+<!--
+  ÜGYFÉLNEK ÁTADHATÓ BEMUTATÓ OLDAL.
+  Ez nem a weboldal része: ez a kísérőlap, ami elmagyarázza, mit néz a
+  megrendelő, mi valódi és mi placeholder benne.
+  Élesítéskor ez a fájl törlendő.
+-->
+
+<script>
+(function(){try{var t=localStorage.getItem('lb-tema');if(t==='vilagos'||t==='sotet')
+document.documentElement.dataset.tema=t;}catch(e){}})();
+</script>
+<link rel="stylesheet" href="assets/labelle.css">
+<style>
+  .bemutato-sav{background:var(--grafit);color:var(--marvany);
+    padding:var(--s-3) 0;font-size:var(--t-small);position:sticky;top:0;z-index:45}
+  .bemutato-sav .keret{display:flex;flex-wrap:wrap;gap:var(--s-3);
+    align-items:center;justify-content:space-between}
+  .bemutato-sav b{color:var(--marvany)}
+  .oldallista{list-style:none;margin:0;padding:0;display:grid;gap:var(--s-3)}
+  @media (min-width:700px){.oldallista{grid-template-columns:repeat(2,1fr)}}
+  @media (min-width:1100px){.oldallista{grid-template-columns:repeat(3,1fr)}}
+  .oldallista a{display:flex;flex-direction:column;gap:var(--s-1);
+    background:var(--lap);border:1px solid var(--acel);border-radius:var(--r-3);
+    padding:var(--s-4) var(--s-5);text-decoration:none;color:var(--grafit);
+    min-height:76px;justify-content:center;
+    transition:border-color var(--gyors) var(--be),box-shadow var(--gyors) var(--be),
+               transform var(--gyors) var(--be)}
+  .oldallista a:hover{border-color:var(--lampafeny);box-shadow:var(--e-2);
+    transform:translateY(-2px)}
+  .oldallista b{font-family:var(--f-display);font-size:1.0625rem;font-weight:600}
+  .oldallista code{font-size:var(--t-micro);color:var(--halk);
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .kerdesek{counter-reset:q;list-style:none;margin:0;padding:0;max-width:78ch}
+  .kerdesek li{counter-increment:q;display:grid;grid-template-columns:2.2rem 1fr;
+    gap:var(--s-3);padding:var(--s-3) 0;border-bottom:1px solid var(--acel);
+    font-size:var(--t-small)}
+  .kerdesek li::before{content:counter(q) ".";font-variant-numeric:tabular-nums;
+    color:var(--lampafeny);font-weight:700}
+  .kerdesek b{display:block}
+  .kerdesek span{color:var(--halk)}
+</style>
+</head>
+<body data-oldal="demo">
+<a class="atugro" href="#tartalom">Ugrás a tartalomra</a>
+
+<div class="bemutato-sav">
+  <div class="keret">
+    <span><b>Prototípus</b> — nem éles weboldal. Az árak, dátumok és orvosi
+      szövegek helyén jelölt kitöltendő mezők állnak.</span>
+    <span>La'&nbsp;Belle orvos-esztétikai klinika</span>
+  </div>
+</div>
+
+<main id="tartalom" class="tartalom" tabindex="-1">
+
+<section class="oldalfej">
+  <div class="keret">
+    <span class="cimke">Bemutató</span>
+    <h1>A La'&nbsp;Belle weboldal prototípusa</h1>
+    <p class="lead">Tizennégy működő oldal, világos és sötét megjelenéssel,
+      telefonon és számítógépen egyaránt. Kattintson bármelyikre — a bemutató
+      internet nélkül is működik.</p>
+    <ul class="tenysor">
+      <li><b>14</b> oldal</li>
+      <li><b>11</b> kezelésoldal</li>
+      <li>Teljes <b>árlista</b></li>
+      <li>Működő <b>időpontkérő űrlap</b></li>
+    </ul>
+  </div>
+</section>
+
+<section class="sav" aria-labelledby="fontos-cim">
+  <div class="keret">
+    <div class="szakaszfej">
+      <h2 id="fontos-cim">Mielőtt belenéz — három mondat</h2>
+    </div>
+    <div class="parban">
+      <div class="doboz">
+        <h3>Ami valódi</h3>
+        <ul>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>
+            <span>A szerkezet, a design, a működés: minden gomb, űrlap,
+              kapcsoló és animáció él</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>
+            <span>A cím, a két telefonszám, a Google-értékelés és a
+              kezelések listája</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>
+            <span>A szövegek hangvétele — ez javasolt, és szabadon
+              változtatható</span></li>
+        </ul>
+      </div>
+      <div class="doboz doboz--figyelem">
+        <h3>Ami szándékosan üres</h3>
+        <ul>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            <span>Minden <b>ár</b>, dátum és időtartam. Nem találtunk ki
+              számot.</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            <span>Minden <b>orvosi állítás</b>: javallat, ellenjavallat,
+              fájdalom, gyógyulási idő. Ezek csak Dr. Imre Laurától
+              származhatnak.</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            <span>Minden <b>fotó</b>. Az Instagram-bio tiltja a klinika
+              képeinek felhasználását, ezért egyetlen La'&nbsp;Belle-fotó
+              sincs benne — a helyükön jelölt keretek állnak.</span></li>
+        </ul>
+      </div>
+    </div>
+    <p style="margin-top:var(--s-5);font-size:var(--t-small);color:var(--halk);
+              max-width:74ch">A kitöltendő helyeket <b>[szögletes zárójel]</b>
+      jelöli az oldalakon. Ha ilyet lát, az nem hiba: az a klinikától várt
+      adat helye.</p>
+  </div>
+</section>
+
+<section aria-labelledby="oldalak-cim">
+  <div class="keret">
+    <div class="szakaszfej">
+      <span class="cimke">Nézze meg</span>
+      <h2 id="oldalak-cim">A prototípus oldalai</h2>
+    </div>
+
+    <h3 class="alcsoport">Fő oldalak</h3>
+    <ul class="oldallista">
+      <li><a href="index.html"><b>Főoldal</b><code>/</code></a></li>
+      <li><a href="arak/index.html"><b>Árlista</b><code>/arak/</code></a></li>
+      <li><a href="kezelesek/index.html"><b>Kezelések — áttekintés</b><code>/kezelesek/</code></a></li>
+      <li><a href="index.html#milliliter"><b>„Az egy milliliter" — a szignatúra elem</b><code>/#milliliter</code></a></li>
+      <li><a href="index.html#idopont"><b>Időpontkérő űrlap</b><code>/#idopont</code></a></li>
+    </ul>
+
+    <h3 class="alcsoport">Kezelésoldalak</h3>
+    <ul class="oldallista">
+      <li><a href="kezelesek/ajakfeltoltes/index.html"><b>Ajakfeltöltés</b><code>/kezelesek/ajakfeltoltes/</code></a></li>
+      <li><a href="kezelesek/arcfeltoltes/index.html"><b>Arcfeltöltés</b><code>/kezelesek/arcfeltoltes/</code></a></li>
+      <li><a href="kezelesek/rancfeltoltes/index.html"><b>Ráncfeltöltés</b><code>/kezelesek/rancfeltoltes/</code></a></li>
+      <li><a href="kezelesek/biostimulacio/index.html"><b>Biostimuláció</b><code>/kezelesek/biostimulacio/</code></a></li>
+      <li><a href="kezelesek/prp/index.html"><b>PRP</b><code>/kezelesek/prp/</code></a></li>
+      <li><a href="kezelesek/carbon-peeling/index.html"><b>Carbon peeling</b><code>/kezelesek/carbon-peeling/</code></a></li>
+      <li><a href="kezelesek/hydra-beauty/index.html"><b>Hydra Beauty</b><code>/kezelesek/hydra-beauty/</code></a></li>
+      <li><a href="kezelesek/calecim/index.html"><b>CALECIM</b><code>/kezelesek/calecim/</code></a></li>
+      <li><a href="kezelesek/lezeres-szortelenites/index.html"><b>Lézeres szőrtelenítés</b><code>/kezelesek/lezeres-szortelenites/</code></a></li>
+      <li><a href="kezelesek/sminktetovalas/index.html"><b>Sminktetoválás</b><code>/kezelesek/sminktetovalas/</code></a></li>
+      <li><a href="kezelesek/orvosi-kozmetika/index.html"><b>Orvosi kozmetika</b><code>/kezelesek/orvosi-kozmetika/</code></a></li>
+    </ul>
+  </div>
+</section>
+
+<section class="sav" aria-labelledby="proba-cim">
+  <div class="keret">
+    <div class="szakaszfej">
+      <span class="cimke">Amit érdemes kipróbálni</span>
+      <h2 id="proba-cim">Négy dolog, ami nem látszik egy képernyőképen</h2>
+    </div>
+    <ol class="lepesek" style="max-width:66ch">
+      <li><b>Az egy milliliter</b>
+        <p>A főoldalon, középen. Húzza a csúszkát, és tartsa a bankkártyáját
+          a szaggatott kerethez — a fecskendő életnagyságban van.
+          Ez válaszol a leggyakoribb ki nem mondott kérdésre: „meg fog
+          látszani?"</p></li>
+      <li><b>Világos és sötét megjelenés</b>
+        <p>A fejlécben, a jobb felső sarokban, három állapot: rendszer szerint,
+          világos, sötét. A választás megmarad a következő látogatásra is.</p></li>
+      <li><b>Az időpontkérő űrlap</b>
+        <p>A főoldal alján. Próbálja meg üresen elküldeni — megmutatja, hogyan
+          jelzi a hibát. (A prototípus nem küld el semmit.)</p></li>
+      <li><b>Telefonon</b>
+        <p>Nyissa meg mobilon is: alul állandó <b>Hívás</b> és
+          <b>Időpontkérés</b> gomb kíséri végig az oldalt.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section aria-labelledby="kell-cim">
+  <div class="keret">
+    <div class="szakaszfej">
+      <span class="cimke">A következő lépés</span>
+      <h2 id="kell-cim">Amit a klinikától kérünk az élesítéshez</h2>
+      <p>A prototípus addig nem élesíthető, amíg ezek nincsenek meg. A teljes,
+        22 pontos lista a stratégiai dokumentum 15. fejezetében van.</p>
+    </div>
+    <ol class="kerdesek">
+      <li><b>Van már weboldal, és mi az URL-je?</b>
+        <span>A Google-profil jelez egy webhelyet, de nem sikerült
+          azonosítani. Új domain kell, vagy meglévőt költöztetünk?</span></li>
+      <li><b>A teljes, aktuális árlista kezelésenként.</b>
+        <span>A prototípusban minden ár placeholder.</span></li>
+      <li><b>Pontos nyitvatartás minden napra.</b>
+        <span>Ma csak a 16:00-s zárás nyilvános.</span></li>
+      <li><b>Dr. Imre Laura hivatalos adatai.</b>
+        <span>Diploma, szájsebész szakvizsga, esztétikai képzés — intézménnyel
+          és évszámmal. Működési nyilvántartási szám, kamarai tagság.</span></li>
+      <li><b>Kezelésenkénti szakmai tartalom.</b>
+        <span>Javallat, ellenjavallat, fájdalom, gyógyulási idő, tartósság,
+          ajánlott kezelésszám. Ezek nélkül a kezelésoldalak nem
+          élesíthetők.</span></li>
+      <li><b>Van írásos hozzájárulás a páciensfotókhoz?</b>
+        <span>Az előtte/utána képek egészségügyi adatot érintenek; a
+          kezeléshez adott beleegyezés nem fedi le a marketingcélú
+          közzétételt.</span></li>
+      <li><b>Ki válaszol az űrlapokra, és milyen válaszidőt vállalunk?</b>
+        <span>És hova érkezzen: e-mailbe vagy praxiskezelő rendszerbe?</span></li>
+      <li><b>A logó vektoros formában, és a végleges írásmód.</b>
+        <span>„La' Belle" vagy „La'Belle"? A jelenlegi felületek eltérnek.</span></li>
+    </ol>
+
+    <div class="zaro-cta" style="margin-top:var(--s-7)">
+      <div>
+        <h2>Egy lépés, ami már ma megtehető</h2>
+        <p>A klinika Google-profilja jelenleg <b>„Kozmetikai vállalat"</b>
+          kategóriában van. Ez a helyi találatokban a kozmetikusok közé
+          sorolja a klinikát. Orvosi kategóriára állítani egy kattintás, és
+          ez a legnagyobb hozamú lépés az egész projektben — weboldal
+          nélkül is.</p>
+      </div>
+      <a class="gomb gomb--fo" href="index.html">Irány a prototípus</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="lablec">
+  <div class="keret">
+    <p class="lablec__zaro" style="margin-top:0;border-top:0">
+      <span>Weboldal-prototípus — La'&nbsp;Belle orvos-esztétikai klinika,
+        Szekszárd, Csalogány u. 2.</span>
+      <span>Nem éles weboldal. A [szögletes zárójeles] értékek kitöltendők.</span>
+    </p>
+  </div>
+</footer>
+
+<script src="assets/labelle.js" defer></script>
+</body>
+</html>

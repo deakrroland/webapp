@@ -309,16 +309,58 @@ blog rosszabb, mint a hiánya. A 14. fejezetben a 3. fázisba kerül.
 
 ### 5.3 A prototípusban ténylegesen megépült oldalak
 
+**14 oldal + egy ügyfélnek szóló kísérőlap.** A 4.2-es sitemap teljes
+kezelés-ága elkészült.
+
 | Fájl | URL élesben | Mit demonstrál |
 |---|---|---|
 | `index.html` | `/` | teljes főoldal + a szignatúra elem |
-| `arak/index.html` | `/arak/` | a `2025 árak` story kiváltása: kereshető, linkelhető, dátumozott árlista ugrósávval és feltételekkel |
-| `kezelesek/ajakfeltoltes/index.html` | `/kezelesek/ajakfeltoltes/` | a kezelésoldal-sablon: mire jó / mire nem / kinek nem ajánlott / mi történik / **gyógyulási idővonal** / mennyiség / ár / GYIK |
-| `assets/labelle.css` | `/assets/…` | a design system egyetlen forrásból, mindhárom oldalon |
-| `assets/labelle.js` | `/assets/…` | az öt viselkedés, oldalanként önmagát kikapcsolva, ha az elem nincs ott |
+| `arak/index.html` | `/arak/` | a `2025 árak` story kiváltása: 40+ tételes, dátumozott, kereshető árlista |
+| `kezelesek/index.html` | `/kezelesek/` | hub: 11 kezelés kategóriánként + „nem tudom, mi kell" belépő |
+| `kezelesek/ajakfeltoltes/` | `/kezelesek/ajakfeltoltes/` | a sablon kézzel írt referenciapéldánya |
+| `kezelesek/arcfeltoltes/` | … | áll, járomcsont, nasolabialis |
+| `kezelesek/rancfeltoltes/` | … | **a Gyftv. márkanév-tiltása a lapon is kimondva** (10.6) |
+| `kezelesek/biostimulacio/` | … | mezoterápia, skin booster — sorozatlogika |
+| `kezelesek/prp/` | … | vérvételes folyamat; a C-célcsoport belépője |
+| `kezelesek/carbon-peeling/` | … | a klinika saját, forrásmegjelölt leírásával |
+| `kezelesek/hydra-beauty/` | … | „esemény előtt" pozíció, nulla downtime |
+| `kezelesek/calecim/` | … | kiegészítő kezelés, tudatosan óvatos hatásállítással |
+| `kezelesek/lezeres-szortelenites/` | … | testtájankénti ár, elvárás-kezelés |
+| `kezelesek/sminktetovalas/` | … | az utómunka az árban; a gyógyulás itt dönt |
+| `kezelesek/orvosi-kozmetika/` | … | a kozmetikus-elhatárolás lapja |
+| `assets/labelle.css` · `assets/labelle.js` | `/assets/…` | a design system és a viselkedés, egy forrásból |
+| `demo.html` | — | **ügyfélnek szóló kísérőlap; élesítéskor törlendő** |
 
-A többi URL a 4.2-es sitemapből a 2. és 3. fázisban épül, ugyanezzel a
-sablonnal.
+Mind a 14 oldal ugyanazt a hat kérdést válaszolja meg a kezelésekről:
+*mire jó · mire nem · kinek nem ajánlott · mi történik a székben · mikor
+mehetek vissza dolgozni · mennyibe kerül.* Ez a sorrend nem esztétikai
+döntés: ez a döntési út (3.3).
+
+**A kezelésoldalak generálva készültek** egy adatszerkezetből (`slug`, chipek,
+javallat/korlát, lépések, idővonal-fokozatok, ártételek, GYIK, kapcsolódó
+kezelések). Élesben ez a szerkezet 1:1 megfeleltethető a statikus generátor
+tartalmi sémájának — új kezelés felvétele adatsor, nem oldalírás.
+
+### 5.4 Az átadható demócsomag
+
+Az ügyfélnek nem a repót adjuk át, hanem egy kicsomagolható, offline
+működő csomagot:
+
+```
+labelle-prototipus.zip
+├── OLVASD-EL.txt      hogyan nyissa meg, mi üres és miért
+├── demo.html          ← ITT KEZDJE — kísérőlap az összes oldalhoz
+├── index.html         a főoldal
+├── arak/ · kezelesek/ a 13 további oldal
+└── assets/            megjelenés és működés
+```
+
+A `demo.html` szándékosan **nem** a weboldal része. Három dolgot csinál:
+(1) elöl, félreérthetetlenül kimondja, hogy ez prototípus, és mi valódi
+benne; (2) egy kattintással elérhetővé tesz minden oldalt; (3) a végén
+nyolc konkrét kérdést tesz fel, amire válasz kell az élesítéshez — a 15.
+fejezet ügyfélnek szóló kivonata. Magázódik, mert a klinikának szól, míg
+a weboldal a pácienseknek tegeződik.
 
 **A „kinek nem ajánlott" szekció szándékos.** Ez az egyetlen elem, ami egy kozmetikus
 oldalán soha nincs ott, és amitől orvosinak érződik az egész. Konverziót nem csökkent:
@@ -1222,13 +1264,24 @@ Konkrétan:
 
 ### 16.1 Ami a második körben (aloldalak) romlott vagy nem oldódott meg
 
-7. **A kezelésoldal szerkezete kész, a tartalma nem.** Az `/kezelesek/ajakfeltoltes/`
-   oldalon a komponensek élesek (idővonal, dobozpár, lépéslista, GYIK, schema),
-   de a **szakmai szöveg minden pontján placeholder áll**: javallat,
-   ellenjavallat, fájdalom, downtime, tartósság. Ezt szándékosan nem töltöttem
-   ki — orvosi állítást kitalálni ennél a szolgáltatásnál nem apró hiba, hanem
-   a legsúlyosabb, amit egy ilyen oldalon el lehet követni. **Következmény:
-   az oldal jelen állapotában nem élesíthető, csak bemutatható.**
+7. **A 11 kezelésoldal szerkezete kész, a tartalma nem.** A komponensek
+   élesek (idővonal, dobozpár, lépéslista, GYIK, schema), de a **szakmai
+   szöveg minden pontján placeholder áll**: javallat, ellenjavallat, fájdalom,
+   downtime, tartósság. Ezt szándékosan nem töltöttem ki — orvosi állítást
+   kitalálni ennél a szolgáltatásnál nem apró hiba, hanem a legsúlyosabb, amit
+   egy ilyen oldalon el lehet követni. **Következmény: a kezelésoldalak jelen
+   állapotukban nem élesíthetők, csak bemutathatók.** Ez a demócsomag
+   `OLVASD-EL.txt` fájljában és a `demo.html` első képernyőjén is ki van mondva,
+   hogy az ügyfél ne éles oldalként nézze őket.
+
+7b. **A generálás egységesített, és ez kockázat is.** A 10 oldal egy sablonból
+   készült, ezért a szerkezetük tökéletesen konzisztens — de ez azt is jelenti,
+   hogy **a sablon minden hibája tízszeresen van jelen**, és hogy néhány
+   kezelésnél a sablon szakaszai nem egyformán indokoltak. A lézeres
+   szőrtelenítésnél például a „mi történik a székben" hat lépése soknak
+   tűnhet, a CALECIM-nél pedig a „gyógyulási idővonal" nagyrészt az
+   alapkezelésről szól, nem magáról a kezelésről. Ezek élesítéskor
+   kezelésenként felülvizsgálandók.
 
 8. **A gyógyulási idővonal fokozatai (0–2 óra … 2 hét) az én becsléseim
    a szakma általános gyakorlatáról.** A komponens működik, a beosztás

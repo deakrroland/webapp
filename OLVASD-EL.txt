@@ -1,0 +1,54 @@
+LA' BELLE ORVOS-ESZTÉTIKAI KLINIKA — WEBOLDAL-PROTOTÍPUS
+========================================================
+
+HOGYAN NYISSA MEG
+-----------------
+Csomagolja ki ezt a mappát, majd nyissa meg a  demo.html  fájlt
+dupla kattintással. Bármelyik böngésző jó. Internet nem kell hozzá.
+
+A demo.html a kísérőlap: elmagyarázza, mit lát, és onnan minden
+oldal elérhető egy kattintással. Ha egyből a weboldalt szeretné
+látni, nyissa meg az  index.html  fájlt.
+
+
+MI EZ
+-----
+14 működő oldal:
+  index.html                      a főoldal
+  arak/                           teljes árlista
+  kezelesek/                      a kezelések áttekintése
+  kezelesek/<kezelés neve>/       11 külön kezelésoldal
+  assets/                         a megjelenés és a működés fájljai
+
+Világos és sötét megjelenés (a fejléc jobb felső sarkában
+kapcsolható), telefonon és számítógépen egyaránt működik.
+
+
+AMI SZÁNDÉKOSAN ÜRES
+--------------------
+A [szögletes zárójelben] álló szövegek KITÖLTENDŐ HELYEK, nem hibák:
+
+  - minden ár, dátum, időtartam
+  - minden orvosi állítás (javallat, ellenjavallat, fájdalom,
+    gyógyulási idő, tartósság)
+  - a nyitvatartás a 16:00-s záráson kívül
+  - Dr. Imre Laura képesítési adatai
+
+Ezeket nem találtuk ki. Az orvosi tartalom kizárólag a kezelőorvostól
+származhat.
+
+FOTÓK: a klinika Instagram-biója kimondja, hogy a fotók és videók
+felhasználása tilos. Ezt betartottuk — a prototípusban egyetlen
+La' Belle-fotó sincs, a helyükön jelölt keretek állnak.
+
+
+A KÖVETKEZŐ LÉPÉS
+-----------------
+A demo.html végén 8 kérdés van, amire válasz kell az élesítéshez.
+A teljes, 22 pontos lista és a stratégiai indoklás a redesign.md
+fájlban van (fejlesztőnek/marketingesnek szól, nem kötelező olvasmány).
+
+Egy dolog, ami már ma megtehető, weboldal nélkül is:
+a klinika Google-cégprofilja jelenleg "Kozmetikai vállalat"
+kategóriában van. Ez a helyi keresésben a kozmetikusok közé sorolja
+a klinikát. Orvosi kategóriára állítani egy kattintás.
