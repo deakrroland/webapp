@@ -25,6 +25,25 @@
 
 ---
 
+## 0.0 Változásnapló — a második iteráció
+
+Az első átadás után az ügyfél négy irányt kért, amelyek részben **felülírják**
+az akkori javaslataimat. Itt rögzítem, mi változott, és mit fizettünk érte —
+hogy a döntés visszakereshető maradjon.
+
+| Kérés | Mi volt előtte | Mi lett | Mit fizettünk érte |
+|---|---|---|---|
+| „Legyenek animációk" | Szándékosan visszafogott mozgás, nulla görgetés-animáció (régi D13) | 22 tételes mikrointerakció-készlet, görgetésre megjelenés, lebegő háttérfoltok (§8) | +2,7 kB CSS, +3,4 kB JS. A JS így **11,1 kB nyers** — a briefben kért 5–10 kB fölött; tömörítve 4,0 kB. |
+| „fehér-bézs-cián-babarózsaszín" | Anyagnév-alapú paletta a műhely nyersanyagaiból (meggy, kakaó, piskóta) | A kért négy szín, kilenc tokenre bontva, minden kontraszt újramérve (§7.1) | A paletta már **nem vezethető le** a szakmából; ez most márkadöntés, nem érv (§3.6). |
+| „térhatású elemek" | Sík, matt felületek, hajszálvonalak | Valódi CSS 3D: kiterjedt szelet, egérrel dönthető kártyák, 3D gombnyomódás (§8, §9.7) | +1,9 kB CSS. `transform-style: preserve-3d` mobilon GPU-memóriát eszik — ezért a döntés csak egérrel érhető el. |
+| „esztétikus képek süteményekről" | Nulla kép, szándékosan (a fotó a tetőt mutatja, nem a szerkezetet) | Négy saját SVG-illusztráció (11,5 kB nyers, 2,5 kB tömörítve) + előkészített `<picture>` foglalatok | **Nem fotók**, és nem a Krém termékei. Jogtiszta fotóbank nem volt elérhető (§9.3). |
+
+**Amit nem adtam fel:** egy H1, teljes heading-hierarchia, mért kontrasztok,
+akadálymentes űrlap, `prefers-reduced-motion`, nulla külső kérés, és az, hogy
+egyetlen kitalált ár, nyitvatartás vagy kapacitás sincs az oldalon.
+
+---
+
 ## 0. Kontextus — amit tudok, és amit nem
 
 A brief kontextusmezői üresen érkeztek. Az alábbi táblázat **csak dokumentált
@@ -215,78 +234,96 @@ ellenkező előjellel. Ezért kap a nyitvatartás önálló, magyarázó szekci�
 ## 3.6 A vizuális kiindulópont — egy mondatban
 
 > **A kiindulópont a felvágott desszert keresztmetszete: az a nézet, amit csak
-> akkor lát az ember, amikor a műhely már elvégezte a munkát — ezért a paletta
-> nem absztrakt márkaszínekből, hanem a rétegek anyagaiból (tejszín, piskóta,
-> égetett cukor, kakaó, meggy, pisztácia) áll, a szerkezet pedig a műhely
-> szóhasználatát követi: rétegek, sorrend, arány.**
+> akkor lát az ember, amikor a műhely már elvégezte a munkát — ezért a szerkezet
+> a rétegekből, a sorrendből és az arányokból épül, a felület pedig térbeli:
+> a szelet nem rajz, hanem kiterjedt test, aminek látszik az oldala és a teteje.**
 
-Amit ez konkrétan kizár: nincs „elegáns cukrászda" aranyszín; nincs pasztell
-rózsaszín, mert az a torta-marketing alapértelmezése; nincs fotótapéta-hero,
-mert nincs jogtiszta fotó, és mert a fotó úgyis csak a tetejét mutatja.
+### 3.6.1 A paletta — és egy őszinte megjegyzés
 
-Amit előír: minden szín megnevezhető egy **anyaggal**, amit a műhelyben
-használnak. Ha egy szín nem nevezhető meg így, nem kerül a rendszerbe.
+Az első iterációban a paletta **anyagnevekből** jött: minden szín egy nyersanyag
+volt a műhelyből (meggy, kakaó, piskóta, pisztácia), és a szabály az volt, hogy
+ami nem nevezhető meg anyaggal, az nem kerül be. Ez a szabály tartotta a
+palettát a szakmához kötve.
+
+Az ügyfél a **fehér – bézs – cián – babarózsaszín** négyest kérte. Ez az
+ügyfél döntése, és így is szállítom. Amit ezzel elveszítünk, azt itt kimondom,
+hogy később ne kelljen kitalálni:
+
+- **A paletta ettől kezdve márkadöntés, nem levezetés.** Nincs mögötte olyan
+  érv, hogy „mert ilyen egy karamell". Ha valaki megkérdezi, miért cián, a
+  válasz az, hogy az ügyfél így kérte — ez teljesen legitim válasz, csak nem
+  ugyanaz, mint egy indoklás.
+- **A cián a magyar cukrászati hagyományban nem élelmiszerszín.** Ezt
+  ellensúlyozza, hogy a szeletben csak mint *krém- és mousse-réteg* jelenik meg
+  (mentás/menta-ízek), nem mint tésztaszín, és hogy a bézs és a fehér adja a
+  felület nagy részét.
+- **A babarózsaszín közel esik a „torta-marketing" alapértelmezéséhez**, amit az
+  első briefed maga is tiltott. Ezt két dologgal tartom távol tőle: (a) a rózsaszín
+  soha nem háttér, csak felület és réteg; (b) a szöveget hordozó akcent nem a
+  babarózsaszín, hanem a **mély cián** (`#046B7E`) és a **mély málna** (`#C0396B`) —
+  a pasztellek dekorációt visznek, nem információt.
+
+Amit **megnyertünk**: a paletta világos és sötét témán is nagyon jól szétválik,
+és a négy szín elég távol áll egymástól ahhoz, hogy a rétegek egy 22 px-es
+színchipen is megkülönböztethetők legyenek.
 
 ---
 
-## 3.7 A szignatúra elem — „A keresztmetszet"
+## 3.7 A szignatúra elem — „A háromdimenziós szelet"
 
 ### Mi ez
 
-Egy desszert **vágott felülete**: egymásra rakott vízszintes rétegsávok,
-mindegyik a saját anyagtextúrájával (a piskóta morzsás, a mousse sima szemcsés,
-a glazúr fényes és túlcsordul az oldalán, a ropogós alap rácsos). Mellette a
-rétegek listája: minden réteg neve és **funkciója** — nem az összetevője, hanem
-hogy mit **csinál** („tartás — enélkül összeesik", „savas ellenpont a
-mousse-nak"). Egy réteget kiválasztva az kicsúszik a szeletből, a többi
-visszahalványul.
+Egy desszert **kiterjedt teste**, nem a rajza. A CSS `transform-style:
+preserve-3d`-vel minden réteg kap egy jobb oldallapot, a legfelső egy tetőlapot,
+és az egész test `perspective` alatt áll — így a szelet elülső lapja *maga a
+keresztmetszet*, miközben a hasáb oldala és teteje is látszik. Egérrel a test
+követi a kurzort; egér nélkül lassan hintázik. Egy réteget kiválasztva az
+**a néző felé csúszik ki** (`translateZ(34px)`), a többi visszahalványul.
+
+Mellette a rétegek listája: minden réteg neve és **funkciója** — nem az
+összetevője, hanem hogy mit **csinál** („tartás — enélkül összeesik").
 
 ### Miért pont ez
 
 1. **Megmutatja, nem elmondja.** A „műhely" szó azt állítja, hogy itt kézzel
-   épített, összetett dolgok készülnek. Ezt egy fotó nem tudja bizonyítani —
-   a fotó a tetőt mutatja. A keresztmetszet a *munkát* mutatja: hét réteg, hét
-   döntés.
+   épített, összetett dolgok készülnek. A térbeli szelet ezt bizonyítja: hét
+   réteg, hét döntés, és a vágott lap az, ami elárulja őket.
 2. **A hiányzó információt adja meg.** §3.4: a döntés kockázata a belső
-   szerkezet nem ismerete. A keresztmetszet pont ezt oldja fel, és mellékesen
-   megoldja az allergéninformáció megjelenítését is (K4): a rétegsorban látszik,
-   hol van tej, tojás, dióféle.
-3. **Rendszer, nem trükk.** Ugyanez a rajz jelenik meg 34 px széles
-   miniatűrként a kínálatlista minden során. Így fotó nélkül is minden tételnek
-   **saját vizuális identitása** van, és a lista végigpásztázható.
-4. **Nem fotón múlik.** Az ügyfélnek ma nincs fotóanyaga. Ez a megoldás
-   *fotófüggetlen*, és akkor is működik, ha soha nem lesz fotós.
-5. **A paletta belőle jön.** A rétegszínek és a felület-/szövegszínek ugyanabból
-   a hét anyagból származnak — a szignatúra elem és a design system nem két
-   dolog.
+   szerkezet nem ismerete.
+3. **A 3D itt nem díszítés, hanem a metafora befejezése.** Egy lapos rajz
+   *ábrázolja* a keresztmetszetet; egy kiterjedt test **megmutatja, hogy van
+   miből metszetet venni**. Ez az egyetlen hely az oldalon, ahol a térhatás
+   tartalmat hordoz — a többi (kártyadöntés, gombnyomódás) visszajelzés.
+4. **Nem fotón múlik.** Az ügyfélnek nincs jogtiszta fotóanyaga (§9.3).
 
 ### Mibe kerül LCP-ben
 
-Megmértem a leszállított prototípuson:
+Megmérve a leszállított prototípuson:
 
 | Tétel | Méret |
 |---|---|
-| A keresztmetszet HTML-je | **3 946 B** |
-| A hozzá tartozó CSS | **4 973 B** |
+| A 3D szelet HTML-je | **954 B** |
+| A hozzá tartozó CSS | **5 151 B** |
 | Hálózati kérés | **0** |
 | Képdekódolás | **0 ms** |
 | Elrendezés-ugrás (CLS) | **0** — minden sáv fix `--h` magasságú |
 
 **LCP-hatás: gyakorlatilag nulla, és negatív egy fotós alternatívához képest.**
 Egy 1200 px széles, jól optimalizált AVIF hero 60–110 kB, plusz egy külön
-hálózati kérés, plusz dekódolás — az lenne az LCP-elem. Így a legnagyobb
-festett elem a `H1` szövege vagy a keresztmetszet DOM-ja, tehát
-**LCP ≈ FCP**, és a font érkezésén kívül semmi nem tolja.
+hálózati kérés, plusz dekódolás. Így a legnagyobb festett elem a `H1` szövege,
+tehát **LCP ≈ FCP**.
 
-### Fegyelem máshol
+**Amit a 3D ténylegesen kerül:** nem bájtot, hanem **kompozitálást**. A
+`preserve-3d` réteg saját GPU-textúrát kap. Ezért: a szelet a hajtás fölött
+egyetlen ilyen réteg, a kártyák pedig csak hover alatt lépnek 3D-be, és
+érintőeszközön (`pointer: coarse`) a JS **be sem köti** a döntést.
 
-Ez az egy hely a merész. Minden más csendes: hajszálvékony elválasztók,
-matt felületek, 3–12 px sugarak, semmi üvegeffekt, semmi gradiens a szöveg
-mögött, semmi nagybetűs „01/02/03". A sorszámozás csak ott jelenik meg, ahol
-valódi sorrend van — a rétegek listája alulról fölfelé építési sorrend, de ott
-sem számot használunk, hanem a rétegek vizuális egymásra következését.
+### Fegyelem — hova költöttük a merészséget
 
----
+A háttérfoltok, a görgetésre megjelenés és a gombnyomódás mind **halk**:
+0,38 opacitás, 26 px elmozdulás, 3 px gombsüllyedés. Egy hangos elem van, a
+szelet. A sorszámozás sehol nem jelenik meg olyan tartalmon, aminek nincs valódi
+sorrendje.
 
 ## 4. Új információs architektúra és sitemap
 
@@ -320,17 +357,20 @@ Ha nincs ilyen kérdés, nincs URL. Öt oldal indul, kettő a második fázisban
 
 | # | Szekció | Tartalom | Cél | Megjegyzés |
 |---|---|---|---|---|
-| 1 | Fejléc | Logó, nav, **élő nyitva/zárva jelző**, téma-kapcsoló | Orientáció + a leggyakoribb kérdés azonnali megválaszolása | A jelző ugyanabból az objektumból számol, mint az űrlap-validáció |
-| 2 | Hero | H1, egy bekezdés, két CTA, **4 tényadat** (5,0 / ársáv / nyitás / cím) | A „hova kerültem és megéri-e" 5 másodperc alatt | Nincs kép. A tények forrásmegjelöléssel |
-| 3 | **Keresztmetszet** | A szignatúra elem, 7 réteggel | Megmutatni, mit jelent a „műhely" | §3.7 |
-| 4 | A műhely rendje | Három út: bejössz / hívsz-írsz / előre kéred | A csatornák egyenrangúsítása, az U1 feloldása | Nem sorszámozott lépéssor: három **párhuzamos** út |
-| 5 | Kínálat | 4 tétel mini keresztmetszettel, allergénjelekkel, árral | A döntés bemenete (U2, K4) | Prototípusban mintaadat |
+| 1 | Fejléc | Logó, nav, **élő nyitva/zárva jelző** (lüktető ponttal, ha nyitva), téma-kapcsoló | Orientáció + a leggyakoribb kérdés azonnali megválaszolása | A jelző ugyanabból az objektumból számol, mint az űrlap-validáció |
+| 2 | Hero | H1, egy bekezdés, két CTA, **4 tényadat-kártya** (5,0 / ársáv / nyitás / cím) | A „hova kerültem és megéri-e" 5 másodperc alatt | Mögötte két lassan sodródó, elmosott színfolt |
+| 3 | **A 3D szelet** | A szignatúra elem, 7 réteggel, egérrel dönthető | Megmutatni, mit jelent a „műhely" | §3.7 |
+| 4 | A műhely rendje | Három emelkedő lap: bejössz / hívsz-írsz / előre kéred | A csatornák egyenrangúsítása, az U1 feloldása | Nem sorszámozott lépéssor: három **párhuzamos** út |
+| 5 | Kínálat | 4 térhatású kártya saját SVG-illusztrációval, allergénjelekkel, árral | A döntés bemenete (U2, K4) | Prototípusban mintaadat; a valódi fotó helye előkészítve (§9.3) |
 | 6 | **Előrendelés** | Akadálymentes űrlap + magyarázó oszlop | A fő konverzió | Bal oldalt: miért kérjük az adatot |
 | 7 | Hol és mikor | Cím, hívás, SMS, útvonal, heti nyitvatartás | NAP-konzisztencia + a K3 feloldása | A táblázat generált, egy forrásból |
 | 8 | Vélemények | 5,0 · 16, forrással; „Írj értékelést" | A J1 konvertálása és hígítása (§3.3) | Nincs `aggregateRating` markup (§10.3) |
 | 9 | GYIK | 4 kérdés | A telefonhívások egy részének kiváltása | `FAQPage` markup |
 | 10 | Lábléc | NAP, oldalak, kötelező linkek | Jogi + bejárhatóság | |
-| M | Mobil cselekvési sáv | Előrendelés + Hívás, fix | A J2 mintájának átvétele | Csak <900 px |
+| M | Mobil cselekvési sáv | Előrendelés + Hívás, fix | A J2 mintájának átvétele | Csak <960 px |
+
+Minden szekció **görgetésre úszik be**, testvérenként 70 ms lépcsőzéssel (A13),
+és a `.rejt` osztály csak futó JS mellett rejt (§8.3).
 
 ### 5.2 `/kinalat/`
 
@@ -373,83 +413,93 @@ Ha nincs ilyen kérdés, nincs URL. Öt oldal indul, kettő a második fázisban
 
 ## 6. Wireframe
 
-### 6.1 Főoldal — desktop (≥1100 px, tartalomsáv 1160 px)
+### 6.1 Főoldal — desktop (≥1100 px, tartalomsáv 1180 px)
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────────┐
-│ [Ugrás a tartalomra]  ← csak fókusszal látható, a bal felső sarokban          │
+│ [Ugrás a tartalomra]  ← csak fókusszal látható                               │
 ├──────────────────────────────────────────────────────────────────────────────┤
-│ Krém  desszertműhely & kávézó   Kínálat Előrendelés A műhely Hol             │
-│                                    ( ● Most nyitva · 18:00-ig )  [☀][▭][☾]   │  ← ragadós, 64 px
+│ Krém  DESSZERTMŰHELY & KÁVÉZÓ   Kínálat Előrendelés A műhely Hol             │
+│  ▲gradiens                        ( ● Most nyitva · 18:00-ig )  [☀][▭][☾]    │  ragadós, 68 px
 ├──────────────────────────────────────────────────────────────────────────────┤
+│  ░░ cián folt (blur 70px, sodródik 26s)          ░░ rózsa folt (32s) ░░       │
 │                                                                              │
 │  Krém Desszertműhely és Kávézó —      ┌───────────────────────────────────┐  │
 │  Pécs, Zsuzsanna utca                 │ [a nap desszertje]        (MINTA) │  │
-│  ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔ H1 (Fraunces) │                                   │  │
-│                                       │ ┌────────┐  ■ Tükörglazúr         │  │
-│  Tizenhat Google-értékelés, egy sem   │ │▓▓▓▓▓▓▓▓│    lezár, és eltakarja │  │
-│  kevesebb ötnél. Tizenegykor          │ │████████│  ■ Gyümölcszselé       │  │
-│  nyitunk. Egy kávé és egy desszert    │ │▒▒▒▒▒▒▒▒│    savas ellenpont     │  │
-│  személyenként 2000 Ft alatt kijön.   │ │░░░░░░░░│  ■ Csokoládémousse     │  │
-│                                       │ │▓▓▓▓▓▓▓▓│    a tömeg             │  │
-│  ┌───────────────────┐ ┌────────────┐ │ │▚▚▚▚▚▚▚▚│  ■ …                   │  │
-│  │Desszertet rendelnék│ │06 30 609 …│ │ └────────┘  (7 réteg)             │  │
-│  └───────────────────┘ └────────────┘ │  ▔▔▔▔▔▔▔▔▔ SZIGNATÚRA             │  │
-│  ─────────────────────────────────    │ Ez a rajz mutatja meg, mit jelent │  │
-│  ÉRTÉKELÉS  ÁRSÁV     NYITÁS   CÍM    │ a „műhely" szó…                   │  │
-│  5,0        1–2000 Ft 11:00  Zsuzs. 2 └───────────────────────────────────┘  │
-│  16 érték.  /fő       zárás?  7632                                           │
+│  ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔ H1, az „em" rész     │                                   │  │
+│   cián→málna gradienssel              │        ╱▔▔▔▔▔▔▔▔▔▔╲              │  │
+│                                       │      ╱▁▁▁▁▁▁▁▁▁▁╱ │  ← tetőlap   │  │
+│  Tizenhat Google-értékelés, egy sem   │     │▓▓▓ glazúr ▓│ │              │  │
+│  kevesebb ötnél. Tizenegykor          │     │▒▒▒ zselé ▒▒│ │  ← oldallap  │  │
+│  nyitunk. Egy kávé és egy desszert    │     │░░ mousse ░░│ │              │  │
+│  személyenként 2000 Ft alatt kijön.   │     │▓▓ piskóta ▓│ │              │  │
+│                                       │     │▚▚▚ alap ▚▚▚│╱               │  │
+│  ╭───────────────────╮ ╭────────────╮ │      ╲▁▁▁▁▁▁▁▁▁╱                 │  │
+│  │Desszertet rendelnék│ │06 30 609 …│ │        ~~~ árnyék ~~~            │  │
+│  ╰───────────────────╯ ╰────────────╯ │   ▲ VALÓDI CSS 3D, egérrel dönthető│ │
+│   ▲ fénycsík hoverre, −3px emelkedés  │                                   │  │
+│                                       │  ■ Tükörglazúr  lezár, és eltak…  │  │
+│  ┌────────┐┌────────┐┌────────┐┌────┐ │  ■ Málnazselé   savas ellenpont   │  │
+│  │ÉRTÉKEL.││ÁRSÁV   ││NYITÁS  ││CÍM │ │  ■ Mentás mousse  a tömeg         │  │
+│  │  5,0   ││1–2000Ft││ 11:00  ││Zsu…│ │  … (7 sor, mind 50 px gomb)       │  │
+│  │16 érté.││/fő     ││zárás?  ││7632│ │                                   │  │
+│  └────────┘└────────┘└────────┘└────┘ │  Ez a szelet nem kép, hanem…      │  │
+│    ▲ hoverre −4px                     └───────────────────────────────────┘  │
 ├──────────────────────────────────────────────────────────────────────────────┤
-│  A MŰHELY RENDJE ────────────────────────────────────────────────────────    │
+│  ▬▬ A MŰHELY RENDJE                                                          │
 │  Három út vezet ide, és nem egyforma sürgős mind a három                      │
-│                                                                              │
-│  ─────────────────      ─────────────────      ─────────────────             │
-│  11:00-tól              Bármikor               Előre                          │
-│  Bejössz                Hívsz vagy írsz        Kitöltöd az űrlapot            │
-│  Zsuzsanna u. 2…        06 30 609 7009, SMS…   Konkrét napra…                 │
+│  ┌═══════════════┐  ┌═══════════════┐  ┌═══════════════┐   ← felső élük      │
+│  │ 11:00-tól     │  │ Bármikor      │  │ Előre         │     cián→rózsa      │
+│  │ Bejössz       │  │ Hívsz vagy írsz│  │ Kitöltöd…     │     gradiens       │
+│  │ Zsuzsanna u…  │  │ 06 30 609 7009│  │ Konkrét napra │                     │
+│  └───────────────┘  └───────────────┘  └───────────────┘   hoverre −6px      │
 ├──────────────────────────────────────────────────────────────────────────────┤
-│  KÍNÁLAT ────────────────────────────────────────────────────────────────    │
-│  Minden tétel a saját keresztmetszetét hozza                                  │
-│  ──────────────────────────────────────────────────────────────────────      │
-│  ▤  [csokoládés szeletes desszert]                                    [ár]   │
-│     Hat réteg: glazúr, zselé, mousse, krém, piskóta, ropogós alap             │
-│     (tojás)(tej)(glutén)(diófélék)                                            │
-│  ──────────────────────────────────────────────────────────────────────      │
-│  ▤  [pisztáciás desszert]                                             [ár]   │
-│  … (4 sor)                                                                    │
+│  ▬▬ KÍNÁLAT                                                                  │
+│  Ami a pultban áll                                                            │
+│  ┌───────────┐ ┌───────────┐ ┌───────────┐ ┌───────────┐  ← 4 oszlop         │
+│  │ ┌───────┐ │ │ ┌───────┐ │ │ ┌───────┐ │ │ ┌───────┐ │                     │
+│  │ │  SVG  │ │ │ │  SVG  │ │ │ │  SVG  │ │ │ │  SVG  │ │  a kép translateZ   │
+│  │ │ szelet│ │ │ │macaron│ │ │ │ tart  │ │ │ │ torta │ │  (34px)-en lebeg    │
+│  │ └───────┘ │ │ └───────┘ │ │ └───────┘ │ │ └───────┘ │                     │
+│  │[málnás-…] │ │[macaron-…]│ │[gyümölcs…]│ │[egész t…] │                     │
+│  │ Hat réteg…│ │ Mandula…  │ │ Omlós…    │ │ Csak elő… │                     │
+│  │(tojás)(tej)│ │(tojás)(tej)│ │(tojás)(tej)│ │(csak elő…)│                   │
+│  │[ár] Előre │ │[ár] Előre │ │[ár] Előre │ │[ár] Előre │  ← a lábak igazítva │
+│  └───────────┘ └───────────┘ └───────────┘ └───────────┘                     │
+│   ▲ egérrel ±4,5° dőlés + a kurzort követő fényfolt                          │
+│  „A négy tétel mintaadat, az ábrák saját illusztrációk — nem a Krém termékei" │
 ├──────────────────────────────────────────────────────────────────────────────┤
-│  ELŐRENDELÉS  (eltérő felület-tónus, teljes szélességű sáv)                   │
-│                                                                              │
-│  Mondd meg, mikorra és      ┌─ Mit szeretnél? * ──────────────────────────┐  │
-│  mennyit                    │ (o)Szeletes  (o)Egész torta  (o)Válogatás   │  │
-│                             │ (o)Egyéb                                     │  │
-│  Ez egy kérés, nem          ├─ Hány adag? * ───────────────────────────────┤  │
-│  visszaigazolt rendelés…    │ [                                          ] │  │
-│                             ├─ Mikorra kell? * ────────────────────────────┤  │
-│  – Miért van benne az       │ [ 2026-09-20                             📅] │  │
-│    átvétel órája?           ├─ Átvétel körülbelül * ───────────────────────┤  │
-│  – Miért kérünk telefont?   │ [ 14:30                                  🕐] │  │
-│  – Miért van allergia-mező? │ … allergia / név* / telefon* / e-mail        │  │
-│                             │ [x] Tudomásul veszem… *                      │  │
-│                             │ ┌──────────────────┐                         │  │
-│                             │ │ Kérés elküldése  │                         │  │
-│                             │ └──────────────────┘                         │  │
+│  ELŐRENDELÉS  (mélyebb felület-tónus, teljes szélességű sáv, cián folt)       │
+│  Mondd meg, mikorra és      ┌─ kiemelt kártya ────────────────────────────┐  │
+│  mennyit                    │ Mit szeretnél? *                             │  │
+│                             │ ┌(o)Szeletes┐┌(o)Egész t.┐┌(o)Macaron┐      │  │
+│  Ez egy kérés, nem          │ ├─ Hány adag? * ───────────────────────────┤ │  │
+│  visszaigazolt rendelés…    │ │ [                                      ] │ │  │
+│  ▬ Miért van benne az       │ ├─ Mikorra kell? * ────────────────────────┤ │  │
+│    átvétel órája?           │ │ [ 2026-09-20                         📅] │ │  │
+│  ▬ Miért kérünk telefont?   │ ├─ Átvétel körülbelül * ───────────────────┤ │  │
+│  ▬ Miért van allergia-mező? │ │ … név* / telefon* / e-mail / megjegyzés  │ │  │
+│                             │ │ [x] Tudomásul veszem… *                  │ │  │
+│                             │ │ ╭──────────────────╮                     │ │  │
+│                             │ │ │ Kérés elküldése  │                     │ │  │
+│                             │ │ ╰──────────────────╯                     │ │  │
 │                             └──────────────────────────────────────────────┘  │
 ├──────────────────────────────────────────────────────────────────────────────┤
-│  HOL ÉS MIKOR ───────────────────────────────────────────────────────────    │
-│  Zsuzsanna utca 2., Pécs                                                      │
-│  Krém Desszertműhely és Kávézó   │  Nyitvatartás                              │
-│  Zsuzsanna u. 2., 7632 Pécs      │  Hétfő      11:00 – 18:00   ← MA kiemelve  │
-│  → Hívás  → SMS  → Útvonal       │  Kedd       11:00 – 18:00                  │
+│  ▬▬ HOL ÉS MIKOR                                                             │
+│  ┌──── panel ─────────────┐  ┌──── panel ─────────────────────────────────┐  │
+│  │ Krém Desszertműhely…   │  │ Nyitvatartás                                │  │
+│  │ Zsuzsanna u. 2., 7632  │  │ Hétfő      11:00 – 18:00  ← MA kiemelve     │  │
+│  │ → Hívás → SMS → Útvonal│  │ Kedd       11:00 – 18:00                    │  │
+│  └────────────────────────┘  └─────────────────────────────────────────────┘  │
 ├──────────────────────────────────────────────────────────────────────────────┤
-│  AMIT MÁSOK MONDANAK ────────────────────────────────────────────────────    │
-│  Tizenhat értékelés, mind ötcsillagos                                         │
-│  5,0  16 értékelés   ★★★★★     │  [3 kiemelt vélemény helye]                 │
-│  Forrás: Google Cégprofil…      │                                            │
-│  [Írj te is értékelést]         │                                            │
-│                                                                              │
+│  ▬▬ AMIT MÁSOK MONDANAK                                                      │
+│  ┌──── panel ─────────────┐  ┌──── panel ─────────────────────────────────┐  │
+│  │ 5,0  16 értékelés      │  │ [3 kiemelt vélemény helye]                  │  │
+│  │ ★★★★★  Forrás: Google… │  │                                             │  │
+│  │ ╭Írj te is értékelést╮ │  │                                             │  │
+│  └────────────────────────┘  └─────────────────────────────────────────────┘  │
 │  Gyakori kérdések                                                             │
-│  ▸ Mikor van nyitva?              ▸ Lehet előre rendelni?                     │
+│  ▸ Mikor van nyitva?   ▸ Mennyibe kerül?   ▸ Lehet előre rendelni?            │
 ├──────────────────────────────────────────────────────────────────────────────┤
 │  LÁBLÉC   NAP-adatok │ Oldalak │ Kötelező (adatkezelés, impresszum, allergén) │
 └──────────────────────────────────────────────────────────────────────────────┘
@@ -461,65 +511,69 @@ Ha nincs ilyen kérdés, nincs URL. Öt oldal indul, kettő a második fázisban
 ┌───────────────────────────────┐
 │ Krém              [☀][▭][☾]   │ ← ragadós; a nav és az állapotjelző elrejtve
 ├───────────────────────────────┤
+│ ░░ cián folt (halványabb) ░░  │
 │ Krém                          │
 │ Desszertműhely                │
 │ és Kávézó —                   │
-│ Pécs,                         │  ← H1 36 px, az accent rész színnel
+│ Pécs,                         │  ← H1 36 px; az „em" rész gradienssel
 │ Zsuzsanna utca                │
 │                               │
 │ Tizenhat Google-értékelés,    │
 │ egy sem kevesebb ötnél…       │
 │                               │
-│ ÉRTÉKELÉS      ÁRSÁV          │  ← a tények 2 oszlopban
-│ 5,0            1–2000 Ft      │
-│ NYITÁS         CÍM            │
-│ 11:00          Zsuzsanna u. 2 │
+│ ┌───────────┐ ┌─────────────┐ │  ← a tényadatok 2 oszlopban, kártyaként
+│ │ÉRTÉKELÉS  │ │ÁRSÁV        │ │
+│ │5,0        │ │1–2000 Ft    │ │
+│ └───────────┘ └─────────────┘ │
+│ ┌───────────┐ ┌─────────────┐ │
+│ │NYITÁS 11:00│ │CÍM Zsuzs. 2│ │
+│ └───────────┘ └─────────────┘ │
 ├───────────────────────────────┤
 │ ┌───────────────────────────┐ │
 │ │[a nap desszertje] (MINTA) │ │
-│ │ ┌───────────┐             │ │  ← a tömb max 240 px széles,
-│ │ │▓▓▓▓▓▓▓▓▓▓▓│             │ │    hogy szeletnek látsszon
-│ │ │███████████│             │ │
-│ │ │▒▒▒▒▒▒▒▒▒▒▒│             │ │
-│ │ └───────────┘             │ │
+│ │      ╱▔▔▔▔▔▔╲             │ │  ← a 3D szelet marad, de NEM követi
+│ │     │▓▓▓▓▓▓│ │            │ │    a kurzort (nincs kurzor);
+│ │     │░░░░░░│ │            │ │    a lassú hintázás megy tovább
+│ │      ╲▁▁▁▁▁╱              │ │
 │ │ ■ Tükörglazúr             │ │  ← a rétegek listája ALÁ kerül,
-│ │   lezár, és eltakarja…    │ │    minden sor 48 px magas gomb
-│ │ ■ Gyümölcszselé           │ │
+│ │   lezár, és eltakarja…    │ │    minden sor 50 px magas gomb
 │ │ … (7 sor)                 │ │
-│ │ Ez a rajz mutatja meg…    │ │
 │ └───────────────────────────┘ │
 ├───────────────────────────────┤
-│ A MŰHELY RENDJE ──────────    │
-│ Három út vezet ide…           │
-│ │ 11:00-tól                   │  ← egymás alatt, bal oldali
-│ │ Bejössz                     │    függőleges vonallal
-│ │ Zsuzsanna u. 2…             │
-│ │ Bármikor                    │
-│ │ Hívsz vagy írsz             │
-│ │ Előre                       │
+│ ▬▬ A MŰHELY RENDJE            │
+│ ┌───────────────────────────┐ │  ← a három lap egymás alatt,
+│ │═══ 11:00-tól              │ │    felső élük gradiens
+│ │ Bejössz …                 │ │
+│ └───────────────────────────┘ │
+│ (×3)                          │
 ├───────────────────────────────┤
-│ KÍNÁLAT ──────────────────    │
-│ ▤ [csokoládés desszert] [ár]  │  ← 34 px mini + szöveg + ár
-│   Hat réteg: glazúr…          │
-│   (tojás)(tej)(glutén)        │
-│ ───────────────────────────   │
+│ ▬▬ KÍNÁLAT                    │
+│ ┌───────────────────────────┐ │  ← 1 oszlop; a kártya SÍK marad
+│ │ ┌───────────────────────┐ │ │    (érintőn nincs dőlés – D18)
+│ │ │      SVG szelet       │ │ │
+│ │ └───────────────────────┘ │ │
+│ │ [málnás-mentás szelet]    │ │
+│ │ Hat réteg: tükörglazúr…   │ │
+│ │ (tojás)(tej)(glutén)      │ │
+│ │ [ár]          Előre kérem │ │
+│ └───────────────────────────┘ │
+│ (×4)                          │
 ├───────────────────────────────┤
 │ ELŐRENDELÉS                   │
-│ Mondd meg, mikorra…           │
 │ Mit szeretnél? *              │
-│ ┌───────────┐ ┌─────────────┐ │  ← 2 oszlopos választórács,
-│ │(o)Szeletes│ │(o)Egész torta│ │    minden cél ≥52 px
+│ ┌───────────┐ ┌─────────────┐ │  ← 2 oszlopos rács, 56 px célpontok
+│ │(o)Szeletes│ │(o)Egész torta│ │
 │ └───────────┘ └─────────────┘ │
 │ Hány adag? *                  │
-│ [                           ] │  ← input 48 px, 16 px betű
-│ ⓘ Add meg, hány adagot kérsz. │  ← hiba a mező ALATT
+│ [                           ] │  ← input 50 px, 16 px betű
+│ ⓘ Add meg, hány adagot kérsz. │  ← hiba a mező ALATT, beúszik
 │ …                             │
 │ [ Kérés elküldése ]           │
 ├───────────────────────────────┤
 │ HOL ÉS MIKOR / VÉLEMÉNYEK /   │
 │ GYIK / LÁBLÉC (egy oszlop)    │
 ├───────────────────────────────┤
-│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│  ← 84 px üres hely a fix sávnak
+│▒▒▒▒▒ 90 px hely a fix sávnak ▒│
 └───────────────────────────────┘
 ┌───────────────────────────────┐
 │ [  Előrendelés  ] [ 📞 ]      │ ← FIX alsó sáv, safe-area-inset-bottom
@@ -551,56 +605,72 @@ Ha nincs ilyen kérdés, nincs URL. Öt oldal indul, kettő a második fázisban
 
 ### 7.1 Szín — 9 nevesített token, mért kontraszttal
 
-A tokenek **anyagnevek**, nem szerepnevek: ez tartja meg a §3.6 fegyelmét.
-A szerepleképezés külön réteg (`--hatter`, `--szoveg`, `--akcent`…), így a
-paletta cserélhető anélkül, hogy komponenst kellene átírni.
+Az ügyfél által kért **fehér – bézs – cián – babarózsaszín** négyest kilenc
+tokenre bontottam. A négy alapszín önmagában nem elég egy működő rendszerhez:
+a cián és a babarózsaszín is világos, tehát egyik sem hordozhat szöveget fehér
+vagy bézs háttéren. Ezért mindkettőnek van egy **mély párja** (szöveghez, CTA-hoz),
+és van egy sötét „tinta", ami a ciánból származik — így a szövegszín is a
+paletta családjában marad, nem szürke idegen test.
 
-| # | Token | Világos | Sötét | Anyag | Szerep |
+| # | Token | Világos | Sötét | Miből | Szerep |
 |---|---|---|---|---|---|
-| 1 | `--tejszin` | `#FBF7F1` | `#FBF7F1` | tejszín, papír | világos háttér / sötét szöveg |
-| 2 | `--piskota` | `#EADFCB` | — | piskóta | világos emelt felület |
-| 3 | `--kakao` | `#241A14` | `#241A14` | étcsokoládé | világos szöveg / sötét háttér |
-| 4 | `--ganache` | — | `#3B2A20` | ganache | sötét emelt felület |
-| 5 | `--fust` | `#6B6055` | `#B7A899` | füstölt karamell | másodlagos szöveg |
-| 6 | `--meggy` | `#8E1D30` | `#E08A7E` | meggy | **akcent, CTA, hiba** |
-| 7 | `--karamell` | `#9A5B15` | `#DDA45C` | égetett cukor | jelölés, placeholder, csillag |
-| 8 | `--pisztacia` | `#4E6B3C` | `#9FBE85` | pisztácia | „nyitva", pozitív állapot |
-| 9 | `--vonal` | `#8F7D63` | `#A08260` | kréta a táblán | vezérlőelem-keret |
+| 1 | `--porcukor` | `#FFFFFF` | — | fehér | kártyafelület |
+| 2 | `--vanilia` | `#FAF4EC` | — | bézs | oldalháttér |
+| 3 | `--marcipan` | `#E4D2B8` | — | mély bézs | másodlagos felület |
+| 4 | `--jegkrem` | `#00B7D4` | `#5FE0F2` | **cián** | dekor, chip, jelölés |
+| 5 | `--menta` | `#046B7E` | `#5FE0F2` | mély cián | **link, elsődleges CTA** |
+| 6 | `--babarozsa` | `#FFC7D9` | `#3A2430` | **babarózsaszín** | felület, réteg, dekor |
+| 7 | `--malna` | `#C0396B` | `#FFB3CC` | mély rózsa | másodlagos CTA, hibaállapot |
+| 8 | `--tinta` | `#10303A` | `#F2F7F8` | ciánból mélyítve | szöveg |
+| 9 | `--fust` | `#5C6B72` | `#A8BCC4` | tinta hígítva | másodlagos szöveg |
+
+Sötét témán az alap `#0C2129`, az emelt felület `#14323C`.
 
 **Mért WCAG-kontrasztok** (relatív luminancia szerint számolva, nem becsülve):
 
 | Pár | Világos | Sötét | Követelmény | Státusz |
 |---|---|---|---|---|
-| törzsszöveg a háttéren | **15,96:1** | **15,96:1** | 4,5:1 | AAA |
-| másodlagos szöveg a háttéren | **5,74:1** | **7,36:1** | 4,5:1 | AA / AAA |
-| akcent szöveg a háttéren | **8,31:1** | **6,57:1** | 4,5:1 | AAA / AA |
-| CTA-felirat a gombon | **8,31:1** | **6,57:1** | 4,5:1 | AAA / AA |
-| „nyitva" jelző a háttéren | **5,63:1** | **8,26:1** | 4,5:1 | AA / AAA |
-| jelölő (`.ph`) a háttéren | **5,07:1** | **7,74:1** | 4,5:1 | AA / AAA |
-| vezérlőkeret a háttéren | **3,73:1** | **4,75:1** | 3:1 (1.4.11) | ✓ |
-| vezérlőkeret az emelt felületen | **3,01:1** | **3,81:1** | 3:1 | ✓ |
-| szöveg az emelt felületen | **12,91:1** | **12,79:1** | 4,5:1 | AAA |
+| törzsszöveg a háttéren | **12,76:1** | **15,36:1** | 4,5:1 | AAA |
+| törzsszöveg a kártyán | **13,95:1** | **12,53:1** | 4,5:1 | AAA |
+| másodlagos szöveg a háttéren | **5,06:1** | **8,42:1** | 4,5:1 | AA / AAA |
+| másodlagos szöveg a kártyán | **5,52:1** | **6,87:1** | 4,5:1 | AA |
+| link / elsődleges akcent | **5,64:1** | **10,62:1** | 4,5:1 | AA / AAA |
+| felirat az elsődleges CTA-n | **6,16:1** | **10,62:1** | 4,5:1 | AA / AAA |
+| másodlagos akcent (málna) | **4,76:1** | **9,94:1** | 4,5:1 | AA / AAA |
+| felirat a másodlagos CTA-n | **5,20:1** | **9,94:1** | 4,5:1 | AA / AAA |
+| tinta babarózsaszín felületen | **9,58:1** | — | 4,5:1 | AAA |
+| tinta cián felületen | **5,79:1** | — | 4,5:1 | AA |
+| tinta marcipán felületen | **9,44:1** | — | 4,5:1 | AAA |
+| vezérlőkeret a háttéren | **3,13:1** | **4,54:1** | 3:1 (1.4.11) | ✓ |
+| vezérlőkeret a kártyán | **3,43:1** | **3,70:1** | 3:1 | ✓ |
 
-**A sötét téma nem inverz.** Az akcent nem a `#8E1D30` invertálva lenne, hanem
-`#E08A7E` — ez a meggy tejszínbe keverve, nem rózsaszín. A cél az volt, hogy
-a márkaszín *anyagi értelemben* is helyes maradjon: sötét felületen a meggy
-nem sötétebb lesz, hanem hígabb. A `--karamell` és a `--pisztacia` ugyanígy
-világosodik, nem telítettebb lesz.
+**A pasztellek soha nem hordoznak szöveget.** A `--babarozsa` és a `--jegkrem`
+felület és réteg; ha rájuk szöveg kerül, az mindig `--tinta` (9,58:1 és 5,79:1).
+Ez az egyetlen szabály, ami megakadályozza, hogy a kért paletta olvashatatlanná
+váljon.
 
-**Miért nem `prefers-color-scheme` duplikáció?** A tokenek `light-dark()`-kal
-vannak írva, minden deklaráció előtt egy sima fallback-értékkel:
+**A sötét téma nem inverz.** A cián nem sötétedik, hanem **világosodik**
+(`#046B7E` → `#5FE0F2`), a málna is (`#C0396B` → `#FFB3CC`). Sötét felületen a
+telített szín égeti a szemet; a hígított marad felismerhetően ugyanaz a szín.
+
+**Miért nincs duplikáció?** A tokenek `light-dark()`-kal vannak írva, minden
+deklaráció előtt egy sima fallback-értékkel:
 
 ```css
---hatter:#FBF7F1;                          /* régi böngésző: mindig világos */
---hatter:light-dark(#FBF7F1,#241A14);      /* modern: a color-scheme dönt */
+--hatter:#FAF4EC;                          /* régi böngésző: mindig világos */
+--hatter:light-dark(#FAF4EC,#0C2129);      /* modern: a color-scheme dönt */
 ```
 
 *Alternatíva, amit nem választottam:* a teljes tokenkészlet megismétlése
 `@media (prefers-color-scheme:dark)` és `[data-theme="dark"]` alatt. Az működik
-mindenhol, de kétszer 30 sor duplikáció, és minden jövőbeli tokenmódosítást
-két helyen kell elvégezni — pont ez az a hiba, amitől a design systemek
-szétcsúsznak. Az ára: 2023 előtti böngészőben nincs sötét téma. Ezt vállalom,
-mert az elrendezés és a kontraszt ott is hibátlan.
+mindenhol, de kétszer ~30 sor duplikáció. Az ára: 2023 előtti böngészőben nincs
+sötét téma — de az elrendezés és a kontraszt ott is hibátlan.
+
+**Két helyen mégis kellett a régi módszer:** a `light-dark()` a specifikáció
+szerint **két színt** vesz, tehát (a) a többrétegű `box-shadow` és (b) a
+háttérfoltok `opacity`-je nem fér bele. Az árnyéknál ezt úgy oldottam meg, hogy
+**az árnyék színe témafüggő token, a geometria fix** (§7.4); az `opacity`-nél
+két sor média-lekérdezés maradt. Ez a két kivétel a forrásban kommentelve van.
 
 ### 7.2 Tipográfia
 
@@ -667,72 +737,138 @@ folyószövegre, a hero-bevezetőn 46ch.
 A 4 px kizárólag ikon–szöveg illesztésre. Szekciók függőleges ritmusa:
 mobil 64 px, desktop 96 px. Komponensen belüli csoportköz 24 px, elemköz 8–16 px.
 
-### 7.4 Elevation
+### 7.4 Elevation és térhatás
 
-Matt műhely, nem üveg. Négy szint, és a **sötét témán nem árnyékkal, hanem
-felület-világosodással** dolgozik, mert sötét háttéren az árnyék nem látszik:
+Két külön dolog, és nem szabad összekeverni őket:
 
-| Szint | Világos | Sötét | Hol |
-|---|---|---|---|
-| `--e-0` | nincs | nincs | szekciók, listasorok — csak hajszálvonal |
-| `--e-1` | `0 1px 2px rgba(36,26,20,.06)` | `0 1px 0 rgba(251,247,241,.06)` | kártya, kapcsoló |
-| `--e-2` | `0 2px 4px -2px …, 0 10px 24px -14px …` | `0 2px 12px -6px rgba(0,0,0,.6)` | a keresztmetszet-tömb, elsődleges gomb hoverben |
-| `--e-3` | `0 8px 16px -8px …, 0 24px 56px -28px …` | `0 12px 40px -12px rgba(0,0,0,.7)` | (fenntartva modálisnak, jelenleg nem használt) |
+**(a) Elevation — lapok egymás fölött.** Négy szint. A geometria fix, az árnyék
+**színe** témafüggő, mert sötét háttéren a fekete árnyék nem látszik:
 
-Sugarak: `3 / 6 / 12 / 999 px`. Kicsi sugarak — egy műhely pontos, nem buborékos.
-Kivétel a jelölő chipek (`999px`), mert ott a pirula-forma önálló jelentést hordoz.
+```css
+--arny-1:light-dark(rgba(16,48,58,.10),rgba(0,0,0,.55));
+--arny-2:light-dark(rgba(16,48,58,.16),rgba(0,0,0,.72));
+--e-1:0 1px 2px var(--arny-1);
+--e-2:0 4px 10px -6px var(--arny-1),0 16px 32px -18px var(--arny-2);
+--e-3:0 10px 22px -12px var(--arny-1),0 36px 66px -30px var(--arny-2);
+```
+
+| Szint | Hol |
+|---|---|
+| `--e-1` | tényadat-kártya, jelző, téma-kapcsoló, panel |
+| `--e-2` | keresztmetszet-kártya, űrlap, gomb alapállapot |
+| `--e-3` | gomb és kártya hover, kiemelt lap |
+| `--e-lebego` | fenntartva modálisnak |
+
+**(b) Térhatás — valódi 3D.** Ahol az elem tényleg elfordul a térben:
+
+| Elem | Technika | Mértéke |
+|---|---|---|
+| A szelet | `perspective:1100px` + `preserve-3d`; rétegenként oldal- és tetőlap | alap `rotateX(9°) rotateY(26°)`, egérrel ±11° |
+| Süteménykártya | `perspective:1000px`, a belső lap dől, a kép `translateZ(34px)` | max ±4,5° / ±3,5° |
+| Gomb | `translateY` + `inset` alsó él (nyomódás) | −3 px hover, +1 px active |
+| Kiválasztott réteg | `translateZ(34px)` — a néző felé csúszik | 34 px |
+
+Szabály: **a 3D csak egérrel érhető el** (`hover:hover and pointer:fine`), és
+`prefers-reduced-motion` alatt teljesen kikapcsol. Érintőn a kártya sík marad —
+ott a döntés nem visszajelzés, csak akadozás.
+
+Sugarak: `4 / 10 / 18 / 28 / 999 px`. A korábbi kis sugarakat a pasztell paletta
+miatt növeltem: éles sarok + pasztell szín olcsó műanyag hatást ad.
 
 ### 7.5 Komponenslista
 
 | Komponens | Állapotok | Megjegyzés |
 |---|---|---|
-| Gomb (fő / mellék) | alap, hover, active, fókusz, letiltott | min. 48 px magas, `aria-disabled` nem csak `opacity` |
-| Nyitva/zárva jelző | nyitva (telt pont) / zárva (üres karika) | **nem csak szín**: a pont formája is különbözik |
+| Gomb (fő / másod / csendes) | alap, hover, active, fókusz, letiltott | min. 50 px magas; 3D nyomódás + fénycsík; `aria-disabled` nem csak `opacity` |
+| Nyitva/zárva jelző | nyitva (lüktető telt pont) / zárva (mozdulatlan üres karika) | **nem csak szín**: a pont formája és mozgása is különbözik |
 | Téma-kapcsoló | 3 állapot, `aria-pressed` | világos / rendszer / sötét |
-| **Keresztmetszet** | alap, hover, kiválasztott, csökkentett mozgás | a szignatúra; 7 anyagtextúra |
-| Mini keresztmetszet | statikus | `aria-hidden`, csak vizuális azonosító |
-| Kínálatsor | alap | mini + név + rétegsor + jelek + ár |
-| Jelölő chip | allergén (borostyán) / mentes (zöld) / semleges | szín + szöveg, sosem csak szín |
-| Űrlapmező | alap, hover, fókusz, hibás, letiltott | hiba: 2 px keret + halvány háttér + ikon + szöveg |
-| Választócsoport | alap, kiválasztott, fókusz | `:has(input:checked)`, min. 52 px |
-| Hibaösszegző | rejtett / látható | fókuszt kap, ugróhivatkozásokkal |
-| Sikerpanel | rejtett / látható | fókuszt kap, összefoglalja a beküldött adatot |
+| **3D szelet** | alap, hintázás, kurzorkövetés, réteg kiemelve, csökkentett mozgás | a szignatúra; 6 anyagtextúra, rétegenként oldal- és tetőlap |
+| Rétegvezérlő (lista) | alap, hover, kiválasztott, fókusz | 50 px, `aria-pressed`, 22 px színchip |
+| **Térhatású kártya** | alap, hover (dőlés + fényfolt), fókusz-within | egérrel ±4,5°; érintőn sík |
+| Süteményillusztráció | statikus | inline SVG, `role="img"` + `aria-label`; a valódi fotó foglalata előkészítve |
+| Tényadat-kártya | alap, hover | −4 px emelkedés |
+| „Út"-lap | alap, hover | −6 px; felső él cián→rózsa gradiens |
+| Jelölő chip | allergén (borostyán) / mentes (cián) / semleges | szín + szöveg, sosem csak szín |
+| Űrlapmező | alap, hover, fókusz (−1 px), hibás, letiltott | hiba: 2 px keret + halvány háttér + ikon + beúszó szöveg |
+| Választócsoport | alap, kiválasztott, hover (−2 px), fókusz | `:has(input:checked)`, min. 56 px |
+| Hibaösszegző | rejtett / látható | felskálázódik, fókuszt kap, ugróhivatkozásokkal |
+| Sikerpanel | rejtett / látható | felskálázódik, fókuszt kap, összefoglalja a beküldött adatot |
 | Nyitvatartás-táblázat | alap, „ma" kiemelve | egy adatforrásból generált |
 | GYIK | zárt / nyitott | `<details name="gyik">` — natív, JS nélkül is működik |
+| Háttérfolt | folyamatos sodródás | `aria-hidden`, 0,38 opacitás, reduced-motion alatt `display:none` |
 | Mobil cselekvési sáv | — | fix, `safe-area-inset-bottom` |
-| Placeholder-jelölés (`.ph`) | — | **terméktervezési eszköz**: szaggatott aláhúzás + borostyán szín; élesítéskor egyetlen `grep`-pel megtalálható |
+| Placeholder-jelölés (`.ph`) | — | **terméktervezési eszköz**: szaggatott aláhúzás + borostyán szín; élesítéskor `grep`-elhető |
 
 ---
 
 ## 8. Animációk és mikrointerakciók
 
-Alapelv: **minden animációnak oksági viszonyt kell kifejeznie.** Ami csak szép,
-az kimarad. Globális tokenek: `--idom: 180ms`, belépés `220ms`, kilépés `140ms`
-(a kilépés mindig gyorsabb — ettől érzi az ember reszponzívnak),
-`--gorbe: cubic-bezier(.2,.7,.3,1)`.
+Az ügyfél animációkat kért. A rendszer alapszabálya ettől nem változik:
+**minden animációnak vagy oksági viszonyt kell kifejeznie, vagy egy állapotot
+kell láthatóvá tennie.** Ami egyiket sem teszi, az kimaradt (lásd a táblázat
+utáni listát).
 
-| # | Elem | Interakció | Mi történik | Időzítés | Miért |
+Globális tokenek: `--idom: 200ms` (mikrointerakció), `--idom-be: 420ms`
+(belépés), `--idom-ki: 140ms` (kilépés — mindig gyorsabb),
+`--gorbe: cubic-bezier(.2,.7,.3,1)`, `--rugo: cubic-bezier(.34,1.4,.5,1)`
+(enyhe túllövés, csak megnyomható elemeken).
+
+| # | Elem | Interakció | Mi történik | Időzítés / görbe | Miért |
 |---|---|---|---|---|---|
-| A1 | Keresztmetszet-réteg | hover / fókusz | a sáv `translateX(12px)`-szel kicsúszik, a többi `saturate .55 / opacity .6`-ra halványul, a kicsúszó él árnyékot kap | 180 ms, `--gorbe` | A kihúzás fizikai metafora: a réteget *kiveszik* a szeletből. Ez az egyetlen hely, ahol a mozgás információt hordoz, nem kíséretet ad. |
-| A2 | Keresztmetszet-réteg | kattintás / Enter | ugyanaz, de rögzül; `aria-pressed="true"` | 180 ms | Érintőn nincs hover — kattintással kell rögzíthetőnek lennie. |
-| A3 | Keresztmetszet | **`prefers-reduced-motion`** | nincs eltolás; helyette 2 px belső körvonal | 0 ms | Az információ (melyik réteg) megmarad, a mozgás nem. Nem „letiltjuk az animációt", hanem **más csatornán adjuk ugyanazt**. |
-| A4 | Elsődleges gomb | hover | háttér 8%-kal sötétebb (világos) / világosabb (sötét) + `--e-1` → `--e-2` | 180 ms | Emelkedés = megnyomható. `active`-ban az árnyék eltűnik: lenyomódik. |
-| A5 | Gomb / link | fókusz | 2 px accent gyűrű + 4 px háttérszínű külső gyűrű | azonnali | A kettős gyűrű bármilyen felületen látszik. Fókusznál nincs késleltetés — a billentyűzetes navigációt a lassulás elrontja. |
-| A6 | Navigációs link | hover | háttér `--felulet-halk` | 180 ms | |
-| A7 | Téma-kapcsoló | kattintás | az aktív pirula háttere és árnyéka átvált; a `<meta name="theme-color">` is frissül | 180 ms | A böngésző UI-sávja együtt vált a lappal, különben villan. |
-| A8 | Nyitva/zárva jelző | percenkénti újraszámítás | szöveg + pontforma vált | nincs átmenet | Állapotváltásnál az animáció félrevezető: nem a felhasználó okozta. |
-| A9 | Űrlapmező | `blur` (nem gépelés közben) | keret accentre vált, hibaszöveg megjelenik alatta | 180 ms keret, szöveg azonnal | Gépelés közbeni validálás bünteti a felhasználót azért, mert még nem fejezte be. |
-| A10 | Hibás űrlapmező | `input` | ha már hibás volt, gépelés közben azonnal újraértékel | azonnali | Javításkor viszont *azonnali* visszajelzés kell — az irány itt megfordul. |
-| A11 | Hibaösszegző | küldés hibával | megjelenik, fókuszt kap, a lista elemei a mezőkre ugranak | nincs átmenet | Fókuszmozgatás animációval késleltetve zavaró képernyőolvasóval. |
-| A12 | Sikerpanel | sikeres küldés | megjelenik, fókuszt kap, a gomb letiltódik és „Elküldve" lesz | nincs átmenet | Dupla küldés megelőzése. |
-| A13 | GYIK | nyitás | a `summary` nyila 45° → 225° fordul | 180 ms | A nyíl iránya az állapotot jelzi, a fordulás a változást. |
-| A14 | Oldalon belüli link | kattintás | `scroll-behavior: smooth` | böngészőalapú | `prefers-reduced-motion` esetén `auto` — a hosszú görgetés mozgásérzékenyeknél rosszullétet okoz. |
-| A15 | Fejléc | görgetés | **semmi** | — | Nincs elrejtés-visszahozás, nincs zsugorodás. Egy ragadós fejléc, ami mozog, elveszi a figyelmet a tartalomtól, és a fix elem magasságának változása CLS-t okozhat. |
+| A1 | **A szelet** | egérmozgás a színtér fölött | a test követi a kurzort: `rotateY` 22±11°, `rotateX` 10∓7° | 420 ms `--gorbe` | A tárgyszerűség bizonyítása: ami elfordul, az test. |
+| A2 | A szelet | üresjárat (nincs egér) | lassú hintázás 26° és 15° között | 11 s, végtelen | Jelzi, hogy interaktív, anélkül hogy odakiabálna. |
+| A3 | Rétegsáv | hover / fókusz a listasoron | a réteg `translateZ(34px)`-szel a néző felé csúszik, a többi `saturate .5 / brightness .94` | 260 ms `--rugo` | Fizikai metafora: a réteget *kiveszik*. |
+| A4 | Rétegsáv | kattintás / Enter | ugyanaz, rögzítve, `aria-pressed="true"` | 260 ms | Érintőn nincs hover. |
+| A5 | **`prefers-reduced-motion`** | — | nincs kicsúszás, nincs hintázás, nincs kurzorkövetés; a kiválasztott réteg 3 px körvonalat kap | 0 ms | Az információ marad, a mozgás megy. |
+| A6 | Süteménykártya | egérmozgás | a lap ±4,5°/±3,5°-ot dől, a kép `translateZ(34px)`-en marad, a fényfolt a kurzorhoz igazodik | 220 ms `--gorbe` | Térbeli visszajelzés arról, hogy a kártya egy tárgy, nem szövegdoboz. |
+| A7 | Süteménykártya | hover | `--e-1` → `--e-3` | 220 ms | Emelkedés = megfogható. |
+| A8 | Elsődleges gomb | hover | −3 px `translateY`, árnyék `--e-2` → `--e-3` | 200 ms `--rugo` | |
+| A9 | Elsődleges gomb | hover | **fénycsík** fut át rajta balról jobbra | 620 ms `--gorbe` | Egyszeri, nem ismétlődő. A fő CTA-t emeli ki a többi közül. |
+| A10 | Gomb | `:active` | +1 px `translateY`, árnyék `--e-1` | 200 ms | Lenyomódik. A belső alsó él (`inset`) adja a vastagságot. |
+| A11 | Tényadat-kártya | hover | −4 px emelkedés | 200 ms `--rugo` | |
+| A12 | „A műhely rendje" lap | hover | −6 px emelkedés, `--e-3` | 200 ms | |
+| A13 | **Szekciók, kártyák, listaelemek** | görgetés (IntersectionObserver) | 26 px-ről felúszik + halványul be, testvérenként **70 ms lépcsőzéssel** (max 5 lépcső) | 420 ms `--gorbe` | Olvasási sorrendet ad. Csak egyszer fut (`unobserve`). |
+| A14 | Háttérfoltok | folyamatos | két elmosott színfolt lassan sodródik | 26 s és 32 s | Az egyetlen tisztán dekoratív mozgás. `aria-hidden`, 0,38 opacitás, reduced-motion alatt `display:none`. |
+| A15 | „Most nyitva" pont | folyamatos, csak nyitva állapotban | lüktetés | 2,4 s | **Állapotjelzés**: zárva a pont üres karika és nem mozog. A mozgás maga hordoz információt. |
+| A16 | Navigációs link | hover | 2 px aláhúzás nő ki balról | 200 ms | |
+| A17 | Téma-kapcsoló | hover | 1,08× skálázás | 200 ms `--rugo` | |
+| A18 | Téma-kapcsoló | kattintás | az aktív pirula háttere átvált, és a `<meta name="theme-color">` is frissül | 200 ms | A böngésző UI-sávja együtt vált, különben villan. |
+| A19 | Űrlapmező | fókusz | −1 px emelkedés + akcent keret | 200 ms | |
+| A20 | Űrlapmező | `blur` (nem gépelés közben) | hibaszöveg **halványan beúszik** a mező alatt | 200 ms `be` | Gépelés közbeni validálás bünteti a felhasználót azért, mert még nem fejezte be. |
+| A21 | Hibaösszegző / sikerpanel | küldés | 0,94-ről felskálázódik és fókuszt kap | 300–340 ms | A fókuszmozgatás animáció **után** történik, hogy a képernyőolvasó ne vágja el. |
+| A22 | GYIK | nyitás | a nyíl 45° → 225° fordul, a válasz felúszik | 200 / 260 ms | A nyíl iránya az állapot, a fordulás a változás. |
+| A23 | Választógomb (űrlap) | hover | −2 px emelkedés + árnyék | 200 ms `--rugo` | 56 px-es érintőcélpont, tapintható visszajelzéssel. |
 
-**Amit szándékosan nem csinálunk:** görgetésre megjelenő („scroll reveal")
-szekciók, parallax, számláló-animáció az 5,0-n, betöltéskori „fade in".
-Ezek mind késleltetik a tartalmat azért, hogy a fejlesztő megmutassa, tud
-animálni. Egy nyitvatartást kereső embernek ez ellenség.
+### 8.1 Amit szándékosan nem animáltunk
+
+| Nem csináltuk | Miért |
+|---|---|
+| Számláló-animáció az **5,0**-n | A pontszám tény, nem teljesítmény. A felfelé pörgő szám azt sugallja, hogy nő — nem nő, 16 értékelésből áll. |
+| Fejléc-elrejtés görgetésre | Egy mozgó ragadós fejléc elveszi a figyelmet, és a magasságváltozása CLS-t okozhat. |
+| Parallax a hero mögött | Mozgásérzékenyeknél rosszullétet okoz, és semmit nem közöl. |
+| Betöltéskori teljes oldal-fade | Késlelteti a tartalmat azért, hogy a fejlesztő mutasson valamit. |
+| Kártyadöntés **érintőn** | Nincs kurzor, amit követni lehetne; csak akadozás lenne belőle. A JS érintőn be sem köti. |
+| Végtelen ismétlődő gombanimáció | Két kivétel van a végtelen mozgásra (A14 dekoratív, A15 állapotjelző); a CTA-n a mozgás egyszeri, hoverre. |
+
+### 8.2 Mit garantál a `prefers-reduced-motion`
+
+Egyetlen blokk kapcsolja ki az egészet: minden `animation` és `transition`
+0,01 ms-ra megy, a háttérfoltok eltűnnek, a görgetésre megjelenő elemek
+**azonnal láthatók** (a JS megfigyelő el sem indul), a kártyadöntés és a
+kurzorkövetés be sem kötődik, a fénycsík eltűnik, és a kiválasztott réteg
+**körvonalat kap a kicsúszás helyett**.
+
+Ellenőrizve fejetlen Chromiumban `reduced_motion: reduce` alatt: a kiemelt
+réteg `transform` értéke `none`, a `.folt` `display` értéke `none`, és nulla
+elem marad rejtve.
+
+### 8.3 Egy figyelmeztetés a görgetésre megjelenésről
+
+A `.rejt` osztály **csak akkor rejt, ha fut a JS**: a fejlécbeli szkript teszi
+ki a `data-js` jelzőt a `<html>`-re, és a CSS-szabály `:root[data-js] .rejt`
+alakú. JS nélkül — kikapcsolt szkript, hiba a betöltésben, régi kliens — az
+oldal teljes tartalma azonnal látszik. Ez nem apróság: a görgetés-animációk
+leggyakoribb élesbeni hibája, hogy a tartalom véglegesen láthatatlan marad.
 
 ---
 
@@ -787,19 +923,67 @@ napi-kínálat-szerkesztő a válasz.
 - `font-display: swap` + **metrikára illesztett fallback** (`size-adjust`,
   `ascent-override`), hogy a betűcsere ne okozzon elrendezés-ugrást.
 
-### 9.3 Képek
+### 9.3 Képek — mi van most az oldalon, és mi lesz
 
-Ma **nincs kép** az oldalon, és ez nem kényszer, hanem eredmény (§3.7).
-Amikor lesz fotóanyag (§15/2), a szabályok:
+Az ügyfél „esztétikus képeket süteményekről" kért. Amit szállítani tudtam, és
+amit nem:
+
+**Amit NEM tudtam szállítani: fotót.** Két okból.
+
+1. **Az ügyfélnek nincs fotóanyaga a birtokomban** (§15/2), és a Krém termékeiről
+   egyetlen képet sem láttam.
+2. **Jogtiszta fotóbank ebből a környezetből nem elérhető.** A hálózati
+   egress-proxy blokkolja az Unsplash-t, a Pexelst, a Wikimedia Commonst és az
+   Openverse-t (mind `connect_rejected`). Ismeretlen eredetű fotót pedig nem
+   teszek egy ügyfél oldalára: a szerzői jogi kockázat az ügyfelet terheli,
+   nem engem.
+
+**Amit szállítottam: négy saját SVG-illusztráció.** Rétegszelet tányéron,
+macaron-torony, gyümölcsös tartelette, egész torta tortaállványon. Kézzel írt
+SVG, gradiensekkel, egységes fényiránnyal (bal felső), a kért palettában.
+
+| Tétel | Méret |
+|---|---|
+| 4 illusztráció összesen | **11 537 B** nyers · **2 477 B** brotli/gzip után |
+| Legnagyobb egyedi | 3 040 B |
+| Hálózati kérés | **0** — mind inline |
+| Dekódolás | **0 ms** — nincs raszter |
+| CLS | **0** — `aspect-ratio: 5/4` a foglalaton |
+
+Mindegyik `role="img"` + leíró `aria-label`, tehát képernyőolvasóval is
+értelmezhető, és mindegyik **jelölve van**, hogy illusztráció, nem a Krém terméke
+— a kártyák alatti figyelmeztetésben és a forrás kommentjeiben is.
+
+**Amikor lesz fotó (§15/2), a csere elő van készítve.** Az `index.html`-ben a
+kínálat fölött ott a `FOTÓHELY` komment a kész foglalattal:
+
+```html
+<picture>
+  <source type="image/avif" srcset="/img/nev-400.avif 400w, /img/nev-800.avif 800w"
+          sizes="(min-width:900px) 300px, 90vw">
+  <source type="image/webp" srcset="/img/nev-400.webp 400w, /img/nev-800.webp 800w"
+          sizes="(min-width:900px) 300px, 90vw">
+  <img src="/img/nev-800.jpg" width="800" height="640" loading="lazy" decoding="async"
+       alt="[a desszert leírása, nem kulcsszóhalmozás]">
+</picture>
+```
+
+Szabályok a valódi fotókhoz:
 
 | Szabály | Konkrétan |
 |---|---|
 | Formátum | AVIF `<source>`, WebP fallback, JPEG utolsó lépcsőben |
 | Méretek | `srcset` 400 / 800 / 1200 px, `sizes` a tényleges rácsból |
 | Helyfoglalás | `width`+`height` **vagy** `aspect-ratio` minden `<img>`-en — kötelező, CLS miatt |
+| Vágás | 5:4, a desszert középre, felülről 30–45°-os szögből (ez illeszkedik a szelet nézetéhez) |
 | Betöltés | a hajtás alattiak `loading="lazy" decoding="async"` |
-| A hero | **továbbra sem kap fotót.** A fotók a kínálatsorokba és az `/a-muhely/` oldalra kerülnek |
+| A hero | **továbbra sem kap fotót** — ott a 3D szelet áll (§3.7) |
 | `alt` | leíró, nem kulcsszóhalmozó. Dekoratív képnél `alt=""` |
+
+*Alternatíva, amit elvetettem:* generált („AI") fotórealisztikus képek. Egy
+desszertműhelynél a fotó **bizonyíték**, nem illusztráció; egy nem létező sütemény
+fotórealisztikus képe megtévesztő, és az első csalódott vendégnél visszaüt. Egy
+nyilvánvalóan rajzolt illusztráció ezt a hazugságot nem követi el.
 
 ### 9.4 Cache
 
@@ -852,6 +1036,39 @@ helyen** van definiálva, és ebből származik
 
 Így a §15/1 megválaszolásakor **egy** helyen kell javítani, és nem lehet, hogy
 az oldal mást mond, mint a strukturált adat.
+
+### 9.7 A térhatás és az animációk megvalósítási költsége
+
+| Réteg | Nyers | Tömörítve | Megjegyzés |
+|---|---|---|---|
+| Mozgás-CSS (kulcskockák, segédosztályok) | 1 508 B | ~0,4 kB | 8 kulcskocka |
+| 3D szelet CSS | 5 151 B | ~1,2 kB | ebben az anyagtextúrák is |
+| 3D szelet HTML | 954 B | — | |
+| Illusztrációk | 11 537 B | 2 477 B | 4 db inline SVG |
+| JS: 3D + kártyadöntés + görgetésfigyelő | ~3 400 B | ~1,0 kB | a teljes JS részeként |
+
+**A JS így 11,1 kB kommentek nélkül, tömörítve 4,0 kB.** A brief eredetileg
+5–10 kB JS-t kért: **a nyers méret 1,1 kB-tal túllépi a felső határt.** Ezt nem
+szépítem — az animációk és a 3D ára. Két dolog tartja kezelhető szinten:
+tömörítve 4,0 kB (a hálózaton ez számít), és nincs benne keretrendszer, tehát
+nincs futásidejű költsége a méreten túl.
+
+**Ha vissza kell szorítani 10 kB alá**, ebben a sorrendben venném ki:
+(1) a kártyadöntés (~700 B) — ez a leggyengébb hozzáadott érték;
+(2) a szelet kurzorkövetése (~600 B) — az üresjárati hintázás CSS-ből marad;
+(3) a görgetésfigyelő (~900 B) — a `.rejt` osztály nélkül minden azonnal látszik.
+Mindhárom kivehető anélkül, hogy bármi elromolna, mert mindegyik
+progresszív ráépülés.
+
+**Teljesítménybiztosítékok a 3D-hez:**
+
+- `transform-style: preserve-3d` csak két helyen: a szelet és a kártya belső lapja.
+- A kurzorkövető kezelők `getBoundingClientRect()`-et **egyszer** hívnak
+  belépéskor, és a `resize` nullázza — nem minden egérmozgásnál (ez a leggyakoribb
+  jank-forrás a döntött kártyáknál).
+- Csak `transform` és `opacity` animálódik; `width`, `height`, `top`, `left` soha.
+- `will-change` egyedül a háttérfoltokon, ahol tényleg folyamatos a mozgás.
+- Érintőeszközön a 3D kurzorkövetés **be sem kötődik** (`pointer: coarse`).
 
 ---
 
@@ -954,32 +1171,34 @@ a webhely.
 ## 11. Performance-célok
 
 Referencia: **Moto G4-osztályú eszköz, lassú 4G (1,6 Mb/s, 150 ms RTT)** —
-nem a fejlesztő gépe. A mérce a §2.4-ben rögzített: nem lehet lassabb a
-döntési úton, mint a Google-listing, amit leváltunk.
+nem a fejlesztő gépe. A mérce a §2.4-ben rögzített: nem lehet lassabb a döntési
+úton, mint a Google-listing, amit leváltunk.
 
 | Metrika | Cél | Küszöb, ami fölött hiba | Mivel érjük el |
 |---|---|---|---|
-| **LCP** | **≤ 1,3 s** | 2,5 s | Nincs hero-kép; az LCP-elem a `H1` szövege. Kritikus CSS inline, betűk preloaddal. |
-| **FCP** | ≤ 0,9 s | 1,8 s | Egyetlen HTML-kérés, blokkoló külső CSS nélkül. |
-| **CLS** | **≤ 0,02** | 0,1 | Minden sáv fix magasságú; metrikára illesztett fallback-betű; a hibaszövegek üresen 0 magasak, de a DOM-ban vannak; nincs késve érkező banner. |
-| **INP** | **≤ 120 ms** | 200 ms | 3,3 kB JS, nincs keretrendszer, nincs hydration. A legdrágább kezelő az űrlap-validáció: egy mező, szinkron. |
-| **TBT** | ≤ 50 ms | 200 ms | Nincs harmadik feles szkript. |
+| **LCP** | **≤ 1,4 s** | 2,5 s | Nincs hero-fotó; az LCP-elem a `H1` szövege. Kritikus CSS inline, betűk preloaddal. |
+| **FCP** | ≤ 1,0 s | 1,8 s | Egyetlen HTML-kérés, blokkoló külső CSS nélkül. |
+| **CLS** | **≤ 0,02** | 0,1 | Minden réteg és illusztráció-foglalat fix arányú; metrikára illesztett fallback-betű; az üres hibamezők 0 magasak, de a DOM-ban vannak. A görgetésre megjelenés `opacity` + `transform` — **nem okoz elrendezés-ugrást**. |
+| **INP** | **≤ 130 ms** | 200 ms | 4,0 kB tömörített JS, nincs keretrendszer, nincs hydration. A kurzorkövetők csak CSS-változót írnak. |
+| **TBT** | ≤ 60 ms | 200 ms | Nincs harmadik feles szkript. |
+| **Képkockaidő animáció közben** | ≤ 16 ms | — | Csak `transform`/`opacity` animálódik; a `getBoundingClientRect()` belépésenként egyszer fut. |
 
 ### 11.1 Bájtköltségvetés (élesített változat, brotli után)
 
 | Erőforrás | Költségvetés | A prototípusban mért |
 |---|---|---|
-| HTML (fontok nélkül) | **≤ 22 kB** | 21,0 kB gzip ✓ |
-| CSS (inline, kritikus) | ≤ 9 kB | 8,3 kB gzip ✓ |
-| JS | **≤ 4 kB** | 3,3 kB gzip ✓ (nyers 8,7 kB) |
-| Betűk (2 × woff2) | ≤ 55 kB | 51,8 kB ✓ |
-| Képek az első nézetben | **0 kB** | 0 ✓ |
-| **Első betöltés összesen** | **≤ 90 kB** | **~81 kB** ✓ |
+| HTML (fontok nélkül, illusztrációkkal együtt) | ≤ 28 kB | **26,3 kB** gzip ✓ |
+| CSS (inline, kritikus) | ≤ 10 kB | **9,3 kB** gzip ✓ |
+| JS | ≤ 5 kB | **4,0 kB** gzip ✓ (nyers 11,1 kB — lásd §9.7) |
+| Betűk (2 × woff2) | ≤ 55 kB | **51,8 kB** ✓ |
+| Fotó az első nézetben | **0 kB** | 0 ✓ (a szelet és az illusztrációk inline) |
+| **Első betöltés összesen** | **≤ 95 kB** | **~87 kB** ✓ |
 | Kérésszám az első nézethez | ≤ 3 | 3 (HTML + 2 betű) |
 
-A prototípus `index.html`-je 145 kB, mert a betűk base64-gyel benne vannak
-(§9.2). Élesben ez szétválik, és a betűk egy évig cache-elődnek — a **második**
-oldalletöltés így ~22 kB.
+Az előző iterációhoz képest ez **+6 kB** (animációk, 3D, négy illusztráció).
+Az `index.html` a prototípusban 167 kB, mert a betűk base64-gyel benne vannak
+(§9.2); élesben ez szétválik, és a betűk egy évig cache-elődnek — a **második**
+oldalletöltés így ~26 kB.
 
 ### 11.2 Harmadik felek
 
@@ -1010,6 +1229,8 @@ naplóelemzés — a §15/12-ben eldöntendő.
 | C11 | **„Írj te is értékelést" gomb** | vélemények | §3.3: 16 elem törékeny. Az egyetlen olcsó védekezés a folyamatos utánpótlás. Ez nem konverzió a látogató felé, hanem konverzió a **következő** látogató felé. |
 | C12 | **A 11:00 magyarázata** | „A műhely rendje" | Egy kifogást (`késői nyitás`) minőségi érvvé fordít (§3.5). |
 | C13 | **GYIK** | főoldal alja | A négy kérdés a négy leggyakoribb telefonhívás. Minden megválaszolt kérdés egy fel nem vett telefon a gyártás közepén. |
+| C14 | **A 3D szelet mint első interakció** | hero | Az első kattintás a legnehezebb. Egy alacsony tétű, játékos interakció (válassz réteget) belépteti a látogatót az oldal használatába — és közben pont a termékről tanít. |
+| C15 | **Süteményillusztrációk** | kínálat | Fotó nélkül is megkülönbözteti a tételeket, és a listát végigpásztázhatóvá teszi. Ideiglenes megoldás: a valódi fotó erősebb lesz (§9.3). |
 
 ### 12.1 Mit mérünk
 
@@ -1020,7 +1241,7 @@ naplóelemzés — a §15/12-ben eldöntendő.
 | `sms_koppintas` | `sms:` link kattintás |
 | `utvonal_koppintas` | Google Térkép link |
 | `ertekeles_koppintas` | „Írj értékelést" |
-| `keresztmetszet_hasznalat` | legalább egy réteg kiválasztva — ez méri, hogy a szignatúra elem *működik-e*, vagy csak dísz |
+| `szelet_hasznalat` | legalább egy réteg kiválasztva — ez méri, hogy a szignatúra elem *működik-e*, vagy csak dísz |
 
 Az utolsó tétel önvizsgálat: ha három hónap alatt a látogatók kevesebb mint
 10%-a nyúl hozzá, a keresztmetszet interaktív rétege felesleges, és statikus
@@ -1030,26 +1251,31 @@ illusztrációra kell egyszerűsíteni.
 
 ## 13. A fontos design-döntések, alternatívával együtt
 
+A **⟳** jel azt jelöli, hogy a döntés a második iterációban megváltozott
+(§0.0), és a mostani változat az ügyfél irányát követi.
+
 | # | Döntés | Alternatíva | Miért nem az alternatíva |
 |---|---|---|---|
-| D1 | A redesign tárgya a hiányzó saját webhely, nem a listing | A Google-profil „átalakítása" | A listing layoutja nem birtokolt és nem szerkeszthető. Amit ott lehet, az adatpontosítás — az a §10.5, nem redesign. |
-| D2 | **Keresztmetszet** mint szignatúra | Nagyméretű termékfotó-hero | Nincs jogtiszta fotó; a fotó a tetőt mutatja, nem a szerkezetet; és 60–110 kB + egy kérés + dekódolás LCP-költség. |
-| D3 | A paletta anyagnevekből | Absztrakt márkaszínek (pl. „primary/secondary") | Anyagnév-kényszer nélkül a paletta 3 iteráció alatt elcsúszik a szakmától. Ha egy szín nem nevezhető meg a műhely anyagával, nem kerül be. |
-| D4 | Meggy akcentnek | Rózsaszín (torta-alapértelmezés) / arany (elegancia) | A rózsaszín az esküvő-/torta-marketing közhelye; az arany 1–2000 Ft/fő ársávnál hazugság. A meggy egy magyar cukrászati **alapanyag**, nem hangulat. |
+| D1 | A redesign tárgya a hiányzó saját webhely, nem a listing | A Google-profil „átalakítása" | A listing layoutja nem birtokolt és nem szerkeszthető. Amit ott lehet, az adatpontosítás — az a §10.5. |
+| D2 ⟳ | **Háromdimenziós szelet** mint szignatúra, valódi CSS 3D-vel | Lapos keresztmetszet-rajz (1. iteráció) / nagy termékfotó-hero | A fotó nincs és a tetőt mutatja. A lapos rajz *ábrázolja* a metszetet; a kiterjedt test **megmutatja, hogy van miből metszetet venni**. +1,9 kB CSS, nulla hálózati kérés. |
+| D3 ⟳ | A paletta az ügyfél által megadott négy szín, kilenc tokenre bontva | Anyagnév-alapú paletta a műhely nyersanyagaiból (1. iteráció) | Az ügyfél kérése. Amit ezzel elveszítünk (a paletta már nem levezetés, hanem márkadöntés), a §3.6.1-ben kimondva. |
+| D4 | **A pasztellek soha nem hordoznak szöveget** | Cián/rózsaszín szövegszínként | A kért négy szín közül kettő világos; szövegként egyik sem éri el a 4,5:1-et fehéren. Ezért van mély párjuk (`#046B7E`, `#C0396B`) az információhoz, és a pasztell csak felület. Enélkül a paletta olvashatatlan lenne. |
 | D5 | Fraunces + Commissioner | Playfair + Inter | A brief tiltja, és jogosan: nem mond semmit a szakmáról. Lásd a §7.2 alternatívatáblázatát. |
-| D6 | `light-dark()` a témákhoz | Teljes tokenkészlet duplikálva `@media` + `[data-theme]` alatt | 60 sor duplikáció, két helyen karbantartandó. Ára: régi böngészőben nincs sötét téma — de az elrendezés és a kontraszt ott is hibátlan. |
-| D7 | Sötét téma = hígított akcent, nem invertált | Színek matematikai invertálása | Az invertálás a meggyet zölddé tenné. Az anyagi logika (meggy tejszínben) ad helyes és felismerhető sötét palettát. |
-| D8 | Az oldal egy dolga: **előrendelés** | Asztalfoglalás / webshop | Foglalás: ismeretlen, van-e ülőhely (§15/7), és 1–2000 Ft/fő ársávnál a foglalás túlzás. Webshop: a fizetési integráció fenntartása többe kerül, mint a haszna. |
+| D6 | `light-dark()` a témákhoz | Teljes tokenkészlet duplikálva | 60 sor duplikáció, két helyen karbantartandó. Két kivétel maradt (többrétegű árnyék, folt-opacitás), mert a `light-dark()` csak színt vesz — kommentelve. |
+| D7 | Sötét téma = **világosított**, nem invertált akcent | Színek matematikai invertálása | Az invertálás a ciánt narancsra vinné. A hígítás megtartja a felismerhetőséget. |
+| D8 | Az oldal egy dolga: **előrendelés** | Asztalfoglalás / webshop | Foglalás: ismeretlen, van-e ülőhely (§15/7). Webshop: a fizetési integráció fenntartása többe kerül, mint a haszna. |
 | D9 | Az SMS önálló, megnevezett csatorna | Csak telefonszám | A mobilszám (J6) miatt az SMS **ma is működik**; nulla fejlesztési költséggel nyit egy aszinkron utat. |
-| D10 | Nincs `aggregateRating` markup | A 5,0 markupolása a rich resultért | Saját oldalon a saját értékelés „self-serving": nem jogosult, és manuális intézkedést kockáztat. Az érték láthatóan ott van — csak nem markupolva. |
+| D10 | Nincs `aggregateRating` markup | A 5,0 markupolása a rich resultért | Saját oldalon a saját értékelés „self-serving": nem jogosult, és manuális intézkedést kockáztat. |
 | D11 | Statikus HTML + 11ty | WordPress | Hatoldalas, ritkán változó oldalhoz plugin-karbantartás és 300–800 kB alapteher. |
-| D12 | Placeholderek **láthatóan jelölve** (`.ph`) | Kitalált mintaszöveg vagy lorem ipsum | Kitalált ár/nyitvatartás élesben átcsúszhat. A szaggatott borostyán aláhúzás egyszerre olvasható a designban és `grep`-elhető a kódban. |
-| D13 | Nincs görgetés-animáció, nincs parallax | „Modern" scroll-reveal | Késlelteti a tartalmat azért, hogy a fejlesztő mutasson valamit. Egy nyitvatartást kereső embernek ez ellenség. |
-| D14 | Egyetlen `NYITVATARTAS` adatforrás négy felhasználással | Külön beírt óraértékek a táblázatban, a jelzőben, a validációban és a schemában | A négy hely előbb-utóbb szétcsúszik, és a schema mond mást, mint az oldal. |
-| D15 | Nincs süti-banner | Analitika sütivel | Süti nélküli mérés (Plausible / szervernapló) elegendő, és a banner az első interakció elrablása. |
-| D16 | A hero nem sorszámoz („01/02/03") | Számozott „hogyan működik" lépéssor | A három út (bejössz / hívsz / előre kéred) **párhuzamos**, nem sorrend. Számozni azt, aminek nincs sorrendje, hazugság. |
-
----
+| D12 | Placeholderek **láthatóan jelölve** (`.ph`) | Kitalált mintaszöveg | Kitalált ár/nyitvatartás élesben átcsúszhat. A szaggatott aláhúzás egyszerre olvasható a designban és `grep`-elhető a kódban. |
+| D13 ⟳ | **Görgetésre megjelenés, lépcsőzve** | Nincs görgetés-animáció (1. iteráció) | Az ügyfél kérése. Két biztosíték: a `.rejt` csak `data-js` mellett rejt (JS nélkül minden látszik), és `prefers-reduced-motion` alatt a megfigyelő el sem indul. |
+| D14 | Egyetlen `NYITVATARTAS` adatforrás négy felhasználással | Külön beírt óraértékek | A négy hely előbb-utóbb szétcsúszik, és a schema mást mond, mint az oldal. |
+| D15 | Nincs süti-banner | Analitika sütivel | Süti nélküli mérés elegendő, és a banner az első interakció elrablása. |
+| D16 | A hero nem sorszámoz („01/02/03") | Számozott „hogyan működik" lépéssor | A három út **párhuzamos**, nem sorrend. |
+| D17 ⟳ | **Saját SVG-illusztrációk** fotó helyett | Stock fotó / generált fotórealisztikus kép | Fotóbank a hálózaton nem elérhető, ismeretlen eredetű fotó jogi kockázat. Egy nem létező sütemény fotórealisztikus képe pedig megtévesztő — egy nyilvánvalóan rajzolt illusztráció nem hazudik. |
+| D18 | A 3D **csak egérrel**, `prefers-reduced-motion` alatt sehogy | Mindenhol bekapcsolva | Érintőn nincs kurzor, amit követni — csak akadozás lenne belőle. Mozgásérzékenyeknél a folyamatos térbeli mozgás rosszullétet okoz. |
+| D19 | A lüktető „nyitva" pont az egyetlen végtelen **állapotjelző** mozgás | Statikus pont / mindenhol lüktetés | Itt a mozgás maga az információ: zárva a pont üres karika és mozdulatlan. Máshol a végtelen mozgás zaj. |
+| D20 | Nincs számláló-animáció az 5,0-n | Felfelé pörgő pontszám | A felfelé pörgő szám növekedést sugall. Nem nő: 16 értékelésből áll. |
 
 ## 14. Bevezetési ütemterv
 
@@ -1099,70 +1325,89 @@ Sorrendben aszerint, hogy mi blokkolja az élesítést. Az 1–3. **blokkoló**.
 
 | Tétel | Érték |
 |---|---|
-| `index.html` | 145 216 B (ebből 69 128 B a két base64 betű) |
-| HTML betűk nélkül | 76 094 B · **21 018 B gzip** |
-| CSS | 29 779 B · **8 255 B gzip** |
-| JS (2 blokk: téma-bootstrap + fő) | nyers 11 270 B · komment nélkül 8 700 B · **3 297 B gzip** |
+| `index.html` | 167 282 B (ebből 69 128 B a két base64 betű) |
+| HTML betűk nélkül | 98 160 B · **26 250 B gzip** |
+| CSS | 35 663 B · **9 340 B gzip** |
+| JS (2 blokk: téma-bootstrap + fő) | nyers 14 182 B · komment nélkül **11 138 B** · **4 046 B gzip** |
+| — ebből 3D + animáció + görgetésfigyelő | ~3 400 B |
 | JSON-LD | 3 885 B |
-| Szignatúra elem (HTML + CSS) | 3 946 + 4 973 B |
+| 3D szelet (HTML + CSS) | 954 + 5 151 B |
+| Mozgás-CSS (kulcskockák, segédosztályok) | 1 508 B |
+| Süteményillusztrációk (4 db inline SVG) | 11 537 B · **2 477 B gzip** |
 | Külső kérés | **0** |
-| Kép | **0** |
+| Raszteres kép | **0** |
 
-**Ellenőrzött viselkedés** (fejetlen Chromium, 320 / 375 / 390 / 768 / 1440 px,
+**Ellenőrzött viselkedés** (fejetlen Chromium, 320 / 390 / 768 / 1440 px,
 világos és sötét, `prefers-reduced-motion: reduce`):
 
-- vízszintes görgetés: **nincs**, egyik szélességen sem;
+- vízszintes görgetés: **nincs**, egyik szélességen sem (320-tól 1440-ig mérve);
+- külső hálózati kérés: **nincs** — a betűk és az illusztrációk inline;
 - címke nélküli űrlapmező: **0**; hozzáférhető név nélküli gomb/link: **0**;
+  `aria-label` nélküli `role="img"` SVG: **0**;
+- pontosan **egy** `H1`, szintugrás nélkül;
 - első `Tab`: „Ugrás a tartalomra";
-- `role="alert"` hibamezők üresen 0 magasak, de a DOM-ban maradnak;
-- csökkentett mozgásnál a rétegkiemelés `transform: none`, körvonallal helyettesítve;
+- a betűk ténylegesen betöltődnek, az `ő`/`ű` rajzolt glifa, nem helyettesítés;
+- **görgetés után nulla elem marad rejtve** minden mért szélességen;
+- **csökkentett mozgásnál**: nulla rejtett elem (a megfigyelő el sem indul),
+  a háttérfoltok `display:none`, a kiemelt réteg `transform: none`;
+- 3D kurzorkövetés egérrel mérve: a szelet `--ry` 28,6°-ra állt, a kártya
+  `--ry` 3,15°-ra — a `matrix3d` ténylegesen alkalmazódik;
 - konzolhiba: **nincs**;
-- az űrlap-validáció végigmérve: üres küldés → 7 hiba + összegző; 09:00-s átvétel
-  → „Aznap 11:00 és 18:00 között vagyunk nyitva"; mai dátum → „Legalább 2 nappal
-  előbb…"; helyes kitöltés → sikerpanel + a gomb letiltása.
+- űrlap-validáció végigmérve: üres küldés → **7 hiba + összegző**; 09:00-s
+  átvétel → „Aznap 11:00 és 18:00 között vagyunk nyitva"; helyes kitöltés →
+  sikerpanel és a gomb letiltása („Elküldve").
 
 ---
 
 ## 17. Őszintén: mi ennek az anyagnak a leggyengébb pontja
 
-**Az, hogy az ügyfélről hat adatot tudok, és arra épül tizenhét oldalnyi terv.**
-
-Konkrétan:
+**Az, hogy az ügyfélről hat adatot tudok, és arra épül egy teljes oldal.**
+A második iteráció ezen nem javított — sőt, két ponton rontott.
 
 1. **A központi stratégiai döntés — hogy az oldal EGY dolga az előrendelés —
-   egy hipotézis, nem tudás.** Levezettem az ársávból, a mobilszámból és a
-   „műhely" szóból, de nem beszéltem az ügyféllel. Ha kiderül, hogy nincs
-   előrendelés, vagy hogy a bevétel 90%-a a betérő kávézó vendég, akkor a §5
-   oldalfelépítése és a §12 CRO-tábla fele újraírandó. **Ez a legnagyobb
-   egyedi kockázat az anyagban.**
+   hipotézis, nem tudás.** Levezettem az 1–2000 Ft-os ársávból, a mobilszámból
+   és a „desszertműhely" szóból, de nem beszéltem az ügyféllel. Ha a bevétel
+   túlnyomó része a betérő kávézó vendég, a §5 oldalfelépítése és a §12 CRO-tábla
+   fele újraírandó. **Ez maradt a legnagyobb egyedi kockázat.**
 
-2. **A kínálat teljes egészében placeholder.** Egy desszertoldal, aminek nincs
-   étlapja, a felét sem tudja annak, amire képes. A `/kinalat/` — a
-   legértékesebb oldal — nem létezik, csak a sablonja.
+2. **A paletta már nem érv, hanem ízlés.** Az első iterációban minden színt meg
+   tudtam indokolni egy nyersanyaggal. Most a válasz az, hogy az ügyfél így
+   kérte. Ez legitim, de ha jövőre valaki megkérdezi, miért cián egy pécsi
+   desszertműhely oldala, erre a dokumentumra mutatva nem lesz jobb válasz.
+   **Ez a mostani iteráció legnagyobb vesztesége.**
 
-3. **A szignatúra elem egy általam kitalált mintadesszertet mutat.** A hét
-   réteg valós cukrászati komponens, de **nem biztos, hogy a Krém ilyet
-   csinál.** Ha kiderül, hogy főleg egyszerű, kétrétegű süteményeket készítenek,
-   a keresztmetszet mint alapötlet nem dől meg, de sokkal szerényebb lesz —
-   és akkor jogos a kérdés, elbírja-e egyedül a hero-t.
+3. **A képek nem fotók, és nem az ügyfél termékei.** Az illusztrációk jók
+   arra, hogy a felület ne legyen üres, és arra, hogy megmutassák a
+   rétegszerkezetet — de egy desszertnél a **fotó a bizonyíték**. Amíg nincs
+   valódi fotóanyag, az oldal a saját termékéről semmit nem mutat. A csere
+   elő van készítve (§9.3), de amíg nem történik meg, ez hiány.
 
-4. **A „Bejelentette 7 személy" értelmezése következtetés** (§15/17). Erre
+4. **A kínálat teljes egészében placeholder.** A négy tétel neve, összetétele
+   és ára kitalálatlan; a `/kinalat/` — a legértékesebb oldal — csak sablonként
+   létezik.
+
+5. **A JS túllépte a kért méretet.** 11,1 kB nyers a kért 5–10 kB helyett
+   (tömörítve 4,0 kB). Ez az animációk és a 3D ára. §9.7-ben megírtam, mit
+   venném ki és milyen sorrendben, ha vissza kell szorítani — de most fölötte van.
+
+6. **A 3D és az animációk elsősorban egérrel élnek.** Érintőn a kártyadöntés és
+   a kurzorkövetés nem fut, tehát a látogatók többsége (mobil) a térhatásból
+   csak a statikus perspektívát és az árnyékokat látja. Ez így helyes döntés,
+   de azt jelenti, hogy **amit az ügyfél kért, azt a felhasználók kisebbik
+   része tapasztalja meg teljesen.**
+
+7. **A „Bejelentette 7 személy" értelmezése következtetés** (§15/17). Erre
    építettem a K2-t és az egész §10.5 sürgősségét. Közepes bizonyosságú.
 
-5. **Az öt teljes oldalból egy készült el.** A `/kinalat/`, `/elorendeles/`,
-   `/a-muhely/` és `/allergenek/` szekciótáblaként létezik, kódként nem. Az
-   ütemterv ezt fázisokra bontja, de a leszállított kód a főoldal.
+8. **Az öt tervezett oldalból egy készült el.** A `/kinalat/`, `/elorendeles/`,
+   `/a-muhely/` és `/allergenek/` szekciótáblaként létezik, kódként nem.
 
-6. **A `light-dark()` döntés (D6) modern böngészőt feltételez.** Vállalható,
-   de ha kiderül, hogy a látogatók jelentős része régi Androidon böngészik,
-   ez a duplikáció-mentesség rossz csere volt, és vissza kell írni a
-   `@media`-blokkokat.
-
-7. **Nem beszéltem egyetlen vendéggel sem.** A célközönség-leírás (§0.1)
-   irodai következtetés. Öt beszélgetés a pult mellett többet érne, mint ez
-   az egész dokumentum §12-es fejezete.
+9. **Nem beszéltem egyetlen vendéggel sem.** A célközönség-leírás (§0.1) irodai
+   következtetés. Öt beszélgetés a pult mellett többet érne, mint ez az egész
+   dokumentum §12-es fejezete.
 
 Amit ezzel szemben **nem** tartok gyengének: a design system számai mérve
 vannak, nem becsülve; a prototípus akadálymentességét gépi ellenőrzéssel
-átnéztem; és sehol nincs kitalált ár, nyitvatartás vagy kapacitás — ami nem
-tudott, az jelölve van.
+átnéztem világos és sötét témán, csökkentett mozgással is; az animációk
+egyike sem tud tartalmat véglegesen elrejteni; és sehol nincs kitalált ár,
+nyitvatartás vagy kapacitás — ami nem tudott, az jelölve van.
