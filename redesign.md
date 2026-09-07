@@ -1357,6 +1357,32 @@ világos és sötét, `prefers-reduced-motion: reduce`):
   átvétel → „Aznap 11:00 és 18:00 között vagyunk nyitva"; helyes kitöltés →
   sikerpanel és a gomb letiltása („Elküldve").
 
+### 16.1 A megosztható demó
+
+A prototípusból készült egy **linkelhető változat**, hogy a főoldal
+megbeszélhető legyen anélkül, hogy bárkinek fájlt kellene megnyitnia.
+Mechanikus származtatás az `index.html`-ből, három eltéréssel:
+
+| Eltérés | Miért |
+|---|---|
+| Nincs `<!doctype>`, `<html>`, `<head>`, `<body>` — a `<title>` és a `<style>` a fájl elejére kerül | A hosztoló felület saját vázba csomagolja a tartalmat. |
+| Legfelül egy **bezárható demó-sáv** | A megosztott link elveszíti a beszélgetés kontextusát. A sáv megmondja, mi placeholder, hogy az ábrák saját illusztrációk, és felsorolja, mi a **valós** adat (cím, telefon, 11:00, 5,0/16, ársáv). Enélkül a demó félrevezető: úgy néz ki, mint egy kész oldal valódi árakkal. |
+| Google Fonts `<link>` tartalékként a beágyazott betűk mellé | Ha a hoszt tartalombiztonsági szabálya nem engedné a `data:` betűket, a Fraunces és a Commissioner akkor is betöltődik. **A repóban lévő `index.html` változatlanul nulla külső kérést indít** — ez a tartalék csak a demóban van. |
+
+A demó lapcíme szándékosan rövid („Krém Desszertműhely"), mert ott ez a lap
+**neve**. Az éles oldal `<title>`-je más, és a §10.1-ben van rögzítve.
+
+Két apró javítás került vissza a demóból a forrásba:
+
+1. **A téma-kapcsoló nem írja felül a hoszt beállítását.** Korábban a
+   fejlécbeli szkript minden betöltéskor kitette a `data-theme="auto"`-t, ami
+   felülírta volna a beágyazó felület saját, explicit téma-választását. Most az
+   „auto" nem egy harmadik érték, hanem **az attribútum hiánya**: olyankor a
+   `:root { color-scheme: light dark }` dönt, és a hoszt eredeti értéke
+   visszaáll, ha a felhasználó visszakapcsol automatikusra.
+2. **A hero felső térköze 96 px-ről 64 px-re csökkent** nagy képernyőn, hogy
+   az elsődleges CTA a demó-sáv mellett is a hajtás fölött maradjon.
+
 ---
 
 ## 17. Őszintén: mi ennek az anyagnak a leggyengébb pontja

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="hu" data-theme="auto">
+<html lang="hu">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -40,9 +40,14 @@
   ==========================================================================
 -->
 <script>
+/* A hoszt (pl. beágyazó felület) kitehet egy data-theme-et a <html>-re.
+   Azt megjegyezzük és NEM írjuk felül — csak a felhasználó saját, mentett
+   választása írja át. Az „auto" nem egy harmadik érték, hanem az attribútum
+   hiánya: olyankor a :root color-scheme:light dark dönt. */
 (function(){var d=document.documentElement;d.dataset.js='';
+window.__kremHosztTema=d.getAttribute('data-theme')||'';
 try{var t=localStorage.getItem('krem-tema');
-d.dataset.theme=(t==='light'||t==='dark')?t:'auto';}catch(e){}})();
+if(t==='light'||t==='dark')d.setAttribute('data-theme',t);}catch(e){}})();
 </script>
 <style>
 /* ==========================================================================
@@ -336,7 +341,8 @@ section{padding-block:var(--t-8);position:relative}
    ========================================================================== */
 .hero{padding-block:var(--t-7) var(--t-8);overflow:clip}
 @media (min-width:980px){
-  .hero{padding-block:var(--t-9)}
+  /* felül kevesebb: így az elsődleges CTA a hajtás fölött marad (§12/C-sor) */
+  .hero{padding-block:var(--t-8) var(--t-9)}
   .hero__racs{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(380px,.98fr);
     gap:var(--t-8);align-items:center}
 }
@@ -1561,8 +1567,17 @@ var perc = function(h){ var r = h.split(":"); return +r[0]*60 + +r[1]; };
 
 /* --- (2) TÉMA ----------------------------------------------------------- */
 var temaGombok = $$(".tema button");
+var HOSZT_TEMA = window.__kremHosztTema || "";
 function temaAllit(ertek, ment){
-  document.documentElement.dataset.theme = ertek;
+  var gyoker = document.documentElement;
+  /* "auto" = nincs saját választás: visszaadjuk a hoszt eredeti értékét,
+     vagy ha az sem volt, levesszük az attribútumot. */
+  if (ertek === "auto") {
+    HOSZT_TEMA ? gyoker.setAttribute("data-theme", HOSZT_TEMA)
+               : gyoker.removeAttribute("data-theme");
+  } else {
+    gyoker.setAttribute("data-theme", ertek);
+  }
   temaGombok.forEach(function(g){
     g.setAttribute("aria-pressed", String(g.dataset.tema === ertek));
   });
@@ -1576,7 +1591,11 @@ function temaAllit(ertek, ment){
 temaGombok.forEach(function(g){
   g.addEventListener("click", function(){ temaAllit(g.dataset.tema, true); });
 });
-temaAllit(document.documentElement.dataset.theme || "auto", false);
+(function(){
+  var mentett = "";
+  try { mentett = localStorage.getItem("krem-tema") || ""; } catch(e){}
+  temaAllit(mentett === "light" || mentett === "dark" ? mentett : "auto", false);
+})();
 
 /* --- (3) NYITVATARTÁS: jelző + táblázat --------------------------------- */
 var NAPNEV = ["vasárnap","hétfőn","kedden","szerdán","csütörtökön","pénteken","szombaton"];
