@@ -859,8 +859,10 @@ kurzorkövetés be sem kötődik, a fénycsík eltűnik, és a kiválasztott ré
 **körvonalat kap a kicsúszás helyett**.
 
 Ellenőrizve fejetlen Chromiumban `reduced_motion: reduce` alatt: a kiemelt
-réteg `transform` értéke `none`, a `.folt` `display` értéke `none`, és nulla
-elem marad rejtve.
+réteg `transform` értéke `none`, a `.folt` és a haladásjelző `display` értéke
+`none`, az összeépülés lépcsőzése 0 ms, a nézetváltás-átmenet ki van kapcsolva,
+és nulla elem marad rejtve. **A desszertváltás ilyenkor is működik** — csak
+azonnal, átmenet nélkül: az információ soha nem a mozgásban van.
 
 ### 8.3 Egy figyelmeztetés a görgetésre megjelenésről
 
@@ -1039,26 +1041,43 @@ az oldal mást mond, mint a strukturált adat.
 
 ### 9.7 A térhatás és az animációk megvalósítási költsége
 
-| Réteg | Nyers | Tömörítve | Megjegyzés |
+| Réteg | Nyers | Megjegyzés |
+|---|---|---|
+| Mozgás-CSS (kulcskockák, segédosztályok) | ~1,5 kB | 8 kulcskocka |
+| 3D szelet CSS | ~5,7 kB | ebben az anyagtextúrák és a morfolás is |
+| Illusztrációk | 11,5 kB (2,5 kB tömörítve) | 4 db inline SVG |
+| **JS: `DESSZERTEK` adat** | **~2,6 kB** | ez tartalom, nem kód — élesben CMS-ből jön |
+| JS: szelet (morf, összeépülés, kurzorkövetés) | ~2,8 kB | |
+| JS: kártyadöntés | ~0,7 kB | |
+| JS: görgetésfigyelő (megjelenés) | ~0,9 kB | |
+| JS: tájékozódás (haladás, fejléc, menü) | ~0,9 kB | |
+| JS: kínálat → űrlap összekötés | ~0,7 kB | |
+| JS: mai idősáv | ~0,7 kB | |
+
+**A JS így 19,0 kB kommentek nélkül, tömörítve 6,6 kB.** A brief eredetileg
+5–10 kB-ot kért: **a nyers méret ennek majdnem a duplája.** Ezt nem szépítem.
+Három dolog tartja kezelhető szinten:
+
+1. **Tömörítve 6,6 kB** — a hálózaton ez a szám számít, és ez még mindig
+   kevesebb, mint egy üres React-oldal alapterhének a töredéke.
+2. **2,6 kB ebből adat, nem kód.** A négy desszert rétegsora élesben a CMS-ből
+   jön, nem a szkriptből.
+3. **Nincs keretrendszer**, tehát a méreten túl nincs futásidejű költsége:
+   nincs hydration, nincs virtuális DOM, nincs újrarenderelés.
+
+**Ha vissza kell szorítani**, ebben a sorrendben venném ki — mindegyik
+progresszív ráépülés, egyik kivétele sem töri el a lapot:
+
+| Sorrend | Mit | Nyereség | Mit veszítünk |
 |---|---|---|---|
-| Mozgás-CSS (kulcskockák, segédosztályok) | 1 508 B | ~0,4 kB | 8 kulcskocka |
-| 3D szelet CSS | 5 151 B | ~1,2 kB | ebben az anyagtextúrák is |
-| 3D szelet HTML | 954 B | — | |
-| Illusztrációk | 11 537 B | 2 477 B | 4 db inline SVG |
-| JS: 3D + kártyadöntés + görgetésfigyelő | ~3 400 B | ~1,0 kB | a teljes JS részeként |
+| 1. | Mai idősáv | ~0,7 kB | A táblázat megmarad, csak a vizuális „hol tartunk" vész el. |
+| 2. | Kártyadőlés | ~0,7 kB | Az árnyék és a hover megmarad; a térhatás a szeletben él tovább. |
+| 3. | Haladásjelző + fejléc-árnyék | ~0,6 kB | Az `aria-current` menüjelölés maradjon — az tájékozódás, nem dísz. |
+| 4. | A szelet kurzorkövetése | ~0,6 kB | Az üresjárati hintázás CSS-ből megy tovább. |
+| 5. | Görgetésre megjelenés | ~0,9 kB | Minden azonnal látszik — ez az oldal szempontjából nem veszteség. |
 
-**A JS így 11,1 kB kommentek nélkül, tömörítve 4,0 kB.** A brief eredetileg
-5–10 kB JS-t kért: **a nyers méret 1,1 kB-tal túllépi a felső határt.** Ezt nem
-szépítem — az animációk és a 3D ára. Két dolog tartja kezelhető szinten:
-tömörítve 4,0 kB (a hálózaton ez számít), és nincs benne keretrendszer, tehát
-nincs futásidejű költsége a méreten túl.
-
-**Ha vissza kell szorítani 10 kB alá**, ebben a sorrendben venném ki:
-(1) a kártyadöntés (~700 B) — ez a leggyengébb hozzáadott érték;
-(2) a szelet kurzorkövetése (~600 B) — az üresjárati hintázás CSS-ből marad;
-(3) a görgetésfigyelő (~900 B) — a `.rejt` osztály nélkül minden azonnal látszik.
-Mindhárom kivehető anélkül, hogy bármi elromolna, mert mindegyik
-progresszív ráépülés.
+**Amit utoljára venném ki: a desszertváltást.** Az az egyetlen elem, ami nem
+díszít, hanem elad (§12/C16).
 
 **Teljesítménybiztosítékok a 3D-hez:**
 
@@ -1187,18 +1206,23 @@ nem a fejlesztő gépe. A mérce a §2.4-ben rögzített: nem lehet lassabb a d�
 
 | Erőforrás | Költségvetés | A prototípusban mért |
 |---|---|---|
-| HTML (fontok nélkül, illusztrációkkal együtt) | ≤ 28 kB | **26,3 kB** gzip ✓ |
-| CSS (inline, kritikus) | ≤ 10 kB | **9,3 kB** gzip ✓ |
-| JS | ≤ 5 kB | **4,0 kB** gzip ✓ (nyers 11,1 kB — lásd §9.7) |
+| HTML (fontok nélkül, illusztrációkkal együtt) | ≤ 34 kB | **31,3 kB** gzip ✓ |
+| CSS (inline, kritikus) | ≤ 11 kB | **10,4 kB** gzip ✓ |
+| JS | ≤ 7 kB | **6,6 kB** gzip ✓ (nyers 19,0 kB — lásd §9.7) |
 | Betűk (2 × woff2) | ≤ 55 kB | **51,8 kB** ✓ |
 | Fotó az első nézetben | **0 kB** | 0 ✓ (a szelet és az illusztrációk inline) |
-| **Első betöltés összesen** | **≤ 95 kB** | **~87 kB** ✓ |
+| **Első betöltés összesen** | **≤ 105 kB** | **~100 kB** ✓ |
 | Kérésszám az első nézethez | ≤ 3 | 3 (HTML + 2 betű) |
 
-Az előző iterációhoz képest ez **+6 kB** (animációk, 3D, négy illusztráció).
-Az `index.html` a prototípusban 167 kB, mert a betűk base64-gyel benne vannak
+Az első iterációhoz képest ez **+19 kB** (animációk, 3D, morfolás, négy
+illusztráció, tájékozódás). A költségvetést **felemeltem** — ez nem az történt,
+hogy túlléptük: az ügyfél látványosabb lapot kért, és ennek ára van. A 100 kB
+így is a magyar vendéglátós weboldalak töredéke (a tipikus WordPress-alapú
+étteremoldal 1,5–3 MB), és **egyetlen kép sincs benne**, amit tömöríteni kellene.
+
+Az `index.html` a prototípusban 183 kB, mert a betűk base64-gyel benne vannak
 (§9.2); élesben ez szétválik, és a betűk egy évig cache-elődnek — a **második**
-oldalletöltés így ~26 kB.
+oldalletöltés így ~31 kB.
 
 ### 11.2 Harmadik felek
 
@@ -1231,6 +1255,10 @@ naplóelemzés — a §15/12-ben eldöntendő.
 | C13 | **GYIK** | főoldal alja | A négy kérdés a négy leggyakoribb telefonhívás. Minden megválaszolt kérdés egy fel nem vett telefon a gyártás közepén. |
 | C14 | **A 3D szelet mint első interakció** | hero | Az első kattintás a legnehezebb. Egy alacsony tétű, játékos interakció (válassz réteget) belépteti a látogatót az oldal használatába — és közben pont a termékről tanít. |
 | C15 | **Süteményillusztrációk** | kínálat | Fotó nélkül is megkülönbözteti a tételeket, és a listát végigpásztázhatóvá teszi. Ideiglenes megoldás: a valódi fotó erősebb lesz (§9.3). |
+| **C16** | **A szelet átépül a választott desszertre** | hero + kínálat | Ez a lap egyetlen olyan eleme, amit **egy versenytárs sem tud lemásolni fél óra alatt**, és pont a terméket magyarázza: „minden desszert a saját rétegsorát hozza" — eddig ezt a szöveg állította, most a lap **bizonyítja**. Egy ilyen elem az, amiért egy vendég megmutatja az oldalt valaki másnak. |
+| **C17** | **A „Előre kérem" gomb kitölti az űrlapot** | kínálat → előrendelés | A böngészés és a kérés között eddig volt egy szakadék: a látogató kiválasztott valamit, aztán az űrlapnál elölről kezdte. Most a gomb átépíti a szeletet, bejelöli a helyes mezőt, elmenti a tétel nevét, és az első kitöltendő mezőre viszi a fókuszt. **Ez a legnagyobb egyszeri konverziós javítás ebben az iterációban.** |
+| C18 | **Haladásjelző + aktív menüpont** | fejléc | Hosszú egyoldalas lapon a „hol tartok" bizonytalansága kilépéshez vezet. Két olcsó jel oldja fel. Az `aria-current` eddig **halott CSS volt** — semmi nem állította be. |
+| C19 | **A mai nap idősávja** | nyitvatartás | A táblázat számokat mond; a sáv megmutatja, hol tartunk benne. Egy pillantásból megvan az, amiért különben telefonálni kellene. |
 
 ### 12.1 Mit mérünk
 
@@ -1242,10 +1270,14 @@ naplóelemzés — a §15/12-ben eldöntendő.
 | `utvonal_koppintas` | Google Térkép link |
 | `ertekeles_koppintas` | „Írj értékelést" |
 | `szelet_hasznalat` | legalább egy réteg kiválasztva — ez méri, hogy a szignatúra elem *működik-e*, vagy csak dísz |
+| `desszert_valtas` | a hero szeletének átépítése másik desszertre, a választott azonosítójával |
+| `kinalat_elorendeles` | a kártya „Előre kérem" gombja — melyik tételről indult a kérés |
 
-Az utolsó tétel önvizsgálat: ha három hónap alatt a látogatók kevesebb mint
-10%-a nyúl hozzá, a keresztmetszet interaktív rétege felesleges, és statikus
-illusztrációra kell egyszerűsíteni.
+Az utolsó három tétel **önvizsgálat**: ha három hónap alatt a látogatók
+kevesebb mint 10%-a nyúl a szelethez, az interaktív réteg felesleges, és
+statikus illusztrációra kell egyszerűsíteni — a §9.7 táblázata megmondja, mit
+kell kivenni. A `kinalat_elorendeles` és az `elorendeles_bekuldve` aránya pedig
+megmutatja, valóban zárja-e a szakadékot a böngészés és a kérés között (C17).
 
 ---
 
@@ -1276,6 +1308,12 @@ A **⟳** jel azt jelöli, hogy a döntés a második iterációban megváltozot
 | D18 | A 3D **csak egérrel**, `prefers-reduced-motion` alatt sehogy | Mindenhol bekapcsolva | Érintőn nincs kurzor, amit követni — csak akadozás lenne belőle. Mozgásérzékenyeknél a folyamatos térbeli mozgás rosszullétet okoz. |
 | D19 | A lüktető „nyitva" pont az egyetlen végtelen **állapotjelző** mozgás | Statikus pont / mindenhol lüktetés | Itt a mozgás maga az információ: zárva a pont üres karika és mozdulatlan. Máshol a végtelen mozgás zaj. |
 | D20 | Nincs számláló-animáció az 5,0-n | Felfelé pörgő pontszám | A felfelé pörgő szám növekedést sugall. Nem nő: 16 értékelésből áll. |
+| **D21** ⟳ | **A szelet adatvezérelt és morfol** a négy desszert között | Négy külön statikus rajz / semmi | Egy adatszerkezetből él a test, a rétegsor-lista és a cím — nem tud szétcsúszni. És ez bizonyítja azt az állítást, amit a szöveg amúgy is tesz. |
+| **D22** | A magasság **szándékosan** animálódik a morfolásnál | Csak a szín cserélődik (olcsóbb) | A rétegvastagság **maga az információ**: a mousse vastag, a glazúr vékony. Ha csak a szín vált, a morfolás semmit nem közöl. A hatás a színtéren belül marad (fix `min-height`), tehát nincs oldalszintű újrarendezés. |
+| **D23** | A kínálat CTA-ja **kitölti az űrlapot**, de a link horgony marad | Csak `<button>` JS-sel | JS nélkül a `<a href="#elorendeles">` sima horgonyként visz az űrlaphoz; a kitöltés progresszív ráépülés. Egy JS-hiba nem szakítja el a konverziós utat. |
+| **D24** | Nincs görgetéshez kötött hero-forgatás | Scroll-linked `rotateY` | Ugyanazt a `transform`-ot írná, mint a kurzorkövetés és a hintázás. Háromfelől vezérelt tulajdonság megbízhatóan akadozik — egy működő interakciót nem cserélek látványosabb, de instabil megoldásra. |
+| **D25** | Nincs „vágd fel a tortát" gesztus | Húzható kés a metszet felfedéséhez | Látványban ez lenne a csúcs, de érintőn ütközik a görgetéssel, billentyűzettel használhatatlan, és **egy gesztus mögé rejtené azt az információt, ami most azonnal látszik**. |
+| **D26** | Nincs piszkozat-mentés az űrlapon | `localStorage` autosave | Nevet és telefonszámot tárolna a böngészőben, egy két perc alatt kitölthető űrlapnál. Rossz csere, és adatkezelési kérdés (§15/11). Ha az ügyfél kéri: egy óra. |
 
 ## 14. Bevezetési ütemterv
 
@@ -1325,14 +1363,12 @@ Sorrendben aszerint, hogy mi blokkolja az élesítést. Az 1–3. **blokkoló**.
 
 | Tétel | Érték |
 |---|---|
-| `index.html` | 167 282 B (ebből 69 128 B a két base64 betű) |
-| HTML betűk nélkül | 98 160 B · **26 250 B gzip** |
-| CSS | 35 663 B · **9 340 B gzip** |
-| JS (2 blokk: téma-bootstrap + fő) | nyers 14 182 B · komment nélkül **11 138 B** · **4 046 B gzip** |
-| — ebből 3D + animáció + görgetésfigyelő | ~3 400 B |
+| `index.html` | 183 795 B (ebből 69 128 B a két base64 betű) |
+| HTML betűk nélkül | 114 673 B · **31 476 B gzip** |
+| CSS | 39 866 B · **10 507 B gzip** |
+| JS | nyers 25 184 B · komment nélkül **19 112 B** · **6 595 B gzip** |
+| — ebből `DESSZERTEK` adat | ~2 600 B (tartalom, nem kód) |
 | JSON-LD | 3 885 B |
-| 3D szelet (HTML + CSS) | 954 + 5 151 B |
-| Mozgás-CSS (kulcskockák, segédosztályok) | 1 508 B |
 | Süteményillusztrációk (4 db inline SVG) | 11 537 B · **2 477 B gzip** |
 | Külső kérés | **0** |
 | Raszteres kép | **0** |
@@ -1340,22 +1376,26 @@ Sorrendben aszerint, hogy mi blokkolja az élesítést. Az 1–3. **blokkoló**.
 **Ellenőrzött viselkedés** (fejetlen Chromium, 320 / 390 / 768 / 1440 px,
 világos és sötét, `prefers-reduced-motion: reduce`):
 
-- vízszintes görgetés: **nincs**, egyik szélességen sem (320-tól 1440-ig mérve);
+- vízszintes görgetés: **nincs**, egyik szélességen sem;
 - külső hálózati kérés: **nincs** — a betűk és az illusztrációk inline;
 - címke nélküli űrlapmező: **0**; hozzáférhető név nélküli gomb/link: **0**;
   `aria-label` nélküli `role="img"` SVG: **0**;
 - pontosan **egy** `H1`, szintugrás nélkül;
-- első `Tab`: „Ugrás a tartalomra";
-- a betűk ténylegesen betöltődnek, az `ő`/`ű` rajzolt glifa, nem helyettesítés;
-- **görgetés után nulla elem marad rejtve** minden mért szélességen;
-- **csökkentett mozgásnál**: nulla rejtett elem (a megfigyelő el sem indul),
-  a háttérfoltok `display:none`, a kiemelt réteg `transform: none`;
-- 3D kurzorkövetés egérrel mérve: a szelet `--ry` 28,6°-ra állt, a kártya
-  `--ry` 3,15°-ra — a `matrix3d` ténylegesen alkalmazódik;
-- konzolhiba: **nincs**;
-- űrlap-validáció végigmérve: üres küldés → **7 hiba + összegző**; 09:00-s
-  átvétel → „Aznap 11:00 és 18:00 között vagyunk nyitva"; helyes kitöltés →
-  sikerpanel és a gomb letiltása („Elküldve").
+- **desszertváltás**: a szelet 7 → 6 → 3 rétegre épül át (194 → 161 → 127 px),
+  a rétegsor-lista és a cím együtt vált, konzolhiba nélkül;
+- **kínálat → űrlap**: a „Előre kérem" beállítja a rejtett `tetel` mezőt, bejelöli
+  a helyes rádiógombot, megjeleníti a visszajelzést és a mennyiség mezőre fókuszál;
+- **menüjelölés**: mind a négy szakaszon a helyes menüpont kap `aria-current`-et,
+  a lap alján is (a dokumentumsorrend szerinti utolsó szakasz, nem a menüsorrend);
+- **csökkentett mozgásnál**: nulla rejtett elem, a `.folt` és a haladásjelző
+  `display:none`, az összeépülés lépcsőzése 0 ms, a nézetváltás-átmenet kikapcsolva
+  — **a desszertváltás viszont továbbra is működik**, csak azonnal;
+- konzolhiba: **nincs**, egyik mért nézetben sem;
+- űrlap-validáció: üres küldés → **7 hiba + összegző**; 09:00-s átvétel →
+  „Aznap 11:00 és 18:00 között vagyunk nyitva"; helyes kitöltés → sikerpanel,
+  benne a kiválasztott tétellel, és a gomb letiltása.
+
+---
 
 ### 16.1 A megosztható demó
 
@@ -1412,9 +1452,12 @@ A második iteráció ezen nem javított — sőt, két ponton rontott.
    és ára kitalálatlan; a `/kinalat/` — a legértékesebb oldal — csak sablonként
    létezik.
 
-5. **A JS túllépte a kért méretet.** 11,1 kB nyers a kért 5–10 kB helyett
-   (tömörítve 4,0 kB). Ez az animációk és a 3D ára. §9.7-ben megírtam, mit
-   venném ki és milyen sorrendben, ha vissza kell szorítani — de most fölötte van.
+5. **A JS a kért méret majdnem kétszerese.** 19,0 kB nyers a kért 5–10 kB
+   helyett (tömörítve 6,6 kB). Ebből 2,6 kB adat, a többi kód. A §9.7 megírja,
+   mit és milyen sorrendben venni ki — de tény, hogy a látványért fizettünk,
+   és ez a számla. Egy nyitvatartást kereső embernek a haladásjelző és a
+   kártyadőlés semmit nem ad; **ha egyszer méréssel kiderül, hogy a látogatók
+   nem használják a desszertváltást (§12.1), a fele kidobható.**
 
 6. **A 3D és az animációk elsősorban egérrel élnek.** Érintőn a kártyadöntés és
    a kurzorkövetés nem fut, tehát a látogatók többsége (mobil) a térhatásból

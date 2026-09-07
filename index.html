@@ -275,7 +275,17 @@ section{padding-block:var(--t-8);position:relative}
 .fejlec{position:sticky;top:0;z-index:100;
   background:color-mix(in srgb,var(--hatter) 82%,transparent);
   backdrop-filter:blur(14px) saturate(1.4);
-  border-bottom:1px solid var(--vonal-halk);padding-top:env(safe-area-inset-top)}
+  border-bottom:1px solid var(--vonal-halk);padding-top:env(safe-area-inset-top);
+  transition:box-shadow var(--idom) var(--gorbe),
+             background-color var(--idom) var(--gorbe)}
+/* Görgetés közben a fejléc elválik a laptól — jelzi, hogy alatta tartalom fut. */
+.fejlec[data-gorgetve]{box-shadow:var(--e-2);
+  background:color-mix(in srgb,var(--hatter) 94%,transparent)}
+/* Görgetésjelző csík: hol tartok az oldalon. */
+.halad{position:absolute;left:0;bottom:-1px;height:2px;width:100%;
+  transform:scaleX(var(--arany,0));transform-origin:left;
+  background:linear-gradient(90deg,var(--cian),var(--masod));
+  pointer-events:none}
 .fejlec__sor{display:flex;align-items:center;gap:var(--t-4);
   min-height:68px;padding-block:var(--t-2)}
 .logo{display:flex;align-items:baseline;gap:var(--t-2);text-decoration:none;
@@ -374,10 +384,13 @@ section{padding-block:var(--t-8);position:relative}
    így a szelet kiterjedt test, nem rajz. A vágott előlap a keresztmetszet.
    ========================================================================== */
 .szinter{
+  /* Fix magasság: a szelet desszertváltáskor átépül, de a színtér nem
+     változik, így a lap alatta nem rendeződik újra (CLS = 0). A méret a
+     legmagasabb rétegsorhoz (194 px) plusz a térbeli vetülethez van szabva. */
   position:relative;display:grid;place-items:center;
-  min-height:340px;perspective:1100px;perspective-origin:50% 42%;
+  min-height:270px;perspective:1100px;perspective-origin:50% 44%;
 }
-@media (min-width:560px){.szinter{min-height:420px}}
+@media (min-width:560px){.szinter{min-height:310px}}
 .szinter__arnyek{ /* a tányér árnyéka a szelet alatt */
   position:absolute;left:50%;top:74%;width:290px;height:64px;
   transform:translate(-50%,-50%);border-radius:50%;
@@ -397,11 +410,20 @@ section{padding-block:var(--t-8);position:relative}
   50%    {transform:rotateX(5.5deg) rotateY(15deg)}
 }
 .szinter[data-fog] .szelet{animation:none}
+/* Betöltéskor a szelet alulról fölfelé ÉPÜL FEL — ez a műhely munkája,
+   nem díszítés. A JS előbb kinullázza a magasságokat, majd lépcsőzve
+   ráengedi a célértéket; a késleltetést a --epit változó viszi. */
+.szelet[data-epul] .reteg{height:0;transition-delay:var(--epit,0ms)}
 .reteg{
   position:relative;display:block;width:100%;height:calc(var(--h) * var(--skala,1));
   background:var(--c);transform-style:preserve-3d;
-  transition:transform 260ms var(--rugo),filter 260ms var(--gorbe);
+  /* A magasság és a szín SZÁNDÉKOSAN animálódik: itt a rétegvastagság maga az
+     információ, tehát a morfolás tartalmat közöl. A hatás a szeleten belül
+     marad (a színtér min-height-ja fix), így az oldal nem rendeződik újra. */
+  transition:transform 260ms var(--rugo),filter 260ms var(--gorbe),
+             height 520ms var(--gorbe),background-color 520ms var(--gorbe);
 }
+.reteg[data-ures]{height:0}
 .reteg::after{ /* jobb oldallap — a testet ez adja */
   content:"";position:absolute;top:0;right:0;width:var(--m);height:100%;
   background:color-mix(in srgb,var(--c) 72%,#0B2027);
@@ -459,6 +481,24 @@ section{padding-block:var(--t-8);position:relative}
 .ksz-tag{font-size:var(--sz-2xs);letter-spacing:.1em;text-transform:uppercase;
   font-weight:700;color:var(--jelzo);border:1px solid currentColor;
   padding:3px 9px;border-radius:var(--r-pill);white-space:nowrap}
+.valaszto{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:var(--t-4)}
+.valaszto button{
+  display:inline-flex;align-items:center;gap:7px;min-height:40px;
+  padding:6px var(--t-3);border-radius:var(--r-pill);cursor:pointer;
+  border:1.5px solid var(--vonal-halk);background:var(--hatter);
+  color:var(--szoveg-halk);font-size:var(--sz-2xs);font-weight:600;
+  transition:border-color var(--idom) var(--gorbe),color var(--idom) var(--gorbe),
+             background-color var(--idom) var(--gorbe),transform var(--idom) var(--rugo)}
+.valaszto button:hover{color:var(--szoveg);border-color:var(--akcent);transform:translateY(-2px)}
+.valaszto button[aria-pressed="true"]{
+  background:var(--akcent);border-color:var(--akcent);color:var(--akcent-fg)}
+.valaszto__pont{width:11px;height:11px;border-radius:4px;background:var(--c);flex:none;
+  border:1px solid color-mix(in srgb,var(--szoveg) 20%,transparent)}
+.valaszto button[aria-pressed="true"] .valaszto__pont{
+  border-color:color-mix(in srgb,var(--akcent-fg) 55%,transparent)}
+/* a rétegsor cseréje halkan átúszik */
+.retegek[data-cserel]{animation:be 300ms var(--gorbe)}
+
 .ksz-labjegyzet{margin-top:var(--t-4);padding-top:var(--t-4);
   border-top:1px solid var(--vonal-halk);font-size:var(--sz-xs);color:var(--szoveg-halk)}
 
@@ -613,6 +653,21 @@ legend{font-weight:700;font-size:var(--sz-s);padding:0 0 var(--t-2)}
 .ora-tabla th{text-align:left;font-weight:600}
 .ora-tabla td:last-child{text-align:right}
 .ora-tabla tr[data-ma] th,.ora-tabla tr[data-ma] td{font-weight:700;color:var(--akcent)}
+/* A mai nap 24 órás sávja: hol tartunk benne éppen. */
+.napsav{margin-top:var(--t-5)}
+.napsav__cim{display:flex;justify-content:space-between;font-size:var(--sz-2xs);
+  font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--szoveg-halk)}
+.napsav__vonal{position:relative;height:12px;margin-top:var(--t-2);border-radius:var(--r-pill);
+  background:var(--melyseg);border:1px solid var(--vonal-halk);overflow:hidden}
+.napsav__nyitva{position:absolute;top:0;bottom:0;border-radius:var(--r-pill);
+  left:var(--kezd);width:var(--hossz);
+  background:linear-gradient(90deg,var(--cian),var(--masod))}
+.napsav__most{position:absolute;top:-5px;bottom:-5px;left:var(--most);width:2px;
+  background:var(--szoveg);border-radius:2px}
+.napsav__most::after{content:"";position:absolute;left:50%;top:-3px;width:8px;height:8px;
+  transform:translateX(-50%);border-radius:50%;background:var(--szoveg)}
+.napsav__ora{display:flex;justify-content:space-between;margin-top:6px;
+  font-size:var(--sz-2xs);color:var(--szoveg-halk);font-variant-numeric:tabular-nums}
 address{font-style:normal;font-size:var(--sz-l);line-height:1.5}
 .kapcsolat-lista{list-style:none;display:grid;gap:var(--t-3);margin-top:var(--t-5)}
 .kapcsolat-lista a{display:inline-flex;align-items:center;gap:var(--t-2);
@@ -653,8 +708,16 @@ address{font-style:normal;font-size:var(--sz-l);line-height:1.5}
 /* ==========================================================================
    13. MOZGÁSCSÖKKENTÉS — minden animáció kikapcsol, információ nem vész el
    ========================================================================== */
+/* A témaváltás az egész lapot átúsztatja, ahol a böngésző tudja.
+   Ahol nem, ott ugyanaz történik, csak vágással — semmi nem törik el. */
+::view-transition-old(root),::view-transition-new(root){
+  animation-duration:280ms;animation-timing-function:var(--gorbe)}
+
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
+  ::view-transition-old(root),::view-transition-new(root){animation:none}
+  .szelet[data-epul] .reteg{transition-delay:0ms !important}
+  .halad{display:none}
   *,*::before,*::after{
     animation-duration:.01ms !important;animation-iteration-count:1 !important;
     animation-delay:0ms !important;
@@ -707,6 +770,7 @@ address{font-style:normal;font-size:var(--sz-l);line-height:1.5}
       </button>
     </div>
   </div>
+  <span class="halad" id="halad" aria-hidden="true"></span>
 </header>
 
 <main id="fo">
@@ -753,8 +817,13 @@ address{font-style:normal;font-size:var(--sz-l);line-height:1.5}
     <!-- ---------- A HÁROMDIMENZIÓS SZELET ---------- -->
     <figure class="ksz-kartya" id="keresztmetszet">
       <div class="ksz-fej">
-        <figcaption class="ksz-cim"><span class="ph">[a nap desszertje]</span></figcaption>
+        <figcaption class="ksz-cim" id="ksz-cim"><span class="ph">[a nap desszertje]</span></figcaption>
         <span class="ksz-tag">minta</span>
+      </div>
+
+      <div class="valaszto" id="valaszto" role="group" aria-label="Melyik desszert keresztmetszete">
+        <!-- A gombokat a JS tölti fel a DESSZERTEK adatból. JS nélkül üresen marad,
+             és a szelet a HTML-ben lévő alapértelmezett rétegsort mutatja. -->
       </div>
 
       <div class="szinter" id="szinter">
@@ -797,7 +866,9 @@ address{font-style:normal;font-size:var(--sz-l);line-height:1.5}
       <p class="ksz-labjegyzet">
         Ez a szelet nem kép, hanem valódi térbeli test: minden réteg saját oldal- és
         tetőlapot kap, a vágott előlap maga a keresztmetszet. Válassz réteget —
-        kicsúszik a szeletből. Éles verzióban minden desszert a saját rétegsorát hozza.
+        kicsúszik a szeletből; válassz desszertet — a szelet <strong>átépül</strong>
+        a másik rétegsorára. A kínálatban lévő „Előre kérem" gombok is ide vezetnek,
+        és egyben kitöltik az űrlapot.
       </p>
     </figure>
   </div>
@@ -928,7 +999,7 @@ address{font-style:normal;font-size:var(--sz-l);line-height:1.5}
               <span class="jel" data-tipus="allergen">diófélék</span>
             </p>
             <p class="kartya__lab"><span class="kartya__ar"><span class="ph">[ár]</span></span>
-              <a href="#elorendeles">Előre kérem</a></p>
+              <a href="#elorendeles" data-desszert="szelet">Előre kérem</a></p>
           </div>
         </div>
       </article>
@@ -987,7 +1058,7 @@ address{font-style:normal;font-size:var(--sz-l);line-height:1.5}
               <span class="jel" data-tipus="mentes">gluténmentes</span>
             </p>
             <p class="kartya__lab"><span class="kartya__ar"><span class="ph">[ár]</span></span>
-              <a href="#elorendeles">Előre kérem</a></p>
+              <a href="#elorendeles" data-desszert="macaron">Előre kérem</a></p>
           </div>
         </div>
       </article>
@@ -1052,7 +1123,7 @@ address{font-style:normal;font-size:var(--sz-l);line-height:1.5}
               <span class="jel" data-tipus="allergen">glutén</span>
             </p>
             <p class="kartya__lab"><span class="kartya__ar"><span class="ph">[ár]</span></span>
-              <a href="#elorendeles">Előre kérem</a></p>
+              <a href="#elorendeles" data-desszert="tartelette">Előre kérem</a></p>
           </div>
         </div>
       </article>
@@ -1116,7 +1187,7 @@ address{font-style:normal;font-size:var(--sz-l);line-height:1.5}
               <span class="ph">[Méretek, szeletszám, határidő: pontosítandó.]</span></p>
             <p class="jelek"><span class="jel">csak előrendelésre</span></p>
             <p class="kartya__lab"><span class="kartya__ar"><span class="ph">[ár]</span></span>
-              <a href="#elorendeles">Előre kérem</a></p>
+              <a href="#elorendeles" data-desszert="torta">Előre kérem</a></p>
           </div>
         </div>
       </article>
@@ -1164,6 +1235,11 @@ address{font-style:normal;font-size:var(--sz-l);line-height:1.5}
         <p>Az alábbi mezőket kell javítani:</p>
         <ol id="osszegzo-lista"></ol>
       </div>
+
+      <input type="hidden" name="tetel" id="tetel" value="">
+      <p class="sugo" id="tetel-jelzo" hidden
+         style="border:1.5px solid var(--akcent);border-radius:var(--r-2);
+                padding:var(--t-3);background:color-mix(in srgb,var(--akcent) 8%,var(--lap))"></p>
 
       <fieldset>
         <legend>Mit szeretnél?<span class="kell" aria-hidden="true">*</span></legend>
@@ -1293,6 +1369,14 @@ address{font-style:normal;font-size:var(--sz-l);line-height:1.5}
             <tr data-nap="0"><th scope="row">Vasárnap</th><td>—</td></tr>
           </tbody>
         </table>
+        <div class="napsav" id="napsav" hidden>
+          <p class="napsav__cim"><span>Ma</span><span id="napsav-allapot"></span></p>
+          <div class="napsav__vonal">
+            <span class="napsav__nyitva" id="napsav-nyitva"></span>
+            <span class="napsav__most" id="napsav-most"></span>
+          </div>
+          <p class="napsav__ora"><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></p>
+        </div>
         <p class="forras">Dokumentált adat: a nyitás 11:00.
           <span class="ph">[A záróidők és a zárva tartó napok a táblázatban placeholderek.]</span></p>
       </div>
@@ -1569,6 +1653,15 @@ var perc = function(h){ var r = h.split(":"); return +r[0]*60 + +r[1]; };
 var temaGombok = $$(".tema button");
 var HOSZT_TEMA = window.__kremHosztTema || "";
 function temaAllit(ertek, ment){
+  /* Ahol a böngésző tudja, az egész lap átúszik a másik témába. Ahol nem,
+     ott ugyanez történik átmenet nélkül — a logika mindkét ágon azonos. */
+  if (document.startViewTransition && !lassit.matches && ment) {
+    document.startViewTransition(function(){ temaVegrehajt(ertek, ment); });
+  } else {
+    temaVegrehajt(ertek, ment);
+  }
+}
+function temaVegrehajt(ertek, ment){
   var gyoker = document.documentElement;
   /* "auto" = nincs saját választás: visszaadjuk a hoszt eredeti értékét,
      vagy ha az sem volt, levesszük az attribútumot. */
@@ -1636,11 +1729,45 @@ function kovetkezoNyitas(d){
 })();
 var evEl = $("#ev"); if (evEl) evEl.textContent = String(new Date().getFullYear());
 
-/* --- (4) A HÁROMDIMENZIÓS SZELET ---------------------------------------- */
-(function(){
-  var szinter = $("#szinter"), szelet = $("#szelet"), lista = $("#retegek");
-  if (!szelet || !lista) return;
-  var retegek = $$(".reteg", szelet), gombok = $$(".reteg-gomb", lista), rogzitett = 0;
+/* --- (4) A HÁROMDIMENZIÓS SZELET — adatvezérelt és morfoló -------------
+   Egyetlen szelet, négy rétegsor. Desszertváltáskor a rétegek magassága és
+   színe átmegy a másik desszertébe: ez bizonyítja azt az állítást, amit a
+   szöveg amúgy is tesz („minden desszert a saját rétegsorát hozza").
+   PLACEHOLDER: a nevek és az összetevők mintaadatok — redesign.md §15/5.  */
+var DESSZERTEK = [
+  { id:"szelet", nev:"[málnás-mentás szelet]", mit:"Szeletes desszert", retegek:[
+    {n:"Tükörglazúr",     sz:"lezár, és eltakarja a többit",             h:16, c:"--l-glaz",    a:"glaz"},
+    {n:"Málnazselé",      sz:"savas ellenpont a mousse-nak",             h:20, c:"--l-zsele",   a:"zsele"},
+    {n:"Mentás mousse",   sz:"a tömeg, ez adja a szelet gerincét",       h:52, c:"--l-mousse",  a:"mousse"},
+    {n:"Vaníliakrém",     sz:"átmenet a piskóta és a mousse között",     h:24, c:"--l-krem",    a:"krem"},
+    {n:"Mandulapiskóta",  sz:"tartás — enélkül összeesik",               h:32, c:"--l-piskota", a:"piskota"},
+    {n:"Cukrozott menta", sz:"a második íz, ami a végén jön elő",        h:22, c:"--cian",      a:"krem"},
+    {n:"Ropogós alap",    sz:"roppan, és nem engedi átázni",             h:18, c:"--l-alap",    a:"alap"}
+  ]},
+  { id:"macaron", nev:"[macaron-válogatás]", mit:"Macaron-válogatás", retegek:[
+    {n:"Felső héj",  sz:"mandulaliszt, tojásfehérje, porcukor",          h:44, c:"--l-glaz",  a:"krem"},
+    {n:"Töltelék",   sz:"vajkrém vagy ganache — ez adja az ízt",         h:34, c:"--l-krem",  a:"krem"},
+    {n:"Alsó héj",   sz:"ugyanaz fordítva; itt képződik a „láb”",        h:44, c:"--l-zsele", a:"krem"}
+  ]},
+  { id:"tartelette", nev:"[gyümölcsös tartelette]", mit:"Szeletes desszert", retegek:[
+    {n:"Friss bogyósok", sz:"szezontól függ, ezért változik a lap",      h:30, c:"--l-zsele",  a:"zsele"},
+    {n:"Vaníliakrém",    sz:"a tölteléktömeg, hidegen dermed",           h:58, c:"--l-krem",   a:"krem"},
+    {n:"Omlós tészta",   sz:"a kosár — ez tartja meg a krémet",          h:34, c:"--l-alap",   a:"alap"}
+  ]},
+  { id:"torta", nev:"[egész torta, rendelésre]", mit:"Egész torta", retegek:[
+    {n:"Krémbevonat",  sz:"kívül zár, és ez viszi a díszítést",          h:20, c:"--l-glaz",    a:"krem"},
+    {n:"Piskóta",      sz:"első lap",                                    h:30, c:"--l-piskota", a:"piskota"},
+    {n:"Töltőkrém",    sz:"ízréteg a lapok között",                      h:24, c:"--l-krem",    a:"krem"},
+    {n:"Piskóta",      sz:"második lap",                                 h:30, c:"--l-piskota", a:"piskota"},
+    {n:"Gyümölcsréteg",sz:"savas ellenpont a krémnek",                   h:20, c:"--l-zsele",   a:"zsele"},
+    {n:"Piskóta",      sz:"alsó lap, erre épül az egész",                h:30, c:"--l-piskota", a:"piskota"}
+  ]}
+];
+var szeletVezerlo = (function(){
+  var szinter = $("#szinter"), szelet = $("#szelet"),
+      lista = $("#retegek"), cim = $("#ksz-cim"), valaszto = $("#valaszto");
+  if (!szelet || !lista) return { valaszt: function(){} };
+  var retegek = $$(".reteg", szelet), rogzitett = 0, jelenlegi = null;
 
   function jelol(n){
     szelet.toggleAttribute("data-aktiv", !!n);
@@ -1648,15 +1775,67 @@ var evEl = $("#ev"); if (evEl) evEl.textContent = String(new Date().getFullYear(
   }
   function rogzit(n){
     rogzitett = (rogzitett === n) ? 0 : n;
-    gombok.forEach(function(g){
+    $$(".reteg-gomb", lista).forEach(function(g){
       g.setAttribute("aria-pressed", String(+g.dataset.reteg === rogzitett));
     });
     jelol(rogzitett);
   }
-  gombok.forEach(function(g){
-    g.addEventListener("click", function(){ rogzit(+g.dataset.reteg); });
-    g.addEventListener("pointerenter", function(){ if (!rogzitett) jelol(+g.dataset.reteg); });
-    g.addEventListener("pointerleave", function(){ if (!rogzitett) jelol(0); });
+
+  function fesd(d){
+    /* 1. a test: a felesleges rétegek 0 magasra mennek, nem tűnnek el ugrásszerűen */
+    retegek.forEach(function(r, i){
+      var l = d.retegek[i];
+      if (l){
+        r.removeAttribute("data-ures");
+        r.style.setProperty("--h", l.h + "px");
+        r.style.setProperty("--c", "var(" + l.c + ")");
+        r.dataset.anyag = l.a;
+      } else {
+        r.setAttribute("data-ures", "");
+        r.style.setProperty("--h", "0px");
+      }
+    });
+    /* 2. a lista */
+    lista.innerHTML = d.retegek.map(function(l, i){
+      return '<li><button type="button" class="reteg-gomb" data-reteg="' + (i+1) +
+             '" aria-pressed="false"><span class="reteg-chip" style="--c:var(' + l.c +
+             ')" aria-hidden="true"></span><span><span class="reteg-nev">' + l.n +
+             '</span><span class="reteg-szerep">' + l.sz + '</span></span></button></li>';
+    }).join("");
+    lista.setAttribute("data-cserel", "");
+    setTimeout(function(){ lista.removeAttribute("data-cserel"); }, 320);
+    /* 3. a cím */
+    if (cim) cim.innerHTML = '<span class="ph">' + d.nev + '</span>';
+    if (valaszto) $$("button", valaszto).forEach(function(b){
+      b.setAttribute("aria-pressed", String(b.dataset.id === d.id));
+    });
+    rogzitett = 0; jelol(0); jelenlegi = d;
+  }
+
+  function valaszt(id){
+    for (var i = 0; i < DESSZERTEK.length; i++)
+      if (DESSZERTEK[i].id === id) { if (DESSZERTEK[i] !== jelenlegi) fesd(DESSZERTEK[i]); return DESSZERTEK[i]; }
+    return null;
+  }
+
+  /* választógombok */
+  if (valaszto) valaszto.innerHTML = DESSZERTEK.map(function(d){
+    var kozep = d.retegek[Math.floor(d.retegek.length / 2)];
+    return '<button type="button" data-id="' + d.id + '" aria-pressed="false">' +
+           '<span class="valaszto__pont" style="--c:var(' + kozep.c + ')" aria-hidden="true"></span>' +
+           d.nev.replace(/^\[|\]$/g, "") + '</button>';
+  }).join("");
+
+  /* eseménykezelés delegálva — a lista újraépül, így nincs mit újrakötni */
+  lista.addEventListener("click", function(e){
+    var g = e.target.closest(".reteg-gomb"); if (g) rogzit(+g.dataset.reteg);
+  });
+  lista.addEventListener("pointerover", function(e){
+    var g = e.target.closest(".reteg-gomb"); if (g && !rogzitett) jelol(+g.dataset.reteg);
+  });
+  lista.addEventListener("pointerleave", function(){ if (!rogzitett) jelol(0); });
+  if (valaszto) valaszto.addEventListener("click", function(e){
+    var b = e.target.closest("button"); if (b) valaszt(b.dataset.id);
   });
   retegek.forEach(function(r){
     r.addEventListener("pointerenter", function(){ if (!rogzitett) jelol(+r.dataset.reteg); });
@@ -1664,23 +1843,38 @@ var evEl = $("#ev"); if (evEl) evEl.textContent = String(new Date().getFullYear(
   });
   szinter.addEventListener("pointerleave", function(){ if (!rogzitett) jelol(0); });
 
-  /* egérrel követhető térbeli döntés; érintőn és csökkentett mozgásnál kikapcsol */
-  if (!eger.matches || lassit.matches) return;
-  var ker = null;
-  szinter.addEventListener("pointermove", function(e){
-    if (!ker) ker = szinter.getBoundingClientRect();
-    var x = (e.clientX - ker.left) / ker.width  - .5;
-    var y = (e.clientY - ker.top ) / ker.height - .5;
-    szinter.setAttribute("data-fog", "");
-    szelet.style.setProperty("--ry", (22 + x * 22).toFixed(1) + "deg");
-    szelet.style.setProperty("--rx", (10 - y * 14).toFixed(1) + "deg");
-  });
-  szinter.addEventListener("pointerleave", function(){
-    ker = null;
-    szinter.removeAttribute("data-fog");
-    szelet.style.removeProperty("--ry"); szelet.style.removeProperty("--rx");
-  });
-  addEventListener("resize", function(){ ker = null; }, { passive: true });
+  /* ---- összeépülés betöltéskor: alulról fölfelé, mint a műhelyben ---- */
+  fesd(DESSZERTEK[0]);
+  if (!lassit.matches){
+    var n = DESSZERTEK[0].retegek.length;
+    szelet.setAttribute("data-epul", "");
+    retegek.forEach(function(r, i){ r.style.transitionDelay = Math.max(0, (n - 1 - i)) * 80 + "ms"; });
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){
+      szelet.removeAttribute("data-epul");
+      setTimeout(function(){
+        retegek.forEach(function(r){ r.style.transitionDelay = ""; });
+      }, n * 80 + 600);
+    }); });
+  }
+
+  /* ---- egérrel követhető térbeli döntés ---- */
+  if (eger.matches && !lassit.matches){
+    var ker = null;
+    szinter.addEventListener("pointermove", function(e){
+      if (!ker) ker = szinter.getBoundingClientRect();
+      var x = (e.clientX - ker.left) / ker.width  - .5;
+      var y = (e.clientY - ker.top ) / ker.height - .5;
+      szinter.setAttribute("data-fog", "");
+      szelet.style.setProperty("--ry", (22 + x * 22).toFixed(1) + "deg");
+      szelet.style.setProperty("--rx", (10 - y * 14).toFixed(1) + "deg");
+    });
+    szinter.addEventListener("pointerleave", function(){
+      ker = null; szinter.removeAttribute("data-fog");
+      szelet.style.removeProperty("--ry"); szelet.style.removeProperty("--rx");
+    });
+    addEventListener("resize", function(){ ker = null; }, { passive: true });
+  }
+  return { valaszt: valaszt };
 })();
 
 /* --- (5) TÉRHATÁSÚ KÁRTYÁK ---------------------------------------------- */
@@ -1726,6 +1920,86 @@ if (eger.matches && !lassit.matches) $$(".kartya").forEach(function(k){
     });
   }, { rootMargin: "0px 0px -12% 0px", threshold: .08 });
   elemek.forEach(function(e){ megfigyelo.observe(e); });
+})();
+
+/* --- (6b) A KÍNÁLAT ÖSSZEKÖTVE AZ ŰRLAPPAL ------------------------------
+   Az „Előre kérem" gomb három dolgot csinál egyszerre: átépíti a hero
+   szeletét az adott desszertre, kiválasztja a helyes űrlapmezőt, és
+   megmondja, mit fog látni a műhely a beérkező kérésben. JS nélkül a link
+   sima horgony marad, tehát semmi nem törik el.                          */
+(function(){
+  var jelzo = $("#tetel-jelzo"), rejtett = $("#tetel");
+  $$('a[data-desszert]').forEach(function(a){
+    a.addEventListener("click", function(){
+      var d = szeletVezerlo.valaszt(a.dataset.desszert);
+      if (!d) return;
+      if (rejtett) rejtett.value = d.nev;
+      var r = document.querySelector('input[name="mit"][value="' + d.mit + '"]');
+      if (r) { r.checked = true; r.dispatchEvent(new Event("change", { bubbles: true })); }
+      if (jelzo){
+        jelzo.textContent = "Kiválasztva innen: " + d.nev.replace(/^\[|\]$/g, "") +
+                            " — ha mást szeretnél, írd a megjegyzésbe.";
+        jelzo.hidden = false;
+      }
+      setTimeout(function(){ var a1 = $("#adag"); if (a1) a1.focus({ preventScroll: true }); }, 550);
+    });
+  });
+})();
+
+/* --- (6c) TÁJÉKOZÓDÁS: haladásjelző, fejléc-árnyék, aktív menüpont ------ */
+(function(){
+  var fejlec = $(".fejlec"), halad = $("#halad");
+  var linkek = $$(".fonav a"), szakaszok = linkek.map(function(a){
+    return document.querySelector(a.getAttribute("href"));
+  });
+  var var_ = false;
+  function frissit(){
+    var_ = false;
+    var y = scrollY, magas = document.documentElement.scrollHeight - innerHeight;
+    if (halad) halad.style.setProperty("--arany", magas > 0 ? Math.min(1, y / magas).toFixed(4) : "0");
+    if (fejlec) fejlec.toggleAttribute("data-gorgetve", y > 8);
+    /* Az aktív szakasz a DOKUMENTUMBAN legutolsó, ami már a küszöb fölé ért —
+       nem a menüben legutolsó. A menü sorrendje eltér a DOM sorrendjétől. */
+    var aktiv = -1, legjobb = -Infinity;
+    szakaszok.forEach(function(sz, i){
+      if (!sz) return;
+      var t = sz.getBoundingClientRect().top;
+      if (t <= innerHeight * 0.34 && t > legjobb) { legjobb = t; aktiv = i; }
+    });
+    /* A lap alján az utolsó szakasz már nem tud a küszöb fölé érni,
+       mert elfogyott a görgethető hely — ilyenkor azt jelöljük aktívnak. */
+    if (magas > 0 && y >= magas - 4) aktiv = szakaszok.length - 1;
+    linkek.forEach(function(a, i){
+      i === aktiv ? a.setAttribute("aria-current", "true") : a.removeAttribute("aria-current");
+    });
+  }
+  addEventListener("scroll", function(){
+    if (!var_) { var_ = true; requestAnimationFrame(frissit); }
+  }, { passive: true });
+  addEventListener("resize", frissit, { passive: true });
+  frissit();
+})();
+
+/* --- (6d) A MAI NAP IDŐSÁVJA -------------------------------------------
+   A nyitvatartási táblázat számokat mond; ez megmutatja, hol tartunk benne.
+   Ugyanabból a NYITVATARTAS objektumból dolgozik, mint minden más.        */
+(function(){
+  var sav = $("#napsav"); if (!sav) return;
+  var nyitvaEl = $("#napsav-nyitva"), mostEl = $("#napsav-most"), allapot = $("#napsav-allapot");
+  function frissit(){
+    var d = new Date(), ma = NYITVATARTAS[d.getDay()];
+    if (!ma){ sav.hidden = true; return; }
+    sav.hidden = false;
+    var kezd = perc(ma[0]) / 14.4, hossz = (perc(ma[1]) - perc(ma[0])) / 14.4;
+    var most = (d.getHours() * 60 + d.getMinutes()) / 14.4;
+    nyitvaEl.style.setProperty("--kezd", kezd.toFixed(2) + "%");
+    nyitvaEl.style.setProperty("--hossz", hossz.toFixed(2) + "%");
+    mostEl.style.setProperty("--most", most.toFixed(2) + "%");
+    allapot.textContent = nyitvaE(d)
+      ? "nyitva " + ma[1] + "-ig"
+      : (most < kezd ? "nyit " + ma[0] + "-kor" : "mára zártunk");
+  }
+  frissit(); setInterval(frissit, 60000);
 })();
 
 /* --- (7) ŰRLAP ---------------------------------------------------------- */
@@ -1844,12 +2118,15 @@ if (eger.matches && !lassit.matches) $$(".kartya").forEach(function(k){
       "Ezt kaptuk meg. Visszaigazolásig ez még nem lefoglalt rendelés — " +
       "ha aznap kell, hívj a 06 30 609 7009 számon.";
     var sorok = [
-      ["Mit", a.get("mit")],
+      ["Mit", a.get("mit")]
+    ];
+    if ((a.get("tetel") || "").trim()) sorok.push(["Tétel", a.get("tetel")]);
+    sorok = sorok.concat([
       ["Mennyit", a.get("adag") + " adag / szelet"],
       ["Mikorra", a.get("datum") + ", " + a.get("ido")],
       ["Név", a.get("nev")],
       ["Telefon", a.get("telefon")]
-    ];
+    ]);
     if ((a.get("allergia") || "").trim()) sorok.push(["Allergia", a.get("allergia")]);
     var cel = $("#siker-adatok"); cel.innerHTML = "";
     sorok.forEach(function(s){
