@@ -251,7 +251,7 @@ amennyit egy pizzéria karbantartani tud (§1.3).
 | # | Szekció | Tartalom | Miért itt |
 |---|---|---|---|
 | 1 | Fejléc | Szóvédjegy + „PÉCS 1983", nav, téma-váltó, telefon-CTA | Az 1983 a szóvédjegy mellett = a differenciáló az első pixeltől |
-| 2 | Hero | H1, vezető bekezdés, 2 CTA, **A Kemence** (§7.7), bizonyítéksor (1983 / 4,6 / 2 690 Ft) | A három érkező kérdés közül kettőre (nyitva? mennyi?) itt jön válasz |
+| 2 | Hero | H1, vezető bekezdés, 2 CTA (**Asztalt foglalok** / **Étlap és árak**), **A Kemence** (§7.7), bizonyítéksor (1983 / 4,6 / 3 600 Ft) | A három érkező kérdés közül kettőre (nyitva? mennyi?) itt jön válasz. A másodlagos CTA az étlapra megy, nem a heti menüre: a heti menü közvetlenül alatta van, oda elég a görgetés, az étlap viszont **külön oldal**, és mobilon ez az egyetlen hajtás fölötti belépője |
 | 3 | Heti menü | A 2 990 / B 2 690 / leves 900, sáv 11–13, csomagolás 200 Ft | A visszatérő déli forgalom motorja; **ár a hajtás alatt közvetlenül** |
 | 4 | Amit sütünk | 6 tétel: kemencés pizza, frissensültek, lepény, hamburger, gyros, koktél/sör | Az 1.3 szerint megtartott, működő szöveg — szerkezetbe rendezve |
 | 5 | Nyitvatartás | Teljes heti táblázat, mai nap kiemelve, élő állapot | U3 közvetlen megoldása |
@@ -325,7 +325,7 @@ strukturált adat meg a főoldali „ártól" horgonyok együtt mozdulnak.
 │ buszmegálló mellett. Helyben,              │  ══════════════════════    │  │
 │ kemencében sült pizza, ...                 │    ║                ║      │  │
 │                                            ╰──────────────────────────╯  │
-│ [ Asztalt foglalok ] [ Mi a mai menü? ]      ( ● Most nyitva — 22:00 )   │
+│ [ Asztalt foglalok ] [ Étlap és árak ]       ( ● Most nyitva — 22:00 )   │
 │ ──────────────────────────────────────       Nem dísz: a parázs a valós  │
 │ 1983          4,6            2 690 Ft        nyitvatartásból izzik.      │
 │ Óta a N.I.úton  1300 értékelés  B menü                                   │
@@ -393,7 +393,8 @@ strukturált adat meg a főoldali „ártól" horgonyok együtt mozdulnak.
 │ mellett. …                 │
 │                            │
 │ [ Asztalt foglalok      ]  │  teljes szélesség, 48px
-│ [ Mi a mai menü?        ]  │
+│ [ Étlap és árak         ]  │  mobilon EZ az egyetlen
+│                            │  hajtás fölötti étlap-belépő
 │                            │
 │ ╭────────────────────────╮ │  A Kemence a szöveg ALATT:
 │ │      ▄▄▄▄▄▄▄▄▄▄        │ │  mobilon a válasz előbb jön,
@@ -909,6 +910,7 @@ hogy nincs hero-fotó és nincs keretrendszer.
 | **Ár a hajtás alatt közvetlenül** (2 990 / 2 690 / 900) | heti menü szekció | Az ár a legerősebb kvalifikáló. Aki elrejti, drágábbnak látszik. A 4 000–6 000 Ft-os GBP-sáv mellé a 2 690 Ft-os menü **lefelé nyitja** a közönséget |
 | **Bizonyítéksor (1983 / 4,6 / 2 690 Ft)** | hero alja | Három különböző kifogásra válaszol egy sorban: *megbízható? jó? megfizethető?* A negyven év a legnehezebben másolható előny a piacon |
 | **A „ma" sor kiemelése a nyitvatartásban** | nyitvatartás | Csökkenti a keresési munkát — a látogató a saját napját keresi, nem a hetet |
+| **„Étlap és árak" a hero másodlagos CTA-jában** | hero | Az étlap a legerősebb tranzakció előtti szándék (§4). A `.fonav` 940px alatt rejtve van, tehát **mobilon a hero CTA nélkül az étlap csak lapozás után érhető el** — ez a gomb zárja be a rést |
 | **A telefon az űrlap mellett, nem alatta** | foglalás | Nem verseng, hanem választást ad. „Inkább telefonálok" gomb közvetlenül a beküldés mellett: aki elakad az űrlapon, nem távozik, hanem hív |
 | **Nyitvatartás-alapú időpont-validáció** | űrlap | Megelőzi a hibás foglalást a beérkezés *előtt*. Egy visszautasított foglalás rosszabb élmény, mint egy azonnali, magyarázó hibaüzenet |
 | **Sikerpanel a foglalás visszaolvasásával** | űrlap | Csökkenti a beküldés utáni bizonytalanságot, és tartalmazza a telefonszámot arra az esetre, ha mégis sürgős |
@@ -984,6 +986,15 @@ hogy nincs hero-fotó és nincs keretrendszer.
 21. **Mi történt a 16-os pizzával?** (É2) A számozás 15-ről 17-re ugrik.
 22. **Melyik borlap érvényes?** (É3) A „Folyóborok" (500 Ft/dl) és a „Borok"
     (600–700 Ft/dl) blokk egymás mellett fut, eltérő pincészetekkel.
+
+**Megoldandó a prototípusban (nem ügyfélkérdés, hanem fejlesztési teendő):**
+
+23. **Mobilon nincs valódi navigáció.** A `.fonav` 940px alatt `display:none`, a
+    §6.2 wireframe még egyoldalas site-ra készült. Amióta az étlap külön oldal,
+    ez rés: a hero másodlagos CTA-ja most befoltozza, de a helyes megoldás egy
+    **mobil menü** (hamburger + lenyíló panel, fókuszcsapdával és `aria-expanded`
+    állapottal) vagy a fejlécbe emelt étlap-link. A 2. fázisban (§14) kell
+    megcsinálni, az aloldalak élesítése előtt.
 
 **Fontos (a tartalmat érinti):**
 
