@@ -272,6 +272,52 @@ h2{font-size:var(--sz-h2);font-weight:700;font-variation-settings:"wdth" 84;
   font-variant-numeric:tabular-nums;display:flex;justify-content:space-between;align-items:baseline}
 .menu-ar small{font-weight:500;font-size:var(--sz-apro);color:var(--fust)}
 
+/* ── napi menü ───────────────────────────────────────────── */
+.arpanel{display:grid;gap:var(--t4);grid-template-columns:repeat(2,1fr);
+  margin-bottom:var(--t7)}
+@media (min-width:820px){.arpanel{grid-template-columns:repeat(4,1fr)}}
+.arpanel div{border-top:2px solid var(--kert);padding-top:var(--t3)}
+.arpanel b{display:block;font-family:var(--cegér);font-size:1.5rem;font-weight:700;
+  font-variant-numeric:tabular-nums;line-height:1.15}
+.arpanel span{display:block;font-size:var(--sz-apro);color:var(--fust);
+  font-family:var(--cegér);margin-top:2px}
+.het-fej{font-family:var(--cegér);font-size:var(--sz-kicsi);color:var(--fust);
+  margin-bottom:var(--t3);font-variant-numeric:tabular-nums}
+.het-fej b{color:var(--tinta)}
+.het{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.het li{display:grid;gap:var(--t2);padding:var(--t4) var(--t3);
+  border-top:1px solid var(--vonal-halk)}
+.het li:last-child{border-bottom:1px solid var(--vonal-halk)}
+@media (min-width:860px){
+  .het li{grid-template-columns:7rem minmax(0,1.2fr) minmax(0,1fr) minmax(0,1fr);
+    gap:var(--t5);align-items:baseline}
+  .het li[data-nap="0"]{grid-template-columns:7rem minmax(0,2.4fr) minmax(0,1fr)}
+}
+.het-nap{font-family:var(--cegér);font-size:1rem;font-weight:700}
+.het p{font-size:var(--sz-kicsi);display:flex;gap:var(--t3);align-items:baseline}
+.het p span{font-family:var(--cegér);font-size:var(--sz-apro);letter-spacing:.08em;
+  text-transform:uppercase;color:var(--fust);flex:none;min-width:3.4rem}
+.het .nincs{color:var(--fust);font-style:italic}
+.het li[data-ma]{background:var(--halk-fold);border-radius:2px}
+.het li[data-ma] .het-nap{color:var(--kert)}
+.het li[data-ma] .het-nap::after{content:" — ma";font-weight:500;
+  font-size:var(--sz-apro);color:var(--fust)}
+
+/* ── esemény ─────────────────────────────────────────────── */
+.esemeny{display:grid;gap:var(--t5);border:1px solid var(--vonal);
+  border-left:4px solid var(--arany);border-radius:2px;padding:var(--t5)}
+@media (min-width:820px){.esemeny{grid-template-columns:minmax(0,1fr) 15rem;
+  gap:var(--t8);padding:var(--t7);align-items:start}}
+.esemeny .datum{font-family:var(--cegér);font-size:var(--sz-apro);font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--arany);
+  display:block;margin-bottom:var(--t3)}
+.esemeny h3{font-size:var(--sz-h3);margin-bottom:var(--t3)}
+.esemeny .fogasok{list-style:none;margin:var(--t4) 0 0;padding:0;display:grid;
+  gap:var(--t1);font-size:var(--sz-kicsi);color:var(--fust)}
+.esemeny .oldal{border-top:2px solid var(--arany);padding-top:var(--t3)}
+.esemeny .oldal b{display:block;font-family:var(--cegér);font-size:1.75rem;
+  font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
+
 /* ── étlap-lista ─────────────────────────────────────────── */
 .etlap-lista{list-style:none;margin:0;padding:0;display:grid;gap:0}
 .etlap-lista li{display:flex;justify-content:space-between;align-items:baseline;
@@ -290,6 +336,20 @@ h2{font-size:var(--sz-h2);font-weight:700;font-variation-settings:"wdth" 84;
 .stab li{display:grid;gap:2px;padding-left:var(--t4);border-left:2px solid var(--arany)}
 .stab b{font-family:var(--cegér);font-size:1rem}
 .stab span{font-size:var(--sz-kicsi);color:var(--fust)}
+
+.talak{display:grid;gap:var(--t5);margin-top:var(--t7);padding:var(--t5);
+  border:1px solid var(--vonal-halk);border-left:3px solid var(--kert);border-radius:2px}
+@media (min-width:760px){.talak{grid-template-columns:minmax(0,1fr) 11rem;
+  gap:var(--t7);align-items:center}}
+.talak h3{font-size:var(--sz-h3);margin-bottom:var(--t3)}
+.talak p{font-size:var(--sz-kicsi);color:var(--fust)}
+.talak .ido{display:flex;gap:var(--t2);align-items:center;margin-top:var(--t3);
+  font-family:var(--cegér);color:var(--tinta)}
+.talar{text-align:left}
+.talar b{display:block;font-family:var(--cegér);font-size:1.75rem;font-weight:700;
+  font-variant-numeric:tabular-nums;line-height:1.1;color:var(--tinta)}
+.talar span{display:block;font-size:var(--sz-apro);color:var(--fust);
+  font-family:var(--cegér);margin-top:2px}
 
 /* ── ténykártyák ─────────────────────────────────────────── */
 .teny{display:flex;flex-direction:column;gap:var(--t3);padding:var(--t5) 0;
@@ -440,7 +500,7 @@ body{padding-bottom:88px}
 <body>
 <a class="ugras" href="#fotartalom">Ugrás a tartalomra</a>
 
-<p class="szalag"><b>Designkoncepció.</b> Ez nem a Diana Vendéglő hivatalos oldala, és az űrlap nem küld adatot. Az étlap árai a vendéglő valódi étlapjáról valók; a <span class="ph" title="Ügyfél-adat szükséges">[szögletes]</span> elemek helykitöltők.</p>
+<p class="szalag"><b>Designkoncepció.</b> Ez nem a Diana Vendéglő hivatalos oldala, és az űrlap nem küld adatot. Az árak, ételek és a 37. heti menü a vendéglő valódi étlapjáról valók; a <span class="ph" title="Ügyfél-adat szükséges">[szögletes]</span> elemek helykitöltők.</p>
 
 <header class="fejlec">
   <div class="sav fejlec-belso">
@@ -451,8 +511,8 @@ body{padding-bottom:88px}
     <nav class="fonav" aria-label="Fő navigáció">
       <a href="#menu">Napi menü</a>
       <a href="#etlap">Étlap</a>
+      <a href="#esemeny">Események</a>
       <a href="#rendezvenyek">Rendezvények</a>
-      <a href="#tortenet">A Diana</a>
       <a href="#info">Nyitvatartás</a>
     </nav>
     <div class="fejlec-akcio">
@@ -475,6 +535,7 @@ body{padding-bottom:88px}
     <ul class="sav">
       <li><a href="#menu">Napi menü</a></li>
       <li><a href="#etlap">Étlap</a></li>
+      <li><a href="#esemeny">Események</a></li>
       <li><a href="#rendezvenyek">Rendezvények</a></li>
       <li><a href="#tortenet">A Diana</a></li>
       <li><a href="#info">Nyitvatartás</a></li>
@@ -539,24 +600,70 @@ body{padding-bottom:88px}
       <div class="szekcio-fej belep">
         <span class="kiscim">Ma a Dianában</span>
         <h2>A heti menü egy hétre előre.</h2>
-        <p>Helyi kistermelők friss alapanyagaiból főzünk. A hét menüje hétfőn reggel kikerül, hogy meg lehessen tervezni az ebédet.</p>
+        <p>Helyi kistermelők friss alapanyagaiból főzünk. A hét menüje előre kikerül, hogy meg lehessen tervezni az ebédet.</p>
       </div>
-      <div class="racs racs-2 belep">
-        <article class="menu-kartya">
-          <h3>A menü</h3>
-          <div class="menu-sor"><span>Leves</span><span class="ph" title="Ügyfél-adat szükséges: Q6">[a nap levese]</span></div>
-          <div class="menu-sor"><span>Főétel</span><span class="ph" title="Ügyfél-adat szükséges: Q6">[a nap főétele]</span></div>
-          <p class="menu-ar"><span class="ph" title="Ügyfél-adat szükséges: Q5">[ár]</span> <small>Ft / menü</small></p>
-        </article>
-        <article class="menu-kartya">
-          <h3>B menü</h3>
-          <div class="menu-sor"><span>Leves</span><span class="ph" title="Ügyfél-adat szükséges: Q6">[a nap levese]</span></div>
-          <div class="menu-sor"><span>Főétel</span><span class="ph" title="Ügyfél-adat szükséges: Q6">[vegetáriánus főétel]</span></div>
-          <p class="menu-ar"><span class="ph" title="Ügyfél-adat szükséges: Q5">[ár]</span> <small>Ft / menü</small></p>
-        </article>
+
+      <div class="arpanel belep">
+        <div><b>2 490 Ft</b><span>napi menü</span></div>
+        <div><b>2 350 Ft</b><span>előfizetve</span></div>
+        <div><b>2 550 Ft</b><span>állandó menü (C, D, F)<br>húsos levessel 2 750 Ft</span></div>
+        <div><b>3 900 Ft</b><span>vasárnapi ajánlat</span></div>
       </div>
+
+      <p class="het-fej belep"><b>37. hét</b> · 2026. 09. 07. – 09. 13.</p>
+
+      <ol class="het belep">
+        <li data-nap="1">
+          <b class="het-nap">Hétfő</b>
+          <p><span>A</span> Rántott csirkemell rizibizivel</p>
+          <p><span>Leves</span> Brokkoli krémleves vagy húsleves</p>
+          <p><span>B</span> Zöldbab főzelék sertéspörkölttel</p>
+        </li>
+        <li data-nap="2">
+          <b class="het-nap">Kedd</b>
+          <p><span>A</span> Bakonyi szelet galuskával</p>
+          <p><span>Leves</span> Sárgaborsó leves vagy húsleves</p>
+          <p><span>B</span> Lecsós csirkemáj tarhonyával</p>
+        </li>
+        <li data-nap="3">
+          <b class="het-nap">Szerda</b>
+          <p><span>A</span> Hentes tokány szarvacska tésztával</p>
+          <p><span>Leves</span> Húsleves eperlevél tésztával</p>
+          <p><span>B</span> Rakott brokkoli</p>
+        </li>
+        <li data-nap="4">
+          <b class="het-nap">Csütörtök</b>
+          <p><span>A</span> Füstölt sajttal-sonkával töltött rántott karaj burgonyapürével</p>
+          <p><span>Leves</span> Tejfölös bableves vagy húsleves</p>
+          <p><span>B</span> Paradicsomos káposzta sertéssülttel</p>
+        </li>
+        <li data-nap="5">
+          <b class="het-nap">Péntek</b>
+          <p><span>A</span> Aranygaluska vaníliamártással</p>
+          <p><span>Leves</span> Legényfogó leves vagy húsleves</p>
+          <p><span>B</span> Burgonyás tészta savanyúsággal</p>
+        </li>
+        <li data-nap="6">
+          <b class="het-nap">Szombat</b>
+          <p><span>A</span> Dubarry szelet párolt rizzsel</p>
+          <p><span>Leves</span> Karalábéleves vagy húsleves</p>
+          <p class="nincs"><span>B</span> Szombaton nincs B menü.</p>
+        </li>
+        <li data-nap="0">
+          <b class="het-nap">Vasárnap</b>
+          <p><span>Ajánlat</span> Becsinált leves · Cigánypecsenye petrezselymes burgonyával, savanyúsággal · Desszert</p>
+          <p><span>Ár</span> 3 900 Ft</p>
+        </li>
+      </ol>
+
+      <p class="sugo" style="margin-top:var(--t5)">
+        Az állandó menük hétfőtől szombatig rendelhetők. Csomagolódoboz 100 Ft/db.
+        Az étlap változtatásának jogát fenntartjuk. Ételeink allergiát és intoleranciát
+        okozó összetevőiről érdeklődjön munkatársainknál.
+      </p>
+
       <p style="margin-top:var(--t5)">
-        <a class="gomb gomb-mas" href="#">A teljes hét menüje
+        <a class="gomb gomb-mas" href="#">Korábbi és következő hetek
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
       </p>
@@ -601,10 +708,24 @@ body{padding-bottom:88px}
       </ul>
 
       <div class="racs racs-4 belep" style="margin-top:var(--t6)">
+        <p class="mini"><b>Levesek, előétel</b><br>1 100 – 2 000 Ft</p>
+        <p class="mini"><b>Vegetáriánus</b><br>3 700 – 3 800 Ft</p>
+        <p class="mini"><b>Gyerekeknek</b><br>3 000 Ft</p>
         <p class="mini"><b>Pizza</b> 15:00-tól<br>1 800 – 3 800 Ft</p>
-        <p class="mini"><b>Desszertek</b><br>1 600 – 1 800 Ft</p>
-        <p class="mini"><b>Saláták, mártások</b><br>400 – 1 000 Ft</p>
-        <p class="mini"><b>Köretek</b><br>900 – 1 200 Ft</p>
+      </div>
+
+      <div class="talak belep">
+        <div>
+          <h3>2 személyes tálaink</h3>
+          <p>Dupla szelet hússal. „A” tál: rántott sertésborda, sonkával-sajttal sült
+             csirkemell, rántott sajt, rántott karfiol. „B” tál: zengővárkonyi
+             sertéstekercs, cigánypecsenye, mozzarellás csirkemell.</p>
+          <p class="ido">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg>
+            Hosszabb elkészítési idő: kb. 30–35 perc.
+          </p>
+        </div>
+        <p class="talar"><b>10 800 Ft</b><span>tál / 2 fő</span></p>
       </div>
 
       <p style="margin-top:var(--t6)">
@@ -613,8 +734,9 @@ body{padding-bottom:88px}
         </a>
       </p>
       <p class="sugo" style="margin-top:var(--t4)">
-        Allergén összetevőkről kérjük, érdeklődjön munkatársainknál.
-        Vegán tételek: <span class="ph" title="Ügyfél-adat szükséges: Q12">[melyek]</span>.
+        Allergiát és intoleranciát okozó összetevőkről kérjük, érdeklődjön
+        munkatársainknál. Vegetáriánus tételeink külön szekcióban; kifejezetten
+        <b>vegán</b> tétel: <span class="ph" title="Ügyfél-adat szükséges: Q12">[melyik]</span>.
       </p>
     </div>
   </section>
@@ -691,6 +813,45 @@ body{padding-bottom:88px}
           <h3>Céges</h3>
           <p>Év végi vacsora, csapatebéd, fogadás. SZÉP-kártya és számla.</p>
         </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── KÖZELGŐ ESEMÉNY ───────────────────────────────── -->
+  <section id="esemeny" class="hatter-valt">
+    <div class="sav">
+      <div class="szekcio-fej belep">
+        <span class="kiscim">Következő rendezvényünk</span>
+        <h2>Szüreti mulatság.</h2>
+      </div>
+      <div class="esemeny belep">
+        <div>
+          <span class="datum">2026. október 10., szombat · 18:00</span>
+          <h3>„Szóljon mindenki sógornak, komának”</h3>
+          <p>Tízfogásos szüreti vacsora, talpalávalóval. Az este bevételéből a
+             Gedeon Endre–Kiss Károly Alapítványnak is adunk.</p>
+          <ul class="fogasok">
+            <li>Mecseki betyárgombóc leves</li>
+            <li>Mohácsi halászlé pontyfiléből, tésztával</li>
+            <li>Harcsapaprikás kapros-túrós csuszával</li>
+            <li>Saures — sváb pájsli knédlivel</li>
+            <li>Valika kakaspörköltje gazdagon, ízes puliszkával</li>
+            <li>Ropogós sertéscsülök hagymás tört burgonyával</li>
+            <li>Debreceni töltött káposzta</li>
+            <li>Nyárádi sertésszűzpecsenye vele sült burgonyával</li>
+            <li>Szüreti marharagu házi krokettel</li>
+            <li>Kelt rétes</li>
+          </ul>
+        </div>
+        <div>
+          <p class="oldal talar"><b>9 000 Ft</b><span>/ fő, a vacsora ára</span></p>
+          <p style="margin-top:var(--t4);font-size:var(--sz-kicsi);color:var(--fust)">
+            Belépő Racskó Gábornál, a vendéglőben. Hozz kényelmes cipőt — talpalávaló lesz.
+          </p>
+          <p style="margin-top:var(--t4)">
+            <a class="gomb gomb-fo" href="tel:+3672438176" style="width:100%">Helyet foglalok</a>
+          </p>
+        </div>
       </div>
     </div>
   </section>
@@ -948,6 +1109,8 @@ body{padding-bottom:88px}
       "@type": "Restaurant",
       "@id": "https://dianavendeglo.hu/#vendeglo",
       "name": "Diana Vendéglő",
+      "hasMap": "https://dianavendeglo.hu/kapcsolat/",
+      "acceptsReservations": "https://dianavendeglo.hu/asztalfoglalas/",
       "url": "https://dianavendeglo.hu/",
       "telephone": "+36-72-438-176",
       "email": "dvendeglo@gmail.com",
@@ -1008,6 +1171,77 @@ body{padding-bottom:88px}
       "name": "Diana Vendéglő étlap",
       "inLanguage": "hu-HU",
       "hasMenuSection": [
+        {
+          "@type": "MenuSection",
+          "name": "Napi menü",
+          "description": "Hétfőtől szombatig, A és B választással. Előfizetve 2350 Ft.",
+          "offers": { "@type": "Offer", "price": "2490", "priceCurrency": "HUF" },
+          "hasMenuItem": [
+            { "@type": "MenuItem", "name": "A menü — leves és főétel",
+              "offers": { "@type": "Offer", "price": "2490", "priceCurrency": "HUF" } },
+            { "@type": "MenuItem", "name": "B menü — egytálétel",
+              "offers": { "@type": "Offer", "price": "2490", "priceCurrency": "HUF" } },
+            { "@type": "MenuItem", "name": "Állandó menük (C, D, F)",
+              "description": "Hétfőtől szombatig rendelhető. Húsos levessel 2750 Ft.",
+              "offers": { "@type": "Offer", "price": "2550", "priceCurrency": "HUF" } },
+            { "@type": "MenuItem", "name": "Vasárnapi ajánlat",
+              "description": "Becsinált leves, cigánypecsenye petrezselymes burgonyával, desszert.",
+              "offers": { "@type": "Offer", "price": "3900", "priceCurrency": "HUF" } }
+          ]
+        },
+        {
+          "@type": "MenuSection",
+          "name": "Levesek, előétel",
+          "hasMenuItem": [
+            { "@type": "MenuItem", "name": "Húsleves házi metélttel",
+              "offers": { "@type": "Offer", "price": "1100", "priceCurrency": "HUF" } },
+            { "@type": "MenuItem", "name": "Húsleves gazdagon",
+              "offers": { "@type": "Offer", "price": "1400", "priceCurrency": "HUF" } },
+            { "@type": "MenuItem", "name": "Babgulyás",
+              "offers": { "@type": "Offer", "price": "2000", "priceCurrency": "HUF" } },
+            { "@type": "MenuItem", "name": "Tárkonyos vadragu leves",
+              "offers": { "@type": "Offer", "price": "2000", "priceCurrency": "HUF" } },
+            { "@type": "MenuItem", "name": "Velős pirítós",
+              "offers": { "@type": "Offer", "price": "1800", "priceCurrency": "HUF" } }
+          ]
+        },
+        {
+          "@type": "MenuSection",
+          "name": "Vegetáriánus ételek",
+          "hasMenuItem": [
+            { "@type": "MenuItem", "name": "Grillezett camembert sajt kevert salátával, mézes-mustáros dresszinggel, steak burgonyával",
+              "suitableForDiet": "https://schema.org/VegetarianDiet",
+              "offers": { "@type": "Offer", "price": "3800", "priceCurrency": "HUF" } },
+            { "@type": "MenuItem", "name": "Trappista sajt rántva jázmin rizzsel, tartármártással",
+              "suitableForDiet": "https://schema.org/VegetarianDiet",
+              "offers": { "@type": "Offer", "price": "3700", "priceCurrency": "HUF" } }
+          ]
+        },
+        {
+          "@type": "MenuSection",
+          "name": "Gyerekeknek",
+          "hasMenuItem": [
+            { "@type": "MenuItem", "name": "Bolognai spagetti",
+              "offers": { "@type": "Offer", "price": "3000", "priceCurrency": "HUF" } },
+            { "@type": "MenuItem", "name": "„Dínó falatkák” hasábburgonyával, ketchuppal",
+              "offers": { "@type": "Offer", "price": "3000", "priceCurrency": "HUF" } },
+            { "@type": "MenuItem", "name": "Halrudacskák párolt rizzsel, tartármártással",
+              "offers": { "@type": "Offer", "price": "3000", "priceCurrency": "HUF" } }
+          ]
+        },
+        {
+          "@type": "MenuSection",
+          "name": "2 személyes táljaink",
+          "description": "Dupla szelet hússal. Hosszabb elkészítési idő: kb. 30–35 perc.",
+          "hasMenuItem": [
+            { "@type": "MenuItem", "name": "„A” tál",
+              "description": "Rántott sertésborda, sonkával-sajttal sült csirkemell, rántott sajt, rántott karfiol, jázmin rizzsel, steak burgonyával, tartármártással.",
+              "offers": { "@type": "Offer", "price": "10800", "priceCurrency": "HUF" } },
+            { "@type": "MenuItem", "name": "„B” tál",
+              "description": "Zengővárkonyi sertéstekercs, cigánypecsenye, mozzarellás csirkemell paradicsomkarikával, jázmin rizzsel, steak burgonyával.",
+              "offers": { "@type": "Offer", "price": "10800", "priceCurrency": "HUF" } }
+          ]
+        },
         {
           "@type": "MenuSection",
           "name": "Szárnyas ételeink",
@@ -1090,6 +1324,26 @@ body{padding-bottom:88px}
           ]
         }
       ]
+    },
+    {
+      "@type": "Event",
+      "@id": "https://dianavendeglo.hu/esemenyek/szureti-mulatsag-2026/",
+      "name": "Szüreti mulatság a Diana Vendéglőben",
+      "startDate": "2026-10-10T18:00:00+02:00",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "inLanguage": "hu-HU",
+      "description": "Tízfogásos szüreti vacsora élőzenével. A bevételből a Gedeon Endre–Kiss Károly Alapítvány is részesül.",
+      "location": { "@id": "https://dianavendeglo.hu/#vendeglo" },
+      "organizer": { "@id": "https://dianavendeglo.hu/#vendeglo" },
+      "offers": {
+        "@type": "Offer",
+        "name": "Vacsorajegy",
+        "price": "9000",
+        "priceCurrency": "HUF",
+        "availability": "https://schema.org/InStock",
+        "url": "https://dianavendeglo.hu/esemenyek/szureti-mulatsag-2026/"
+      }
     },
     {
       "@type": "WebSite",
@@ -1250,6 +1504,11 @@ body{padding-bottom:88px}
     for (var i = 0; i < sorok.length; i++) {
       if (Number(sorok[i].getAttribute("data-nap")) === nap) sorok[i].setAttribute("data-ma", "");
       else sorok[i].removeAttribute("data-ma");
+    }
+    var napok = document.querySelectorAll(".het li");
+    for (var j = 0; j < napok.length; j++) {
+      if (Number(napok[j].getAttribute("data-nap")) === nap) napok[j].setAttribute("data-ma", "");
+      else napok[j].removeAttribute("data-ma");
     }
     $("#ido-sugo").textContent = "Ma " + ora(nyit) + " és " + ora(zar) + " között foglalható asztal.";
   }
