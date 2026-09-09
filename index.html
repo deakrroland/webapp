@@ -6,8 +6,8 @@
 <title>Diana Vendéglő Pécs — házias magyar konyha 1982 óta</title>
 <meta name="description" content="Kertváros vendéglője a Diana téren. Napi menü, magyaros ételek helyi alapanyagból, 130 fős terem, 45 fős különterem, 120 fős kert. Foglalás: (06 72) 438 176.">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#F6F1E8" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#14110F" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F4F1E7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#12150F" media="(prefers-color-scheme: dark)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@10..48,75..100,300..800&family=Source+Serif+4:opsz,wght@8..60,300..600&display=swap">
@@ -19,22 +19,22 @@
    ───────────────────────────────────────────────────────────── */
 :root{
   /* színtokenek — világos mód */
-  --lap:#F6F1E8;         /* meszelt fal      — oldalháttér            */
-  --abrosz:#FFFDF8;      /* abrosz           — kártyafelület          */
-  --tinta:#1F1710;       /* tinta            — 15,71:1 a lapon        */
-  --fust:#6A5F52;        /* füst             — 5,54:1                 */
-  --paprika:#A32C1C;     /* pörköltpaprika   — 6,36:1                 */
-  --parazs:#B04E17;      /* parázs           — 4,73:1                 */
-  --liget:#3C5A3A;       /* kertvárosi fák   — 6,87:1                 */
-  --vonal:#93856B;       /* határ            — 3,21:1 (WCAG 1.4.11)   */
-  --vonal-halk:#E2D9C8;  /* dekoratív vonal  — nem hordoz információt */
-  --hiba:#A31B12;        /* hiba             — 6,86:1                 */
-  --paprika-szoveg:#FFFFFF;
-  --arny-1:0 1px 2px rgb(31 23 16 / .06);
-  --arny-2:0 10px 30px -12px rgb(31 23 16 / .22);
-  --scrim:rgb(31 23 16 / .5);
-  --halk-fold:rgb(60 90 58 / .12);
-  --halk-parazs:rgb(176 78 23 / .12);
+  --lap:#F4F1E7;         /* étlap-papír      — oldalháttér            */
+  --abrosz:#FFFDF7;      /* abrosz           — kártyafelület          */
+  --tinta:#1B211A;       /* tinta            — 14,53:1 a lapon        */
+  --fust:#5C6357;        /* másodlagos       — 5,50:1                 */
+  --kert:#2C6B31;        /* a logó zöldje    — 5,71:1                 */
+  --arany:#856512;       /* a logó aranya    — 4,80:1                 */
+  --este:#2A3326;        /* este / zárás     — 11,61:1                */
+  --vonal:#8A8770;       /* határ            — 3,21:1 (WCAG 1.4.11)   */
+  --vonal-halk:#E0DCC8;  /* dekoratív vonal  — nem hordoz információt */
+  --hiba:#A31B12;        /* hiba             — 6,82:1                 */
+  --kert-szoveg:#FFFFFF; /* fehér a zöldön   — 6,45:1                 */
+  --arny-1:0 1px 2px rgb(27 33 26 / .07);
+  --arny-2:0 10px 30px -12px rgb(27 33 26 / .22);
+  --scrim:rgb(27 33 26 / .5);
+  --halk-fold:rgb(44 107 49 / .12);
+  --halk-arany:rgb(133 101 18 / .12);
 
   /* tipográfia */
   --cegér:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
@@ -61,28 +61,28 @@
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --lap:#14110F; --abrosz:#1E1A17; --tinta:#F2EAE0; --fust:#A99B8C;
-    --paprika:#F08A72; --parazs:#E6A05A; --liget:#93B683;
-    --vonal:#77695D; --vonal-halk:#332C27; --hiba:#FFA898;
-    --paprika-szoveg:#14110F;
+    --lap:#12150F; --abrosz:#1B1F18; --tinta:#EDEBDE; --fust:#A0A692;
+    --kert:#86C08A; --arany:#D9B255; --este:#C9D6BC;
+    --vonal:#787E6D; --vonal-halk:#2C3128; --hiba:#FFA898;
+    --kert-szoveg:#12150F;
     --arny-1:0 1px 2px rgb(0 0 0 / .5);
     --arny-2:0 12px 34px -14px rgb(0 0 0 / .75);
-    --scrim:rgb(8 6 5 / .66);
-    --halk-fold:rgb(147 182 131 / .14);
-    --halk-parazs:rgb(230 160 90 / .14);
+    --scrim:rgb(6 8 5 / .66);
+    --halk-fold:rgb(134 192 138 / .14);
+    --halk-arany:rgb(217 178 85 / .14);
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --lap:#14110F; --abrosz:#1E1A17; --tinta:#F2EAE0; --fust:#A99B8C;
-  --paprika:#F08A72; --parazs:#E6A05A; --liget:#93B683;
-  --vonal:#77695D; --vonal-halk:#332C27; --hiba:#FFA898;
-  --paprika-szoveg:#14110F;
+  --lap:#12150F; --abrosz:#1B1F18; --tinta:#EDEBDE; --fust:#A0A692;
+  --kert:#86C08A; --arany:#D9B255; --este:#C9D6BC;
+  --vonal:#787E6D; --vonal-halk:#2C3128; --hiba:#FFA898;
+  --kert-szoveg:#12150F;
   --arny-1:0 1px 2px rgb(0 0 0 / .5);
   --arny-2:0 12px 34px -14px rgb(0 0 0 / .75);
-  --scrim:rgb(8 6 5 / .66);
-  --halk-fold:rgb(147 182 131 / .14);
-  --halk-parazs:rgb(230 160 90 / .14);
+  --scrim:rgb(6 8 5 / .66);
+  --halk-fold:rgb(134 192 138 / .14);
+  --halk-arany:rgb(217 178 85 / .14);
   color-scheme:dark;
 }
 
@@ -100,13 +100,13 @@ h1,h2,h3,h4{font-family:var(--cegér);line-height:1.08;text-wrap:balance;margin:
 p{margin:0}
 a{color:inherit}
 :where(a,button,input,select,textarea,summary,[tabindex]):focus-visible{
-  outline:3px solid var(--parazs);outline-offset:3px;border-radius:3px}
+  outline:3px solid var(--arany);outline-offset:3px;border-radius:3px}
 
 .sav{width:min(100% - 2*var(--t5),var(--sav));margin-inline:auto}
 @media (min-width:900px){.sav{width:min(100% - 2*var(--t8),var(--sav))}}
 
 .ugras{position:absolute;left:var(--t4);top:var(--t4);z-index:200;
-  transform:translateY(-200%);background:var(--paprika);color:var(--paprika-szoveg);
+  transform:translateY(-200%);background:var(--kert);color:var(--kert-szoveg);
   padding:var(--t3) var(--t5);border-radius:2px;font-family:var(--cegér);font-weight:600;
   text-decoration:none;transition:transform var(--gyors) var(--ki)}
 .ugras:focus{transform:translateY(0)}
@@ -132,7 +132,7 @@ a{color:inherit}
     text-decoration:none;color:var(--fust);padding:var(--t2) 0;position:relative;
     transition:color var(--gyors) ease}
   .fonav a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;
-    background:var(--paprika);transform:scaleX(0);transform-origin:left;
+    background:var(--kert);transform:scaleX(0);transform-origin:left;
     transition:transform var(--gyors) var(--ki)}
   .fonav a:hover,.fonav a:focus-visible{color:var(--tinta)}
   .fonav a:hover::after{transform:scaleX(1)}
@@ -143,7 +143,7 @@ a{color:inherit}
   .tel-link{display:inline-flex;align-items:center;gap:var(--t2);text-decoration:none;
     font-family:var(--cegér);font-weight:600;font-size:var(--sz-kicsi);
     font-variant-numeric:tabular-nums;padding:var(--t2) var(--t3);color:var(--tinta)}
-  .tel-link:hover{color:var(--paprika)}
+  .tel-link:hover{color:var(--kert)}
 }
 
 /* ── gombok ──────────────────────────────────────────────── */
@@ -155,8 +155,8 @@ a{color:inherit}
              border-color var(--gyors) ease,color var(--gyors) ease}
 .gomb:hover{transform:translateY(-1px)}
 .gomb:active{transform:scale(.985);transition-duration:90ms;transition-timing-function:var(--be)}
-.gomb-fo{background:var(--paprika);color:var(--paprika-szoveg);box-shadow:var(--arny-1)}
-.gomb-fo:hover{background:color-mix(in srgb,var(--paprika) 88%,var(--tinta))}
+.gomb-fo{background:var(--kert);color:var(--kert-szoveg);box-shadow:var(--arny-1)}
+.gomb-fo:hover{background:color-mix(in srgb,var(--kert) 88%,var(--tinta))}
 .gomb-mas{border-color:var(--vonal);color:var(--tinta)}
 .gomb-mas:hover{border-color:var(--tinta);background:var(--abrosz)}
 .gomb-ikon{min-height:44px;min-width:44px;padding:0 var(--t3);border-color:var(--vonal-halk)}
@@ -183,7 +183,7 @@ a{color:inherit}
 }
 h1{font-size:var(--sz-cim);font-weight:700;font-variation-settings:"wdth" 78;
   letter-spacing:-.03em;margin-bottom:var(--t5)}
-h1 em{font-style:normal;color:var(--paprika);display:block}
+h1 em{font-style:normal;color:var(--kert);display:block}
 .hero-lead{font-size:var(--sz-nagy);max-width:34ch;color:var(--tinta)}
 .hero-gombok{display:flex;flex-wrap:wrap;gap:var(--t3);margin-top:var(--t6)}
 @media (max-width:520px){.hero-gombok .gomb{flex:1 1 100%}}
@@ -197,7 +197,7 @@ h1 em{font-style:normal;color:var(--paprika);display:block}
   font-family:var(--cegér);font-weight:600;font-size:var(--sz-kicsi);
   padding:var(--t2) var(--t3);border:1px solid var(--vonal-halk);border-radius:999px;
   background:var(--abrosz)}
-.allapot .pont{width:9px;height:9px;border-radius:50%;background:var(--liget);flex:none}
+.allapot .pont{width:9px;height:9px;border-radius:50%;background:var(--kert);flex:none}
 .allapot[data-zarva] .pont{background:var(--fust)}
 .allapot .ido{font-variant-numeric:tabular-nums;color:var(--fust);font-weight:500}
 @media (prefers-reduced-motion:no-preference){
@@ -216,8 +216,8 @@ h1 em{font-style:normal;color:var(--paprika);display:block}
 .napiv{display:block;width:100%;height:auto;aspect-ratio:1000/230;overflow:visible}
 .napiv text{font-family:var(--cegér);fill:var(--fust);font-weight:500}
 .napiv .most-cimke{fill:var(--tinta);font-weight:700}
-.jelzo-kor{fill:var(--parazs)}
-.jelzo-halo{fill:none;stroke:var(--parazs);opacity:.35}
+.jelzo-kor{fill:var(--arany)}
+.jelzo-halo{fill:none;stroke:var(--arany);opacity:.35}
 @media (prefers-reduced-motion:no-preference){
   .jelzo-halo{animation:parazslik 2.8s ease-in-out infinite}
   #jelolo{animation:jelolo-be 900ms var(--ki) 200ms both}
@@ -235,7 +235,7 @@ h1 em{font-style:normal;color:var(--paprika);display:block}
   font-family:var(--cegér)}
 
 /* placeholder-jelölés */
-.ph{border-bottom:1px dotted var(--parazs);color:var(--parazs);
+.ph{border-bottom:1px dotted var(--arany);color:var(--arany);
   font-family:var(--cegér);font-weight:600;white-space:nowrap;cursor:help}
 
 /* ── szekciók ────────────────────────────────────────────── */
@@ -244,7 +244,7 @@ section{padding-block:var(--t8)}
 @media (min-width:1200px){section{padding-block:var(--t10)}}
 .szekcio-fej{max-width:56ch;margin-bottom:var(--t7)}
 .kiscim{font-family:var(--cegér);font-size:var(--sz-apro);font-weight:600;
-  letter-spacing:.14em;text-transform:uppercase;color:var(--paprika);
+  letter-spacing:.14em;text-transform:uppercase;color:var(--kert);
   display:block;margin-bottom:var(--t3)}
 h2{font-size:var(--sz-h2);font-weight:700;font-variation-settings:"wdth" 84;
   letter-spacing:-.025em}
@@ -272,12 +272,31 @@ h2{font-size:var(--sz-h2);font-weight:700;font-variation-settings:"wdth" 84;
   font-variant-numeric:tabular-nums;display:flex;justify-content:space-between;align-items:baseline}
 .menu-ar small{font-weight:500;font-size:var(--sz-apro);color:var(--fust)}
 
+/* ── étlap-lista ─────────────────────────────────────────── */
+.etlap-lista{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.etlap-lista li{display:flex;justify-content:space-between;align-items:baseline;
+  gap:var(--t5);padding:var(--t4) 0;border-bottom:1px solid var(--vonal-halk)}
+.etlap-lista li:first-child{border-top:1px solid var(--vonal-halk)}
+.etlap-lista .etel{display:block;font-size:var(--sz-nagy);max-width:52ch}
+.etlap-lista .etel em{display:block;font-style:italic;font-size:var(--sz-kicsi);
+  color:var(--fust);margin-top:2px}
+.etlap-lista .ar{flex:none;font-family:var(--cegér);font-weight:700;font-size:1.125rem;
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.mini{font-size:var(--sz-kicsi);color:var(--fust);padding-top:var(--t3);
+  border-top:2px solid var(--vonal-halk);font-variant-numeric:tabular-nums}
+.mini b{display:block;font-family:var(--cegér);color:var(--tinta);font-size:1rem;
+  margin-bottom:2px}
+.stab{list-style:none;margin:0;padding:0;display:grid;gap:var(--t3)}
+.stab li{display:grid;gap:2px;padding-left:var(--t4);border-left:2px solid var(--arany)}
+.stab b{font-family:var(--cegér);font-size:1rem}
+.stab span{font-size:var(--sz-kicsi);color:var(--fust)}
+
 /* ── ténykártyák ─────────────────────────────────────────── */
 .teny{display:flex;flex-direction:column;gap:var(--t3);padding:var(--t5) 0;
   border-top:2px solid var(--tinta)}
 .teny h3{font-size:1.0625rem;font-variation-settings:"wdth" 92}
 .teny p{color:var(--fust);font-size:var(--sz-kicsi)}
-.teny svg{color:var(--paprika)}
+.teny svg{color:var(--kert)}
 
 /* ── kapacitás ───────────────────────────────────────────── */
 .kapacitas{display:flex;flex-direction:column;gap:var(--t5);margin-bottom:var(--t7)}
@@ -285,13 +304,13 @@ h2{font-size:var(--sz-h2);font-weight:700;font-variation-settings:"wdth" 84;
 .kap-fej{display:flex;justify-content:space-between;align-items:baseline;gap:var(--t4)}
 .kap-fej h3{font-size:var(--sz-h3);font-variation-settings:"wdth" 88}
 .kap-fej b{font-family:var(--cegér);font-size:1.5rem;font-weight:700;
-  font-variant-numeric:tabular-nums;color:var(--paprika);flex:none}
+  font-variant-numeric:tabular-nums;color:var(--kert);flex:none}
 .kap-fej b small{font-size:var(--sz-kicsi);color:var(--fust);font-weight:500}
 .kap-savtart{height:14px;background:var(--vonal-halk);border-radius:2px;overflow:hidden}
-.kap-sav{height:100%;background:var(--paprika);transform-origin:left;border-radius:2px;
+.kap-sav{height:100%;background:var(--kert);transform-origin:left;border-radius:2px;
   display:block}
-.kap-sor:nth-child(2) .kap-sav{background:var(--parazs)}
-.kap-sor:nth-child(3) .kap-sav{background:var(--liget)}
+.kap-sor:nth-child(2) .kap-sav{background:var(--arany)}
+.kap-sor:nth-child(3) .kap-sav{background:var(--este)}
 .kap-megj{font-size:var(--sz-kicsi);color:var(--fust)}
 @media (prefers-reduced-motion:no-preference){
   @supports (animation-timeline:view()){
@@ -303,7 +322,7 @@ h2{font-size:var(--sz-h2);font-weight:700;font-variation-settings:"wdth" 84;
 .tipus-racs{display:grid;gap:var(--t4);grid-template-columns:1fr}
 @media (min-width:700px){.tipus-racs{grid-template-columns:repeat(3,1fr)}}
 .tipus{display:block;text-decoration:none;background:var(--abrosz);
-  border:1px solid var(--vonal-halk);border-left:3px solid var(--paprika);
+  border:1px solid var(--vonal-halk);border-left:3px solid var(--kert);
   padding:var(--t5);border-radius:2px;
   transition:transform var(--gyors) var(--ki),border-color var(--gyors) ease}
 .hatter-valt .tipus{background:var(--lap)}
@@ -314,7 +333,7 @@ h2{font-size:var(--sz-h2);font-weight:700;font-variation-settings:"wdth" 84;
 /* ── két hasáb ───────────────────────────────────────────── */
 .duo{display:grid;gap:var(--t7)}
 @media (min-width:900px){.duo{grid-template-columns:repeat(2,1fr);gap:var(--t8)}}
-.idezet{font-size:var(--sz-nagy);border-left:3px solid var(--parazs);
+.idezet{font-size:var(--sz-nagy);border-left:3px solid var(--arany);
   padding-left:var(--t5);margin:0;color:var(--tinta)}
 .idezet footer{font-family:var(--cegér);font-size:var(--sz-apro);color:var(--fust);
   margin-top:var(--t3);letter-spacing:.06em;text-transform:uppercase}
@@ -323,7 +342,7 @@ h2{font-size:var(--sz-h2);font-weight:700;font-variation-settings:"wdth" 84;
 .ertek{display:flex;align-items:baseline;gap:var(--t3);flex-wrap:wrap}
 .ertek-szam{font-family:var(--cegér);font-size:3.5rem;font-weight:700;line-height:1;
   font-variant-numeric:tabular-nums;font-variation-settings:"wdth" 84}
-.csillagok{display:inline-flex;gap:2px;color:var(--parazs)}
+.csillagok{display:inline-flex;gap:2px;color:var(--arany)}
 .ertek-db{color:var(--fust);font-family:var(--cegér);font-size:var(--sz-kicsi)}
 
 /* ── nyitvatartás ────────────────────────────────────────── */
@@ -332,11 +351,11 @@ h2{font-size:var(--sz-h2);font-weight:700;font-variation-settings:"wdth" 84;
   border-bottom:1px solid var(--vonal-halk);font-size:var(--sz-kicsi)}
 .nyit-tabla th{font-family:var(--cegér);font-weight:500;color:var(--fust)}
 .nyit-tabla td{font-family:var(--cegér);font-weight:600;text-align:right}
-.nyit-tabla tr[data-ma] th,.nyit-tabla tr[data-ma] td{color:var(--paprika);font-weight:700}
+.nyit-tabla tr[data-ma] th,.nyit-tabla tr[data-ma] td{color:var(--kert);font-weight:700}
 .nyit-tabla tr[data-ma] th::after{content:" — ma";font-weight:500;font-size:var(--sz-apro)}
 .info-lista{list-style:none;padding:0;margin:0;display:grid;gap:var(--t3)}
 .info-lista li{display:flex;gap:var(--t3);align-items:flex-start;font-size:var(--sz-kicsi)}
-.info-lista svg{color:var(--paprika);flex:none;margin-top:3px}
+.info-lista svg{color:var(--kert);flex:none;margin-top:3px}
 
 /* ── űrlap ───────────────────────────────────────────────── */
 .urlap{background:var(--abrosz);border:1px solid var(--vonal-halk);border-radius:3px;
@@ -350,7 +369,7 @@ h2{font-size:var(--sz-h2);font-weight:700;font-variation-settings:"wdth" 84;
 }
 .mezo{display:flex;flex-direction:column;gap:var(--t2)}
 .mezo label{font-family:var(--cegér);font-weight:600;font-size:var(--sz-kicsi)}
-.mezo label .kotelezo{color:var(--paprika)}
+.mezo label .kotelezo{color:var(--kert)}
 .mezo .sugo{font-size:var(--sz-apro);color:var(--fust);font-family:var(--cegér)}
 .mezo input,.mezo textarea,.mezo select{
   font:inherit;font-size:1rem;font-family:var(--cegér);
@@ -371,13 +390,13 @@ h2{font-size:var(--sz-h2);font-weight:700;font-variation-settings:"wdth" 84;
 .osszegzo h3{font-size:1rem;color:var(--hiba);margin-bottom:var(--t2)}
 .osszegzo ul{margin:0;padding-left:var(--t5);font-size:var(--sz-kicsi)}
 .osszegzo a{color:var(--hiba)}
-.nagy-csoport{display:none;border-left:3px solid var(--parazs);background:var(--halk-parazs);
+.nagy-csoport{display:none;border-left:3px solid var(--arany);background:var(--halk-arany);
   padding:var(--t4);margin-top:var(--t4);font-size:var(--sz-kicsi);border-radius:2px}
 .nagy-csoport[data-lathato]{display:block;animation:halvany var(--kozepes) var(--ki) both}
-.siker{display:none;border-left:3px solid var(--liget);background:var(--halk-fold);
+.siker{display:none;border-left:3px solid var(--kert);background:var(--halk-fold);
   padding:var(--t5);border-radius:2px}
 .siker[data-lathato]{display:block;animation:halvany var(--kozepes) var(--ki) both}
-.siker h3{color:var(--liget);font-size:var(--sz-h3);margin-bottom:var(--t3)}
+.siker h3{color:var(--kert);font-size:var(--sz-h3);margin-bottom:var(--t3)}
 .mezhonig{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 
 /* ── lábléc ──────────────────────────────────────────────── */
@@ -389,7 +408,7 @@ h2{font-size:var(--sz-h2);font-weight:700;font-variation-settings:"wdth" 84;
   text-transform:uppercase;color:var(--fust);margin-bottom:var(--t3);font-weight:600}
 .lablec ul{list-style:none;padding:0;margin:0;display:grid;gap:var(--t2)}
 .lablec a{color:var(--tinta);text-decoration-color:var(--vonal);text-underline-offset:3px}
-.lablec a:hover{color:var(--paprika)}
+.lablec a:hover{color:var(--kert)}
 .lablec-alj{margin-top:var(--t7);padding-top:var(--t5);border-top:1px solid var(--vonal-halk);
   color:var(--fust);font-size:var(--sz-apro)}
 
@@ -421,7 +440,7 @@ body{padding-bottom:88px}
 <body>
 <a class="ugras" href="#fotartalom">Ugrás a tartalomra</a>
 
-<p class="szalag"><b>Designkoncepció.</b> Ez nem a Diana Vendéglő hivatalos oldala. Az űrlap nem küld adatot, az <span class="ph" title="Ügyfél-adat szükséges">[árak]</span> helykitöltők.</p>
+<p class="szalag"><b>Designkoncepció.</b> Ez nem a Diana Vendéglő hivatalos oldala, és az űrlap nem küld adatot. Az étlap árai a vendéglő valódi étlapjáról valók; a <span class="ph" title="Ügyfél-adat szükséges">[szögletes]</span> elemek helykitöltők.</p>
 
 <header class="fejlec">
   <div class="sav fejlec-belso">
@@ -431,7 +450,7 @@ body{padding-bottom:88px}
     </a>
     <nav class="fonav" aria-label="Fő navigáció">
       <a href="#menu">Napi menü</a>
-      <a href="#konyha">Konyha</a>
+      <a href="#etlap">Étlap</a>
       <a href="#rendezvenyek">Rendezvények</a>
       <a href="#tortenet">A Diana</a>
       <a href="#info">Nyitvatartás</a>
@@ -455,7 +474,7 @@ body{padding-bottom:88px}
   <nav class="mobilnav" id="mobilnav" aria-label="Mobil navigáció">
     <ul class="sav">
       <li><a href="#menu">Napi menü</a></li>
-      <li><a href="#konyha">Konyha</a></li>
+      <li><a href="#etlap">Étlap</a></li>
       <li><a href="#rendezvenyek">Rendezvények</a></li>
       <li><a href="#tortenet">A Diana</a></li>
       <li><a href="#info">Nyitvatartás</a></li>
@@ -505,11 +524,11 @@ body{padding-bottom:88px}
           <g id="jelolo"></g>
         </svg>
         <div class="napiv-jelmagy">
-          <span class="jelm"><i style="background:var(--paprika)"></i> napi menü</span>
-          <span class="jelm"><i style="background:var(--parazs)"></i> à la carte</span>
-          <span class="jelm"><i style="background:var(--liget)"></i> esti élőzene</span>
+          <span class="jelm"><i style="background:var(--kert)"></i> konyha</span>
+          <span class="jelm"><i style="background:var(--arany)"></i> pizza is, 15:00-tól</span>
+          <span class="jelm"><i style="background:var(--este)"></i> este, élőzene</span>
         </div>
-        <p class="napiv-labjegyzet">A menü- és zeneidők <span class="ph" title="Ügyfél-adat szükséges: Q5 és Q9">[egyeztetendők]</span>; a nyitvatartás dokumentált.</p>
+        <p class="napiv-labjegyzet">A nyitvatartás és a pizza 15:00-s kezdése az étlapról származik. A napi menü és a zene időpontja <span class="ph" title="Ügyfél-adat szükséges: Q5 és Q9">[egyeztetendő]</span>.</p>
       </div>
     </div>
   </section>
@@ -527,19 +546,75 @@ body{padding-bottom:88px}
           <h3>A menü</h3>
           <div class="menu-sor"><span>Leves</span><span class="ph" title="Ügyfél-adat szükséges: Q6">[a nap levese]</span></div>
           <div class="menu-sor"><span>Főétel</span><span class="ph" title="Ügyfél-adat szükséges: Q6">[a nap főétele]</span></div>
-          <p class="menu-ar"><span class="ph" title="Ügyfél-adat szükséges: Q5">[ár]</span> <small>Ft / adag</small></p>
+          <p class="menu-ar"><span class="ph" title="Ügyfél-adat szükséges: Q5">[ár]</span> <small>Ft / menü</small></p>
         </article>
         <article class="menu-kartya">
           <h3>B menü</h3>
           <div class="menu-sor"><span>Leves</span><span class="ph" title="Ügyfél-adat szükséges: Q6">[a nap levese]</span></div>
           <div class="menu-sor"><span>Főétel</span><span class="ph" title="Ügyfél-adat szükséges: Q6">[vegetáriánus főétel]</span></div>
-          <p class="menu-ar"><span class="ph" title="Ügyfél-adat szükséges: Q5">[ár]</span> <small>Ft / adag</small></p>
+          <p class="menu-ar"><span class="ph" title="Ügyfél-adat szükséges: Q5">[ár]</span> <small>Ft / menü</small></p>
         </article>
       </div>
       <p style="margin-top:var(--t5)">
         <a class="gomb gomb-mas" href="#">A teljes hét menüje
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── AZ ÉTLAPRÓL ───────────────────────────────────── -->
+  <section id="etlap">
+    <div class="sav">
+      <div class="szekcio-fej belep">
+        <span class="kiscim">Az étlapról</span>
+        <h2>Amit a legtöbben rendelnek.</h2>
+        <p>Az árak forintban értendők, az áfát tartalmazzák. Szervizdíjat nem számítunk fel.</p>
+      </div>
+
+      <ul class="etlap-lista belep">
+        <li>
+          <span class="etel">Sörben sült sertéscsülök „Dianásan"
+            <em>steak burgonyával, szalonnás savanyú káposztával</em></span>
+          <span class="ar">4 900 Ft</span>
+        </li>
+        <li>
+          <span class="etel">Vörösboros marha pörkölt
+            <em>kapros-túrós galuskával</em></span>
+          <span class="ar">5 400 Ft</span>
+        </li>
+        <li>
+          <span class="etel">Vaslapos csirkemell
+            <em>sült zöldséggel, házi steak burgonyával</em></span>
+          <span class="ar">4 900 Ft</span>
+        </li>
+        <li>
+          <span class="etel">Békacomb rántva
+            <em>házi steak burgonyával, fokhagymamártással</em></span>
+          <span class="ar">5 200 Ft</span>
+        </li>
+        <li>
+          <span class="etel">Sült kacsacomb
+            <em>burgonyapürével, párolt lilakáposztával</em></span>
+          <span class="ar">5 500 Ft</span>
+        </li>
+      </ul>
+
+      <div class="racs racs-4 belep" style="margin-top:var(--t6)">
+        <p class="mini"><b>Pizza</b> 15:00-tól<br>1 800 – 3 800 Ft</p>
+        <p class="mini"><b>Desszertek</b><br>1 600 – 1 800 Ft</p>
+        <p class="mini"><b>Saláták, mártások</b><br>400 – 1 000 Ft</p>
+        <p class="mini"><b>Köretek</b><br>900 – 1 200 Ft</p>
+      </div>
+
+      <p style="margin-top:var(--t6)">
+        <a class="gomb gomb-mas" href="#">A teljes étlap
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </p>
+      <p class="sugo" style="margin-top:var(--t4)">
+        Allergén összetevőkről kérjük, érdeklődjön munkatársainknál.
+        Vegán tételek: <span class="ph" title="Ügyfél-adat szükséges: Q12">[melyek]</span>.
       </p>
     </div>
   </section>
@@ -563,9 +638,9 @@ body{padding-bottom:88px}
           <p>Nyáron a kerthelyiségben a szakácsok a vendégek előtt főznek nyílt tűzön.</p>
         </article>
         <article class="teny">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20c0-6 3-9 9-10 0 6-3 9-9 10z"/><path d="M11 20c0-4-2-6-7-7 0 4 2 6 7 7z"/><path d="M11 20v-3"/></svg>
-          <h3>Vegán lehetőségek</h3>
-          <p>Az étlapon állandó vegán tételek is vannak. <span class="ph" title="Ügyfél-adat szükséges: Q12">[hány tétel]</span></p>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+          <h3>Nincs szervizdíj</h3>
+          <p>Az étteremben nem számítunk fel szervizdíjat. A kiírt ár a fizetendő ár.</p>
         </article>
         <article class="teny">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg>
@@ -632,7 +707,13 @@ body{padding-bottom:88px}
       <div class="belep">
         <span class="kiscim">1982 óta</span>
         <h2>Amikor csak foglalással lehetett bejutni.</h2>
-        <p style="margin-top:var(--t4);color:var(--fust)">A Diana 1982. május 1-jén nyitott, a lakótelepi házakkal egy időben — mondhatni a kertvárosiaknak épült. A nyolcvanas években minden nap élő zene szólt, és asztalfoglalás nélkül nehéz volt asztalhoz jutni. Racskó Gábor 1994-ben került ide pincérként, 2003 óta vezeti a vendéglőt.</p>
+        <p style="margin-top:var(--t4);color:var(--fust)">A Diana 1982. május 1-jén nyitott, a lakótelepi házakkal egy időben — mondhatni a kertvárosiaknak épült. A nyolcvanas években minden nap élő zene szólt, és asztalfoglalás nélkül nehéz volt asztalhoz jutni.</p>
+        <ul class="stab" style="margin-top:var(--t5)">
+          <li><b>Racskó Gábor</b><span>üzletvezető, 2003 óta — 1994-ben pincérként kezdett itt</span></li>
+          <li><b>Horváth Csaba</b><span>üzletvezető-helyettes</span></li>
+          <li><b>Pécsi Norbert</b><span>konyhafőnök</span></li>
+        </ul>
+        <p style="margin-top:var(--t5);color:var(--fust)">A vendéglőhöz saját sportegyesület is tartozik: <b>Diana Vendéglő SE</b>.</p>
         <p style="margin-top:var(--t5)"><a class="gomb gomb-mas" href="#">A Diana története
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a></p>
@@ -831,7 +912,7 @@ body{padding-bottom:88px}
         <h3>Oldalak</h3>
         <ul>
           <li><a href="#menu">Napi menü</a></li>
-          <li><a href="#konyha">Étlap</a></li>
+          <li><a href="#etlap">Étlap</a></li>
           <li><a href="#rendezvenyek">Rendezvények</a></li>
           <li><a href="#tortenet">A Diana 1982 óta</a></li>
           <li><a href="#foglalas">Asztalfoglalás</a></li>
@@ -907,6 +988,7 @@ body{padding-bottom:88px}
         { "@type": "Place", "name": "Kerthelyiség", "maximumAttendeeCapacity": 120,
           "description": "Nyáron üzemel, vaslapos és bográcsos főzéssel." }
       ],
+      "hasMenu": { "@id": "https://dianavendeglo.hu/#etlap" },
       "potentialAction": {
         "@type": "ReserveAction",
         "target": {
@@ -919,6 +1001,95 @@ body{padding-bottom:88px}
         },
         "result": { "@type": "FoodEstablishmentReservation", "name": "Asztalfoglalás" }
       }
+    },
+    {
+      "@type": "Menu",
+      "@id": "https://dianavendeglo.hu/#etlap",
+      "name": "Diana Vendéglő étlap",
+      "inLanguage": "hu-HU",
+      "hasMenuSection": [
+        {
+          "@type": "MenuSection",
+          "name": "Szárnyas ételeink",
+          "hasMenuItem": [
+            { "@type": "MenuItem", "name": "Vaslapos csirkemell sült zöldséggel, házi steak burgonyával",
+              "offers": { "@type": "Offer", "price": "4900", "priceCurrency": "HUF" } },
+            { "@type": "MenuItem", "name": "Cheddar sajtos rántott csirkemell hasábburgonyával",
+              "offers": { "@type": "Offer", "price": "4900", "priceCurrency": "HUF" } },
+            { "@type": "MenuItem", "name": "Sült kacsacomb burgonyapürével, párolt lilakáposztával",
+              "offers": { "@type": "Offer", "price": "5500", "priceCurrency": "HUF" } }
+          ]
+        },
+        {
+          "@type": "MenuSection",
+          "name": "Sertés ételeink",
+          "hasMenuItem": [
+            { "@type": "MenuItem", "name": "Sörben sült sertéscsülök „Dianásan”",
+              "description": "Steak burgonyával, szalonnás savanyú káposztával.",
+              "offers": { "@type": "Offer", "price": "4900", "priceCurrency": "HUF" } },
+            { "@type": "MenuItem", "name": "Zengővárkonyi sertéstekercs hasábburgonyával",
+              "offers": { "@type": "Offer", "price": "4900", "priceCurrency": "HUF" } },
+            { "@type": "MenuItem", "name": "Sertés szűzpecsenye erdei gombás tejszínes tésztával",
+              "offers": { "@type": "Offer", "price": "5200", "priceCurrency": "HUF" } },
+            { "@type": "MenuItem", "name": "Tarja steak „Bánffy” módra",
+              "description": "Pirított velő, tükörtojás, vajon pirított fokhagymás burgonya.",
+              "offers": { "@type": "Offer", "price": "4900", "priceCurrency": "HUF" } }
+          ]
+        },
+        {
+          "@type": "MenuSection",
+          "name": "Marha és hal ételeink",
+          "hasMenuItem": [
+            { "@type": "MenuItem", "name": "Vörösboros marha pörkölt kapros-túrós galuskával",
+              "offers": { "@type": "Offer", "price": "5400", "priceCurrency": "HUF" } },
+            { "@type": "MenuItem", "name": "Harcsapaprikás kapros-túrós galuskával",
+              "offers": { "@type": "Offer", "price": "4900", "priceCurrency": "HUF" } },
+            { "@type": "MenuItem", "name": "Békacomb rántva házi steak burgonyával, fokhagymamártással",
+              "offers": { "@type": "Offer", "price": "5200", "priceCurrency": "HUF" } }
+          ]
+        },
+        {
+          "@type": "MenuSection",
+          "name": "Pizzáink",
+          "description": "15:00-tól kapható.",
+          "hasMenuItem": [
+            { "@type": "MenuItem", "name": "Margeritha pizza", "description": "Paradicsomos alap, sajt.",
+              "offers": { "@type": "Offer", "price": "3800", "priceCurrency": "HUF",
+                "availabilityStarts": "15:00" } },
+            { "@type": "MenuItem", "name": "Magyaros pizza",
+              "description": "Paradicsomos alap, bacon, paprikás szalámi, hagyma, sajt, erős paprika.",
+              "offers": { "@type": "Offer", "price": "3800", "priceCurrency": "HUF",
+                "availabilityStarts": "15:00" } },
+            { "@type": "MenuItem", "name": "Focaccia", "description": "Fokhagymás tejföllel.",
+              "offers": { "@type": "Offer", "price": "1800", "priceCurrency": "HUF",
+                "availabilityStarts": "15:00" } }
+          ]
+        },
+        {
+          "@type": "MenuSection",
+          "name": "Desszertek",
+          "hasMenuItem": [
+            { "@type": "MenuItem", "name": "Túrós palacsinta (2 db)",
+              "offers": { "@type": "Offer", "price": "1600", "priceCurrency": "HUF" } },
+            { "@type": "MenuItem", "name": "Lávasüti gyümölcsmártással",
+              "offers": { "@type": "Offer", "price": "1800", "priceCurrency": "HUF" } },
+            { "@type": "MenuItem", "name": "Gesztenyepüré tejszínhabbal",
+              "offers": { "@type": "Offer", "price": "1600", "priceCurrency": "HUF" } }
+          ]
+        },
+        {
+          "@type": "MenuSection",
+          "name": "Köretek",
+          "hasMenuItem": [
+            { "@type": "MenuItem", "name": "Hasábburgonya",
+              "offers": { "@type": "Offer", "price": "1000", "priceCurrency": "HUF" } },
+            { "@type": "MenuItem", "name": "Steak burgonya",
+              "offers": { "@type": "Offer", "price": "900", "priceCurrency": "HUF" } },
+            { "@type": "MenuItem", "name": "Sült zöldség",
+              "offers": { "@type": "Offer", "price": "1200", "priceCurrency": "HUF" } }
+          ]
+        }
+      ]
     },
     {
       "@type": "WebSite",
@@ -1002,9 +1173,9 @@ body{padding-bottom:88px}
   /* SZIGNATÚRA: A Diana napja */
   var svg = $("#napiv"), iv = $("#iv-alap");
   var SZEGMENSEK = [
-    { tol: 660,  ig: 870,  szin: "var(--paprika)", nev: "napi menü" },
-    { tol: 870,  ig: 1140, szin: "var(--parazs)",  nev: "à la carte" },
-    { tol: 1140, ig: null, szin: "var(--liget)",   nev: "esti élőzene" }
+    { tol: 660,  ig: 900,  szin: "var(--kert)",  nev: "konyha" },
+    { tol: 900,  ig: 1140, szin: "var(--arany)", nev: "pizza is" },
+    { tol: 1140, ig: null, szin: "var(--este)",  nev: "este" }
   ];
   function ns(nev, attrs) {
     var el = document.createElementNS("http://www.w3.org/2000/svg", nev);
@@ -1059,7 +1230,7 @@ body{padding-bottom:88px}
     if (nyitvaMost) {
       var pt = iv.getPointAtLength(arany(perc) * L);
       gJ.appendChild(ns("line", { x1: pt.x, y1: pt.y, x2: pt.x, y2: 200,
-        stroke: "var(--parazs)", "stroke-width": 1.5, "stroke-dasharray": "3 4", opacity: ".5" }));
+        stroke: "var(--arany)", "stroke-width": 1.5, "stroke-dasharray": "3 4", opacity: ".5" }));
       gJ.appendChild(ns("circle", { cx: pt.x, cy: pt.y, r: 13, class: "jelzo-halo", "stroke-width": 2 }));
       gJ.appendChild(ns("circle", { cx: pt.x, cy: pt.y, r: 6.5, class: "jelzo-kor" }));
       var cimke = ns("text", { x: Math.min(Math.max(pt.x, 90), 910), y: pt.y - 24,

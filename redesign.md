@@ -13,6 +13,13 @@
 > **[T]** = több forrásból megerősített tény · **[V]** = valószínű, ellenőrizendő ·
 > **[P]** = placeholder, ügyfél-input kell hozzá.
 >
+> **Frissítés — az ügyfél képernyőképeket küldött a valódi oldalról.**
+> Ezek alapján a következők ténnyé váltak vagy megváltoztak: a **valódi menüszerkezet**
+> (9 menüpont, köztük három, amit a kereső nem indexelt), az **arculati színek**
+> (a logó sötétzöld + arany), a **valódi étlap árakkal**, és egy új **kritikus
+> hiba**: az étlap képfájlokban van. Ahol egy korábbi megállapításom megdőlt,
+> ott ezt külön jelölöm: **[JAVÍTVA]**.
+>
 > Amit **nem** tudtam mérni: Core Web Vitals, HTML-forrás, CSS, képméretek,
 > HTTPS-konfiguráció, meglévő JSON-LD. Ezekről a 2. és 11. fejezetben külön
 > jelzem, hogy mit kell megmérni élesítés előtt. **Egyetlen számot sem találtam ki.**
@@ -38,6 +45,12 @@ Amit dokumentáltan tudok az ügyfélről:
 | Elérhetőség | (06 72) 438 176 · dvendeglo@gmail.com | saját oldal [T] |
 | Fizetés | bankkártya, SZÉP-kártya | etterem.hu listing [T] |
 | Kiszállítás | Wolt és Foodora | platform-listingek [T] |
+| Stáb | Racskó Gábor üzletvezető · Horváth Csaba üzletvezető-helyettes · Pécsi Norbert konyhafőnök | étlap lábléce [T] |
+| Arculat | logó: **sötétzöld + arany**, „1982" évszámmal, D-monogram, „DIANA VENDÉGLŐ" felirat | képernyőkép [T] |
+| Étlap | főételek 4900–5500 Ft; pizza **15:00-tól** 1800–3800 Ft; desszert 1600–1800 Ft; saláta 400–1000 Ft; köret 900–1200 Ft | étlap [T] |
+| Árpolitika | „Áraink forintban értetendők és az ÁFÁ-t tartalmazzák." · „Az étteremben **nem számítunk fel szervízdíjat**." | étlap [T] |
+| Csomagolás | doboz 100 Ft/db · pizzadoboz 200 Ft/db · alumínium tálca 500 Ft/db | étlap [T] |
+| Egyesület | **Diana Vendéglő SE** — saját sportegyesület | menüpont [T] |
 | Google | 4,2 ★ / 910 értékelés · 2000–6000 Ft/fő · „Bejelentette 84 személy" | brief [T] |
 | Attribútumok | kedvezményes ételek, különterem, vegán lehetőségek | Google-listing [T] |
 | Rendezvénytípusok | lakodalom, bál, ballagás, szalagavató, diplomaosztó, céges | hovamenjek.hu, saját oldal [T] |
@@ -62,19 +75,43 @@ A hiányzó mezők a 15. fejezetben, kérdés-formában szerepelnek.
 | Sablonos, nem egyedi téma | A SERP-címek automatikusan generált mintája (lásd 2.3) sablon-viselkedésre utal | [V] |
 | Kép- és teljesítményjellemzők | **nem mérhető** ebben a környezetben | — |
 
-### 1.2 Struktúra (a valós, indexelt sitemap)
+### 1.2 Struktúra — a valódi menü **[JAVÍTVA]**
+
+A képernyőkép szerint a mobil menü **kilenc** pontból áll, nem hatból. Három
+olyan oldal van benne, amit a kereső nem adott vissza:
 
 ```
-dianavendeglo.hu/wp/                        Főoldal
-dianavendeglo.hu/wp/etel/                   Étel
-dianavendeglo.hu/wp/ital/                   Ital
-dianavendeglo.hu/wp/napi-menu/              Napi menü
-dianavendeglo.hu/wp/rendezvenyek/           Rendezvények
-dianavendeglo.hu/wp/ajanlatok-aktualitasok/ Ajánlatok, aktualitások
+Főoldal
+Miért szeretik a „Dianát"          ← nem volt indexelve a keresésemben
+Napi menü
+Ajánlatok, aktualitások
+Étel
+Ital
+Esküvői menü                        ← nem volt indexelve
+Rendezvények
+Diana Vendéglő SE                   ← nem volt indexelve (sportegyesület)
 ```
+
+**Ez önmagában megállapítás:** kilenc oldalból három nem jött vissza a
+keresőből. Ez vagy indexelési probléma (`noindex`, gyenge belső linkelés,
+hiányzó sitemap), vagy a tartalom annyira vékony, hogy a Google nem tartja
+érdemesnek megjeleníteni. **Ellenőrizendő a Search Console-ban** — ez a
+0. fázis egyik konkrét feladata.
+
+A navigáció **kilenc egyenrangú pontja** külön UX-probléma is: nincs hierarchia,
+a „Diana Vendéglő SE" ugyanakkora súlyt kap, mint a „Napi menü".
 
 A Google Cégprofil ezen felül két külön deep linket hirdet: **„Menü · dianavendeglo.hu"**
 és **„Asztal foglalása · dianavendeglo.hu"**.
+
+### 1.2b Arculat — ami eddig hiányzott az elemzésből
+
+A logó: **sötétzöld körben arany „D"-monogram**, fölötte az **1982** évszám,
+alatta „DIANA VENDÉGLŐ". A menülapok fejlécében ugyanez, arany vonallal
+elválasztva, a lap hátterében halványzöld óriás-monogram vízjelként.
+
+Ez **kész, működő és következetes arculat** — és az évszám benne van a logóban.
+A redesign paletta ebből indul ki (7.0), nem külső hangulattáblából.
 
 ### 1.3 MI A JÓ BENNE — külön szedve, és ezt mind megtartom
 
@@ -118,6 +155,9 @@ a redesign nagyrészt nem újat ír, hanem **előreveszi, ami el van temetve**.
 | K3 | **Nincs online foglalás, csak telefon.** A Google „Asztal foglalása" linkje a saját oldalra mutat, de az indexelt oldalstruktúrában nincs foglalási aloldal. | Nincs `/asztalfoglalas` vagy `/foglalas` indexelt URL | [V] |
 | K4 | **Nincs önálló rendezvény-ajánlatkérő út.** Egyetlen `/rendezvenyek/` oldal fedi a lakodalmat, ballagást, céges vacsorát — pedig ezek külön keresések és külön döntési logikák. | egy URL, hat rendezvénytípus | [T] |
 | K5 | **Nincs strukturált adat.** Nem tudom lekérni, de a SERP-ben nem jelenik meg sem menü-, sem étterem-rich result. | SERP-megfigyelés | [V] |
+| **K6** | **AZ ÉTLAP KÉPFÁJLOKBAN VAN.** Az „Étel" oldal egy képnézegetőt (lightbox) nyit meg: nagyítás, teljes képernyő, megosztás, bezárás gombokkal. A menülapok **exportált képek**, nem HTML. | képernyőkép | **[T]** |
+| **K7** | **A képes étlap mögött vízjel fut.** A halványzöld óriás-monogram az árak és az ételnevek alatt húzódik, ami rontja a kontrasztot és a kis kijelzős olvashatóságot. | képernyőkép | **[T]** |
+| **K8** | **A Google Cégprofil „Menü" linkje képekre mutat.** A Google nem tud belőle menü-rich resultot építeni, mert nincs szövege. | K6 következménye | [V] |
 
 ### 2.2 UX
 
@@ -127,7 +167,9 @@ a redesign nagyrészt nem újat ír, hanem **előreveszi, ami el van temetve**.
 | U2 | **A 130 / 45 / 120 fős kapacitás nincs a döntési pontnál.** Ez a rendezvényszervező *egyetlen* kizáró kritériuma, mégis csak katalógusoldalakon olvasható jól. | a számok az utazzitthon.hu és hovamenjek.hu szövegében jelennek meg, nem a saját oldal SERP-snippetjeiben | [V] |
 | U3 | **Az „Ajánlatok, aktualitások" oldal örök karbantartási adósság.** Az ilyen oldal 3 hét után elavul, és elavultan rosszabb, mint ha nem lenne. | oldalcím önmagában | [T] |
 | U4 | **Étel és Ital két külön oldal.** Senki nem keres „ital"-ra; „étlap"-ra keres. Két kattintás egy döntéshez. | két külön indexelt URL | [T] |
-| U5 | **A 43 éves történet nincs sehol az oldalon.** Az 1982-es nyitás, a napi élőzene, a „csak asztalfoglalással lehetett bejutni" korszak — mindezt a *sajtó* írta meg, nem a vendéglő. | a történet forrása pecsaktual.hu / pecsma.hu | [T] |
+| U5 | **[JAVÍTVA]** Van „Miért szeretik a »Dianát«" oldal — tehát a történet valószínűleg *szerepel* az oldalon. A probléma más: **ez az oldal nem jött vissza a keresőben**, és a főoldalon a képernyőkép alapján nem kap kiemelt helyet. A 43 év tehát megvan írva, csak nem dolgozik. | menüpont létezik, de nincs indexelve | [T] / [V] |
+| U7 | **Kilenc egyenrangú menüpont, hierarchia nélkül.** A „Diana Vendéglő SE" ugyanolyan súlyú, mint a „Napi menü". A mobil menü egy képernyőt kitöltő, tagolatlan lista. | képernyőkép | **[T]** |
+| U8 | **Az étlap két külön oldalon (Étel / Ital) és képként.** Az étel és az ital külön menüpont, és mindkettő képnézegető. Egy döntéshez két kattintás és egy lightbox. | képernyőkép | **[T]** |
 | U6 | **A szombat esti retro élőzene nincs a főoldalon.** Ez heti visszatérő esemény és önálló látogatási ok. | a program a hovamenjek.hu-n van kiemelve | [V] |
 
 ### 2.3 SEO
@@ -139,6 +181,9 @@ a redesign nagyrészt nem újat ír, hanem **előreveszi, ami el van temetve**.
 | S3 | **Egyetlen címben sincs benne, hogy „Pécs".** Egy lokális vendéglőnek ez a legfontosabb kulcsszava. | SERP | [T] |
 | S4 | **Az oldal a saját tényeire nem rangsorol.** A „130 fős", „45 fős különterem", „1982" kifejezésekre katalógus- és sajtóoldalak jönnek elő, nem a `dianavendeglo.hu`. | keresési eredmények | [T] |
 | S5 | **`/wp/` a kanonikus útvonalban** — minden belső link és minden backlink egy technikai szegmensen keresztül megy. | URL-struktúra | [T] |
+| **S6** | **Az étlap teljes szövege — ~200 tétel, ~350 ár — nulla indexelhető szó.** Ez a weboldal legnagyobb tartalmi vagyona, és a Google számára nem létezik. | K6 | **[T]** |
+| **S7** | **Kilencből három oldal nincs indexelve** („Miért szeretik a »Dianát«", „Esküvői menü", „Diana Vendéglő SE"). Az „Esküvői menü" különösen fáj: ez a legértékesebb kereskedelmi kulcsszó, ami a vendéglőnek van. | menü vs. keresési eredmények | [T] / [V] |
+| **S8** | **Árellentmondás a Google-profil és az étlap között.** A Cégprofil 2000–6000 Ft/fő sávot hirdet; az étlapon a főételek 4900–5500 Ft, a pizza 3800 Ft. Egy főétel + egy ital reálisan a sáv tetején vagy fölötte van. Ez rossz elvárást állít, és a Google-ből érkező vendég a számlánál csalódik. | Cégprofil vs. étlap | **[T]** |
 
 ### 2.4 Performance
 
@@ -177,6 +222,23 @@ nem tudja kiemelni, nem tud rá konvertálni, és a keresőben más domain kapja
 a forgalmat. Egy 43 éves intézmény esetében ez nem elmaradt tartalomírás, hanem
 **elveszített vagyon**.
 
+**A képként feltöltött étlap a legdrágább hiba az oldalon — és nem esztétikai.**
+Amit egy képfájl elveszít:
+
+| Elveszik | Következmény |
+|---|---|
+| Kereshetőség | Aki „sörben sült csülök Pécs"-re keres, soha nem talál rá a Dianára — pedig van neki, `Sörben sült sertéscsülök „Dianásan”`, 4900 Ft. |
+| Kijelölhetőség | A vendég nem tud árat kimásolni, ételnevet elküldeni. |
+| Képernyőolvasó | Vak vagy gyengénlátó vendégnek az étlap **nem létezik**. Egy `alt` szöveg 200 tételre nem megoldás. |
+| Nagyítás | Aki 200%-ra nagyít, elmosódott képet kap, nem nagyobb betűt. |
+| Fordítás | A böngésző-fordító nem éri el — külföldi vendégnek nulla. |
+| Strukturált adat | Nem építhető `Menu` schema, tehát nincs menü-rich result a Google-ben. |
+| Frissítés | Egy ár módosítása = új kép exportálása és feltöltése. Ezért avulnak el a képes étlapok. |
+
+A mögöttes ok itt is ugyanaz, mint a `/wp/`-nél: **a nyomdai anyagot tették fel
+webre**, ahelyett hogy a webre készült volna tartalom. A menülap PDF-nek és
+nyomtatásnak jó — weboldalnak nem az.
+
 **Az „egy oldal minden rendezvénynek" azért rossz, mert a rendezvényszervező nem
 rendezvényt keres, hanem a sajátját.** Aki ballagásra keres helyet, annak a
 lakodalmi szöveg zaj; aki lakodalmat szervez, annak a ballagási menü zaj. Egy
@@ -207,22 +269,31 @@ szándékot**:
 ```
 /                                   Főoldal
 ├── /napi-menu/                     Heti/napi menü            ← MEGTARTOTT URL
-├── /etlap/                         Teljes étlap (étel + ital)
+├── /etlap/                         Teljes étlap — SZÖVEGKÉNT (étel + ital)
 ├── /rendezvenyek/                  Rendezvény-hub
-│   ├── /rendezvenyek/eskuvo/
+│   ├── /rendezvenyek/eskuvo/       ← a meglévő „Esküvői menü" ide költözik
 │   ├── /rendezvenyek/ballagas/
 │   └── /rendezvenyek/ceges/
 ├── /asztalfoglalas/                Foglalás
 ├── /a-diana/                       1982 óta — a történet
+│                                     ← a meglévő „Miért szeretik a »Dianát«" ide
 ├── /kapcsolat/                     Cím, parkolás, megközelítés
-└── /ajanlatok/                     Aktuális ajánlatok
+├── /ajanlatok/                     Aktuális ajánlatok
+└── /diana-se/                      Diana Vendéglő SE          ← megmarad, de a láblécbe
 ```
+
+**Kilenc menüpontból öt marad a főnavigációban.** Az „Esküvői menü" a
+rendezvény-ághoz kerül (ott keresik), a „Miért szeretik a »Dianát«" beolvad az
+`/a-diana/`-ba, a „Diana Vendéglő SE" a láblécbe megy. Nem törlöm egyiket sem —
+átsorolom őket oda, ahol a keresési szándékkal találkoznak.
 
 | URL | Miért pont ez | Alternatíva, amit elvetettem |
 |---|---|---|
 | `/` a `/wp/` helyett | A `/wp/` semmit nem ad a vendégnek, és minden meglévő backlinket egy technikai szegmensen vezet át. Költözés + **301 minden `/wp/*` → `/*`**, a régi útvonalak élnek tovább átirányításként. | „Hagyjuk, működik." — működik, de minden jövőbeli linket is rontani fog, és a javítás költsége az idővel nő, nem csökken. |
 | `/napi-menu/` **változatlanul** | Ez az egyetlen URL, aminek bizonyíthatóan van visszatérő keresési kereslete és belső értéke. Nem nyúlok hozzá; csak a `/wp/` esik le róla. | `/heti-menu/` — pontosabb lenne, de eldobná a meglévő indexelést egy szinonimáért. Nem éri meg. |
-| `/etlap/` (Étel + Ital összevonva) | Senki nem keres „ital"-ra egy vendéglő kapcsán; „étlap"-ra keres. Egy oldal, `#levesek`, `#foetelek`, `#italok` horgonyokkal. 301: `/wp/etel/` és `/wp/ital/` → `/etlap/`. | Két oldal megtartása — két gyengébb oldal egy erős helyett, és két kattintás egy döntéshez. |
+| `/etlap/` (Étel + Ital összevonva) | Senki nem keres „ital"-ra egy vendéglő kapcsán; „étlap"-ra keres. Egy oldal, `#levesek`, `#foetelek`, `#pizza`, `#italok` horgonyokkal. **A tételek HTML-szövegként, nem képként** — ez a redesign legnagyobb egyedi nyeresége (K6). 301: `/wp/etel/` és `/wp/ital/` → `/etlap/`. | Két oldal megtartása; illetve a képes étlap megtartása „mert így néz ki a nyomtatott" — a nyomtatott lap PDF-ként letölthető marad, de nem az lesz az oldal. |
+| `/rendezvenyek/eskuvo/` a külön „Esküvői menü" helyett | Az esküvő rendezvény; aki esküvői helyszínt keres, a kapacitást és a menüsort együtt akarja látni. Az önálló „Esküvői menü" oldal ma nincs is indexelve. 301: `/wp/eskuvoi-menu/` → ide. | Önálló `/eskuvoi-menu/` megtartása — megőrizné a mai állapotot, ami bizonyíthatóan nem rangsorol. |
+| `/diana-se/` a láblécbe | A sportegyesület valódi közösségi tény, és megtartandó — de nem étterem-választási szempont, tehát nem főnavigációs elem. | Törlés (elveszne egy valódi helyi kötődés) vagy főmenüben tartás (elveszi a helyet a foglalástól). |
 | `/rendezvenyek/` + 3 aloldal | Külön keresési szándék, külön kapacitáslogika, külön bizonyíték. A hub megtartja a meglévő URL erejét, az aloldalak viszik a hosszú farkat („ballagás helyszín Pécs"). | Egyetlen hosszú oldal — olcsóbb, de minden célközönségnek 70%-ban irreleváns. |
 | `/asztalfoglalas/` | A Google Cégprofil **már most is hirdet egy foglalási linket**. Ha van rá hirdetett belépési pont, kell hozzá landolóoldal. | Modális ablak URL nélkül — nem linkelhető a Cégprofilból, nem mérhető, nem osztható meg. |
 | `/a-diana/` | Az 1982-es történet ma más domainen hoz forgalmat. Ez a lap veszi vissza. A `/rolunk/` helyett azért `/a-diana/`, mert a helyiek így hívják: „a Diana". | `/rolunk/` — semleges, de kicseréli a márkanevet egy általános szóra. |
@@ -239,15 +310,16 @@ szándékot**:
 |---|---|---|---|
 | 1 | Fejléc | navigáció + telefon + téma-kapcsoló | — |
 | 2 | Hero + **Napív** (szignatúra) | „nyitva vagyunk / most ez van" 1 mp alatt | nyitvatartás [T] |
-| 3 | Ma a Dianában | napi menü kiemelés + ár | menü [P] |
-| 4 | Mit főzünk | kistermelő, vaslap/parázs/bogrács, vegán | [T] |
-| 5 | Rendezvények | 130 / 45 / 120 fő, vizuális kapacitás | [T] |
-| 6 | Szombat este | retro élőzene | [T] |
-| 7 | 1982 óta | rövid történet + link a `/a-diana/`-ra | [T] |
-| 8 | Vendégek | 4,2 ★ / 910 értékelés | [T] |
-| 9 | Gyakorlati tudnivalók | nyitvatartás-táblázat, fizetés, kiszállítás | [T] |
-| 10 | Asztalfoglalás | űrlap inline validációval | — |
-| 11 | Lábléc | NAP-adatok, térkép, jogi | [T] |
+| 3 | Ma a Dianában | napi menü kiemelés + ár | menü ára [P] |
+| 4 | Az étlapról | 5 valódi főétel valódi árral, kategória-ársávok, „pizza 15:00-tól" | étlap [T] |
+| 5 | Mit főzünk | kistermelő, vaslap/parázs/bogrács, **nincs szervizdíj**, SZÉP | [T] |
+| 6 | Rendezvények | 130 / 45 / 120 fő, vizuális kapacitás | [T] |
+| 7 | Szombat este | retro élőzene | [T] |
+| 8 | 1982 óta | rövid történet + **a stáb névvel** + Diana Vendéglő SE | [T] |
+| 9 | Vendégek | 4,2 ★ / 910 értékelés | [T] |
+| 10 | Gyakorlati tudnivalók | nyitvatartás-táblázat, fizetés, kiszállítás | [T] |
+| 11 | Asztalfoglalás | űrlap inline validációval | — |
+| 12 | Lábléc | NAP-adatok, térkép, Diana SE, jogi | [T] |
 
 ### 5.2 A többi oldal
 
@@ -287,7 +359,7 @@ szándékot**:
 │               ╭────────╯          ▲           ╰────────╮              │
 │          ╭────╯                  most                  ╰────╮         │
 │      11:00      13:00       15:00      17:00      19:00     22:00     │
-│      └─ napi menü ─┘└──────── à la carte ────────┘└─ élőzene ┘        │
+│      └─── konyha ───┘└─ pizza is, 15:00-tól ─┘└─── este, élőzene ──┘  │
 │                                                                       │
 ├───────────────────────────────────────────────────────────────────────┤
 │  MA A DIANÁBAN — kedd                                                 │
@@ -296,6 +368,17 @@ szándékot**:
 │  │ [leves] · [főétel]      │ [leves] · [főétel]      │                │
 │  │ [ár] Ft                 │ [ár] Ft                 │                │
 │  └─────────────────────────┴─────────────────────────┘                │
+├───────────────────────────────────────────────────────────────────────┤
+│  AZ ÉTLAPRÓL — valódi tételek, valódi árak, HTML-szövegként           │
+│  Sörben sült sertéscsülök „Dianásan"                        4 900 Ft  │
+│    steak burgonyával, szalonnás savanyú káposztával                   │
+│  Vörösboros marha pörkölt kapros-túrós galuskával           5 400 Ft  │
+│  Vaslapos csirkemell sült zöldséggel                        4 900 Ft  │
+│  Békacomb rántva házi steak burgonyával                     5 200 Ft  │
+│  ──────────────────────────────────────────────────────────────────   │
+│  Pizza 15:00-tól │ Desszertek   │ Saláták      │ Köretek              │
+│  1 800–3 800 Ft  │ 1 600–1 800  │ 400–1 000    │ 900–1 200            │
+│                                              [A teljes étlap →]       │
 ├───────────────────────────────────────────────────────────────────────┤
 │  MIT FŐZÜNK                                                           │
 │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐                  │
@@ -340,10 +423,10 @@ szándékot**:
 │  alapanyagaiból.          │
 │                           │
 │  ╭──────────────────╮     │  ← Napív, mobilon
-│  │   ▲ most 13:40   │        alacsonyabb ívvel
+│  │   ▲ most 13:40   │        ritkább óracímkékkel
 │  ╰──────────────────╯     │
 │  11:00 ··········· 22:00  │
-│  napi menü 14:30-ig       │
+│  konyha · pizza 15:00-tól │
 │                           │
 │  [  Asztalt foglalok  ]   │
 │  [  Mai menü          ]   │
@@ -358,6 +441,19 @@ szándékot**:
 │ │ B menü …              │ │
 │ └───────────────────────┘ │
 │ → Teljes hét              │
+├───────────────────────────┤
+│ AZ ÉTLAPRÓL               │
+│ Sörben sült sertéscsülök  │
+│ „Dianásan"      4 900 Ft  │
+│ steak burgonyával,        │
+│ szalonnás savanyú kápo... │
+│ ───────────────────────── │
+│ Vörösboros marha pörkölt  │
+│                 5 400 Ft  │
+│ ───────────────────────── │
+│ Pizza 15:00-tól           │
+│ 1 800 – 3 800 Ft          │
+│ → A teljes étlap          │
 ├───────────────────────────┤
 │ MIT FŐZÜNK                │
 │ ┌───────────┐ ┌─────────┐ │  ← 2 oszlop
@@ -403,16 +499,25 @@ telefonon érik el, és 20:30-kor egy telefonhívás gyorsabb, mint bármilyen �
 
 ### 7.0 A vizuális kiindulópont — egy mondatban
 
-> **A kiindulópont a Diana nyári kerthelyiségének parazsa: a meszelt fal meleg
-> törtfehérje, a pörköltpaprika mélyvörösse, a vaslap alatt izzó parázs
-> narancsa és a kertvárosi fák tompa zöldje — négy szín, ami fizikailag ott van
-> az udvarban, amikor a szakács a bogrács mellett áll.**
+> **A kiindulópont a Diana saját étlapja: a menülap krémszínű papírja, a fejlécet
+> lezáró arany vonal, és a logó sötétzöld körbe zárt arany monogramja az 1982-es
+> évszámmal — három szín, amit a vendég minden egyes látogatáskor a kezében tart.**
 
-Ez a paletta forrása. Nem hangulattábla, hanem egy **dokumentált tény**
-(„vaslapon, grillen, parázson és bográcsban készítik az ételt a vendégek előtt")
-lefordítása színre. Nem esik bele a „fekete háttér + egy neon accent" mintába,
-mert a Dianában nincs semmi neon; és nem lesz belőle „étterem = piros" klisé sem,
-mert a vörös itt **másodhegedűs**: az alaphangot a meszelt fal és a füst adja.
+Ez a paletta forrása. **[JAVÍTVA]** — az első változatban a nyári kerthelyiség
+parazsából indultam ki (meszelt fehér, pörköltpaprika-vörös, parázs-narancs),
+mert nem láttam a vendéglő arculatát. Amint a logó és a menülap előkerült,
+kidobtam: **volt egy kész, következetes, 1982 óta épített arculat, és én egy
+másikat találtam ki mellé.** A vörös paletta szép volt, de idegen. A meglévő
+arculat felülírja a tervezői ötletet — ez a legfontosabb szabály egy 43 éves
+márkánál.
+
+A zöld–arany páros ráadásul **jobb is**, mint amit kitaláltam volna:
+- a zöld a Kertvároshoz és a kerthelyiséghez is köt, nem csak a logóhoz;
+- az arany a menülap vonalából jön, tehát az ár és a kiemelés természetes színe;
+- és nem esik bele az „étterem = piros" klisébe, amit a brief is tilt.
+
+Amit a kerthelyiség parazsából megtartottam: a **krémszínű, meleg alap**
+(`#F4F1E7`), ami a menülap papírja — nem hideg fehér, nem szürke.
 
 ### 7.1 Színtokenek — 8 nevesített token, mért kontraszttal
 
@@ -423,39 +528,38 @@ A kontrasztértékeket WCAG 2.1 relatív luminancia szerint számoltam
 
 | Token | Hex | Szerep | Kontraszt |
 |---|---|---|---|
-| `--lap` | `#F6F1E8` | oldalháttér (meszelt fal) | alap |
-| `--abrosz` | `#FFFDF8` | kártya-, űrlapfelület | 1,11 : 1 a `--lap`-hoz (szándékos: elválasztás vonallal, nem világossággal) |
-| `--tinta` | `#1F1710` | elsődleges szöveg | **15,71 : 1** a `--lap`-on · 17,38 : 1 az `--abrosz`-on — AAA |
-| `--fust` | `#6A5F52` | másodlagos szöveg | **5,54 : 1** · 6,13 : 1 — AA |
-| `--paprika` | `#A32C1C` | elsődleges akció, márkaszín | **6,36 : 1** · 7,04 : 1 — AA; fehér **rajta 7,16 : 1** |
-| `--parazs` | `#B04E17` | szignatúra-kiemelés, fókuszgyűrű | **4,73 : 1** · 5,23 : 1 — AA; fehér rajta 5,32 : 1 |
-| `--liget` | `#3C5A3A` | „nyitva" / sikeres állapot | **6,87 : 1** · 7,61 : 1 — AA |
-| `--vonal` | `#93856B` | űrlapkeret, aktív határ | **3,21 : 1** a `--lap`-on — WCAG 1.4.11 ✓ |
-| `--vonal-halk` | `#E2D9C8` | *csak dekoratív* elválasztó | 1,24 : 1 — soha nem hordoz információt |
-| `--hiba` | `#A31B12` | hibaüzenet | **6,86 : 1** — AA |
+| `--lap` | `#F4F1E7` | oldalháttér (a menülap papírja) | alap |
+| `--abrosz` | `#FFFDF7` | kártya-, űrlapfelület | 1,10 : 1 a `--lap`-hoz (szándékos: elválasztás vonallal, nem világossággal) |
+| `--tinta` | `#1B211A` | elsődleges szöveg (zöldre hangolt feketésbarna, nem semleges szürke) | **14,53 : 1** a `--lap`-on · 16,14 : 1 az `--abrosz`-on — AAA |
+| `--fust` | `#5C6357` | másodlagos szöveg | **5,50 : 1** · 6,11 : 1 — AA |
+| `--kert` | `#2C6B31` | **a logó zöldje** — elsődleges akció, márkaszín | **5,71 : 1** · 6,34 : 1 — AA; fehér **rajta 6,45 : 1** |
+| `--arany` | `#856512` | **a menülap arany vonala** — kiemelés, ár, fókuszgyűrű | **4,80 : 1** · 5,34 : 1 — AA; fehér rajta 5,43 : 1 |
+| `--este` | `#2A3326` | a nap utolsó szakasza a Napíven, harmadik sáv | **11,61 : 1** — AAA |
+| `--vonal` | `#8A8770` | űrlapkeret, aktív határ | **3,21 : 1** a `--lap`-on — WCAG 1.4.11 ✓ |
+| `--vonal-halk` | `#E0DCC8` | *csak dekoratív* elválasztó | 1,22 : 1 — soha nem hordoz információt |
+| `--hiba` | `#A31B12` | hibaüzenet | **6,82 : 1** — AA |
 
-**Sötét mód** — nem invertálás, hanem külön hangolt tónusok (a paprika és a
-parázs deszaturálva és világosítva, ahogy a Material és a HIG is előírja):
+**Sötét mód** — nem invertálás: a zöld és az arany világosítva és deszaturálva,
+az alap pedig **zöldre hangolt sötét** (`#12150F`), nem `#000`:
 
-| Token | Hex | Kontraszt a `--lap`-on (`#14110F`) |
+| Token | Hex | Kontraszt a `--lap`-on (`#12150F`) |
 |---|---|---|
-| `--lap` | `#14110F` | alap (meleg sötét, nem `#000` — az esti terem, nem a világűr) |
-| `--abrosz` | `#1E1A17` | 1,09 : 1 |
-| `--tinta` | `#F2EAE0` | **15,78 : 1** · 14,50 : 1 az `--abrosz`-on — AAA |
-| `--fust` | `#A99B8C` | **6,94 : 1** · 6,38 : 1 — AA |
-| `--paprika` | `#F08A72` | **7,69 : 1**; sötét szöveg rajta 7,69 : 1 |
-| `--parazs` | `#E6A05A` | **8,54 : 1** |
-| `--liget` | `#93B683` | **8,29 : 1** |
-| `--vonal` | `#77695D` | **3,55 : 1** — 1.4.11 ✓ |
-| `--vonal-halk` | `#332C27` | 1,37 : 1 — dekoratív |
-| `--hiba` | `#FFA898` | **10,12 : 1** |
+| `--lap` | `#12150F` | alap |
+| `--abrosz` | `#1B1F18` | 1,09 : 1 |
+| `--tinta` | `#EDEBDE` | **15,39 : 1** · 13,97 : 1 az `--abrosz`-on — AAA |
+| `--fust` | `#A0A692` | **7,34 : 1** · 6,66 : 1 — AA |
+| `--kert` | `#86C08A` | **8,70 : 1**; sötét szöveg rajta 8,70 : 1 |
+| `--arany` | `#D9B255` | **9,17 : 1**; sötét szöveg rajta 9,17 : 1 |
+| `--este` | `#C9D6BC` | **12,13 : 1** |
+| `--vonal` | `#787E6D` | **4,39 : 1** — 1.4.11 ✓ |
+| `--vonal-halk` | `#2C3128` | 1,38 : 1 — dekoratív |
+| `--hiba` | `#FFA898` | **9,92 : 1** |
 
-**Alternatíva, amit elvetettem:** a ui-ux-pro-max `--design-system` futása
-`#DC2626` + `#F87171` + `#FEF2F2` „appetizing red" palettát javasolt. Elvetettem:
-a `#DC2626` a Tailwind `red-600` alapértéke, ma minden második étteremoldal ezt
-használja, és a `#FEF2F2` rózsaszínes háttér a Diana meszelt-fal világától
-idegen. A saját paletta ugyanazt a funkciót látja el (étvágy, meleg), de a
-vendéglő fizikai környezetéből származik.
+**Alternatíva, amit elvetettem:** (1) a ui-ux-pro-max `--design-system` futása
+`#DC2626` + `#F87171` + `#FEF2F2` „appetizing red" palettát javasolt — a `#DC2626`
+a Tailwind `red-600` alapértéke, ma minden második étteremoldal ezt használja.
+(2) A saját, első paprikavörös–parázs palettámat is elvetettem, amint láttam a
+logót: **egy kész arculat mellé nem tervezünk másodikat.**
 
 ### 7.2 Tipográfia
 
@@ -707,8 +811,8 @@ Egyetlen `@graph`, `@id`-kkel összekötve:
 | `GeoCoordinates` | koordináta | **[P]** — pontos lat/lng ügyféltől vagy geokódolásból |
 | `OpeningHoursSpecification` ×3 | H–Cs / P–Szo / V | `dayOfWeek`, `opens`, `closes` |
 | `AggregateRating` | Google-értékelés | `ratingValue: 4.2`, `reviewCount: 910` — **csak akkor tehető ki, ha az értékelések a saját oldalon is meg vannak jelenítve**, különben a Google policy-sértés |
-| `Menu` + `hasMenuSection` + `MenuItem` | étlap | a tényleges tételek **[P]** |
-| `Offer` | napi menü ára | **[P]** |
+| `Menu` + `hasMenuSection` + `MenuItem` + `Offer` | étlap | **Megvan.** A prototípus JSON-LD-je 6 szekciót és 18 tételt tartalmaz valódi árral (`priceCurrency: "HUF"`), a pizzáknál `availabilityStarts: "15:00"`. Élesben mind a ~200 tétel. **Ez az a rich result, amit ma a képes étlap miatt nem lehet megkapni.** |
+| `Offer` | napi menü ára | **[P]** — az egyetlen ár, ami még hiányzik |
 | `Place` ×3 | nagyterem / különterem / kerthelyiség | `maximumAttendeeCapacity: 130 / 45 / 120` — így a kapacitás gépi olvasható |
 | `Event` | szombat esti retro élőzene | `eventSchedule: Schedule` heti ismétléssel — **[P]**: pontos kezdés kell |
 | `ReserveAction` | foglalás | `target`, `EntryPoint` — ez az, amit a Google Cégprofil „Asztal foglalása" gombja használ |
@@ -772,13 +876,16 @@ felülírhatja (15. fejezet, Q1).
 | Elem | Hol | Miért működik |
 |---|---|---|
 | **Élő nyitva/zárva állapot** | fejléc + hero | A mobilos vendég első kérdésére válaszol, mielőtt feltenné. Csökkenti a visszalépést a Google-listingre — és a listingre visszalépő vendéget a Google, nem a Diana birtokolja. |
-| **Napív (szignatúra)** | hero | Egyetlen ábrán mutatja meg, hogy *mikor mi van*: menüidő, à la carte, élőzene. A „mikor menjek?" kérdést döntéssé alakítja. |
+| **Napív (szignatúra)** | hero | Egyetlen ábrán mutatja meg, hogy *mikor mi van*: konyha, pizza 15:00-tól, esti élőzene. A „mikor menjek?" kérdést döntéssé alakítja — és a pizza kezdési ideje az étlapról származó, dokumentált tény. |
 | **Kapacitás-vizualizáció** | rendezvény-blokk | A 130/45/120 nem szám, hanem **méret** lesz. A rendezvényszervező egyetlen kizáró kritériumát azonnal ellenőrizhetővé teszi — a kizárás gyorsítása is konverzió. |
 | **„Ma a Dianában" menü ár mellett** | 3. szekció | Az árat *előre* megadni bizalmi jelzés; az árat elrejteni a leggyakoribb ok, amiért egy vendég továbbáll. |
 | **Telefon minden képernyőn** | fejléc + fix mobil sáv | Egy 43 éves vendéglő vendégköre telefonál. Az űrlap nem helyettesíti, kiegészíti. |
 | **45 fő fölött automatikus átterelés** | foglalóűrlap | Megakadályozza, hogy nagy csoport rossz csatornán érkezzen — és így ne vesszen el. |
 | **4,2 ★ / 910 értékelés, szám szerint** | vélemények | A 910 itt fontosabb, mint a 4,2: a mennyiség hitelesíti az átlagot. Egy 4,8-as átlag 12 értékeléssel gyengébb bizonyíték. |
 | **1982. május 1.** | történet-blokk | Konkrét dátum, nem „több évtizedes múlt". A pontos dátum ellenőrizhető, tehát hihető. |
+| **Valódi árak HTML-ben, a főoldalon** | étlap-szekció | Ma az árat egy képfájl őrzi, amit a kereső nem lát és a vendég nem tud kimásolni. Az ár kiírása a bizalom legolcsóbb formája — és a „mennyibe kerül?" az a kérdés, ami miatt a legtöbben továbbállnak. |
+| **„Nem számítunk fel szervizdíjat"** | mit főzünk + étlap-fej | Ez a vendéglő saját, kiírt mondata az étlapon, és pontosan azt a szorongást oldja fel, amit a rejtett tételek okoznak. A számla kiszámíthatósága konverziós érv. |
+| **A stáb névvel** | 1982-blokk | Racskó Gábor, Horváth Csaba, Pécsi Norbert. Egy 43 éves vendéglőnél a folytonosságot emberek testesítik meg, nem évszámok. Név + pozíció ellenőrizhető, tehát hiteles. |
 | **„Helyi kistermelők"** | mit főzünk | Dokumentált saját állítás, nem marketingfordulat. |
 | **SZÉP-kártya kiírva** | gyakorlati blokk | Céges ebéd és rendezvény esetén ez gyakran kizáró kérdés. |
 
@@ -793,7 +900,9 @@ felülírhatja (15. fejezet, Q1).
 | 3 | **Étel + Ital → `/etlap/`** | egy döntés, egy oldal; „étlap"-ra keresnek, nem „ital"-ra | két oldal megtartása |
 | 4 | **Rendezvények → hub + 3 aloldal** | külön szándék, külön long tail | egyetlen hosszú oldal |
 | 5 | **Szignatúra: Napív, nem fotó** | nincs jogtiszta fotóm, és egy fotó nem *mutatja meg* a napi ritmust; az ív igen | hero-fotó a teraszról |
-| 6 | **Paletta a parázsból és a meszelt falból** | a vendéglő fizikai világából, nem a „restaurant = red" kliséből | ui-ux-pro-max `#DC2626` javaslata: Tailwind-alapérték, mindenhol ott van |
+| 6 | **Paletta a meglévő logóból: sötétzöld + arany + menülap-krém** | van kész, következetes arculat 1982 óta — mellé nem tervezünk másodikat | (a) ui-ux-pro-max `#DC2626`: Tailwind-alapérték; (b) a saját, első paprikavörös palettám: szép volt, de a valódi arculat láttán idegen — kidobtam |
+| 6b | **Az étlap HTML-szövegként, nem képként** | a képes étlap egyszerre SEO-, akadálymentességi- és karbantartási hiba (K6). A nyomtatott lap PDF-ként letölthető marad. | A képek megtartása „mert így néz ki a nyomtatott" — ez a nyomdai anyagot teszi meg weboldalnak |
+| 6c | **Kilenc menüpontból öt a főnavigációban** | az „Esküvői menü" a rendezvényekhez, a történet az `/a-diana/`-ba, a Diana SE a láblécbe — egyik sem törlődik, mindegyik oda kerül, ahol keresik | Mind a kilenc megtartása: hierarchia nélküli lista, amiben a foglalás elvész |
 | 7 | **Bricolage Grotesque + Source Serif 4** | cégérszerű display + valódi magyar ékezetek olvasható serifben | Playfair+Inter (tiltott, AI-alapértelmezés), Playfair SC (levágja a hosszú ékezeteket), Fraunces (kölcsönzött nosztalgia) |
 | 8 | **Elevation vonallal, nem árnyékkal** | sötét módban is működik; illik a meszelt fal logikájához | Material-árnyékskála: sötét módban láthatatlan |
 | 9 | **Fotómentes prototípus** | a koncepció ne fotó minőségén álljon vagy bukjon; élesben jön a fotózás | stock-fotók: hazugság egy 43 éves valódi helyről |
@@ -811,7 +920,8 @@ felülírhatja (15. fejezet, Q1).
 | Fázis | Tartalom | Kimenet | Becsült idő **[P]** |
 |---|---|---|---|
 | **0. Mérés** | Lighthouse + CrUX baseline, teljes URL-lista, backlink-export, Search Console adatok, a jelenlegi étlap és árak begyűjtése | mérési riport, tartalomleltár | 1 hét |
-| **1. Technikai alap** | `/wp/` → gyökér, 301-térkép, HTTPS + HSTS ellenőrzés, `<title>`/meta újraírás mind a 6 meglévő oldalon, JSON-LD alapgráf | **ez önmagában, redesign nélkül is javítja a rangsorolást** | 1–2 hét |
+| **1. Technikai alap** | `/wp/` → gyökér, 301-térkép, HTTPS + HSTS ellenőrzés, `<title>`/meta újraírás mind a **9** meglévő oldalon, a nem indexelt három oldal kivizsgálása a Search Console-ban, JSON-LD alapgráf | **ez önmagában, redesign nélkül is javítja a rangsorolást** | 1–2 hét |
+| **1b. Étlap-digitalizálás** | a ~200 tétel és ~350 ár átgépelése a képekről strukturált adatba (CMS-mező vagy CSV → `Menu` schema), a nyomtatott lap PDF-ként megmarad letöltésre | **a legnagyobb egyszeri tartalmi nyereség az egész projektben** | 1 hét, egyszeri adatrögzítés |
 | **2. Főoldal** | design system implementálása, Napív, foglalóűrlap, sötét mód | új főoldal élesben | 2–3 hét |
 | **3. Aloldalak** | `/napi-menu/`, `/etlap/`, `/rendezvenyek/` + 3 aloldal, `/a-diana/`, `/kapcsolat/` | teljes oldal | 3–4 hét |
 | **4. Tartalom** | profi fotózás (terem, különterem, kert, parázs), a 1982-es történet megírása, rendezvény-menüsorok | képanyag és szövegek | párhuzamos, 2–4 hét |
@@ -837,7 +947,15 @@ Az alábbiak nélkül az anyag **nem élesíthető**. Egyiket sem találtam ki.
 
 **Tartalom és számok — minden **[P]** ide tartozik**
 - **Q5.** A napi menü ára és időablaka (meddig kérhető).
-- **Q6.** A teljes étlap tételekkel és árakkal, allergénjelöléssel.
+- **Q6.** ~~A teljes étlap tételekkel és árakkal~~ — **részben megvan** a küldött
+  képekről (főételek, pizzák, desszertek, saláták, köretek). Ami még kell:
+  a levesek, előételek, a teljes itallap, és **hogy melyik tétel vegán/vegetáriánus
+  és melyik tartalmaz mely allergént** (ma az étlap csak annyit ír: „érdeklődjön
+  munkatársainknál" — ez 2026-ban webre kevés).
+- **Q6b.** **Melyik az igaz ár-sáv?** A Google Cégprofil 2000–6000 Ft/fő sávot
+  hirdet, az étlap főételei 4900–5500 Ft. Egy főétel + ital reálisan a sáv
+  tetején vagy fölötte van. A Cégprofilt kell javítani, vagy a sáv a napi menüre
+  értendő? (S8)
 - **Q7.** Rendezvény-menüsorok és irányárak fejenként.
 - **Q8.** Mennyivel előre kell foglalni rendezvényt? Van-e minimum létszám?
 - **Q9.** A szombat esti retro élőzene pontos kezdése; van-e belépő?
@@ -848,6 +966,18 @@ Az alábbiak nélkül az anyag **nem élesíthető**. Egyiket sem találtam ki.
 - **Q14.** Az 1982 óta eltelt idő mérföldkövei — a sajtócikkeken túl mi az,
   amit a vendéglő maga akar elmondani?
 - **Q15.** Van-e jogtiszta fotóanyag, vagy fotózni kell?
+
+**Az új képernyőképekből fakadó kérdések**
+- **Q21.** Miért nincs indexelve a „Miért szeretik a »Dianát«", az „Esküvői menü"
+  és a „Diana Vendéglő SE" oldal? (`noindex`? gyenge belső linkelés? hiányzó
+  sitemap?) — Search Console-hozzáférés kell hozzá.
+- **Q22.** Az étlap képek forrásfájlja megvan-e szerkeszthető formában (InDesign,
+  Word, Canva)? Ha igen, a digitalizálás nem gépelés, hanem export.
+- **Q23.** Mi az „Esküvői menü" oldal tényleges tartalma? Vannak-e fix csomagok
+  és irányárak?
+- **Q24.** A „Diana Vendéglő SE" aktív egyesület? Van-e saját mérkőzés- vagy
+  eseménynaptár, amit az oldal megjeleníthetne?
+- **Q25.** A napi menü ára és időablaka — **ez maradt az egyetlen ár, ami hiányzik.**
 
 **Technikai**
 - **Q16.** Kié a domain és a tárhely? Van-e hozzáférés?
@@ -861,38 +991,53 @@ Az alábbiak nélkül az anyag **nem élesíthető**. Egyiket sem találtam ki.
 
 ## 16. Az anyag leggyengébb pontja — őszintén
 
-**A prototípus egyetlen valódi ára sincs benne, és ez nem apró hiány.**
+**Az első változat leggyengébb pontja az volt, hogy nem voltak árak. Ez megoldódott
+— és közben kiderült, hogy ennél nagyobb baj is volt: rossz színt terveztem.**
 
-Egy vendéglő weboldalán az ár nem díszítés, hanem a fő tartalom. A menükártyák,
-az étlap-szekció és a rendezvénycsomagok mind `[ár] Ft` placeholderrel állnak,
-mert a `dianavendeglo.hu`, a Wolt és a Foodora lekérése blokkolt volt, és nem
-voltam hajlandó számot kitalálni. Ennek az a következménye, hogy **a főoldal
-tipográfiai ritmusa árakkal ki lesz próbálva először élesben**: nem tudom, hogy
-egy 12 szavas ételnév és egy négyjegyű ár hogyan tördelődik 375px-en, amíg nem
-látom a valódi étlapot. Ez a legvalószínűbb hely, ahol a design szét fog esni.
+Az első paletta paprikavörös és parázs-narancs volt, egy „a kerthelyiség parazsából
+indulunk ki" indoklással, ami jól hangzott, és teljesen mellément: a Dianának
+**1982 óta van sötétzöld–arany arculata**, benne az évszámmal. Ezt nem a
+módszertan hibája okozta, hanem az, hogy a hálózati blokk miatt nem láttam a
+logót, és a hiányt **ötlettel töltöttem ki ahelyett, hogy megkérdeztem volna.**
+A tanulság a következő ügyfélre is áll: **az arculat nem az a mező, amit a
+tervező tölt ki, ha üres.** Ha egy adat hiányzik, azt kérdésként kell felírni,
+nem kreatív döntésként lezárni.
 
-Két további gyenge pont, sorrendben:
+Ami **most** a leggyengébb:
 
-**Második: a performance-fejezet egy oldalról szól, amit nem mértem.** A 11.
-fejezet célszámai védhetők, de a „mennyivel lesz jobb" kérdésre nincs válaszom,
-mert nincs baseline. A `/wp/` és a `<title>`-ek **[T]** szintű bizonyítékok — a
-képméretekről és a plugin-terhelésről szóló minden mondatom **[V]**, azaz
-mintaillesztés. Ha valaki ezt tényként idézi az ügyfélnek, tévedni fog.
+**Első: a napi menü ára még mindig hiányzik** — és a napi menü az oldal
+forgalmi motorja. Az étlap árai megvannak, tehát a tipográfiai ritmus valódi
+számokon van kipróbálva (4 900 Ft, 5 400 Ft — a leghosszabb ételnév 62 karakter,
+375px-en két sorba tördel, ellenőriztem). A napi menünél viszont még mindig
+`[ár]` áll, és épp az az ár, amiért a legtöbben az oldalra jönnek.
 
-**Harmadik: a szignatúra elem kockázata a mérés.** A Napív azt feltételezi, hogy
-a „mikor menjek?" valódi kérdés a Diana vendégeinél. Ez logikus, de nem mért. Ha
-kiderül, hogy a látogatók 80%-a a napi menüért jön és a nyitvatartás nem kérdés,
-akkor az ív egy szép, drága dekoráció marad, és a helyére a heti menü kellene.
-Ezt az élesítés utáni első hónap eseménykövetése dönti el — nem én.
+**Második: a ~200 tételes étlapot nem gépeltem át.** A prototípusban 5 főétel és
+a JSON-LD-ben 18 tétel szerepel valódi árral — a többi az 1b fázis munkája. Ez
+nem tervezési, hanem adatrögzítési feladat, de amíg nincs kész, az `/etlap/`
+oldal ígéret, nem tény. **A projekt legnagyobb hozamú része a legkevésbé
+látványos része**, és nálam is ez maradt utoljára.
+
+**Harmadik: a performance-fejezet továbbra is egy oldalról szól, amit nem
+mértem.** A `/wp/`, a duplikált címek és a képes étlap **[T]** szintű
+bizonyítékok. A képméretekről és a plugin-terhelésről szóló minden mondatom
+**[V]** — mintaillesztés. A képes étlap miatt viszont most már majdnem biztos,
+hogy a képsúly probléma: egy lightboxban ~20 nagy felbontású menülap fekszik.
+Ez mérendő, nem állítandó.
+
 
 ---
 
 ## Melléklet: a szignatúra elem — „A Diana napja"
 
 **Mi ez.** Egy inline SVG ív a hero alatt, ami a vendéglő egy napját rajzolja ki
-11:00-tól zárásig. Az ív három sávra van osztva — **napi menü**, **à la carte**,
-**esti élőzene** —, és egy jelölő mutatja, hogy a látogató *most* hol áll ebben a
-napban. Szombaton a harmadik sáv 23:00-ig nyúlik, és „retro élőzene" feliratot kap.
+11:00-tól zárásig. Az ív három sávra van osztva — **konyha**, **pizza is
+(15:00-tól)**, **este / élőzene** —, és egy jelölő mutatja, hogy a látogató *most*
+hol áll ebben a napban. Szombaton a harmadik sáv 23:00-ig nyúlik.
+
+**A középső sáv határa dokumentált tény:** az étlapon szó szerint ez áll:
+`PIZZÁINK (15:00-tól)`. Ez az egyetlen olyan időpont a vendéglő napjában, amit
+maga az étlap rögzít — és pontosan ezt teszi az ív láthatóvá. A napi menü és a
+zene kezdése egyelőre `[egyeztetendő]`, és a prototípusban is így van jelölve.
 
 **Miért pont ez.**
 1. **A szolgáltatás lényegét mutatja meg, nem mondja el.** A Diana nem egy
