@@ -1,0 +1,2498 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Étlap és árak — Gömböc Pizzéria, Pécs</title>
+<meta name="description" content="A Gömböc Pizzéria teljes étlapja árakkal: kemencés pizzák 3 600 Ft-tól, frissensültek, tálak, saláták, italok. Pécs, Nagy Imre út 70.">
+<link rel="canonical" href="https://gombocpizzeria.hu/etlap/">
+<meta name="theme-color" content="#FAF6EF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14110D" media="(prefers-color-scheme: dark)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&display=swap">
+<style>
+/* ============================================================
+   DESIGN SYSTEM — a kemence anyagai
+   Minden token a bare :root-ban van definiálva; a media query és
+   a [data-theme] blokkok CSAK felülírnak. Így a nem-stampelt
+   (rendszer) állapot is helyesen rajzol.
+   ============================================================ */
+:root{
+  /* — Szín: samott, parázs, hamu, korom, lomb — */
+  --liszt:        #FAF6EF;  /* alap háttér */
+  --tepsi:        #FFFDF8;  /* emelt felület */
+  --korom:        #1F1A14;  /* elsődleges szöveg   16,03:1 */
+  --hamu:         #6A6156;  /* másodlagos szöveg    5,64:1 */
+  --tegla:        #8C3A1B;  /* márka / címsor-accent 7,12:1 */
+  --parazs:       #B24A11;  /* CTA                  5,02:1 */
+  --parazs-feny:  #F0842F;  /* csak dekoráció: izzás */
+  --lomb:         #3D6B3F;  /* „nyitva" állapot     5,78:1 */
+  --vonal:        #E3D9C9;  /* dekoratív elválasztó */
+  --vonal-eros:   #8A7F6D;  /* űrlapkeret, UI-kontúr 3,65:1 */
+  --on-parazs:    #FFFFFF;  /* CTA felirat          5,41:1 */
+
+  --arnyek-1: 0 1px 2px rgba(31,26,20,.06);
+  --arnyek-2: 0 4px 14px -4px rgba(31,26,20,.14);
+  --arnyek-3: 0 18px 40px -18px rgba(31,26,20,.34);
+
+  /* — Térköz: 8px alap — */
+  --t1:4px; --t2:8px; --t3:16px; --t4:24px; --t5:32px;
+  --t6:48px; --t7:64px; --t8:96px; --t9:128px;
+  --r-s:4px; --r-m:10px; --r-l:18px;
+
+  /* — Típusskála — */
+  --f-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --f-szoveg:  "Figtree", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --sz-mikro:  clamp(.75rem,  .72rem + .15vw, .82rem);
+  --sz-kis:    clamp(.875rem, .85rem + .18vw, .95rem);
+  --sz-alap:   clamp(1rem,    .97rem + .22vw, 1.12rem);
+  --sz-vezeto: clamp(1.12rem, 1.04rem + .4vw, 1.35rem);
+  --sz-h3:     clamp(1.25rem, 1.14rem + .55vw, 1.6rem);
+  --sz-h2:     clamp(1.6rem,  1.35rem + 1.2vw, 2.5rem);
+  --sz-h1:     clamp(2.4rem,  1.7rem  + 3.2vw, 4.6rem);
+
+  --ki: cubic-bezier(.22,.61,.36,1);       /* ease-out, belépés */
+  --be: cubic-bezier(.55,.06,.68,.19);     /* ease-in, kilépés */
+  --ido-gyors:150ms; --ido-alap:240ms; --ido-lassu:380ms;
+
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --liszt:#14110D; --tepsi:#1E1A15;
+    --korom:#F2EAE0;      /* 15,79:1 */
+    --hamu:#A79C8D;       /*  6,98:1 */
+    --tegla:#E8A07A;      /*  8,73:1 */
+    --parazs:#F0842F;     /*  7,21:1 */
+    --parazs-feny:#FFB05E;
+    --lomb:#8FBE8B;       /*  8,88:1 */
+    --vonal:#332D25; --vonal-eros:#7A6E5E; --on-parazs:#14110D;
+    --arnyek-1:0 1px 2px rgba(0,0,0,.5);
+    --arnyek-2:0 4px 14px -4px rgba(0,0,0,.6);
+    --arnyek-3:0 18px 40px -18px rgba(0,0,0,.85);
+  }
+}
+:root[data-theme="dark"]{
+  --liszt:#14110D; --tepsi:#1E1A15; --korom:#F2EAE0; --hamu:#A79C8D;
+  --tegla:#E8A07A; --parazs:#F0842F; --parazs-feny:#FFB05E; --lomb:#8FBE8B;
+  --vonal:#332D25; --vonal-eros:#7A6E5E; --on-parazs:#14110D;
+  --arnyek-1:0 1px 2px rgba(0,0,0,.5);
+  --arnyek-2:0 4px 14px -4px rgba(0,0,0,.6);
+  --arnyek-3:0 18px 40px -18px rgba(0,0,0,.85);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%; scroll-behavior:smooth}
+body{
+  margin:0; background:var(--liszt); color:var(--korom);
+  font-family:var(--f-szoveg); font-size:var(--sz-alap);
+  line-height:1.6; font-weight:400;
+  -webkit-font-smoothing:antialiased;
+}
+img,svg{max-width:100%}
+h1,h2,h3{font-family:var(--f-display); text-wrap:balance; margin:0; line-height:1.08;
+  font-variation-settings:"SOFT" 30,"WONK" 1}
+p{margin:0}
+a{color:inherit}
+:where(a,button,input,select,textarea,summary):focus-visible{
+  outline:3px solid var(--parazs); outline-offset:3px; border-radius:var(--r-s);
+}
+.burok{width:min(100% - 2*var(--t4), 1160px); margin-inline:auto}
+@media(min-width:900px){.burok{width:min(100% - 2*var(--t6),1160px)}}
+.szakasz{padding-block:var(--t8)}
+.rejtett{position:absolute!important;width:1px;height:1px;overflow:hidden;
+  clip-path:inset(50%);white-space:nowrap}
+
+.atugras{position:absolute;left:var(--t3);top:-100px;z-index:100;
+  background:var(--parazs);color:var(--on-parazs);padding:var(--t2) var(--t3);
+  border-radius:var(--r-m);font-weight:600;transition:top var(--ido-gyors) var(--ki)}
+.atugras:focus{top:var(--t3)}
+
+/* ---------- Fejléc ---------- */
+.fejlec{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--liszt) 88%,transparent);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--vonal)}
+.fejlec-sor{display:flex;align-items:center;gap:var(--t4);
+  min-height:68px;padding-block:var(--t2)}
+.jel{font-family:var(--f-display);font-weight:700;font-size:1.35rem;
+  letter-spacing:.02em;text-decoration:none;display:flex;align-items:center;gap:var(--t2);
+  font-variation-settings:"SOFT" 40,"WONK" 1}
+.jel .ev{font-family:var(--f-szoveg);font-size:.62rem;font-weight:600;
+  letter-spacing:.14em;color:var(--hamu);border-left:1px solid var(--vonal-eros);
+  padding-left:var(--t2);line-height:1.1}
+.fonav{display:none;margin-left:auto;gap:var(--t4)}
+@media(min-width:940px){.fonav{display:flex}}
+.fonav a{position:relative;text-decoration:none;font-size:var(--sz-kis);font-weight:500;
+  color:var(--hamu);padding-block:var(--t2);transition:color var(--ido-gyors) var(--ki)}
+.fonav a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;
+  background:var(--parazs);transform:scaleX(0);transform-origin:left;
+  transition:transform var(--ido-alap) var(--ki)}
+.fonav a:hover,.fonav a:focus-visible{color:var(--korom)}
+.fonav a:hover::after,.fonav a:focus-visible::after{transform:scaleX(1)}
+.fejlec-vegek{display:flex;align-items:center;gap:var(--t2);margin-left:auto}
+@media(min-width:940px){.fejlec-vegek{margin-left:0}}
+
+/* ---------- Gombok ---------- */
+.gomb{display:inline-flex;align-items:center;justify-content:center;gap:var(--t2);
+  min-height:48px;padding:var(--t2) var(--t4);border-radius:var(--r-m);
+  font:inherit;font-weight:600;font-size:var(--sz-kis);text-decoration:none;
+  border:1px solid transparent;cursor:pointer;
+  transition:transform var(--ido-gyors) var(--ki),background var(--ido-gyors) var(--ki),
+             box-shadow var(--ido-gyors) var(--ki),border-color var(--ido-gyors) var(--ki)}
+.gomb:active{transform:scale(.975)}
+.gomb-fo{background:var(--parazs);color:var(--on-parazs);box-shadow:var(--arnyek-2)}
+.gomb-fo:hover{background:var(--tegla);box-shadow:var(--arnyek-3)}
+.gomb-mas{background:transparent;color:var(--korom);border-color:var(--vonal-eros)}
+.gomb-mas:hover{border-color:var(--korom);background:color-mix(in srgb,var(--korom) 5%,transparent)}
+.gomb-ikon{width:44px;min-height:44px;padding:0;border-radius:50%;
+  background:transparent;border:1px solid var(--vonal);color:var(--korom)}
+.gomb-ikon:hover{border-color:var(--vonal-eros)}
+.gomb-ikon svg{width:20px;height:20px}
+.nap-ikon,.ej-ikon{transition:opacity var(--ido-alap) var(--ki),transform var(--ido-alap) var(--ki)}
+.ej-ikon{display:none}
+:root[data-theme="dark"] .nap-ikon,
+:root:not([data-theme="light"]) .nap-ikon{display:none}
+:root[data-theme="dark"] .ej-ikon,
+:root:not([data-theme="light"]) .ej-ikon{display:block}
+@media(prefers-color-scheme:light){
+  :root:not([data-theme="dark"]) .nap-ikon{display:block}
+  :root:not([data-theme="dark"]) .ej-ikon{display:none}
+}
+
+/* ---------- Hero ---------- */
+.hero{padding-block:var(--t8) var(--t8);position:relative;overflow:hidden}
+.hero-racs{display:grid;gap:var(--t6);align-items:center}
+@media(min-width:960px){.hero-racs{grid-template-columns:1.05fr .95fr;gap:var(--t7)}}
+.szemold{display:inline-flex;align-items:center;gap:var(--t2);
+  font-size:var(--sz-mikro);font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--tegla)}
+.szemold::before{content:"";width:28px;height:1px;background:currentColor}
+h1{font-size:var(--sz-h1);font-weight:700;margin-block:var(--t3) var(--t3);
+  letter-spacing:-.02em}
+h1 .kiemelt{color:var(--tegla);font-style:italic;font-variation-settings:"SOFT" 60,"WONK" 1}
+.vezeto{font-size:var(--sz-vezeto);color:var(--hamu);max-width:46ch}
+.hero-gombok{display:flex;flex-wrap:wrap;gap:var(--t3);margin-top:var(--t5)}
+.bizonyitek{display:flex;flex-wrap:wrap;gap:var(--t3) var(--t5);margin-top:var(--t6);
+  padding-top:var(--t4);border-top:1px solid var(--vonal)}
+.bizonyitek div{display:flex;flex-direction:column;gap:2px}
+.bizonyitek b{font-family:var(--f-display);font-size:1.5rem;font-weight:600;line-height:1;
+  font-variant-numeric:tabular-nums}
+.bizonyitek span{font-size:var(--sz-mikro);color:var(--hamu);letter-spacing:.04em}
+
+/* ---------- SZIGNATÚRA: A Kemence ---------- */
+.kemence{position:relative}
+.kemence svg{display:block;width:100%;max-width:460px;height:auto;margin-inline:auto}
+.parazsagy{transition:opacity var(--ido-lassu) var(--ki)}
+.kemence.zarva .parazsagy{opacity:.12}
+.kemence.zarva .fenykor{opacity:0}
+.kemence.utolso .parazsagy{opacity:.55}
+.fenykor{transition:opacity var(--ido-lassu) var(--ki)}
+@keyframes lelegzes{
+  0%,100%{opacity:.85; transform:scaleY(1)}
+  50%    {opacity:1;   transform:scaleY(1.06)}
+}
+@keyframes szikra{
+  0%  {opacity:0; transform:translateY(0) translateX(0)}
+  20% {opacity:.9}
+  100%{opacity:0; transform:translateY(-46px) translateX(6px)}
+}
+.kemence.nyitva .parazsagy{animation:lelegzes 4.2s var(--ki) infinite;transform-origin:170px 190px}
+.kemence.nyitva .szikra{animation:szikra 3.6s linear infinite}
+.szikra{opacity:0}
+.szikra.s2{animation-delay:1.2s}
+.szikra.s3{animation-delay:2.4s}
+.allapot{display:inline-flex;align-items:center;gap:var(--t2);margin-top:var(--t4);
+  padding:var(--t2) var(--t3);border-radius:999px;border:1px solid var(--vonal-eros);
+  font-size:var(--sz-kis);font-weight:600;background:var(--tepsi)}
+.allapot .pont{width:9px;height:9px;border-radius:50%;background:var(--hamu);flex:none}
+.allapot.nyitva{color:var(--lomb);border-color:currentColor}
+.allapot.nyitva .pont{background:currentColor}
+.allapot.utolso{color:var(--parazs);border-color:currentColor}
+.allapot.utolso .pont{background:currentColor}
+.kemence-alairas{margin-top:var(--t2);font-size:var(--sz-mikro);color:var(--hamu);max-width:40ch}
+
+/* ---------- Általános szakaszfej ---------- */
+.szakaszfej{max-width:56ch;margin-bottom:var(--t6)}
+.szakaszfej h2{font-size:var(--sz-h2);font-weight:600;margin-block:var(--t2) var(--t3);
+  letter-spacing:-.015em}
+.szakaszfej p{color:var(--hamu)}
+
+/* ---------- Heti menü ---------- */
+.menu-szakasz{background:var(--tepsi);border-block:1px solid var(--vonal)}
+.menu-racs{display:grid;gap:var(--t4)}
+@media(min-width:760px){.menu-racs{grid-template-columns:repeat(3,1fr)}}
+.ar-tetel{display:flex;flex-direction:column;gap:var(--t2);padding:var(--t4);
+  border:1px solid var(--vonal);border-radius:var(--r-l);background:var(--liszt);
+  transition:border-color var(--ido-alap) var(--ki),transform var(--ido-alap) var(--ki)}
+.ar-tetel:hover{border-color:var(--vonal-eros);transform:translateY(-3px)}
+.ar-tetel h3{font-size:var(--sz-h3);font-weight:600}
+.ar-tetel .ar{font-family:var(--f-display);font-size:2rem;font-weight:700;
+  font-variant-numeric:tabular-nums;color:var(--tegla);line-height:1}
+.ar-tetel p{font-size:var(--sz-kis);color:var(--hamu)}
+.menu-labjegyzet{margin-top:var(--t4);font-size:var(--sz-kis);color:var(--hamu)}
+.jelolt{background:color-mix(in srgb,var(--parazs) 16%,transparent);
+  padding:1px 6px;border-radius:var(--r-s);font-weight:600;color:var(--korom)}
+
+/* ---------- Kínálat ---------- */
+.kinalat{display:grid;gap:var(--t4)}
+@media(min-width:620px){.kinalat{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:960px){.kinalat{grid-template-columns:repeat(3,1fr)}}
+.kinalat li{display:flex;gap:var(--t3);align-items:flex-start;padding-block:var(--t3);
+  border-top:1px solid var(--vonal)}
+.kinalat svg{width:30px;height:30px;flex:none;color:var(--tegla);stroke-width:1.6}
+.kinalat h3{font-size:var(--sz-alap);font-weight:600;font-family:var(--f-szoveg)}
+.kinalat p{font-size:var(--sz-kis);color:var(--hamu);margin-top:2px}
+.artol{font-family:var(--f-szoveg);font-size:var(--sz-mikro);font-weight:600;
+  color:var(--tegla);background:color-mix(in srgb,var(--tegla) 12%,transparent);
+  padding:2px 7px;border-radius:var(--r-s);margin-left:var(--t1);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+ul{list-style:none;margin:0;padding:0}
+
+/* ---------- Nyitvatartás ---------- */
+.ora-racs{display:grid;gap:var(--t6)}
+@media(min-width:860px){.ora-racs{grid-template-columns:1fr 1fr;align-items:start}}
+.ora{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.ora th{text-align:left;font-weight:500;color:var(--hamu);font-size:var(--sz-mikro);
+  letter-spacing:.1em;text-transform:uppercase;padding-bottom:var(--t2)}
+.ora td{padding-block:var(--t3);border-top:1px solid var(--vonal);font-size:var(--sz-kis)}
+.ora td:last-child{text-align:right}
+.ora tr.ma td{color:var(--korom);font-weight:700}
+.ora tr.ma td:first-child{position:relative}
+.ora tr.ma td:first-child::before{content:"";position:absolute;left:-14px;top:50%;
+  transform:translateY(-50%);width:4px;height:22px;border-radius:2px;background:var(--parazs)}
+.ora td{color:var(--hamu)}
+
+/* ---------- Különterem ---------- */
+.terek{display:grid;gap:var(--t4)}
+@media(min-width:820px){.terek{grid-template-columns:1fr 1fr}}
+.ter{padding:var(--t5);border-radius:var(--r-l);border:1px solid var(--vonal);
+  background:var(--tepsi);display:flex;flex-direction:column;gap:var(--t3)}
+.ter h3{font-size:var(--sz-h3);font-weight:600}
+.ter p{color:var(--hamu);font-size:var(--sz-kis)}
+.cimke-sor{display:flex;flex-wrap:wrap;gap:var(--t2);margin-top:auto;padding-top:var(--t2)}
+.cimke{font-size:var(--sz-mikro);padding:var(--t1) var(--t2);border-radius:var(--r-s);
+  background:color-mix(in srgb,var(--tegla) 12%,transparent);color:var(--tegla);font-weight:600}
+
+/* ---------- Űrlap ---------- */
+.foglalas{background:var(--tepsi);border-block:1px solid var(--vonal)}
+.urlap-racs{display:grid;gap:var(--t6)}
+@media(min-width:900px){.urlap-racs{grid-template-columns:.85fr 1.15fr;gap:var(--t7)}}
+.mezok{display:grid;gap:var(--t4)}
+@media(min-width:560px){.mezok{grid-template-columns:1fr 1fr}}
+.mezo{display:flex;flex-direction:column;gap:var(--t2)}
+.mezo.teljes{grid-column:1/-1}
+.mezo label{font-size:var(--sz-kis);font-weight:600}
+.mezo .kell{color:var(--parazs)}
+.mezo input,.mezo select,.mezo textarea{
+  font:inherit;font-size:var(--sz-kis);min-height:48px;padding:var(--t2) var(--t3);
+  border:1px solid var(--vonal-eros);border-radius:var(--r-m);
+  background:var(--liszt);color:var(--korom);width:100%;
+  transition:border-color var(--ido-gyors) var(--ki),box-shadow var(--ido-gyors) var(--ki)}
+.mezo textarea{min-height:96px;resize:vertical;line-height:1.5}
+.mezo input:hover,.mezo select:hover,.mezo textarea:hover{border-color:var(--korom)}
+.mezo .sugo{font-size:var(--sz-mikro);color:var(--hamu)}
+.hiba{display:none;align-items:center;gap:6px;font-size:var(--sz-mikro);
+  color:var(--parazs);font-weight:600}
+.hiba svg{width:15px;height:15px;flex:none}
+.mezo[data-hibas="true"] input,.mezo[data-hibas="true"] select{border-color:var(--parazs);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--parazs) 18%,transparent)}
+.mezo[data-hibas="true"] .hiba{display:flex}
+.urlap-labjegyzet{font-size:var(--sz-mikro);color:var(--hamu);margin-top:var(--t3)}
+.osszegzo{display:none;padding:var(--t3) var(--t4);border-radius:var(--r-m);
+  border:1px solid var(--parazs);background:color-mix(in srgb,var(--parazs) 8%,transparent);
+  margin-bottom:var(--t4);font-size:var(--sz-kis)}
+.osszegzo[data-lathato="true"]{display:block}
+.osszegzo ul{margin-top:var(--t2);display:grid;gap:var(--t1)}
+.osszegzo a{color:var(--tegla);font-weight:600}
+.siker{display:none;padding:var(--t5);border-radius:var(--r-l);
+  border:1px solid var(--lomb);background:color-mix(in srgb,var(--lomb) 10%,transparent)}
+.siker[data-lathato="true"]{display:block;animation:felfele var(--ido-lassu) var(--ki) both}
+.siker h3{font-size:var(--sz-h3);color:var(--lomb);margin-bottom:var(--t2)}
+.siker p{font-size:var(--sz-kis);color:var(--korom)}
+@keyframes felfele{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.kapcsolat-lista{display:grid;gap:var(--t4)}
+.kapcsolat-lista div{display:flex;flex-direction:column;gap:2px}
+.kapcsolat-lista dt{font-size:var(--sz-mikro);letter-spacing:.1em;text-transform:uppercase;
+  color:var(--hamu)}
+.kapcsolat-lista dd{margin:0;font-size:var(--sz-alap);font-weight:600}
+.kapcsolat-lista a{color:var(--tegla);text-decoration-thickness:1px;text-underline-offset:3px}
+
+/* ---------- Lábléc ---------- */
+.lablec{padding-block:var(--t7) var(--t6);border-top:1px solid var(--vonal)}
+.lablec-racs{display:grid;gap:var(--t5)}
+@media(min-width:760px){.lablec-racs{grid-template-columns:2fr 1fr 1fr}}
+.lablec h2{font-size:var(--sz-h3);font-weight:600;margin-bottom:var(--t2)}
+.lablec p,.lablec li{font-size:var(--sz-kis);color:var(--hamu)}
+.lablec ul{display:grid;gap:var(--t2);margin-top:var(--t3)}
+.lablec a{text-decoration:none}
+.lablec a:hover{text-decoration:underline;text-underline-offset:3px}
+.lablec-alja{margin-top:var(--t6);padding-top:var(--t4);border-top:1px solid var(--vonal);
+  font-size:var(--sz-mikro);color:var(--hamu);display:flex;flex-wrap:wrap;gap:var(--t3);
+  justify-content:space-between}
+
+/* ---------- Mobil ragadós sáv ---------- */
+.mobilsav{position:fixed;left:0;right:0;bottom:0;z-index:45;display:flex;gap:var(--t2);
+  padding:var(--t2) var(--t3) calc(var(--t2) + env(safe-area-inset-bottom));
+  background:color-mix(in srgb,var(--liszt) 94%,transparent);backdrop-filter:blur(12px);
+  border-top:1px solid var(--vonal)}
+.mobilsav .gomb{flex:1}
+@media(min-width:940px){.mobilsav{display:none}}
+body{padding-bottom:84px}
+@media(min-width:940px){body{padding-bottom:0}}
+
+/* ---------- Belépő animációk ---------- */
+.jon{transition:opacity var(--ido-lassu) var(--ki),transform var(--ido-lassu) var(--ki)}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;
+    transition-duration:.001ms!important}
+  .kemence.nyitva .parazsagy{animation:none}
+  .szikra{display:none}
+}
+
+/* ---------- Étlap-oldal ---------- */
+.etlap-hero{padding-block:var(--t7) var(--t5)}
+.etlap-hero h1{font-size:clamp(2.2rem,1.6rem + 2.4vw,3.6rem);margin-block:var(--t3) var(--t3)}
+.etlap-hero p{color:var(--hamu);max-width:56ch}
+.ugrosav{position:sticky;top:68px;z-index:30;
+  background:color-mix(in srgb,var(--liszt) 92%,transparent);backdrop-filter:blur(12px);
+  border-block:1px solid var(--vonal)}
+.ugrosav .burok{display:flex;gap:var(--t1);overflow-x:auto;scrollbar-width:thin;
+  padding-block:var(--t2);scroll-snap-type:x proximity}
+.ugrosav a{flex:none;scroll-snap-align:start;text-decoration:none;white-space:nowrap;
+  font-size:var(--sz-kis);font-weight:500;color:var(--hamu);
+  padding:var(--t2) var(--t3);border-radius:var(--r-m);
+  transition:background var(--ido-gyors) var(--ki),color var(--ido-gyors) var(--ki)}
+.ugrosav a:hover{background:color-mix(in srgb,var(--korom) 6%,transparent);color:var(--korom)}
+.ugrosav a[aria-current="true"]{background:var(--parazs);color:var(--on-parazs);font-weight:600}
+.etlap-torzs{padding-block:var(--t6) var(--t8);display:grid;gap:var(--t8)}
+.etlap-blokk{display:grid;gap:var(--t7)}
+.blokkfej{font-family:var(--f-display);font-size:var(--sz-h2);font-weight:600;
+  padding-bottom:var(--t3);border-bottom:2px solid var(--korom);letter-spacing:-.015em}
+.kat{scroll-margin-top:140px}
+.kat-fej{display:flex;align-items:baseline;gap:var(--t3);flex-wrap:wrap;
+  margin-bottom:var(--t3)}
+.kat-fej h2{font-size:var(--sz-h3);font-weight:600}
+.kat-en{font-size:var(--sz-mikro);letter-spacing:.14em;text-transform:uppercase;
+  color:var(--hamu)}
+.kat-megj{font-size:var(--sz-kis);color:var(--hamu);margin-bottom:var(--t3)}
+.ar-fejsor{display:flex;justify-content:flex-end;gap:var(--t4);
+  font-size:var(--sz-mikro);letter-spacing:.1em;text-transform:uppercase;
+  color:var(--hamu);padding-bottom:var(--t2);border-bottom:1px solid var(--vonal)}
+.ar-fejsor span{width:76px;text-align:right}
+.tetel{display:grid;grid-template-columns:1fr auto;gap:0 var(--t4);
+  padding-block:var(--t3);border-bottom:1px solid var(--vonal);align-items:baseline}
+.tetel:hover{background:color-mix(in srgb,var(--tegla) 4%,transparent)}
+.tetel-nev{display:flex;align-items:baseline;gap:var(--t2);flex-wrap:wrap}
+.tetel-nev h3{font-family:var(--f-szoveg);font-size:var(--sz-alap);font-weight:600;
+  line-height:1.35}
+.sorsz{font-size:var(--sz-mikro);color:var(--hamu);font-variant-numeric:tabular-nums;
+  min-width:1.6em}
+.bado{font-size:var(--sz-mikro);font-weight:600;color:var(--tegla);
+  background:color-mix(in srgb,var(--tegla) 12%,transparent);
+  padding:2px 7px;border-radius:var(--r-s)}
+.tetel-leiras{grid-column:1;font-size:var(--sz-kis);color:var(--hamu);margin-top:2px;
+  max-width:62ch}
+.tetel-ar{grid-column:2;grid-row:1/3;display:flex;gap:var(--t4);
+  font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap}
+.tetel-ar span{width:76px;text-align:right}
+.tetel-ar span:last-child::after{content:" Ft";font-weight:400;color:var(--hamu)}
+@media(max-width:560px){
+  .ar-fejsor span,.tetel-ar span{width:62px}
+  .tetel-ar{gap:var(--t3)}
+}
+.etlap-zaro{background:var(--tepsi);border-block:1px solid var(--vonal);
+  padding-block:var(--t7)}
+.etlap-zaro h2{font-size:var(--sz-h2);font-weight:600;margin-bottom:var(--t3)}
+.labjegyzetek{display:grid;gap:var(--t2);margin-top:var(--t5);
+  font-size:var(--sz-kis);color:var(--hamu)}
+.labjegyzetek li{padding-left:var(--t3);border-left:2px solid var(--vonal)}
+</style>
+</head>
+<body>
+<a class="atugras" href="#fo">Ugrás a tartalomra</a>
+<header class="fejlec">
+  <div class="burok fejlec-sor">
+    <a class="jel" href="index.html">Gömböc <span class="ev">PÉCS<br>1983</span></a>
+    <nav class="fonav" aria-label="Fő navigáció">
+      <a href="index.html#heti-menu">Heti menü</a>
+      <a href="etlap.html">Étlap</a>
+      <a href="index.html#nyitvatartas">Nyitvatartás</a>
+      <a href="index.html#terek">Különterem</a>
+      <a href="index.html#foglalas">Asztalfoglalás</a>
+    </nav>
+    <div class="fejlec-vegek">
+      <button class="gomb gomb-ikon" id="temavalto" type="button"
+              aria-label="Váltás sötét témára" aria-pressed="false">
+        <svg class="nap-ikon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.2"></circle>
+          <path d="M12 2.5v2.2M12 19.3v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"></path>
+        </svg>
+        <svg class="ej-ikon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20 14.2A8.2 8.2 0 0 1 9.8 4a8.4 8.4 0 1 0 10.2 10.2z"></path>
+        </svg>
+      </button>
+      <a class="gomb gomb-fo" href="tel:+36308999303">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor"
+             stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6.2 3.5h3l1.5 3.8-2 1.3a11.5 11.5 0 0 0 5.7 5.7l1.3-2 3.8 1.5v3a1.7 1.7 0 0 1-1.9 1.7C10.1 17.9 6.1 13.9 4.5 5.4A1.7 1.7 0 0 1 6.2 3.5z"></path>
+        </svg>
+        06 30 899 9303
+      </a>
+    </div>
+  </div>
+</header>
+<main id="fo">
+  <section class="hero etlap-hero">
+    <div class="burok">
+      <p class="szemold">Pécs-Kertváros, Nagy Imre út 70</p>
+      <h1>Étlap</h1>
+      <p>Kemencés pizza 3 600 Ft-tól, frissensültek, tálak társaságnak,
+         saláták és a teljes itallap. Féladag rendelése esetén az ár 70%-át
+         számítjuk fel; az árak tartalmazzák az áfát.</p>
+    </div>
+  </section>
+
+  <nav class="ugrosav" aria-label="Ugrás étlap-kategóriára">
+    <div class="burok"><a href="#pizzak">Pizzák</a><a href="#feltetek">Pizzafeltétek</a><a href="#frissensultek">Frissensültek</a><a href="#halak">Halak</a><a href="#talak">Tálak</a><a href="#salatak">Saláták</a><a href="#teszta">Tészta</a><a href="#gyerek">Gyerekmenük</a><a href="#koretek">Köretek</a><a href="#savanyusagok">Savanyúságok</a><a href="#ontetek">Öntetek</a><a href="#desszertek">Desszertek</a><a href="#csapolt">Csapolt sörök</a><a href="#uveges">Üveges sörök</a><a href="#borok">Borok</a><a href="#folyoborok">Folyóborok</a><a href="#pezsgok">Pezsgők</a><a href="#rovid">Röviditalok</a><a href="#uditok">Üdítők</a><a href="#limonadek">Limonádék</a><a href="#kavek">Kávék és tea</a></div>
+  </nav>
+
+  <div class="burok etlap-torzs">
+    <div class="etlap-blokk">
+      <h2 class="blokkfej">Ételek</h2>
+      <section class="kat" id="pizzak" aria-labelledby="pizzak-cim"><div class="kat-fej"><h2 id="pizzak-cim">Pizzák</h2><span class="kat-en">Pizza</span></div><p class="kat-megj">Helyben, kemencében sütve.</p><p class="ar-fejsor" aria-hidden="true"><span>32 cm</span><span>45 cm</span></p><ul class="tetelek"><li class="tetel"><div class="tetel-nev"><span class="sorsz" aria-hidden="true">1</span><h3>Margherita</h3></div><p class="tetel-leiras">paradicsomszósz, mozzarella</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>3 600</span><span>6 800</span></p></li><li class="tetel"><div class="tetel-nev"><span class="sorsz" aria-hidden="true">2</span><h3>Sonkás</h3></div><p class="tetel-leiras">paradicsomszósz, sonka, mozzarella</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>3 800</span><span>7 200</span></p></li><li class="tetel"><div class="tetel-nev"><span class="sorsz" aria-hidden="true">3</span><h3>Tonhalas</h3></div><p class="tetel-leiras">paradicsomszósz, tonhal, lilahagyma, olívabogyó, rukkola, koktélparadicsom, mozzarella</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>4 100</span><span>7 800</span></p></li><li class="tetel"><div class="tetel-nev"><span class="sorsz" aria-hidden="true">4</span><h3>Pikachu</h3></div><p class="tetel-leiras">tejfölös juhtúrós alap, füstölt tarja, főtt tojás, csemegeuborka, mozzarella</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>3 900</span><span>7 400</span></p></li><li class="tetel"><div class="tetel-nev"><span class="sorsz" aria-hidden="true">5</span><h3>Firenzei</h3></div><p class="tetel-leiras">paradicsomszósz, sonka, rokfort, aszalt paradicsom, mozzarella</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>3 850</span><span>7 300</span></p></li><li class="tetel"><div class="tetel-nev"><span class="sorsz" aria-hidden="true">6</span><h3>Capricciosa</h3></div><p class="tetel-leiras">paradicsomszósz, sonka, gomba, mozzarella</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>3 850</span><span>7 300</span></p></li><li class="tetel"><div class="tetel-nev"><span class="sorsz" aria-hidden="true">7</span><h3>Velencei</h3></div><p class="tetel-leiras">tejfölös alap, csirkemell, gomba, kukorica, mozzarella</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>3 900</span><span>7 400</span></p></li><li class="tetel"><div class="tetel-nev"><span class="sorsz" aria-hidden="true">8</span><h3>Ragadozó</h3></div><p class="tetel-leiras">tejfölös juhtúrós alap, csirkemell, kolbász, füstölt tarja, bacon, mozzarella</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>4 100</span><span>7 800</span></p></li><li class="tetel"><div class="tetel-nev"><span class="sorsz" aria-hidden="true">9</span><h3>Magyaros</h3></div><p class="tetel-leiras">paradicsomszósz, kolbász, lilahagyma, bacon, jalapeño, mozzarella</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>3 950</span><span>7 500</span></p></li><li class="tetel"><div class="tetel-nev"><span class="sorsz" aria-hidden="true">10</span><h3>Gömbi</h3><span class="bado">A ház sajátja</span></div><p class="tetel-leiras">paradicsomszósz, kolbász, bacon, jalapeño, tükörtojás, mozzarella</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>4 100</span><span>7 800</span></p></li><li class="tetel"><div class="tetel-nev"><span class="sorsz" aria-hidden="true">11</span><h3>Piedone</h3></div><p class="tetel-leiras">paradicsomszósz, kolbász, mexikói bab, lilahagyma, jalapeño, mozzarella</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>4 100</span><span>7 800</span></p></li><li class="tetel"><div class="tetel-nev"><span class="sorsz" aria-hidden="true">12</span><h3>Négysajtos</h3></div><p class="tetel-leiras">paradicsomszósz, mozzarella, gouda, márványsajt, cheddar sajtszósz</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>3 950</span><span>7 500</span></p></li><li class="tetel"><div class="tetel-nev"><span class="sorsz" aria-hidden="true">13</span><h3>Pulled pork</h3></div><p class="tetel-leiras">BBQ-alap, tépett sertéslapocka, mozzarella, jalapeño, cheddar sajtszósz</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>4 100</span><span>7 800</span></p></li><li class="tetel"><div class="tetel-nev"><span class="sorsz" aria-hidden="true">14</span><h3>Pipi</h3></div><p class="tetel-leiras">fűszeres tejföl, csirkemell, bacon, lilahagyma, mozzarella</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>4 100</span><span>7 800</span></p></li><li class="tetel"><div class="tetel-nev"><span class="sorsz" aria-hidden="true">15</span><h3>Kívánság</h3></div><p class="tetel-leiras">választható alap, 4 feltét, mozzarella</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>4 200</span><span>7 900</span></p></li><li class="tetel"><div class="tetel-nev"><span class="sorsz" aria-hidden="true">17</span><h3>Rukkolás</h3></div><p class="tetel-leiras">paradicsomszósz, mozzarella, feketeerdei sonka, rukkola, koktélparadicsom</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>4 300</span><span>8 200</span></p></li></ul></section><section class="kat" id="feltetek" aria-labelledby="feltetek-cim"><div class="kat-fej"><h2 id="feltetek-cim">Pizzafeltétek</h2><span class="kat-en">Toppings</span></div><p class="ar-fejsor" aria-hidden="true"><span>32 cm</span><span>45 cm</span></p><ul class="tetelek"><li class="tetel"><div class="tetel-nev"><h3>1. csoport</h3></div><p class="tetel-leiras">hagyma, gomba, kukorica, paradicsom, rukkola, olívabogyó, jalapeño, tükörtojás</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>500</span><span>750</span></p></li><li class="tetel"><div class="tetel-nev"><h3>2. csoport</h3></div><p class="tetel-leiras">sonka, kolbász, bacon, füstölt tarja, mexikói bab, csirkemell, mozzarella, gouda, márványsajt</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>650</span><span>950</span></p></li><li class="tetel"><div class="tetel-nev"><h3>3. csoport</h3></div><p class="tetel-leiras">feketeerdei sonka</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>800</span><span>1 300</span></p></li></ul></section><section class="kat" id="frissensultek" aria-labelledby="frissensultek-cim"><div class="kat-fej"><h2 id="frissensultek-cim">Frissensültek</h2><span class="kat-en">Freshly fried</span></div><ul class="tetelek"><li class="tetel"><div class="tetel-nev"><h3>Rántott sajt</h3></div><p class="tetel-leiras">jázmin rizzsel, tartármártással</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>3 900</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Rántott sertéskaraj</h3></div><p class="tetel-leiras">csónakburgonyával</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>5 250</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Corn flakes csirkemellcsíkok</h3></div><p class="tetel-leiras">cheddar sajtszósszal, csónakburgonyával</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>5 250</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Farmer csirke</h3></div><p class="tetel-leiras">csirkemellcsíkok rántva, fűszeres tejföllel, reszelt sajttal, vegyes körettel</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>5 250</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Cigánypecsenye kakastaréjjal</h3></div><p class="tetel-leiras">házi fűszeres burgonyával</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>5 300</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Bánffy szelet</h3></div><p class="tetel-leiras">natúr sertéskaraj pirított velővel, tükörtojással, vegyes körettel</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>5 300</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Velővel töltött karaj rántva</h3></div><p class="tetel-leiras">jázmin rizs, tartármártás</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>5 300</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Kapros juhtúróval töltött karaj rántva</h3></div><p class="tetel-leiras">házi héjas burgonyával</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>5 300</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Caprese csirkemell</h3></div><p class="tetel-leiras">grillezett csirkemell paradicsommal, mozzarellával összesütve, édesburgonyával</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>5 300</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Makói csirkemell</h3><span class="bado">A ház sajátja</span></div><p class="tetel-leiras">grillezett csirkemell hagymával, kápia paprikával, baconnel, fűszeres tejföllel, sajttal, kemencében sütve, fűszeres steakburgonyával</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>5 300</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Grillezett szűzérmék zöldborsmártásban</h3></div><p class="tetel-leiras">édesburgonyával, frissen kevert salátával</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>5 350</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Tüzes batyu</h3></div><p class="tetel-leiras">füstölt tarjával, reszelt sajttal és jalapeñóval töltött sertéskaraj rántva, fűszeres steakburgonyával</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>5 350</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Cordon bleu</h3></div><p class="tetel-leiras">sajttal, sonkával töltött karaj rántva, vegyes körettel</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>5 350</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Pulled pork</h3></div><p class="tetel-leiras">házi fűszeres steakburgonyával, cheddar sajtszósszal</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>5 350</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Rántott szűzérmék</h3></div><p class="tetel-leiras">cheddar sajtos serpenyős házi burgonyával</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>5 390</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Hagymás rostélyos</h3></div><p class="tetel-leiras">pácolt marhahátszín, csónakburgonyával, hagymakazallal</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>5 950</span></p></li></ul></section><section class="kat" id="halak" aria-labelledby="halak-cim"><div class="kat-fej"><h2 id="halak-cim">Halak</h2><span class="kat-en">Fish</span></div><ul class="tetelek"><li class="tetel"><div class="tetel-nev"><h3>Rántott harcsafilé</h3></div><p class="tetel-leiras">jázmin rizzsel, tartármártással</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>5 800</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Grillezett harcsafilé</h3></div><p class="tetel-leiras">édesburgonyával, friss kevert salátával</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>5 800</span></p></li></ul></section><section class="kat" id="talak" aria-labelledby="talak-cim"><div class="kat-fej"><h2 id="talak-cim">Tálak</h2><span class="kat-en">Plates</span></div><p class="kat-megj">Társaságnak, megosztásra.</p><ul class="tetelek"><li class="tetel"><div class="tetel-nev"><h3>Bőségtál</h3></div><p class="tetel-leiras">2 cigánypecsenye, 2 rántott sertéskaraj, 2 rántott sajt, 6 rántott gomba, csónakburgonya, jázmin rizs, tartármártás</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>11 500</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Gömbitál</h3><span class="bado">A ház sajátja</span></div><p class="tetel-leiras">2 zengővárkonyi sertéskaraj, 6 csirkemellcsík corn flakes bundában, 2 rántott sajt, jázmin rizs, csónakburgonya, tartármártás</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>12 000</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Brutál</h3></div><p class="tetel-leiras">2 tüzes batyu, 2 cordon bleu, 2 kapros juhtúróval töltött karaj rántva, csónakburgonya, jázmin rizs</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>13 000</span></p></li></ul></section><section class="kat" id="salatak" aria-labelledby="salatak-cim"><div class="kat-fej"><h2 id="salatak-cim">Saláták</h2><span class="kat-en">Salads</span></div><ul class="tetelek"><li class="tetel"><div class="tetel-nev"><h3>Ruccolás csirkesaláta</h3></div><p class="tetel-leiras">rukkola, koktélparadicsom, kukorica, márványsajt, grillezett csirkemell, citrusos dresszing, fokhagymás pizzakenyér</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>5 150</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Gömbi saláta</h3><span class="bado">A ház sajátja</span></div><p class="tetel-leiras">frissen kevert saláta magvakkal, rusztikus csirkemellcsíkokkal, sült bacon, citromos joghurtos öntet, fokhagymás pizzakenyér</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>5 150</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Tonhalsaláta</h3></div><p class="tetel-leiras">friss saláta, paprika, uborka, koktélparadicsom, lilahagyma, olívabogyó, tonhal, főtt tojás, citrusos dresszing, fokhagymás pizzakenyérrel</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>5 350</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Garnélás saláta</h3></div><p class="tetel-leiras">frissen kevert saláta, koktélparadicsom, olívabogyó, garnéla, citrusos dresszing</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>5 500</span></p></li></ul></section><section class="kat" id="teszta" aria-labelledby="teszta-cim"><div class="kat-fej"><h2 id="teszta-cim">Tészta</h2><span class="kat-en">Pasta</span></div><ul class="tetelek"><li class="tetel"><div class="tetel-nev"><h3>Pestós csirkés tagliatelle</h3></div><p class="tetel-leiras">koktélparadicsom, parmezán</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>4 900</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Paradicsomos garnélás tagliatelle</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>5 500</span></p></li></ul></section><section class="kat" id="gyerek" aria-labelledby="gyerek-cim"><div class="kat-fej"><h2 id="gyerek-cim">Gyerekmenük</h2><span class="kat-en">Kids menu</span></div><ul class="tetelek"><li class="tetel"><div class="tetel-nev"><h3>Asterix kedvence</h3></div><p class="tetel-leiras">rántott csirkemellfalatkák, hasábburgonya, ketchup</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>3 700</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Mickey egér kedvence</h3></div><p class="tetel-leiras">rántott sajt, hasábburgonya, tartármártás</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>3 700</span></p></li></ul></section><section class="kat" id="koretek" aria-labelledby="koretek-cim"><div class="kat-fej"><h2 id="koretek-cim">Köretek</h2><span class="kat-en">Side dishes</span></div><ul class="tetelek"><li class="tetel"><div class="tetel-nev"><h3>Jázmin rizs</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>950</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Csónakburgonya</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>1 100</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Házi fűszeres steakburgonya</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>1 100</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Friss saláta</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>1 500</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Édesburgonya</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>1 500</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Grillezett zöldségek</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>1 600</span></p></li></ul></section><section class="kat" id="savanyusagok" aria-labelledby="savanyusagok-cim"><div class="kat-fej"><h2 id="savanyusagok-cim">Savanyúságok</h2><span class="kat-en">Pickles</span></div><ul class="tetelek"><li class="tetel"><div class="tetel-nev"><h3>Csemegeuborka</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>950</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Káposztasaláta</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>950</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Jalapeño</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>950</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Paradicsomsaláta</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>1 100</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Tejfölös uborkasaláta</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>1 100</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Vegyes saláta</h3></div><p class="tetel-leiras">csemegeuborka, paradicsomsaláta, káposztasaláta</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>1 100</span></p></li></ul></section><section class="kat" id="ontetek" aria-labelledby="ontetek-cim"><div class="kat-fej"><h2 id="ontetek-cim">Öntetek</h2><span class="kat-en">Dressings</span></div><ul class="tetelek"><li class="tetel"><div class="tetel-nev"><h3>Ketchup</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>300</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Majonéz</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>500</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Tejföl</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>500</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Tartár</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>500</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Pizzaszósz</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>500</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Barbecue szósz</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>500</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Áfonyadzsem</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>500</span></p></li></ul></section><section class="kat" id="desszertek" aria-labelledby="desszertek-cim"><div class="kat-fej"><h2 id="desszertek-cim">Desszertek</h2><span class="kat-en">Desserts</span></div><ul class="tetelek"><li class="tetel"><div class="tetel-nev"><h3>Gesztenyepüré</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>1 650</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Csokoládés lávasüti</h3></div><p class="tetel-leiras">vaníliafagylalttal, eperöntettel</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>1 850</span></p></li></ul></section>
+    </div>
+    <div class="etlap-blokk">
+      <h2 class="blokkfej">Italok</h2>
+      <section class="kat" id="csapolt" aria-labelledby="csapolt-cim"><div class="kat-fej"><h2 id="csapolt-cim">Csapolt sörök</h2><span class="kat-en">Draft beer</span></div><ul class="tetelek"><li class="tetel"><div class="tetel-nev"><h3>Borsodi</h3></div><p class="tetel-leiras">0,3 l</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>800</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Borsodi</h3></div><p class="tetel-leiras">0,5 l</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>1 100</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Staropramen</h3></div><p class="tetel-leiras">0,3 l</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>900</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Staropramen</h3></div><p class="tetel-leiras">0,5 l</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>1 250</span></p></li></ul></section><section class="kat" id="uveges" aria-labelledby="uveges-cim"><div class="kat-fej"><h2 id="uveges-cim">Üveges sörök</h2><span class="kat-en">Bottled beer</span></div><ul class="tetelek"><li class="tetel"><div class="tetel-nev"><h3>Stella Artois</h3></div><p class="tetel-leiras">0,33 l</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>900</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Stella Artois alkoholmentes</h3></div><p class="tetel-leiras">0,33 l</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>990</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Gösser Zitrone</h3></div><p class="tetel-leiras">0,33 l</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>990</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Stella Artois</h3></div><p class="tetel-leiras">0,5 l</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>1 150</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Beck's</h3></div><p class="tetel-leiras">0,5 l</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>1 150</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Staropramen Dark búzasör</h3></div><p class="tetel-leiras">0,5 l</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>1 200</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Staropramen Unfiltered búzasör</h3></div><p class="tetel-leiras">0,5 l</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>1 200</span></p></li></ul></section><section class="kat" id="borok" aria-labelledby="borok-cim"><div class="kat-fej"><h2 id="borok-cim">Borok</h2><span class="kat-en">Wine</span></div><p class="ar-fejsor" aria-hidden="true"><span>1 dl</span><span>0,75 l</span></p><ul class="tetelek"><li class="tetel"><div class="tetel-nev"><h3>Günzer Tamás Pincészet — Irsai Olivér</h3></div><p class="tetel-leiras">Villány, fehér</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>600</span><span>4 200</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Villa Ilona — Muskat Ottonell</h3></div><p class="tetel-leiras">fehér</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>600</span><span>4 200</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Günzer Tamás Pincészet — Rozé Cuvée</h3></div><p class="tetel-leiras">Villány, rozé</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>600</span><span>4 200</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Mészáros Pál Pincészet — Cabernet Sauvignon</h3></div><p class="tetel-leiras">Szekszárd, vörös</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>700</span><span>4 900</span></p></li></ul></section><section class="kat" id="folyoborok" aria-labelledby="folyoborok-cim"><div class="kat-fej"><h2 id="folyoborok-cim">Folyóborok</h2><span class="kat-en">House wine</span></div><p class="kat-megj">Lelovits Tamás Pincészet, Villány.</p><ul class="tetelek"><li class="tetel"><div class="tetel-nev"><h3>Olaszrizling</h3></div><p class="tetel-leiras">1 dl</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>500</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Rozé Cuvée</h3></div><p class="tetel-leiras">1 dl</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>500</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Portugieser</h3></div><p class="tetel-leiras">1 dl</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>500</span></p></li></ul></section><section class="kat" id="pezsgok" aria-labelledby="pezsgok-cim"><div class="kat-fej"><h2 id="pezsgok-cim">Pezsgők</h2><span class="kat-en">Sparkling wine</span></div><ul class="tetelek"><li class="tetel"><div class="tetel-nev"><h3>Törley Talisman</h3></div><p class="tetel-leiras">0,75 l</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>3 500</span></p></li><li class="tetel"><div class="tetel-nev"><h3>BB Arany Cuvée</h3></div><p class="tetel-leiras">0,75 l</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>4 000</span></p></li></ul></section><section class="kat" id="rovid" aria-labelledby="rovid-cim"><div class="kat-fej"><h2 id="rovid-cim">Röviditalok</h2><span class="kat-en">Shots</span></div><p class="ar-fejsor" aria-hidden="true"><span>2 cl</span><span>4 cl</span></p><ul class="tetelek"><li class="tetel"><div class="tetel-nev"><h3>Finlandia Vodka</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>700</span><span>1 400</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Absolut Vodka</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>700</span><span>1 400</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Unicum</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>700</span><span>1 400</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Unicum Szilva</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>700</span><span>1 400</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Bacardi</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>700</span><span>1 400</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Captain Morgan Rum</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>700</span><span>1 400</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Jägermeister</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>700</span><span>1 400</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Beefeater Gin</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>700</span><span>1 400</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Sierra Tequila</h3></div><p class="tetel-leiras">silver, gold</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>700</span><span>1 400</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Jack Daniel's</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>800</span><span>1 600</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Jameson</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>800</span><span>1 600</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Bailey's</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>800</span><span>1 600</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Bumbu Rum</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>1 000</span><span>2 000</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Diplomático Rum</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>1 000</span><span>2 000</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Martini</h3></div><p class="tetel-leiras">1 dl</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span aria-hidden="true"></span><span>1 000</span></p></li></ul></section><section class="kat" id="uditok" aria-labelledby="uditok-cim"><div class="kat-fej"><h2 id="uditok-cim">Üdítők</h2><span class="kat-en">Soft drinks</span></div><ul class="tetelek"><li class="tetel"><div class="tetel-nev"><h3>Szóda</h3></div><p class="tetel-leiras">1 dl</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>130</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Natur Aqua</h3></div><p class="tetel-leiras">szénsavas vagy mentes, 0,33 l</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>590</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Coca-Cola</h3></div><p class="tetel-leiras">cola vagy zero, 0,25 l</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>700</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Sprite</h3></div><p class="tetel-leiras">0,25 l</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>700</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Fanta</h3></div><p class="tetel-leiras">narancs, 0,25 l</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>700</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Kinley</h3></div><p class="tetel-leiras">tonic vagy gyömbér, 0,25 l</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>700</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Fuze Tea</h3></div><p class="tetel-leiras">citrom vagy őszibarack, 0,25 l</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>700</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Cappy</h3></div><p class="tetel-leiras">narancs, alma vagy őszibarack, 0,25 l</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>750</span></p></li></ul></section><section class="kat" id="limonadek" aria-labelledby="limonadek-cim"><div class="kat-fej"><h2 id="limonadek-cim">Limonádék</h2><span class="kat-en">Lemonades</span></div><p class="kat-megj">Mind 0,5 literes.</p><ul class="tetelek"><li class="tetel"><div class="tetel-nev"><h3>Citromos</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>1 350</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Epres</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>1 350</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Bodzás</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>1 350</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Meggyes</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>1 350</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Málnás</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>1 350</span></p></li></ul></section><section class="kat" id="kavek" aria-labelledby="kavek-cim"><div class="kat-fej"><h2 id="kavek-cim">Kávék és tea</h2><span class="kat-en">Coffee</span></div><ul class="tetelek"><li class="tetel"><div class="tetel-nev"><h3>Tej</h3></div><p class="tetel-leiras">1 adag</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>150</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Méz</h3></div><p class="tetel-leiras">1 adag</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>200</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Tejszínhab</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>500</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Eszpresszó</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>700</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Hosszú kávé</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>750</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Meleg tea</h3></div><p class="tetel-leiras">szezonális</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>800</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Cappuccino</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>950</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Tejeskávé</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>950</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Latte macchiato</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>1 100</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Melange</h3></div><p class="tetel-ar"><span class="rejtett">Ár:</span><span>1 500</span></p></li><li class="tetel"><div class="tetel-nev"><h3>Jegeskávé vaníliafagylalttal</h3></div><p class="tetel-leiras">szezonális</p><p class="tetel-ar"><span class="rejtett">Ár:</span><span>1 800</span></p></li></ul></section>
+    </div>
+  </div>
+
+  <section class="etlap-zaro">
+    <div class="burok">
+      <h2>Asztalt foglalnátok?</h2>
+      <p style="color:var(--hamu);max-width:56ch">A foglalás a főoldalon vagy
+         telefonon megy. Elvitelre is minden rendelhető; a heti menü hétköznap
+         11:00 és 13:00 között tart, vagy amíg a készlet enged.</p>
+      <p style="display:flex;flex-wrap:wrap;gap:var(--t3);margin-top:var(--t5)">
+        <a class="gomb gomb-fo" href="index.html#foglalas">Asztalt foglalok</a>
+        <a class="gomb gomb-mas" href="tel:+36308999303">06 30 899 9303</a>
+      </p>
+      <ul class="labjegyzetek"><li>Féladag rendelése esetén az ár 70%-át számítjuk fel.</li><li>Áraink forintban értendőek és az áfát is tartalmazzák.</li><li>Allergénekről érdeklődjön kollégáinknál.</li></ul>
+    </div>
+  </section>
+</main>
+<footer class="lablec">
+  <div class="burok">
+    <div class="lablec-racs">
+      <div>
+        <h2>Gömböc Pizzéria</h2>
+        <p>Kemencés pizzéria Pécs-Kertvárosban, 1983 óta családi kézben.
+           Kerthelyiség, különterem, heti menü és elvitel.</p>
+      </div>
+      <div>
+        <h2 style="font-size:var(--sz-alap);font-family:var(--f-szoveg)">Elérhetőség</h2>
+        <ul>
+          <li>7632 Pécs, Nagy Imre út 70.</li>
+          <li><a href="tel:+36308999303">06 30 899 9303</a></li>
+          <li><a href="mailto:gombocpizzeria@gmail.com">gombocpizzeria@gmail.com</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 style="font-size:var(--sz-alap);font-family:var(--f-szoveg)">Az oldalon</h2>
+        <ul>
+          <li><a href="index.html#heti-menu">Heti menü</a></li>
+          <li><a href="etlap.html">Étlap és árak</a></li>
+          <li><a href="index.html#nyitvatartas">Nyitvatartás</a></li>
+          <li><a href="index.html#foglalas">Asztalfoglalás</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="lablec-alja">
+      <span>© <span id="ev">2026</span> Gömböc Pizzéria</span>
+      <span>Prototípus — a jelölt adatok ügyfél-egyeztetést igényelnek.</span>
+    </div>
+  </div>
+</footer>
+
+<nav class="mobilsav" aria-label="Gyors műveletek">
+  <a class="gomb gomb-mas" href="index.html#foglalas">Asztalfoglalás</a>
+  <a class="gomb gomb-fo" href="tel:+36308999303">Hívás</a>
+</nav>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Menu",
+   "@id": "https://gombocpizzeria.hu/etlap/#menu",
+   "name": "Gömböc Pizzéria étlap",
+   "inLanguage": "hu-HU",
+   "hasMenuSection": [
+    {
+     "@type": "MenuSection",
+     "name": "Pizzák",
+     "hasMenuItem": [
+      {
+       "@type": "MenuItem",
+       "name": "Margherita",
+       "description": "paradicsomszósz, mozzarella",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "3600",
+         "priceCurrency": "HUF",
+         "name": "32 cm"
+        },
+        {
+         "@type": "Offer",
+         "price": "6800",
+         "priceCurrency": "HUF",
+         "name": "45 cm"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Sonkás",
+       "description": "paradicsomszósz, sonka, mozzarella",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "3800",
+         "priceCurrency": "HUF",
+         "name": "32 cm"
+        },
+        {
+         "@type": "Offer",
+         "price": "7200",
+         "priceCurrency": "HUF",
+         "name": "45 cm"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Tonhalas",
+       "description": "paradicsomszósz, tonhal, lilahagyma, olívabogyó, rukkola, koktélparadicsom, mozzarella",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "4100",
+         "priceCurrency": "HUF",
+         "name": "32 cm"
+        },
+        {
+         "@type": "Offer",
+         "price": "7800",
+         "priceCurrency": "HUF",
+         "name": "45 cm"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Pikachu",
+       "description": "tejfölös juhtúrós alap, füstölt tarja, főtt tojás, csemegeuborka, mozzarella",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "3900",
+         "priceCurrency": "HUF",
+         "name": "32 cm"
+        },
+        {
+         "@type": "Offer",
+         "price": "7400",
+         "priceCurrency": "HUF",
+         "name": "45 cm"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Firenzei",
+       "description": "paradicsomszósz, sonka, rokfort, aszalt paradicsom, mozzarella",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "3850",
+         "priceCurrency": "HUF",
+         "name": "32 cm"
+        },
+        {
+         "@type": "Offer",
+         "price": "7300",
+         "priceCurrency": "HUF",
+         "name": "45 cm"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Capricciosa",
+       "description": "paradicsomszósz, sonka, gomba, mozzarella",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "3850",
+         "priceCurrency": "HUF",
+         "name": "32 cm"
+        },
+        {
+         "@type": "Offer",
+         "price": "7300",
+         "priceCurrency": "HUF",
+         "name": "45 cm"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Velencei",
+       "description": "tejfölös alap, csirkemell, gomba, kukorica, mozzarella",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "3900",
+         "priceCurrency": "HUF",
+         "name": "32 cm"
+        },
+        {
+         "@type": "Offer",
+         "price": "7400",
+         "priceCurrency": "HUF",
+         "name": "45 cm"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Ragadozó",
+       "description": "tejfölös juhtúrós alap, csirkemell, kolbász, füstölt tarja, bacon, mozzarella",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "4100",
+         "priceCurrency": "HUF",
+         "name": "32 cm"
+        },
+        {
+         "@type": "Offer",
+         "price": "7800",
+         "priceCurrency": "HUF",
+         "name": "45 cm"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Magyaros",
+       "description": "paradicsomszósz, kolbász, lilahagyma, bacon, jalapeño, mozzarella",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "3950",
+         "priceCurrency": "HUF",
+         "name": "32 cm"
+        },
+        {
+         "@type": "Offer",
+         "price": "7500",
+         "priceCurrency": "HUF",
+         "name": "45 cm"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Gömbi",
+       "description": "paradicsomszósz, kolbász, bacon, jalapeño, tükörtojás, mozzarella",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "4100",
+         "priceCurrency": "HUF",
+         "name": "32 cm"
+        },
+        {
+         "@type": "Offer",
+         "price": "7800",
+         "priceCurrency": "HUF",
+         "name": "45 cm"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Piedone",
+       "description": "paradicsomszósz, kolbász, mexikói bab, lilahagyma, jalapeño, mozzarella",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "4100",
+         "priceCurrency": "HUF",
+         "name": "32 cm"
+        },
+        {
+         "@type": "Offer",
+         "price": "7800",
+         "priceCurrency": "HUF",
+         "name": "45 cm"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Négysajtos",
+       "description": "paradicsomszósz, mozzarella, gouda, márványsajt, cheddar sajtszósz",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "3950",
+         "priceCurrency": "HUF",
+         "name": "32 cm"
+        },
+        {
+         "@type": "Offer",
+         "price": "7500",
+         "priceCurrency": "HUF",
+         "name": "45 cm"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Pulled pork",
+       "description": "BBQ-alap, tépett sertéslapocka, mozzarella, jalapeño, cheddar sajtszósz",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "4100",
+         "priceCurrency": "HUF",
+         "name": "32 cm"
+        },
+        {
+         "@type": "Offer",
+         "price": "7800",
+         "priceCurrency": "HUF",
+         "name": "45 cm"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Pipi",
+       "description": "fűszeres tejföl, csirkemell, bacon, lilahagyma, mozzarella",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "4100",
+         "priceCurrency": "HUF",
+         "name": "32 cm"
+        },
+        {
+         "@type": "Offer",
+         "price": "7800",
+         "priceCurrency": "HUF",
+         "name": "45 cm"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Kívánság",
+       "description": "választható alap, 4 feltét, mozzarella",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "4200",
+         "priceCurrency": "HUF",
+         "name": "32 cm"
+        },
+        {
+         "@type": "Offer",
+         "price": "7900",
+         "priceCurrency": "HUF",
+         "name": "45 cm"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Rukkolás",
+       "description": "paradicsomszósz, mozzarella, feketeerdei sonka, rukkola, koktélparadicsom",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "4300",
+         "priceCurrency": "HUF",
+         "name": "32 cm"
+        },
+        {
+         "@type": "Offer",
+         "price": "8200",
+         "priceCurrency": "HUF",
+         "name": "45 cm"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "@type": "MenuSection",
+     "name": "Pizzafeltétek",
+     "hasMenuItem": [
+      {
+       "@type": "MenuItem",
+       "name": "1. csoport",
+       "description": "hagyma, gomba, kukorica, paradicsom, rukkola, olívabogyó, jalapeño, tükörtojás",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "500",
+         "priceCurrency": "HUF",
+         "name": "32 cm"
+        },
+        {
+         "@type": "Offer",
+         "price": "750",
+         "priceCurrency": "HUF",
+         "name": "45 cm"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "2. csoport",
+       "description": "sonka, kolbász, bacon, füstölt tarja, mexikói bab, csirkemell, mozzarella, gouda, márványsajt",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "650",
+         "priceCurrency": "HUF",
+         "name": "32 cm"
+        },
+        {
+         "@type": "Offer",
+         "price": "950",
+         "priceCurrency": "HUF",
+         "name": "45 cm"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "3. csoport",
+       "description": "feketeerdei sonka",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "800",
+         "priceCurrency": "HUF",
+         "name": "32 cm"
+        },
+        {
+         "@type": "Offer",
+         "price": "1300",
+         "priceCurrency": "HUF",
+         "name": "45 cm"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "@type": "MenuSection",
+     "name": "Frissensültek",
+     "hasMenuItem": [
+      {
+       "@type": "MenuItem",
+       "name": "Rántott sajt",
+       "description": "jázmin rizzsel, tartármártással",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "3900",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Rántott sertéskaraj",
+       "description": "csónakburgonyával",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "5250",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Corn flakes csirkemellcsíkok",
+       "description": "cheddar sajtszósszal, csónakburgonyával",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "5250",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Farmer csirke",
+       "description": "csirkemellcsíkok rántva, fűszeres tejföllel, reszelt sajttal, vegyes körettel",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "5250",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Cigánypecsenye kakastaréjjal",
+       "description": "házi fűszeres burgonyával",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "5300",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Bánffy szelet",
+       "description": "natúr sertéskaraj pirított velővel, tükörtojással, vegyes körettel",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "5300",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Velővel töltött karaj rántva",
+       "description": "jázmin rizs, tartármártás",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "5300",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Kapros juhtúróval töltött karaj rántva",
+       "description": "házi héjas burgonyával",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "5300",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Caprese csirkemell",
+       "description": "grillezett csirkemell paradicsommal, mozzarellával összesütve, édesburgonyával",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "5300",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Makói csirkemell",
+       "description": "grillezett csirkemell hagymával, kápia paprikával, baconnel, fűszeres tejföllel, sajttal, kemencében sütve, fűszeres steakburgonyával",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "5300",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Grillezett szűzérmék zöldborsmártásban",
+       "description": "édesburgonyával, frissen kevert salátával",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "5350",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Tüzes batyu",
+       "description": "füstölt tarjával, reszelt sajttal és jalapeñóval töltött sertéskaraj rántva, fűszeres steakburgonyával",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "5350",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Cordon bleu",
+       "description": "sajttal, sonkával töltött karaj rántva, vegyes körettel",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "5350",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Pulled pork",
+       "description": "házi fűszeres steakburgonyával, cheddar sajtszósszal",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "5350",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Rántott szűzérmék",
+       "description": "cheddar sajtos serpenyős házi burgonyával",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "5390",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Hagymás rostélyos",
+       "description": "pácolt marhahátszín, csónakburgonyával, hagymakazallal",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "5950",
+         "priceCurrency": "HUF"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "@type": "MenuSection",
+     "name": "Halak",
+     "hasMenuItem": [
+      {
+       "@type": "MenuItem",
+       "name": "Rántott harcsafilé",
+       "description": "jázmin rizzsel, tartármártással",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "5800",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Grillezett harcsafilé",
+       "description": "édesburgonyával, friss kevert salátával",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "5800",
+         "priceCurrency": "HUF"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "@type": "MenuSection",
+     "name": "Tálak",
+     "hasMenuItem": [
+      {
+       "@type": "MenuItem",
+       "name": "Bőségtál",
+       "description": "2 cigánypecsenye, 2 rántott sertéskaraj, 2 rántott sajt, 6 rántott gomba, csónakburgonya, jázmin rizs, tartármártás",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "11500",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Gömbitál",
+       "description": "2 zengővárkonyi sertéskaraj, 6 csirkemellcsík corn flakes bundában, 2 rántott sajt, jázmin rizs, csónakburgonya, tartármártás",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "12000",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Brutál",
+       "description": "2 tüzes batyu, 2 cordon bleu, 2 kapros juhtúróval töltött karaj rántva, csónakburgonya, jázmin rizs",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "13000",
+         "priceCurrency": "HUF"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "@type": "MenuSection",
+     "name": "Saláták",
+     "hasMenuItem": [
+      {
+       "@type": "MenuItem",
+       "name": "Ruccolás csirkesaláta",
+       "description": "rukkola, koktélparadicsom, kukorica, márványsajt, grillezett csirkemell, citrusos dresszing, fokhagymás pizzakenyér",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "5150",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Gömbi saláta",
+       "description": "frissen kevert saláta magvakkal, rusztikus csirkemellcsíkokkal, sült bacon, citromos joghurtos öntet, fokhagymás pizzakenyér",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "5150",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Tonhalsaláta",
+       "description": "friss saláta, paprika, uborka, koktélparadicsom, lilahagyma, olívabogyó, tonhal, főtt tojás, citrusos dresszing, fokhagymás pizzakenyérrel",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "5350",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Garnélás saláta",
+       "description": "frissen kevert saláta, koktélparadicsom, olívabogyó, garnéla, citrusos dresszing",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "5500",
+         "priceCurrency": "HUF"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "@type": "MenuSection",
+     "name": "Tészta",
+     "hasMenuItem": [
+      {
+       "@type": "MenuItem",
+       "name": "Pestós csirkés tagliatelle",
+       "description": "koktélparadicsom, parmezán",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "4900",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Paradicsomos garnélás tagliatelle",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "5500",
+         "priceCurrency": "HUF"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "@type": "MenuSection",
+     "name": "Gyerekmenük",
+     "hasMenuItem": [
+      {
+       "@type": "MenuItem",
+       "name": "Asterix kedvence",
+       "description": "rántott csirkemellfalatkák, hasábburgonya, ketchup",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "3700",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Mickey egér kedvence",
+       "description": "rántott sajt, hasábburgonya, tartármártás",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "3700",
+         "priceCurrency": "HUF"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "@type": "MenuSection",
+     "name": "Köretek",
+     "hasMenuItem": [
+      {
+       "@type": "MenuItem",
+       "name": "Jázmin rizs",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "950",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Csónakburgonya",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "1100",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Házi fűszeres steakburgonya",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "1100",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Friss saláta",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "1500",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Édesburgonya",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "1500",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Grillezett zöldségek",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "1600",
+         "priceCurrency": "HUF"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "@type": "MenuSection",
+     "name": "Savanyúságok",
+     "hasMenuItem": [
+      {
+       "@type": "MenuItem",
+       "name": "Csemegeuborka",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "950",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Káposztasaláta",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "950",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Jalapeño",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "950",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Paradicsomsaláta",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "1100",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Tejfölös uborkasaláta",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "1100",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Vegyes saláta",
+       "description": "csemegeuborka, paradicsomsaláta, káposztasaláta",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "1100",
+         "priceCurrency": "HUF"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "@type": "MenuSection",
+     "name": "Öntetek",
+     "hasMenuItem": [
+      {
+       "@type": "MenuItem",
+       "name": "Ketchup",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "300",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Majonéz",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "500",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Tejföl",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "500",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Tartár",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "500",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Pizzaszósz",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "500",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Barbecue szósz",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "500",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Áfonyadzsem",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "500",
+         "priceCurrency": "HUF"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "@type": "MenuSection",
+     "name": "Desszertek",
+     "hasMenuItem": [
+      {
+       "@type": "MenuItem",
+       "name": "Gesztenyepüré",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "1650",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Csokoládés lávasüti",
+       "description": "vaníliafagylalttal, eperöntettel",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "1850",
+         "priceCurrency": "HUF"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "@type": "MenuSection",
+     "name": "Csapolt sörök",
+     "hasMenuItem": [
+      {
+       "@type": "MenuItem",
+       "name": "Borsodi",
+       "description": "0,3 l",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "800",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Borsodi",
+       "description": "0,5 l",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "1100",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Staropramen",
+       "description": "0,3 l",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "900",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Staropramen",
+       "description": "0,5 l",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "1250",
+         "priceCurrency": "HUF"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "@type": "MenuSection",
+     "name": "Üveges sörök",
+     "hasMenuItem": [
+      {
+       "@type": "MenuItem",
+       "name": "Stella Artois",
+       "description": "0,33 l",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "900",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Stella Artois alkoholmentes",
+       "description": "0,33 l",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "990",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Gösser Zitrone",
+       "description": "0,33 l",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "990",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Stella Artois",
+       "description": "0,5 l",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "1150",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Beck's",
+       "description": "0,5 l",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "1150",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Staropramen Dark búzasör",
+       "description": "0,5 l",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "1200",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Staropramen Unfiltered búzasör",
+       "description": "0,5 l",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "1200",
+         "priceCurrency": "HUF"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "@type": "MenuSection",
+     "name": "Borok",
+     "hasMenuItem": [
+      {
+       "@type": "MenuItem",
+       "name": "Günzer Tamás Pincészet — Irsai Olivér",
+       "description": "Villány, fehér",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "600",
+         "priceCurrency": "HUF",
+         "name": "1 dl"
+        },
+        {
+         "@type": "Offer",
+         "price": "4200",
+         "priceCurrency": "HUF",
+         "name": "0,75 l"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Villa Ilona — Muskat Ottonell",
+       "description": "fehér",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "600",
+         "priceCurrency": "HUF",
+         "name": "1 dl"
+        },
+        {
+         "@type": "Offer",
+         "price": "4200",
+         "priceCurrency": "HUF",
+         "name": "0,75 l"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Günzer Tamás Pincészet — Rozé Cuvée",
+       "description": "Villány, rozé",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "600",
+         "priceCurrency": "HUF",
+         "name": "1 dl"
+        },
+        {
+         "@type": "Offer",
+         "price": "4200",
+         "priceCurrency": "HUF",
+         "name": "0,75 l"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Mészáros Pál Pincészet — Cabernet Sauvignon",
+       "description": "Szekszárd, vörös",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "700",
+         "priceCurrency": "HUF",
+         "name": "1 dl"
+        },
+        {
+         "@type": "Offer",
+         "price": "4900",
+         "priceCurrency": "HUF",
+         "name": "0,75 l"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "@type": "MenuSection",
+     "name": "Folyóborok",
+     "hasMenuItem": [
+      {
+       "@type": "MenuItem",
+       "name": "Olaszrizling",
+       "description": "1 dl",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "500",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Rozé Cuvée",
+       "description": "1 dl",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "500",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Portugieser",
+       "description": "1 dl",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "500",
+         "priceCurrency": "HUF"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "@type": "MenuSection",
+     "name": "Pezsgők",
+     "hasMenuItem": [
+      {
+       "@type": "MenuItem",
+       "name": "Törley Talisman",
+       "description": "0,75 l",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "3500",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "BB Arany Cuvée",
+       "description": "0,75 l",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "4000",
+         "priceCurrency": "HUF"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "@type": "MenuSection",
+     "name": "Röviditalok",
+     "hasMenuItem": [
+      {
+       "@type": "MenuItem",
+       "name": "Finlandia Vodka",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "700",
+         "priceCurrency": "HUF",
+         "name": "2 cl"
+        },
+        {
+         "@type": "Offer",
+         "price": "1400",
+         "priceCurrency": "HUF",
+         "name": "4 cl"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Absolut Vodka",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "700",
+         "priceCurrency": "HUF",
+         "name": "2 cl"
+        },
+        {
+         "@type": "Offer",
+         "price": "1400",
+         "priceCurrency": "HUF",
+         "name": "4 cl"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Unicum",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "700",
+         "priceCurrency": "HUF",
+         "name": "2 cl"
+        },
+        {
+         "@type": "Offer",
+         "price": "1400",
+         "priceCurrency": "HUF",
+         "name": "4 cl"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Unicum Szilva",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "700",
+         "priceCurrency": "HUF",
+         "name": "2 cl"
+        },
+        {
+         "@type": "Offer",
+         "price": "1400",
+         "priceCurrency": "HUF",
+         "name": "4 cl"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Bacardi",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "700",
+         "priceCurrency": "HUF",
+         "name": "2 cl"
+        },
+        {
+         "@type": "Offer",
+         "price": "1400",
+         "priceCurrency": "HUF",
+         "name": "4 cl"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Captain Morgan Rum",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "700",
+         "priceCurrency": "HUF",
+         "name": "2 cl"
+        },
+        {
+         "@type": "Offer",
+         "price": "1400",
+         "priceCurrency": "HUF",
+         "name": "4 cl"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Jägermeister",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "700",
+         "priceCurrency": "HUF",
+         "name": "2 cl"
+        },
+        {
+         "@type": "Offer",
+         "price": "1400",
+         "priceCurrency": "HUF",
+         "name": "4 cl"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Beefeater Gin",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "700",
+         "priceCurrency": "HUF",
+         "name": "2 cl"
+        },
+        {
+         "@type": "Offer",
+         "price": "1400",
+         "priceCurrency": "HUF",
+         "name": "4 cl"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Sierra Tequila",
+       "description": "silver, gold",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "700",
+         "priceCurrency": "HUF",
+         "name": "2 cl"
+        },
+        {
+         "@type": "Offer",
+         "price": "1400",
+         "priceCurrency": "HUF",
+         "name": "4 cl"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Jack Daniel's",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "800",
+         "priceCurrency": "HUF",
+         "name": "2 cl"
+        },
+        {
+         "@type": "Offer",
+         "price": "1600",
+         "priceCurrency": "HUF",
+         "name": "4 cl"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Jameson",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "800",
+         "priceCurrency": "HUF",
+         "name": "2 cl"
+        },
+        {
+         "@type": "Offer",
+         "price": "1600",
+         "priceCurrency": "HUF",
+         "name": "4 cl"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Bailey's",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "800",
+         "priceCurrency": "HUF",
+         "name": "2 cl"
+        },
+        {
+         "@type": "Offer",
+         "price": "1600",
+         "priceCurrency": "HUF",
+         "name": "4 cl"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Bumbu Rum",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "1000",
+         "priceCurrency": "HUF",
+         "name": "2 cl"
+        },
+        {
+         "@type": "Offer",
+         "price": "2000",
+         "priceCurrency": "HUF",
+         "name": "4 cl"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Diplomático Rum",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "1000",
+         "priceCurrency": "HUF",
+         "name": "2 cl"
+        },
+        {
+         "@type": "Offer",
+         "price": "2000",
+         "priceCurrency": "HUF",
+         "name": "4 cl"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Martini",
+       "description": "1 dl",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "1000",
+         "priceCurrency": "HUF",
+         "name": "2 cl"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "@type": "MenuSection",
+     "name": "Üdítők",
+     "hasMenuItem": [
+      {
+       "@type": "MenuItem",
+       "name": "Szóda",
+       "description": "1 dl",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "130",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Natur Aqua",
+       "description": "szénsavas vagy mentes, 0,33 l",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "590",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Coca-Cola",
+       "description": "cola vagy zero, 0,25 l",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "700",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Sprite",
+       "description": "0,25 l",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "700",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Fanta",
+       "description": "narancs, 0,25 l",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "700",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Kinley",
+       "description": "tonic vagy gyömbér, 0,25 l",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "700",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Fuze Tea",
+       "description": "citrom vagy őszibarack, 0,25 l",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "700",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Cappy",
+       "description": "narancs, alma vagy őszibarack, 0,25 l",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "750",
+         "priceCurrency": "HUF"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "@type": "MenuSection",
+     "name": "Limonádék",
+     "hasMenuItem": [
+      {
+       "@type": "MenuItem",
+       "name": "Citromos",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "1350",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Epres",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "1350",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Bodzás",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "1350",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Meggyes",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "1350",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Málnás",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "1350",
+         "priceCurrency": "HUF"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "@type": "MenuSection",
+     "name": "Kávék és tea",
+     "hasMenuItem": [
+      {
+       "@type": "MenuItem",
+       "name": "Tej",
+       "description": "1 adag",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "150",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Méz",
+       "description": "1 adag",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "200",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Tejszínhab",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "500",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Eszpresszó",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "700",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Hosszú kávé",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "750",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Meleg tea",
+       "description": "szezonális",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "800",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Cappuccino",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "950",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Tejeskávé",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "950",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Latte macchiato",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "1100",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Melange",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "1500",
+         "priceCurrency": "HUF"
+        }
+       ]
+      },
+      {
+       "@type": "MenuItem",
+       "name": "Jegeskávé vaníliafagylalttal",
+       "description": "szezonális",
+       "offers": [
+        {
+         "@type": "Offer",
+         "price": "1800",
+         "priceCurrency": "HUF"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "@type": "Restaurant",
+   "@id": "https://gombocpizzeria.hu/#etterem",
+   "name": "Gömböc Pizzéria",
+   "telephone": "+36-30-899-9303",
+   "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Nagy Imre út 70.",
+    "addressLocality": "Pécs",
+    "postalCode": "7632",
+    "addressCountry": "HU"
+   },
+   "hasMenu": {
+    "@id": "https://gombocpizzeria.hu/etlap/#menu"
+   }
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Főoldal",
+     "item": "https://gombocpizzeria.hu/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Étlap",
+     "item": "https://gombocpizzeria.hu/etlap/"
+    }
+   ]
+  }
+ ]
+}
+</script>
+<script>
+(function(){
+  "use strict";
+  var gyoker=document.documentElement, valto=document.getElementById("temavalto");
+  
+  var gyoker = document.documentElement, valto = document.getElementById("temavalto");
+  var mentett = null;
+  try { mentett = localStorage.getItem("gomboc-tema"); } catch(e){}
+  if (mentett === "dark" || mentett === "light") gyoker.setAttribute("data-theme", mentett);
+
+  function sotetE(){
+    var t = gyoker.getAttribute("data-theme");
+    if (t) return t === "dark";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  }
+  function temaFrissit(){
+    var s = sotetE();
+    valto.setAttribute("aria-pressed", String(s));
+    valto.setAttribute("aria-label", s ? "Váltás világos témára" : "Váltás sötét témára");
+  }
+  temaFrissit();
+  valto.addEventListener("click", function(){
+    var uj = sotetE() ? "light" : "dark";
+    gyoker.setAttribute("data-theme", uj);
+    try { localStorage.setItem("gomboc-tema", uj); } catch(e){}
+    temaFrissit();
+  });
+
+
+  /* Ugrósáv: az éppen olvasott kategória jelölése */
+  var linkek=[].slice.call(document.querySelectorAll(".ugrosav a"));
+  var terkep={};
+  linkek.forEach(function(a){ terkep[a.getAttribute("href").slice(1)]=a; });
+  if("IntersectionObserver" in window){
+    var figy=new IntersectionObserver(function(be){
+      be.forEach(function(b){
+        if(!b.isIntersecting) return;
+        linkek.forEach(function(a){ a.removeAttribute("aria-current"); });
+        var a=terkep[b.target.id];
+        if(a){ a.setAttribute("aria-current","true");
+               a.scrollIntoView({block:"nearest",inline:"nearest"}); }
+      });
+    },{rootMargin:"-140px 0px -70% 0px"});
+    [].forEach.call(document.querySelectorAll(".kat"),function(k){ figy.observe(k); });
+  }
+  document.getElementById("ev").textContent=new Date().getFullYear();
+})();
+</script>
+</body>
+</html>

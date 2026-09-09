@@ -1,0 +1,303 @@
+{
+  "forras": "Az ügyfél által átadott nyomtatott étlap (2 oldal + itallap), OCR-ből tisztázva.",
+  "penznem": "HUF",
+  "labjegyzetek": [
+    "Féladag rendelése esetén az ár 70%-át számítjuk fel.",
+    "Áraink forintban értendőek és az áfát is tartalmazzák.",
+    "Allergénekről érdeklődjön kollégáinknál."
+  ],
+  "kategoriak": [
+    {
+      "id": "pizzak",
+      "nev": "Pizzák",
+      "en": "Pizza",
+      "arfej": ["32 cm", "45 cm"],
+      "megjegyzes": "Helyben, kemencében sütve.",
+      "tetelek": [
+        {"sorszam": 1,  "nev": "Margherita",   "leiras": "paradicsomszósz, mozzarella", "arak": [3600, 6800]},
+        {"sorszam": 2,  "nev": "Sonkás",       "leiras": "paradicsomszósz, sonka, mozzarella", "arak": [3800, 7200]},
+        {"sorszam": 3,  "nev": "Tonhalas",     "leiras": "paradicsomszósz, tonhal, lilahagyma, olívabogyó, rukkola, koktélparadicsom, mozzarella", "arak": [4100, 7800]},
+        {"sorszam": 4,  "nev": "Pikachu",      "leiras": "tejfölös juhtúrós alap, füstölt tarja, főtt tojás, csemegeuborka, mozzarella", "arak": [3900, 7400]},
+        {"sorszam": 5,  "nev": "Firenzei",     "leiras": "paradicsomszósz, sonka, rokfort, aszalt paradicsom, mozzarella", "arak": [3850, 7300]},
+        {"sorszam": 6,  "nev": "Capricciosa",  "leiras": "paradicsomszósz, sonka, gomba, mozzarella", "arak": [3850, 7300]},
+        {"sorszam": 7,  "nev": "Velencei",     "leiras": "tejfölös alap, csirkemell, gomba, kukorica, mozzarella", "arak": [3900, 7400]},
+        {"sorszam": 8,  "nev": "Ragadozó",     "leiras": "tejfölös juhtúrós alap, csirkemell, kolbász, füstölt tarja, bacon, mozzarella", "arak": [4100, 7800]},
+        {"sorszam": 9,  "nev": "Magyaros",     "leiras": "paradicsomszósz, kolbász, lilahagyma, bacon, jalapeño, mozzarella", "arak": [3950, 7500]},
+        {"sorszam": 10, "nev": "Gömbi",        "leiras": "paradicsomszósz, kolbász, bacon, jalapeño, tükörtojás, mozzarella", "arak": [4100, 7800], "hazi": true},
+        {"sorszam": 11, "nev": "Piedone",      "leiras": "paradicsomszósz, kolbász, mexikói bab, lilahagyma, jalapeño, mozzarella", "arak": [4100, 7800]},
+        {"sorszam": 12, "nev": "Négysajtos",   "leiras": "paradicsomszósz, mozzarella, gouda, márványsajt, cheddar sajtszósz", "arak": [3950, 7500]},
+        {"sorszam": 13, "nev": "Pulled pork",  "leiras": "BBQ-alap, tépett sertéslapocka, mozzarella, jalapeño, cheddar sajtszósz", "arak": [4100, 7800]},
+        {"sorszam": 14, "nev": "Pipi",         "leiras": "fűszeres tejföl, csirkemell, bacon, lilahagyma, mozzarella", "arak": [4100, 7800]},
+        {"sorszam": 15, "nev": "Kívánság",     "leiras": "választható alap, 4 feltét, mozzarella", "arak": [4200, 7900]},
+        {"sorszam": 17, "nev": "Rukkolás",     "leiras": "paradicsomszósz, mozzarella, feketeerdei sonka, rukkola, koktélparadicsom", "arak": [4300, 8200]}
+      ]
+    },
+    {
+      "id": "feltetek",
+      "nev": "Pizzafeltétek",
+      "en": "Toppings",
+      "arfej": ["32 cm", "45 cm"],
+      "tetelek": [
+        {"nev": "1. csoport", "leiras": "hagyma, gomba, kukorica, paradicsom, rukkola, olívabogyó, jalapeño, tükörtojás", "arak": [500, 750]},
+        {"nev": "2. csoport", "leiras": "sonka, kolbász, bacon, füstölt tarja, mexikói bab, csirkemell, mozzarella, gouda, márványsajt", "arak": [650, 950]},
+        {"nev": "3. csoport", "leiras": "feketeerdei sonka", "arak": [800, 1300]}
+      ]
+    },
+    {
+      "id": "frissensultek",
+      "nev": "Frissensültek",
+      "en": "Freshly fried",
+      "tetelek": [
+        {"nev": "Rántott sajt", "leiras": "jázmin rizzsel, tartármártással", "arak": [3900]},
+        {"nev": "Rántott sertéskaraj", "leiras": "csónakburgonyával", "arak": [5250]},
+        {"nev": "Corn flakes csirkemellcsíkok", "leiras": "cheddar sajtszósszal, csónakburgonyával", "arak": [5250]},
+        {"nev": "Farmer csirke", "leiras": "csirkemellcsíkok rántva, fűszeres tejföllel, reszelt sajttal, vegyes körettel", "arak": [5250]},
+        {"nev": "Cigánypecsenye kakastaréjjal", "leiras": "házi fűszeres burgonyával", "arak": [5300]},
+        {"nev": "Bánffy szelet", "leiras": "natúr sertéskaraj pirított velővel, tükörtojással, vegyes körettel", "arak": [5300]},
+        {"nev": "Velővel töltött karaj rántva", "leiras": "jázmin rizs, tartármártás", "arak": [5300]},
+        {"nev": "Kapros juhtúróval töltött karaj rántva", "leiras": "házi héjas burgonyával", "arak": [5300]},
+        {"nev": "Caprese csirkemell", "leiras": "grillezett csirkemell paradicsommal, mozzarellával összesütve, édesburgonyával", "arak": [5300]},
+        {"nev": "Makói csirkemell", "leiras": "grillezett csirkemell hagymával, kápia paprikával, baconnel, fűszeres tejföllel, sajttal, kemencében sütve, fűszeres steakburgonyával", "arak": [5300], "hazi": true},
+        {"nev": "Grillezett szűzérmék zöldborsmártásban", "leiras": "édesburgonyával, frissen kevert salátával", "arak": [5350]},
+        {"nev": "Tüzes batyu", "leiras": "füstölt tarjával, reszelt sajttal és jalapeñóval töltött sertéskaraj rántva, fűszeres steakburgonyával", "arak": [5350]},
+        {"nev": "Cordon bleu", "leiras": "sajttal, sonkával töltött karaj rántva, vegyes körettel", "arak": [5350]},
+        {"nev": "Pulled pork", "leiras": "házi fűszeres steakburgonyával, cheddar sajtszósszal", "arak": [5350]},
+        {"nev": "Rántott szűzérmék", "leiras": "cheddar sajtos serpenyős házi burgonyával", "arak": [5390]},
+        {"nev": "Hagymás rostélyos", "leiras": "pácolt marhahátszín, csónakburgonyával, hagymakazallal", "arak": [5950]}
+      ]
+    },
+    {
+      "id": "halak",
+      "nev": "Halak",
+      "en": "Fish",
+      "tetelek": [
+        {"nev": "Rántott harcsafilé", "leiras": "jázmin rizzsel, tartármártással", "arak": [5800]},
+        {"nev": "Grillezett harcsafilé", "leiras": "édesburgonyával, friss kevert salátával", "arak": [5800]}
+      ]
+    },
+    {
+      "id": "talak",
+      "nev": "Tálak",
+      "en": "Plates",
+      "megjegyzes": "Társaságnak, megosztásra.",
+      "tetelek": [
+        {"nev": "Bőségtál", "leiras": "2 cigánypecsenye, 2 rántott sertéskaraj, 2 rántott sajt, 6 rántott gomba, csónakburgonya, jázmin rizs, tartármártás", "arak": [11500]},
+        {"nev": "Gömbitál", "leiras": "2 zengővárkonyi sertéskaraj, 6 csirkemellcsík corn flakes bundában, 2 rántott sajt, jázmin rizs, csónakburgonya, tartármártás", "arak": [12000], "hazi": true},
+        {"nev": "Brutál", "leiras": "2 tüzes batyu, 2 cordon bleu, 2 kapros juhtúróval töltött karaj rántva, csónakburgonya, jázmin rizs", "arak": [13000]}
+      ]
+    },
+    {
+      "id": "salatak",
+      "nev": "Saláták",
+      "en": "Salads",
+      "tetelek": [
+        {"nev": "Ruccolás csirkesaláta", "leiras": "rukkola, koktélparadicsom, kukorica, márványsajt, grillezett csirkemell, citrusos dresszing, fokhagymás pizzakenyér", "arak": [5150]},
+        {"nev": "Gömbi saláta", "leiras": "frissen kevert saláta magvakkal, rusztikus csirkemellcsíkokkal, sült bacon, citromos joghurtos öntet, fokhagymás pizzakenyér", "arak": [5150], "hazi": true},
+        {"nev": "Tonhalsaláta", "leiras": "friss saláta, paprika, uborka, koktélparadicsom, lilahagyma, olívabogyó, tonhal, főtt tojás, citrusos dresszing, fokhagymás pizzakenyérrel", "arak": [5350]},
+        {"nev": "Garnélás saláta", "leiras": "frissen kevert saláta, koktélparadicsom, olívabogyó, garnéla, citrusos dresszing", "arak": [5500]}
+      ]
+    },
+    {
+      "id": "teszta",
+      "nev": "Tészta",
+      "en": "Pasta",
+      "tetelek": [
+        {"nev": "Pestós csirkés tagliatelle", "leiras": "koktélparadicsom, parmezán", "arak": [4900]},
+        {"nev": "Paradicsomos garnélás tagliatelle", "leiras": "", "arak": [5500]}
+      ]
+    },
+    {
+      "id": "gyerek",
+      "nev": "Gyerekmenük",
+      "en": "Kids menu",
+      "tetelek": [
+        {"nev": "Asterix kedvence", "leiras": "rántott csirkemellfalatkák, hasábburgonya, ketchup", "arak": [3700]},
+        {"nev": "Mickey egér kedvence", "leiras": "rántott sajt, hasábburgonya, tartármártás", "arak": [3700]}
+      ]
+    },
+    {
+      "id": "koretek",
+      "nev": "Köretek",
+      "en": "Side dishes",
+      "tetelek": [
+        {"nev": "Jázmin rizs", "arak": [950]},
+        {"nev": "Csónakburgonya", "arak": [1100]},
+        {"nev": "Házi fűszeres steakburgonya", "arak": [1100]},
+        {"nev": "Friss saláta", "arak": [1500]},
+        {"nev": "Édesburgonya", "arak": [1500]},
+        {"nev": "Grillezett zöldségek", "arak": [1600]}
+      ]
+    },
+    {
+      "id": "savanyusagok",
+      "nev": "Savanyúságok",
+      "en": "Pickles",
+      "tetelek": [
+        {"nev": "Csemegeuborka", "arak": [950]},
+        {"nev": "Káposztasaláta", "arak": [950]},
+        {"nev": "Jalapeño", "arak": [950]},
+        {"nev": "Paradicsomsaláta", "arak": [1100]},
+        {"nev": "Tejfölös uborkasaláta", "arak": [1100]},
+        {"nev": "Vegyes saláta", "leiras": "csemegeuborka, paradicsomsaláta, káposztasaláta", "arak": [1100]}
+      ]
+    },
+    {
+      "id": "ontetek",
+      "nev": "Öntetek",
+      "en": "Dressings",
+      "tetelek": [
+        {"nev": "Ketchup", "arak": [300]},
+        {"nev": "Majonéz", "arak": [500]},
+        {"nev": "Tejföl", "arak": [500]},
+        {"nev": "Tartár", "arak": [500]},
+        {"nev": "Pizzaszósz", "arak": [500]},
+        {"nev": "Barbecue szósz", "arak": [500]},
+        {"nev": "Áfonyadzsem", "arak": [500]}
+      ]
+    },
+    {
+      "id": "desszertek",
+      "nev": "Desszertek",
+      "en": "Desserts",
+      "tetelek": [
+        {"nev": "Gesztenyepüré", "arak": [1650]},
+        {"nev": "Csokoládés lávasüti", "leiras": "vaníliafagylalttal, eperöntettel", "arak": [1850]}
+      ]
+    },
+    {
+      "id": "csapolt",
+      "nev": "Csapolt sörök",
+      "en": "Draft beer",
+      "italok": true,
+      "tetelek": [
+        {"nev": "Borsodi", "leiras": "0,3 l", "arak": [800]},
+        {"nev": "Borsodi", "leiras": "0,5 l", "arak": [1100]},
+        {"nev": "Staropramen", "leiras": "0,3 l", "arak": [900]},
+        {"nev": "Staropramen", "leiras": "0,5 l", "arak": [1250]}
+      ]
+    },
+    {
+      "id": "uveges",
+      "nev": "Üveges sörök",
+      "en": "Bottled beer",
+      "italok": true,
+      "tetelek": [
+        {"nev": "Stella Artois", "leiras": "0,33 l", "arak": [900]},
+        {"nev": "Stella Artois alkoholmentes", "leiras": "0,33 l", "arak": [990]},
+        {"nev": "Gösser Zitrone", "leiras": "0,33 l", "arak": [990]},
+        {"nev": "Stella Artois", "leiras": "0,5 l", "arak": [1150]},
+        {"nev": "Beck's", "leiras": "0,5 l", "arak": [1150]},
+        {"nev": "Staropramen Dark búzasör", "leiras": "0,5 l", "arak": [1200]},
+        {"nev": "Staropramen Unfiltered búzasör", "leiras": "0,5 l", "arak": [1200]}
+      ]
+    },
+    {
+      "id": "borok",
+      "nev": "Borok",
+      "en": "Wine",
+      "italok": true,
+      "arfej": ["1 dl", "0,75 l"],
+      "tetelek": [
+        {"nev": "Günzer Tamás Pincészet — Irsai Olivér", "leiras": "Villány, fehér", "arak": [600, 4200]},
+        {"nev": "Villa Ilona — Muskat Ottonell", "leiras": "fehér", "arak": [600, 4200]},
+        {"nev": "Günzer Tamás Pincészet — Rozé Cuvée", "leiras": "Villány, rozé", "arak": [600, 4200]},
+        {"nev": "Mészáros Pál Pincészet — Cabernet Sauvignon", "leiras": "Szekszárd, vörös", "arak": [700, 4900]}
+      ]
+    },
+    {
+      "id": "folyoborok",
+      "nev": "Folyóborok",
+      "en": "House wine",
+      "italok": true,
+      "megjegyzes": "Lelovits Tamás Pincészet, Villány.",
+      "tetelek": [
+        {"nev": "Olaszrizling", "leiras": "1 dl", "arak": [500]},
+        {"nev": "Rozé Cuvée", "leiras": "1 dl", "arak": [500]},
+        {"nev": "Portugieser", "leiras": "1 dl", "arak": [500]}
+      ]
+    },
+    {
+      "id": "pezsgok",
+      "nev": "Pezsgők",
+      "en": "Sparkling wine",
+      "italok": true,
+      "tetelek": [
+        {"nev": "Törley Talisman", "leiras": "0,75 l", "arak": [3500]},
+        {"nev": "BB Arany Cuvée", "leiras": "0,75 l", "arak": [4000]}
+      ]
+    },
+    {
+      "id": "rovid",
+      "nev": "Röviditalok",
+      "en": "Shots",
+      "italok": true,
+      "arfej": ["2 cl", "4 cl"],
+      "tetelek": [
+        {"nev": "Finlandia Vodka", "arak": [700, 1400]},
+        {"nev": "Absolut Vodka", "arak": [700, 1400]},
+        {"nev": "Unicum", "arak": [700, 1400]},
+        {"nev": "Unicum Szilva", "arak": [700, 1400]},
+        {"nev": "Bacardi", "arak": [700, 1400]},
+        {"nev": "Captain Morgan Rum", "arak": [700, 1400]},
+        {"nev": "Jägermeister", "arak": [700, 1400]},
+        {"nev": "Beefeater Gin", "arak": [700, 1400]},
+        {"nev": "Sierra Tequila", "leiras": "silver, gold", "arak": [700, 1400]},
+        {"nev": "Jack Daniel's", "arak": [800, 1600]},
+        {"nev": "Jameson", "arak": [800, 1600]},
+        {"nev": "Bailey's", "arak": [800, 1600]},
+        {"nev": "Bumbu Rum", "arak": [1000, 2000]},
+        {"nev": "Diplomático Rum", "arak": [1000, 2000]},
+        {"nev": "Martini", "leiras": "1 dl", "arak": [1000]}
+      ]
+    },
+    {
+      "id": "uditok",
+      "nev": "Üdítők",
+      "en": "Soft drinks",
+      "italok": true,
+      "tetelek": [
+        {"nev": "Szóda", "leiras": "1 dl", "arak": [130]},
+        {"nev": "Natur Aqua", "leiras": "szénsavas vagy mentes, 0,33 l", "arak": [590]},
+        {"nev": "Coca-Cola", "leiras": "cola vagy zero, 0,25 l", "arak": [700]},
+        {"nev": "Sprite", "leiras": "0,25 l", "arak": [700]},
+        {"nev": "Fanta", "leiras": "narancs, 0,25 l", "arak": [700]},
+        {"nev": "Kinley", "leiras": "tonic vagy gyömbér, 0,25 l", "arak": [700]},
+        {"nev": "Fuze Tea", "leiras": "citrom vagy őszibarack, 0,25 l", "arak": [700]},
+        {"nev": "Cappy", "leiras": "narancs, alma vagy őszibarack, 0,25 l", "arak": [750]}
+      ]
+    },
+    {
+      "id": "limonadek",
+      "nev": "Limonádék",
+      "en": "Lemonades",
+      "italok": true,
+      "megjegyzes": "Mind 0,5 literes.",
+      "tetelek": [
+        {"nev": "Citromos", "arak": [1350]},
+        {"nev": "Epres", "arak": [1350]},
+        {"nev": "Bodzás", "arak": [1350]},
+        {"nev": "Meggyes", "arak": [1350]},
+        {"nev": "Málnás", "arak": [1350]}
+      ]
+    },
+    {
+      "id": "kavek",
+      "nev": "Kávék és tea",
+      "en": "Coffee",
+      "italok": true,
+      "tetelek": [
+        {"nev": "Tej", "leiras": "1 adag", "arak": [150]},
+        {"nev": "Méz", "leiras": "1 adag", "arak": [200]},
+        {"nev": "Tejszínhab", "arak": [500]},
+        {"nev": "Eszpresszó", "arak": [700]},
+        {"nev": "Hosszú kávé", "arak": [750]},
+        {"nev": "Meleg tea", "leiras": "szezonális", "arak": [800]},
+        {"nev": "Cappuccino", "arak": [950]},
+        {"nev": "Tejeskávé", "arak": [950]},
+        {"nev": "Latte macchiato", "arak": [1100]},
+        {"nev": "Melange", "arak": [1500]},
+        {"nev": "Jegeskávé vaníliafagylalttal", "leiras": "szezonális", "arak": [1800]}
+      ]
+    }
+  ]
+}

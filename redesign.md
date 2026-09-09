@@ -12,6 +12,11 @@
 > prototípusban nincs kitalált szám. A §1.1 (technológia) a leggyengébben
 > alátámasztott szakasz; lásd §16.
 
+> **A csomag négy fájlból áll:**
+> `redesign.md` (ez a dokumentum) · `index.html` (főoldal-prototípus) ·
+> `etlap.html` (étlap-prototípus, 128 tétel) · `etlap.json` + `build_etlap.py`
+> (az étlap adatforrása és generátora).
+
 ---
 
 ## 0. Kontextus — amit tudok, és amit nem
@@ -34,6 +39,8 @@ az alábbi táblázat szétválasztja a **dokumentált** és a **hiányzó** old
 | Terek | kerthelyiség (nyári kiülős), kulturált belső tér, **különterem** | gastro.hu, GBP attribútum |
 | Attribútumok | kutyabarát, ingyenes parkolás, kedvezményes ételek, nagyszerű koktélok | gastro.hu, GBP |
 | Heti menü | 11:00–13:00 vagy a készlet erejéig; **A menü 2 990 Ft**, **B menü 2 690 Ft**, **napi leves 900 Ft**, csomagolás **200 Ft/adag** | menuzz.hu listing |
+| **Teljes étlap** | 128 tétel, 165 ár — 16 pizza (32/45 cm), 16 frissensült, 3 tál, 4 saláta, teljes itallap | **az ügyfél által átadott nyomtatott étlap** |
+| Árpolitika | féladag = az ár 70%-a; az árak áfásak; allergénekről a kollégák adnak felvilágosítást | ugyanaz |
 | Értékelés | 4,6 ★ / ~1 300 értékelés | GBP (brief) |
 | Átlagköltés | 4 000–6 000 Ft / fő | GBP (brief) |
 | Foglalási jelzés | „Bejelentette 130 személy" | GBP (brief) |
@@ -158,6 +165,28 @@ Valós mérés nélkül (nincs hozzáférés) csak **strukturális kockázatokat
 > Ezt a szakaszt szándékosan nem hígítom kitalált számokkal. A §11 **célszámokat**
 > ad, nem jelenlegi mérést.
 
+### 2.5 Az átadott étlap átnézése — konkrét, javítandó hibák
+
+Az étlap digitalizálásakor tételesen összevetettem a magyar és az angol oldalt,
+a számozást és a publikus listingek szövegét. Hét találat; mindegyik olcsón
+javítható, de addig **rossz adat kerül a weboldalra is**.
+
+| # | Találat | Bizonyíték | Súly |
+|---|---|---|---|
+| É1 | **A kínálat és a listingek nem fedik egymást.** A nyomtatott étlapon **nincs gyros, nincs hamburger, nincs lepény**, és **nincs koktéllista** sem — miközben az etterem.hu/gastro.hu leírás mind a hármat hirdeti, a Google-profil pedig „Nagyszerű koktélok" attribútummal fut | az átadott étlap teljes tartalma vs. a §0.1 listing-idézetek | **kritikus** — ezen múlik, mit ír a főoldal |
+| É2 | **Hiányzik a 16-os pizza.** A számozás 1–15 után **17-tel** folytatódik | maga az étlap | közepes — vagy elírás, vagy kivezetett tétel |
+| É3 | **Két, egymásnak ellentmondó borlap.** „Folyóborok" (Lelovits Tamás Pincészet, 500 Ft/dl) és „Borok" (Günzer / Villa Ilona / Mészáros Pál, 600–700 Ft/dl) — nem derül ki, melyik az érvényes | itallap két külön blokkja | közepes |
+| É4 | **Fordítási hiba:** „Paradicsomsaláta /Cabbage salad/" — a káposztasaláta angol neve került a paradicsomsalátára | itallap előtti savanyúság-blokk | kicsi |
+| É5 | **A vegyes saláta összetétele eltér a két nyelven.** Magyarul „csemegeuborka, paradicsomsaláta, káposztasaláta", angolul „cabbage, pickles, cucumber with sour cream" | ugyanott | kicsi |
+| É6 | **Elgépelések az angol szövegben:** „Boled beer" (bottled), „tomado" (tomato), „Aragula" (arugula), „chicken stripes" (strips) | itallap és saláta-blokk | kicsi |
+| É7 | **Következetlen magyar írásmód:** „ruccola" / „rukkola" ugyanazon az étlapon; „Pezsgõk" rossz ő-vel | pizza- és salátablokk | kicsi |
+
+**Az É1 a fontos.** A digitalizálásnál a **nyomtatott étlapot tekintettem
+mérvadónak** — az az ügyfél saját, aktuális dokumentuma —, és ehhez igazítottam a
+főoldal szövegét is: a hero már nem gyrost és hamburgert sorol, hanem azt, ami az
+étlapon van. Ha viszont a gyros és a hamburger **létezik**, csak külön lapon fut,
+akkor az étlapról hiányzik, és a weboldalról is hiányozni fog. Ez §15/19.
+
 ---
 
 ## 3. Miért rosszak ezek — a mögöttes ok, nem a tünet
@@ -230,15 +259,32 @@ amennyit egy pizzéria karbantartani tud (§1.3).
 | 7 | Asztalfoglalás | Űrlap + telefon egyenrangúan | K3; az oldal EGY dolga |
 | 8 | Lábléc | NAP-adatok gépi és emberi olvasásra | S4/S5 konzisztencia-horgony |
 
-### 5.2 `/etlap/`
+### 5.2 `/etlap/` — **ez is elkészült prototípusként** (`etlap.html`)
 
-| # | Szekció | Tartalom |
-|---|---|---|
-| 1 | Fejléc + H1 „Étlap" | változatlan navigáció |
-| 2 | Ugró-navigáció | Pizzák / Frissensültek / Lepények / Hamburger / Gyros / Italok — sticky, mobilon vízszintesen görgethető |
-| 3 | Kategóriablokkok | tétel + rövid összetevősor + ár, `tabular-nums` oszlopban |
-| 4 | Allergén- és méret-lábjegyzet | `ÜGYFÉL-ADAT SZÜKSÉGES` |
-| 5 | Záró CTA | „Asztalt foglalok" + telefon |
+Az ügyfél átadta a nyomtatott étlapot, így ez az oldal már nem specifikáció,
+hanem működő, **128 tételes, 165 árat tartalmazó** felület.
+
+| # | Szekció | Tartalom | Megjegyzés |
+|---|---|---|---|
+| 1 | Fejléc + H1 „Étlap" | ugyanaz a navigáció, az Étlap `aria-current="page"` | |
+| 2 | Vezető | „Kemencés pizza 3 600 Ft-tól…", féladag- és áfa-szabály | az ár azonnal, az első képernyőn |
+| 3 | Ugró-navigáció | 21 kategória, sticky a fejléc alatt, mobilon vízszintesen görgethető, `scroll-snap` | **scroll-spy**: olvasás közben jelöli, hol tartunk (`aria-current`), és a sávot odagörgeti |
+| 4 | Ételek blokk | 13 kategória: pizzák, feltétek, frissensültek, halak, tálak, saláták, tészta, gyerekmenü, köretek, savanyúságok, öntetek, desszertek | |
+| 5 | Italok blokk | 8 kategória: csapolt, üveges, borok, folyóborok, pezsgők, röviditalok, üdítők, limonádék, kávék | |
+| 6 | Záró CTA | asztalfoglalás + telefon | |
+| 7 | Lábjegyzetek | féladag 70%, áfa, allergének | az étlap saját szövege, szó szerint |
+
+**Ártáblázat-megoldás:** a többárú kategóriák (pizza 32/45 cm, röviditalok
+2/4 cl, borok 1 dl/0,75 l) **oszlopfejlécet** kapnak, az árak
+`font-variant-numeric: tabular-nums`-szal egymás alá rendeződnek, a hiányzó
+cellák üres helyőrzővel — így egyetlen ár sem csúszik el a rácsban.
+
+**A generálás:** az oldal nem kézzel íródott. Az `etlap.json` az **egyetlen
+adatforrás**, ebből a `build_etlap.py` állítja elő a statikus HTML-t **és** a
+teljes `Menu` JSON-LD gráfot, a design system CSS-ét pedig az `index.html`-ből
+olvassa. Ez a §13/13 döntés kiterjesztése: az ár **egy helyen** él, nem
+háromban. Ha az ügyfél árat emel, egy JSON-sort kell átírni, és az oldal, a
+strukturált adat meg a főoldali „ártól" horgonyok együtt mozdulnak.
 
 ### 5.3 `/heti-menu/`
 
@@ -660,6 +706,13 @@ vagy pozíció, tehát nincs reflow és nincs CLS.
 | JS | Vanilla, IIFE, ES5-kompatibilis szintaxis | Nulla függőség, nulla parse-költség | Alpine.js (~15 KB): többe kerülne, mint a teljes saját logika |
 | Hoszting | Bármi HTTPS-sel és HTTP/2-vel | K1 megoldása az első lépés | — |
 
+Az étlap külön eszközt kapott: **`build_etlap.py`** — egy ~120 soros generátor,
+ami az `etlap.json`-ból állítja elő az `etlap.html`-t és a `Menu` JSON-LD gráfot,
+a CSS-t pedig az `index.html`-ből olvassa, hogy a két oldal design systemje ne
+tudjon szétcsúszni. Élesben ennek a WP-sablon `functions.php`-ja vagy egy
+egyszerű ACF-ismétlőmező felel meg — a lényeg az elv, nem a nyelv: **az ár egy
+helyen él.**
+
 **A prototípus JS-e (`index.html`) pontosan öt dolgot csinál:** téma-váltás
 (`localStorage`, `try/catch`-ben), nyitvatartás-táblázat renderelése egy
 adatforrásból, a kemence állapotának számítása percenként, a hajtás alatti
@@ -834,6 +887,12 @@ Konkrét számok, 4G / Moto G4-osztályú mobilon, mezei látogatásnál:
 | Lighthouse Performance | ≥ 98 | — |
 | Lighthouse Accessibility | **100** | a §7.1 kontrasztok, fókuszgyűrűk, skip-link, ARIA |
 
+Az `/etlap/` oldal külön eset: 128 tétel **statikus HTML-ként** ~100 KB
+tömörítetlenül, Brotli után **~14–18 KB**. Nincs rajta kép, nincs kliensoldali
+renderelés, a JS ugyanaz a ~1 KB (téma + scroll-spy). Cél: **LCP < 1,3 s,
+CLS < 0,02**, és — ami itt fontosabb — **a teljes étlap indexelhető szövegként**
+kerül a Google elé, nem PDF-ként vagy képként (§10.4/4).
+
 Összevetésül: a kategória tipikus WP-főoldala 1,5–3 MB és 60–120 kérés.
 A **< 90 KB / ≤ 5 kérés** nem optimista becslés, hanem annak a következménye,
 hogy nincs hero-fotó és nincs keretrendszer.
@@ -905,14 +964,26 @@ hogy nincs hero-fotó és nincs keretrendszer.
    70-est használja (GBP + nyitva.hu), de ezt meg kell erősíteni.
 2. **A telefonszám: a 06 30 899 9303 az egyetlen érvényes?** A +36 72 440 456 még
    több listingen él.
-3. **Teljes étlap tételes árakkal.** A prototípus csak a heti menü árait hozza,
-   mert csak azok dokumentáltak.
+3. ~~Teljes étlap tételes árakkal.~~ **MEGOLDVA** — az ügyfél átadta a nyomtatott
+   étlapot; 128 tétel és 165 ár feldolgozva az `etlap.json`-ba. Helyette viszont
+   nyílt a §2.5 hét találata, lásd 19–22.
 4. **A heti menü árai ma is 2 990 / 2 690 / 900 Ft?** A forrás egy aggregátor-listing,
    dátum nélkül.
 5. **Adatkezelési tájékoztató** — az űrlap enélkül nem mehet élesbe.
 6. **Hová menjen a foglalási űrlap?** E-mail, és ha igen, ki nézi munkaidőben?
 7. **Az `aggregateRating` megjelenítése a saját oldalon** — a 4,6 / 1 300 a Google
    adata; szabályzati validáció kell (§10.3).
+
+**Blokkoló, az étlapból (§2.5):**
+
+19. **Van gyros, hamburger és lepény, vagy nincs?** (É1) A nyomtatott étlapon
+    egyik sincs, a publikus listingek mind a hármat hirdetik. Ha van, hiányzik az
+    étlapról; ha nincs, **a listingeket kell javítani**, mert ma rosszul ígér.
+20. **Van koktéllista?** (É1) A Google-profil „Nagyszerű koktélok" attribútummal
+    fut, az itallapon viszont csak röviditalok, sörök, borok szerepelnek.
+21. **Mi történt a 16-os pizzával?** (É2) A számozás 15-ről 17-re ugrik.
+22. **Melyik borlap érvényes?** (É3) A „Folyóborok" (500 Ft/dl) és a „Borok"
+    (600–700 Ft/dl) blokk egymás mellett fut, eltérő pincészetekkel.
 
 **Fontos (a tartalmat érinti):**
 
@@ -921,6 +992,8 @@ hogy nincs hero-fotó és nincs keretrendszer.
 10. **Van-e kiszállítás?** Ha igen: milyen körzet, milyen díj, milyen platform?
 11. **Fizetés:** kártya, SZÉP-kártya, utalvány?
 12. **A heti menü napi fogásai** — hogyan és ki frissíti hetente?
+12b. **Az étlap angol fordításának javítása** (É4–É6) és a magyar írásmód
+    egységesítése (É7) — kinek a hatásköre, és mikorra kérhető?
 13. **A „Kedvezményes ételek" GBP-attribútum** mit takar konkrétan?
 14. **Van-e jogtiszta fotó** a kemencéről, a kerthelyiségről, a különteremről?
     (Nem blokkoló — az oldal fotó nélkül is teljes, §9.3.)
@@ -950,11 +1023,18 @@ célszámai. Egy fél napos, hozzáféréssel végzett audit ezt a szakaszt telj
 átírhatja, és elvben megdöntheti a §9.1 stack-döntését is (ha például kiderül,
 hogy nem WordPress fut rajta).
 
-**A második leggyengébb pont: az étlap.** A prototípus mindössze három árat
-mutat — a heti menüét —, mert csak ezek dokumentáltak. Egy pizzéria főoldalán ez
-kevés: a látogató pizzaárat keres. Ezt szándékosan nem pótoltam kitalált
-számokkal, de emiatt a §5.2 `/etlap/` oldala **jelenleg specifikáció, nem
-tartalom.**
+**A második leggyengébb pont: az, hogy mit árul ez a hely.** Ez a szakasz az
+étlap átadása után íródott újra — és nem lett erősebb, hanem áthelyeződött.
+Korábban az volt a baj, hogy nem ismertem az árakat; most ismerem mind a 165-öt,
+viszont **kiderült, hogy a nyomtatott étlap és a nyilvános listingek mást
+állítanak** (§2.5/É1). Az étlapon nincs gyros, nincs hamburger, nincs lepény és
+nincs koktéllista; az etterem.hu-leírás és a Google-profil viszont mind a négyet
+hirdeti. Döntenem kellett, és a **nyomtatott étlapot** választottam mérvadónak —
+ez az ügyfél saját, dátumozatlan, de kézzelfogható dokumentuma. **Ha rosszul
+döntöttem, a főoldal hero-szövege és a „Amit sütünk" szekció hat tétele is
+téves**, mert pontosan erre épül. Egyetlen mondatnyi ügyfél-válasz eldönti
+(§15/19–20) — de amíg nincs meg, ez az anyag legnagyobb egyetlen tartalmi
+kockázata.
 
 **A harmadik: a célközönség-állítások.** A §12 CRO-táblázatában olyan
 viselkedési feltevések vannak („a vendég fele nem akar űrlapot kitölteni"),
