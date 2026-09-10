@@ -1,202 +1,342 @@
-# Giovanni Pizzéria, Pécs — UI/UX redesign koncepció és prototípus
+# Váradi Ferenc Üveges (pecsiuveges.hu) — UI/UX redesign koncepció és prototípus
 
-> **Módszertani figyelmeztetés — rekonstrukcióból dolgoztam.**
-> A `https://hovamenjek.hu/pecs/giovanni-pizzeria`, a `https://giovannipecs.hu`, az
-> `etterem.hu`, a `foodora.hu` és az `ittjartam.hu` közvetlen lekérése ebben a
-> környezetben hálózati szinten tiltott (egress proxy: `EGRESS_BLOCKED`). Az
-> elemzés a keresőben indexelt tartalomra és a briefben beillesztett listing-szövegre
-> épül. Minden ténymegállapítás mellett jelzem a forrást és a bizonyosság szintjét.
-> **Élesítés előtt a §15 ellenőrzőlistáját le kell futtatni az élő oldalon.**
-
-> **Hatókör-korrekció (fontos, olvasd el).**
-> A megadott URL nem az ügyfél saját oldala, hanem egy **aggregátor-listing**
-> (hovamenjek.hu), amelynek tartalma láthatóan a Google Cégprofil adatait tükrözi
-> (értékelés, „Zárva · Nyitás: 12:00", „Hívás / Útvonal / Webhely / Megosztás /
-> Mentés" gombsor, attribútum-chipek). Egy nem birtokolt aggregátor-oldalt
-> újratervezni nem szállítható munka: nincs hozzáférés a kódhoz, és a layoutot a
-> platform diktálja. Ezért a brieffet így értelmezem, és így is szállítom:
+> ### Módszertani figyelmeztetés: rekonstrukcióból dolgoztam
 >
-> 1. **Elemzem a listinget** mint a jelenlegi digitális jelenlét *tényleges belépőpontját* (§1–3).
-> 2. **A redesign tárgya az ügyfél saját webhelye, a `giovannipecs.hu`** (§4–14) — ez az,
->    amire a listing „Webhely" gombja mutat, és amit a listing forgalmát fogadva
->    konvertálnia kellene.
-> 3. **A listinget mint csatornát optimalizálom** (§10.4 Local SEO), nem mint felületet.
+> A `www.pecsiuveges.hu` közvetlen lekérése ebben a környezetben hálózati szinten
+> tiltott (egress proxy: `Host not in allowlist: www.pecsiuveges.hu`, HTTP 403).
+> Ugyanígy blokkolt minden aggregátor-oldal (`uzleti.hu`, `cylex.hu`, `daibau.hu`,
+> `bonumventus.hu`, `yoys.hu`). **A HTML forrását tehát nem láttam.**
 >
-> Ha az ügyfél tényleg a hovamenjek-listing átalakítását kérte, az egy másik,
-> jóval szűkebb feladat (adatpontosítás + fotófeltöltés), és szólj — átírom.
+> Amiből dolgoztam:
+> 1. **A briefbe beillesztett oldalszöveg** — ez a legerősebb forrás, mert szó
+>    szerinti, és önmagában is diagnosztizálható (lásd §2.1: a karakterkódolási hiba
+>    magából a beillesztett szövegből bizonyítható).
+> 2. **A Google Cégprofil kivonata** (a briefben szintén szó szerint).
+> 3. **Keresőindex-találatok**: `daibau.hu/varadi_ferenc_ev`, `varadi-uveges.uzleti.hu`,
+>    `xn--pcs-bma.cylex.hu`, `szakkatalogus.hu`, `yoys.hu`, valamint az indexelt
+>    oldalcím: `Pécsi Üveges - képkeretezés, üveg, üvegezés, tükör ...`
+>
+> Minden ténymegállapítás mellett jelölöm a **bizonyosság szintjét**. Ahol a
+> forrás csak a HTML lenne, ott nem állítok, hanem **ellenőrzendőként** jelölöm
+> (§15.2). Számot, árat, kapacitást **sehol nem találtam ki** — a placeholderek
+> `[szögletes zárójelben]` állnak.
 
 ---
 
 ## 0. Kontextus — amit tudok, és amit nem
 
-A briefben a kontextusmezők üresen maradtak. Az alábbi táblázat **csak dokumentált
-tényeket** tartalmaz; ami hiányzik, az a §15-ben kérdésként szerepel. Számot,
-kapacitást, árat sehol nem találtam ki.
+A brief kontextusmezői üresen érkeztek. Az alábbi táblázat **kizárólag dokumentált
+tényeket** tartalmaz.
 
 | Mező | Amit tudok | Forrás / bizonyosság |
 |---|---|---|
-| Ügyfél | Giovanni Pizzéria, Pécs, Nagy Imre út 43., 7632 (Kertváros) | listing + `giovannipecs.hu/elerhetoseg/` · **magas** |
-| Telefon | (06 72) 446 000 | listing + cégadatbázisok · **magas** |
-| Saját webhely | `giovannipecs.hu` — ismert URL-ek: `/`, `/etlap/`, `/itallap/`, `/elerhetoseg/` | keresőindex · **magas** |
-| Konyha | **teljes étlap megvan**: 24 kategória, 141 étel + 84 ital = **225 tétel, 348 ár**. Ebből 37 pizza, három méretben. | az étterem étlapja (12 oldal fotó, 2026-09-04) · **magas** |
-| Csapolt | **6 csap**: Staropramen, Stella Artois, Leffe Dark (belga apátsági), Belle-Vue Kriek (meggysör), Hoegaarden (búzasör), Vágott | itallap · **magas** |
-| Szórakozás | biliárd, csocsó, darts, flipper | saját oldal szövege; `etterem.hu` biliárd+darts+TV-t erősít meg · **közepes** |
-| Tér | terasz (nyáron), „kisebb összejövetelekre alkalmas"; a Google-attribútumok szerint **különterem** és **szabadtéri asztalok** | saját oldal + listing · **közepes** |
-| Értékelés | Google 4,5 ★ / ~1 339–1 400 vélemény; foodora 4,7 ★ / 206 vélemény | listing + foodora · **közepes** (a szám naponta változik) |
-| Ársáv | 2 000–6 000 Ft / fő | Google-attribútum · **közepes** |
-| Nyitás | minden nap 12:00; zárás H–Cs 23:00, P–Szo 24:00, V 22:00 | nyitvatartás-aggregátorok · **alacsony — ellenőrizni kell** |
-| Kiszállítás | foodora (két külön listing: „Giovanni Pizzéria" és „Giovanni étterem") | foodora · **közepes** |
+| Ügyfél | Váradi Ferenc egyéni vállalkozó üveges + Váradiné Czike Éva | oldalszöveg · **magas** |
+| Telephely | 7632 Pécs, Nagy Imre út 29. (Kertváros) | oldalszöveg + Google + 5 katalógus · **magas** |
+| Vezetékes | 72 / 321 316 | oldalszöveg + Yoys + Cylex · **magas** |
+| Mobil | 06 30 267 6709 | Google Cégprofil + oldalszöveg · **magas** |
+| E-mail | varadi@freemail.hu | oldalszöveg · **magas** |
+| Nyitvatartás | H–P 9:00–17:00; rendkívüli esetben non-stop hívható | oldalszöveg + Google · **magas** |
+| Google-értékelés | 4,7 · 66 vélemény | Google Cégprofil · **magas** |
+| Google-kategória | „Üveg- és tükörbolt" | Google Cégprofil · **magas** |
+| Működés kezdete | „2000-ben nyitotta pécsi üvegműhelyét" | daibau.hu profil · **közepes** (nem az ügyfél saját közlése) |
+| Bővítés | „Pécsett Kertvárosban **megnyitottuk**… képkeretezési kínálattal kibővített" | oldalszöveg · **magas** (de az időpont ismeretlen — §15) |
+| Bővebb szolgáltatáskör | üvegterasz, üvegkorlát, télikert, üvegtető | daibau.hu · **közepes** — a saját oldalon **nem szerepel** |
+| Biztosítós kárrendezés | vélemény szerint „órákon belül árajánlat, 48 órán belül beépítés, 2 nap alatt kész" | katalógus-vélemény · **közepes**, egyetlen vásárlói leírás |
+| Vidéki kiszállás | vállal, és a kiszállási költség megosztható több megrendelő között | oldalszöveg · **magas** |
+| Ár, kapacitás, garancia, átfutás | **nincs adat** | — → §15 |
 
-**Munkahipotézisek** (a §15-ben megerősítendők, addig ezek alapján dolgoztam):
+**Az oldal EGY dolga.** A briefben ez a mező üres volt, ezért levezetem, nem
+kitalálom: a jelenlegi oldalon egyetlen cselekvésre szólít fel — „**Hívjon –
+jövünk – segítünk!**" —, és minden más információ ezt támasztja alá. A Google
+Cégprofil elsődleges gombja szintén a HÍVÁS. Az oldal egy dolga tehát:
+**telefonhívás vagy méretadatokkal kitöltött ajánlatkérés kiváltása.**
+Nem webshop, nem katalógus, nem márkaépítés.
 
-- **Az oldal EGY dolga: asztalfoglalás** (másodlagos, egyenrangú kimenet: telefonhívás).
-  Indok: van terasz, különterem és játéksarok — ezek *helyhez kötött* értékek, amiket
-  kiszállítással nem lehet monetizálni; a kiszállítást a foodora amúgy is elviszi,
-  saját rendelési motort építeni ehhez a mérethez rossz ROI (§13).
-- **Célközönség:** (a) kertvárosi családok és baráti társaságok 25–55, hétköznap
-  este, „hova üljünk le enni, ahol a gyerek is elvan"; (b) 18–30, hétvégén, csocsó
-  + csapolt sör; (c) csoportszervező, aki *egy* konkrét dolgot keres: „elfér-e 20 fő".
-- **Amit nem szabad megváltoztatni:** a „Giovanni" márkanév, a telefonszám, a cím,
-  és a már indexelt `/etlap/`, `/itallap/`, `/elerhetoseg/` URL-ek.
-
----
-
-## 1. A jelenlegi állapot elemzése
-
-### 1.1 Technológia
-
-| Réteg | Megállapítás | Bizonyíték |
-|---|---|---|
-| Listing (hovamenjek.hu) | szerveroldali sablon Google-adatokból; a beillesztett szöveg pontosan a Google Cégprofil mezőstruktúráját követi | a brief szövege: értékelés → ársáv → kategória → állapot → akciógombok → attribútum-chipek → cím → térképhivatkozás |
-| Saját webhely | **nagy valószínűséggel WordPress** | a címformátum `Elérhetőség – Giovanni Pizzéria` a WP alapértelmezett `–` elválasztója; a permalinkek záró perjeles, ékezet nélküli slugek (`/elerhetoseg/`, `/etlap/`, `/itallap/`) = WP „post name" struktúra · **inferencia, ellenőrizendő** |
-| Struktúra | lapos, 4–5 oldalas brosúra: főoldal + Étlap + Itallap + Elérhetőség | keresőindex · **magas** |
-| Mérhetőség | nincs adatom analitikáról, konverziókövetésről | **ismeretlen** |
-
-### 1.2 A jelenlegi tartalom szerkezete (rekonstruált)
-
-```
-Listing:  név → 4,5★(1,4E) → ársáv → kategória → állapot(Zárva/Nyitás 12:00)
-          → fotógaléria (pl. „Málnás Lávasüti") → [Hívás][Útvonal][Webhely][Megosztás][Mentés]
-          → chipek: Szabadtéri asztalok · Különterem · Nagyszerű koktélok
-          → cím → térkép → nyitvatartás → ársáv → telefon
-Saját:    Főoldal (bemutatkozó bekezdés) → Étlap → Itallap → Elérhetőség
-```
-
-### 1.3 MI A JÓ BENNE — külön szedve, és amit megtartok
-
-Ezeket **nem** dobom el, mert működnek:
-
-| Ami jó | Miért jó | Mi lesz vele |
-|---|---|---|
-| **4,5 ★ / ~1 339 vélemény** | Ez a legértékesebb digitális eszközük. Egy pécsi kertvárosi pizzériánál az 1 300+ vélemény évekre visszamenő, hitelesíthetetlenül nagy bizalmi tőke. | **Felkerül a hajtás fölé, forrásmegjelöléssel, szövegként.** Nem schema-ban (§10.3 — okkal). |
-| **Egy telefonszám, ami tényleg fel van véve** | Az étterem-szegmens konverzióinak nagy része továbbra is hívás. | Sticky mobil sávban, `tel:` linkkel, minden aloldalon. |
-| **Világos, ékezetmentes, záró perjeles permalinkek** | SEO-szempontból korrekt, indexelt, működik. | **Megmarad**: `/etlap/`, `/itallap/`, `/elerhetoseg/` változatlan URL-en. |
-| **Az étlap külön oldalon van** | Az étlap a legkeresettebb tartalom; saját URL-je indexelhető és linkelhető. | Megmarad, kap `Menu` schema-t és horgonyokat. |
-| **Rövid, emberi hangú bemutatkozó szöveg** („Pécs Kertvárosában köszöntjük vendégeinket", biliárd, csocsó, darts, flipper, csapolt sörök) | Ez **konkrét és igaz** — pont az ellenkezője a szokásos „családias hangulat, kiváló minőség" vattának. | **A szövegvilág alapja marad.** A redesign nem írja felül, hanem előrehozza. |
-| **Foodora-jelenlét (4,7 ★)** | Kiszállítás megoldva, nem kell saját rendszert építeni. | Kimenő link marad, de nem elsődleges CTA (§13). |
-| **Egyértelmű, egyszavas menüpontok** | „Étlap", „Itallap", „Elérhetőség" — nulla kognitív teher. | Megmaradnak, kiegészülnek. |
-
-### 1.4 Amit a listing tud, és a saját oldal nem mond el
-
-A Google-attribútumok (**Különterem**, **Szabadtéri asztalok**, **Nagyszerű koktélok**)
-és a saját oldal szövege (**csapolt sör, biliárd, csocsó, darts, flipper**) **két
-különböző helyet írnak le**. Ez a legnagyobb egyedi tartalmi tartalék: a különterem
-és a koktélok sehol nincsenek kifejtve a saját oldalon, pedig a különterem az egyetlen
-olyan termék, amit *nem* lehet foodorán megvenni.
+**Amit nem szabad megváltoztatni.** A brief ezt is üresen hagyta. Amit én
+*javaslok* érinthetetlennek — mert értéket hordoz, és §15-ben megerősítendő:
+a `pecsiuveges.hu` domain, a „Váradi Ferenc Üveges" cégnév, a két név
+együttes szerepeltetése, és a vidéki költségmegosztás ajánlata szó szerint.
 
 ---
 
-## 2. Problémalista bizonyítékkal
+## 0.1 A vizuális kiindulópont — egy mondatban
 
-Súlyosság: **K** = kritikus (pénzt visz), **UX**, **SEO**, **PERF**.
+> **A vizuális rendszer alapja a 4 mm-es float üveg élének zöldje** — az a szín,
+> amit egy üvegtábla *csak a vágott élén* mutat meg, egyébként láthatatlan —,
+> mellette a paszpartúkarton krémje és a gitt szürkéje: vagyis pontosan az a
+> három anyag, amit ez a műhely nap mint nap a kezében tart.
 
-| # | Súly | Probléma | Bizonyíték |
+Ez nem hangulat, hanem anyagi tény: a float üveg vas-oxid-tartalma miatt élből
+nézve zöld. Az üveges ezt ismeri, a laikus meglepődik rajta — ezért jó
+márkaalap: **igaz, konkrét, és a szakmán kívül senki nem használja.**
+
+---
+
+## 1. A jelenlegi oldal elemzése
+
+### 1.1 Technológia és szerkezet
+
+| Jellemző | Megállapítás | Bizonyosság |
+|---|---|---|
+| Protokoll | `http://` — az indexelt kanonikus URL nem HTTPS | **magas** (keresőindex) |
+| Karakterkódolás | Latin-2 / Windows-1250 tartalom hibás deklarációval kiszolgálva | **magas** — bizonyítás §2.1 |
+| Oldalak száma | Gyakorlatilag **egy** hosszú főoldal | **közepes-magas** (a beillesztett szöveg teljesnek látszik, a keresőben más aloldal nem jött elő) |
+| Szerkezet | Bekezdésfolyam, felsorolás-szerű sortörésekkel, hierarchia nélkül | **magas** (a szöveg szerkezetéből) |
+| Tartalmi duplikáció | A „Pécsett Kertvárosban megnyitottuk…" blokk **kétszer**, csaknem szó szerint | **magas** — a beillesztett szövegben látható |
+| Kép/média | Ismeretlen; a szövegben egyetlen képre utaló elem sincs | **alacsony** → §15.2 |
+| Űrlap | Nincs. Az egyetlen konverziós út a telefon és egy `freemail.hu` cím | **magas** |
+| Strukturált adat | Nem valószínű, hogy van (a kor és a stílus alapján) | **alacsony** → §15.2 |
+
+### 1.2 MI A JÓ BENNE — külön szedve, és ezt meg is tartom
+
+Ez nem udvariassági szakasz. Nyolc olyan dolog van ezen az oldalon, amit a pécsi
+versenytársak nagy része **nem** tud felmutatni, és amit egy „modern" újratervezés
+tipikusan kidob. Egyiket sem dobom ki.
+
+| # | Ami jó | Miért érték | Mi lesz vele az új oldalon |
 |---|---|---|---|
-| P1 | **K** | Nincs asztalfoglalási útvonal. A Google-listing 5 akciógombja közül egy sem foglalás; a saját oldalon sincs nyoma. | listing gombsora: Hívás / Útvonal / Webhely / Megosztás / Mentés — nincs „Foglalás" |
-| P2 | **K** | A **különterem** mint termék nem létezik digitálisan: nincs oldala, nincs kapacitása, nincs ára, nincs kérőűrlapja. | a `giovannipecs.hu` ismert URL-jei között nincs ilyen; a Google mégis attribútumként hozza |
-| P3 | **K** | A nyitvatartás csak harmadik felek adatbázisában él megbízhatóan; a felhasználó az oldalon nem kap **most érvényes** választ arra, hogy nyitva van-e. | az aggregátorok eltérő zárásokat közölnek; a listing dinamikus („Zárva · Nyitás: 12:00"), a saját oldal statikus |
-| P4 | **K** | Két külön foodora-listing („Giovanni Pizzéria" és „Giovanni étterem") ugyanarra a márkanévre — a vendég nem tudja, melyiket válassza. | foodora URL-ek: `/restaurant/z28z/...` és `/restaurant/xxsj/...` |
-| P5 | UX | A tartalom brosúra-logikájú (Rólunk → Étlap → Elérhetőség), nem döntés-logikájú (Mikor? Hol ülünk? Mennyi? Hogyan foglalok?). | a 4 oldalas sitemap maga a bizonyíték |
-| P6 | UX | A játéksarok (biliárd, csocsó, darts, flipper) egy felsoroló mondatban van elrejtve, pedig ez a fő megkülönböztető. | a bemutatkozó szöveg szerkezete |
-| P7 | UX | Nincs allergén- és összetevő-információ, nincs vegetáriánus/gluténmentes szűrő az étlapon. | az `/etlap/` egyoldalas listaként indexelt |
-| P8 | SEO | A `title` a WP alapértelmezése (`Oldalcím – Márkanév`) — nincs benne város, kategória, se differenciátor. | `Elérhetőség – Giovanni Pizzéria`, `Étlap – Giovanni Pizzéria` |
-| P9 | SEO | Nincs (vagy nem teljes) `Restaurant` strukturált adat: nyitvatartás, menü, geo, akadálymentesség. | a listing a Google-profilból, nem az oldalról építkezik |
-| P10 | SEO | Nincs helyi kulcsszóra épített landing („pizza rendelés Pécs Kertváros", „különterem Pécs 20 fő", „csocsó Pécs"). | a foodora `/city/pecs/area/kertvaros/52/cuisine/pizza` kategóriaoldala rangsorol e helyett |
-| P11 | PERF | WordPress-alapon, téma + pluginok mellett tipikusan 1,5–3 MB-os főoldal, render-blokkoló CSS/JS. | inferencia a stackből — **méréssel igazolandó** (§15) |
-| P12 | PERF | Az ételfotók nagy valószínűséggel méretezetlen JPEG-ek, `width`/`height` nélkül → CLS. | inferencia — **méréssel igazolandó** |
-| P13 | UX/A11y | Nincs adat billentyűzet-navigációról, fókuszgyűrűkről, kontrasztról. | **méréssel igazolandó** |
+| J1 | **Telefon-központú, egyértelmű felszólítás**: „Hívjon – jövünk – segítünk!" | A konverziós mechanika eleve helyes. Törött ablaknál senki nem tölt ki 9 mezős űrlapot. | Megmarad, sőt: `tel:` link, ragadós hívógomb, és a nyitvatartásból számolt élő állapot. §12 |
+| J2 | **Névvel vállalt szolgáltatás**: „Váradi Ferenc és Váradiné, Czike Éva" | Ritka. A konkurencia többsége arctalan „Kft." — egy magánlakásba beengedett iparosnál a név bizalmi tőke. | A „Kik jövünk" szekció alapja, kiemelt helyen. §5 |
+| J3 | **A vidéki költségmegosztás ajánlata** | Konkrét, szokatlan, számszerűsíthető kereskedelmi feltétel, amit sehol máshol nem láttam a pécsi mezőnyben. Ez egy valódi USP. | Önálló URL (`/videk/`) + a főoldalon szó szerint idézve. §4 |
+| J4 | **Non-stop elérhetőség rendkívüli esetben**, kimondva | A legmagasabb szándékú keresés (betört kirakat éjjel) pont ezt keresi. | A `/uvegtores/` sürgősségi útvonal magja. §4 |
+| J5 | **Rendkívül konkrét szakmai szókincs**: drótüveg, fazettázott, katedrál jellegű, paszpartú, polikarbonát, 1000 °C kandallóüveg, élcsiszolás, tükörfűtés | Ez long-tail SEO-arany. A generikus versenytárs-oldalak („minőségi üvegezés Pécsett") ezekre nem rangsorolnak. | **Minden egyes kifejezés megmarad**, de saját szekcióba/URL-re osztva, hogy legyen mire rangsorolni. §4, §10 |
+| J5b | **Konkrét üvegeredetek**: cseh, lengyel, német, olasz, török katedrálüvegek | Választékot bizonyít elbeszélés helyett. | Megmarad, táblázatos formában. §5 |
+| J6 | **Pontos cím és nyitvatartás az oldalon** | Local SEO alap, sok kisvállalkozói oldalról hiányzik. | Megmarad + `LocalBusiness` JSON-LD + `OpeningHoursSpecification`. §10 |
+| J7 | **A domain maga: `pecsiuveges.hu`** | Pontos egyezés a „pécsi üveges" keresésre, régi domain, meglévő linkprofillal. | **Nem cserélni.** Migráció nélkül, ugyanazon a domainen. §14 |
+| J8 | **Két üzletág egy helyen** (üvegezés + képkeretezés) | Valódi kereszt-értékesítés: aki tükröt vág, keretet is rendel. | Nem összemosom, hanem két egyenrangú belépőként kezelem. §4 |
+
+### 1.3 Amit a jelenlegi oldal **jól csinál technikailag** — és ezt sem dobom el
+
+Egy 2000-es évek eleji, statikus, kép nélküli HTML-oldal **valószínűleg gyors**.
+Nem fogok kitalált teljesítményproblémát a szemére vetni. A baj nem a
+sebessége, hanem az, hogy **használhatatlan**. A redesign kockázata épp az, hogy
+egy React-es „modernizálás" elrontja azt, ami eddig jó volt: a súlytalanságot.
+Ezért lett a stack az, ami (§9).
+
+---
+
+## 2. Problémalista — bizonyítékkal
+
+### 2.1 KRITIKUS
+
+**K1 — Törött karakterkódolás. Ez a legsúlyosabb hiba az oldalon.**
+
+*Bizonyíték (szó szerint a beillesztett oldalszövegből):*
+
+```
+hõszigetelõ üvegkészítés      → helyesen: hőszigetelő
+szakszerû kivitelezés         → helyesen: szakszerű
+Rövid határidõk!              → helyesen: határidők
+Mûanyag üvegekkel             → helyesen: Műanyag
+Hõálló kerámia                → helyesen: Hőálló
+erõsségünk                    → helyesen: erősségünk
+hétfõtõl - péntekig           → helyesen: hétfőtől – péntekig
+```
+
+Ez a Windows-1250 (Latin-2) bájtok ISO-8859-1/2-ként való értelmezésének
+klasszikus tünete: az `ő` (0xF5) `õ`-ként, az `ű` (0xFB) `û`-ként jelenik meg.
+Vagyis a `<meta charset>` hiányzik vagy hibás, illetve a szerver rossz
+`Content-Type` fejlécet küld.
+
+*Következmény, és ezért kritikus:* a magyar üvegesszakma **legfontosabb
+keresőkifejezései pont ezt a két betűt tartalmazzák**:
+`hőszigetelő üveg`, `edzett üveg` (ez rendben), `hőálló kandallóüveg`,
+`biztonsági üveg egyedi méretre`, `üvegezés rövid határidővel`.
+A `hõszigetelõ` string **nem egyezik** a `hőszigetelő` lekérdezéssel. Az oldal
+tehát a saját fő témájára nem rangsorolhat. Ez nem esztétikai hiba: ez az
+egyetlen olyan defektus, amely önmagában megsemmisíti az organikus forgalmat.
+
+**K2 — Nincs HTTPS.** Az indexelt kanonikus URL `http://www.pecsiuveges.hu/`.
+A Chrome „Nem biztonságos" jelzést tesz a címsorba. Egy iparos oldalán, ahová
+azért érkezik valaki, hogy beengedje a lakásába, ez a lehető legrosszabb első
+benyomás. *(Bizonyosság: magas — keresőindex.)*
+
+**K3 — Nincs semmilyen űrlap.** Az egyetlen digitális kapcsolatfelvételi mód egy
+`freemail.hu` cím. Következmény: (a) a 17:00 után érkező látogató nem tud
+nyomot hagyni; (b) nem lehet **fotót és méretet** küldeni, pedig egy üveges
+árajánlatnak pont ez a két bemenete; (c) az ingyenes levelezőfiók spam-mappába
+kerülhet, és rontja a szakmai megítélést.
+
+**K4 — Telefonszám-inkonzisztencia magán az oldalon.** Ugyanaz a mobilszám két
+formában szerepel: `Rádió telefon: 30 2676 709`, illetve a Google-profilban
+`06 30 267 6709`. A `Rádió telefon` megnevezés 2026-ban értelmezhetetlen a
+célközönség fiatalabb felének. NAP-konzisztencia (Name–Address–Phone) hiánya
+közvetlenül rontja a local rangsorolást.
+
+**K5 — Nincs egyetlen mérhető állítás sem.** Sem évszám, sem darabszám, sem
+átfutási idő, sem garancia. Pedig van mivel: 4,7 csillag 66 értékelésből, és
+egy 2000 óta működő műhely. Ezek az adatok **léteznek, csak nincsenek az
+oldalon.**
+
+### 2.2 UX
+
+| # | Probléma | Bizonyíték |
+|---|---|---|
+| U1 | **Szövegfal, hierarchia nélkül.** ~450 szó folyamatos bekezdésekben, alcímek és vizuális tagolás nélkül. | A beillesztett szöveg szerkezete |
+| U2 | **Szó szerinti duplikáció.** A „Pécsett Kertvárosban megnyitottuk…" + „Lakások, családi házak…" + „A folyamatban lévő munka után…" + „Egyedi erősségünk a képkeretezés…" blokk **kétszer** szerepel. | A beillesztett szövegben mindkét példány megtalálható |
+| U3 | **Elgépelés a fő ígéretben.** „Az üvegezési, képkeretezési **problámáit** megoldjuk!" — továbbá „egyéb **mozaikképe** háttérrel" (a második előfordulásban). | Szó szerint |
+| U4 | **A látogató három különböző okból érkezik, az oldal egyiket sem szolgálja ki elsőként.** (1) Betört valami, most azonnal. (2) Tervezett munka: tükörfal, hőszigetelő csere. (3) Képkeretezés. Az oldal mindhármat egyetlen, sorrend nélküli szövegtömbbe önti. | Szerkezeti elemzés |
+| U5 | **Nincs folyamat-információ.** Nem derül ki, mi történik a hívás után: mikor jön ki, mennyibe kerül a felmérés, mennyi az átfutás. Ez a laikus vevő első három kérdése. | Hiány |
+| U6 | **Nincs egyetlen referenciamunka sem.** Az üvegezés és a képkeretezés is **vizuális** szakma. | Hiány |
+| U7 | **Mobilra nagy valószínűséggel nem alkalmas.** A Google Cégprofilon keresztül érkező forgalom túlnyomó része mobil. | **közepes** — a HTML hiányában viewport-metára nem esküszöm meg → §15.2 |
+| U8 | **A képkeretezés — a saját maga által deklarált „egyedi erősség" — nem kap önálló felületet.** Egy bekezdésben van elrejtve az üvegezés közé, kétszer. | Szerkezeti |
+| U9 | **Az üvegterasz, üvegkorlát, télikert, üvegtető hiányzik a saját oldalról**, miközben a daibau-profil szerint csinálja. Ezek a legmagasabb kosárértékű munkák. | daibau.hu vs. oldalszöveg összevetése · **közepes** |
+
+### 2.3 SEO
+
+| # | Probléma | Bizonyíték / következmény |
+|---|---|---|
+| S1 | A törött `ő`/`ű` miatt a fő kulcsszavak nem egyeznek. | §2.1 K1 |
+| S2 | **Egy URL ~14 különböző szolgáltatásra.** Hőszigetelő üveg, drótüveg, edzett üveg, tükörfal, tükörfűtés, plexi, polikarbonát, kandallóüveg, képkeretezés, paszpartú… mind ugyanazon a címen. Egy oldal egy fő szándékra tud rangsorolni. | Szerkezeti |
+| S3 | Az indexelt cím `Pécsi Üveges - képkeretezés, üveg, üvegezés, tükör ...` — vesszős kulcsszólista, a látható részben **város nélkül**, felhívás nélkül. | Keresőtalálat |
+| S4 | Nincs strukturált adat → nincs esély rich resultra, és a Google nem kapja meg gépi formában a nyitvatartást, a szolgáltatásokat, a földrajzi hatókört. | **közepes** → §15.2 |
+| S5 | **A 4,7 / 66 értékelés forgalmi értéke kiaknázatlan.** Ez a legerősebb meglévő eszköze, és a saját oldalán nyoma sincs. | Google-profil vs. oldalszöveg |
+| S6 | Nincs vidéki/agglomerációs landing, pedig kimondottan vállal vidéki munkát — így a „üveges Pécsvárad", „üveges Kozármisleny" típusú keresésekre nincs mit felmutatni. | Oldalszöveg + a daibau `pecsvarad_7720` aloldalának léte |
+
+### 2.4 Teljesítmény
+
+**Nem állítok teljesítményproblémát, mert nem mértem, és a HTML-t sem láttam.**
+A prior az, hogy egy kép nélküli statikus oldal **gyors**. A jelen anyag
+teljesítmény-fejezete (§11) ezért nem javításról szól, hanem **megőrzésről**: a
+cél az, hogy az új, jóval gazdagabb oldal *ne legyen lassabb* a réginél.
+Egyetlen kockázati megállapítás van, ami a HTML nélkül is igaz:
+
+| # | Kockázat | Indok |
+|---|---|---|
+| P1 | HTTP → nincs HTTP/2, nincs multiplexelés, nincs modern gyorsítótár-alku. | K2 következménye |
+| P2 | Ha bekerülnek a hiányzó referenciafotók (márpedig kellenek, U6), az a mostani „gyors, mert üres" állapotot azonnal elviszi — ha nincs mellette képstratégia. | §9.3 |
 
 ---
 
 ## 3. Miért rosszak ezek — a mögöttes ok, nem a tünet
 
-**Ok #1 — Az oldal a vendéglátóst írja le, nem a vendég döntését segíti.**
-A P5, P6, P2 mind ugyanaz. A brosúra-struktúra abból a feltevésből él, hogy a vendég
-„meg akar ismerni minket". Nem akar. Egy konkrét, szűk döntést hoz, adott
-lelkiállapotban: *ma este hova üljünk le hatan úgy, hogy legyen terasz és ne kerüljön
-20 ezerbe*. Minden szekció, ami nem ezt a döntést gyorsítja, súrlódás.
+A tünetlista fenti 20 pontja **négy okra** vezethető vissza. Ha csak a tüneteket
+javítjuk, három éven belül ugyanide jutunk.
 
-**Ok #2 — Az étterem digitálisan a saját közvetítőit erősíti, nem magát.**
-A P1, P4, P10 közös gyökere: a foglalást a Google, a rendelést a foodora, a
-véleményeket a hovamenjek/ittjartam birtokolja. Minden konverzió platformon
-történik, jutalékkal és nulla vendégadattal. A saját oldalnak nem „szebbnek" kell
-lennie — **birtokolnia kell legalább egy konverziót**, és a legvédhetőbb ez a
-foglalás, mert a foodora ezt nem tudja elvenni.
+### O1 — Ez nem weboldal, hanem egy szórólap HTML-be másolva
 
-**Ok #3 — A legdrágább termék láthatatlan.**
-P2. A különterem az egyetlen olyan tétel, aminek magas a fajlagos árbevétele
-(csoportos foglalás, előre tervezett, magas italfogyasztás), és az egyetlen, amit
-kiszállítással nem lehet helyettesíteni. Digitálisan nem létezik. Ez nem
-design-, hanem termékportfólió-hiba, amit designnal lehet javítani.
+*Bizonyíték:* a szó szerinti duplikáció (U2). Egy szórólapon a hajtás két
+oldalán **szándékosan** ismétlődik az ajánlat, mert az olvasó bármelyik oldalról
+kezdheti. Weben ez értelmetlen — és pontosan így néz ki: a szöveg úgy áll,
+ahogy egy A5-ös lapon állt.
 
-**Ok #4 — A „nyitva van-e" kérdés a legelső, és a legrosszabbul megválaszolt.**
-P3. Egy étterem oldalán az első mikrokonverzió nem a hangulat, hanem az idő. Ha ezt
-a választ a Google adja meg és nem az oldal, akkor a felhasználónak nincs oka
-átjönni az oldalra. A statikus nyitvatartási táblázat nem válasz: fordítást
-követel a felhasználótól („most 21:40 van, kedd, ez akkor még nyitva?").
+*Következmény:* a tartalom **nem navigálható**, mert soha nem is arra készült.
+Nincs benne belépőpont, nincs benne sorrend, nincs benne cselekvési pont —
+mert a szórólapon a cselekvési pont maga a papír, amit a hűtőre tesznek.
 
-**Ok #5 — A technológiai teher nem választás, hanem örökség.**
-P11–P13. Egy 4 oldalas brosúra alá általános célú CMS-t rakni azt jelenti, hogy
-minden látogató kifizeti egy blogmotor futásidejét. Nem a WordPress rossz — a
-*méretezés* rossz.
+*Ezért:* a megoldás nem „szebb tipográfia", hanem **az információ újratagolása
+a látogató szándéka szerint** (§4).
+
+### O2 — A tartalom sorrendje a szolgáltató fejében lévő sorrend, nem a vevőé
+
+Az oldal így halad: ki vagyok → mit nyitottam → milyen üvegeim vannak (14 fajta)
+→ mikor vagyok nyitva → mi van vészhelyzetben. A vevő fejében ez a sorrend:
+**„most törött be" / „mennyibe kerül" / „megbízható-e" / „mikor jön".**
+
+*Ezért:* a főoldal első képernyője nem bemutatkozás lesz, hanem **három ajtó a
+látogató három állapotához** (§5.1).
+
+### O3 — A karakterkódolási hiba nem hiba, hanem tünet: az oldalt évek óta senki nem nyitotta meg szerkesztésre
+
+A `õ`/`û` akkor keletkezik, amikor egy Win-1250-es szerkesztőből mentett fájl
+kerül ki deklaráció nélkül. Ez az **első** mentéskor keletkezik, és utána soha
+nem javítható „véletlenül". Hogy máig ott van a `problámáit` elgépeléssel együtt,
+az azt jelenti: **nincs olyan folyamat, amiben bárki ránéz erre az oldalra.**
+
+*Ezért:* a szállítmány része egy olyan technikai alap, amit **az ügyfél maga is
+tud szerkeszteni** anélkül, hogy elronthatná a kódolást (§9.1), és egy
+karbantartási ritmus (§14, F4).
+
+### O4 — A bizalom kizárólag a fizikai jelenlétből származik, digitálisan nulla
+
+Az ügyfélnek **4,7 csillagja van 66 értékelésből** — ez a pécsi üveges mezőnyben
+kiemelkedő. Ez a bizalom a Google Térképen áll, és ott is marad: a saját oldal
+egyetlen bizonyítékot sem hoz át belőle. Aki a Cégprofilról a „WEBHELY" gombra
+kattint, **rosszabb élménybe** érkezik, mint ahonnan jött — a listing modernebb,
+mint a célpont.
+
+*Ezért:* a redesign egyik fő feladata a **bizonyítékáthordás**: a
+Cégprofil-értékelés, a nevesített személyek, a 2000 óta tartó működés és a
+konkrét szakmai szókincs láthatóvá tétele az első képernyőn (§12).
 
 ---
 
 ## 4. Új információs architektúra és sitemap
 
-Elv: **egy URL = egy vendégkérdés.** Nem tartalomtípus szerint bontok, hanem
-döntési pont szerint.
+### 4.1 A rendezőelv
+
+Nem szolgáltatás szerint tagolok, hanem **a látogató érkezési állapota szerint**,
+és csak a második szinten megyek át szolgáltatásra. Három állapot van (O2):
+
+| Állapot | Lelkiállapot | Mennyi ideje van | Mit kell látnia 3 mp alatt |
+|---|---|---|---|
+| **A — Baj van** | stresszes, sürget, gyakran biztosítós ügy | ~10 mp | telefonszám, „most hívható-e", „mikor jön ki" |
+| **B — Tervez** | mérlegel, összehasonlít, árat keres | 2–5 perc | mit tud, milyen üvegek, hogyan zajlik, mennyi idő |
+| **C — Keretez** | vizuális, ízlés-döntés, nem sürgős | 3–10 perc | keretválaszték, paszpartú, példák, hogyan viszem be |
+
+### 4.2 Sitemap URL-enkénti indoklással
 
 ```
-/                          Főoldal — „nyitva vagytok, hol ülök, mit eszem, foglalok"
-├─ /etlap/                 [MEGTARTOTT URL] Étlap — szűrhető, allergénnel
-│   └─ /etlap/#pizzak      horgony, nem külön URL
-├─ /itallap/               [MEGTARTOTT URL] Itallap — csapolt sörök, koktélok
-├─ /asztalfoglalas/        Foglalás — az egyetlen űrlap teljes oldalon
-├─ /kulonterem/            Különterem és rendezvény — a hiányzó termékoldal
-├─ /jatekterem/            Biliárd, csocsó, darts, flipper — a differenciátor
-├─ /elerhetoseg/           [MEGTARTOTT URL] Cím, nyitvatartás, megközelítés, parkolás
-├─ /allergenek/            Allergéntáblázat
-├─ /impresszum/            Kötelező
-└─ /adatkezeles/           Kötelező (foglalási űrlap → GDPR)
+/                                  Főoldal — a három ajtó + a „tábla" + bizonyíték
+│
+├── /uvegtores/                    (A) Sürgősségi: törés, kárelhárítás, non-stop
+│   └── /uvegtores/biztositas/     (A) Biztosítós kárrendezés lépésről lépésre
+│
+├── /uvegezes/                     (B) Üvegezés — gyűjtő
+│   ├── /uvegezes/hoszigetelo-uveg/
+│   ├── /uvegezes/biztonsagi-uveg/
+│   ├── /uvegezes/kirakat/
+│   ├── /uvegezes/dísz-es-katedral-uveg/   → /uvegezes/disz-es-katedral-uveg/
+│   └── /uvegezes/erkely-es-elcsiszolas/
+│
+├── /tukor/                        (B) Tükör — önálló üzletág, önálló keresés
+│   ├── /tukor/tukorfal/
+│   └── /tukor/kulonleges-tukrok/
+│
+├── /kepkeretezes/                 (C) Képkeretezés — a második egyenrangú üzletág
+│   └── /kepkeretezes/paszpartu/
+│
+├── /muanyag-es-hoallo/            (B) Plexi, polikarbonát, kandallóüveg
+├── /videk/                        (B) Vidéki kiszállás + a költségmegosztás
+├── /arajanlat/                    Ajánlatkérő űrlap (mérettel, fotóval)
+├── /rolunk/                       Váradi Ferenc és Váradiné Czike Éva, 2000 óta
+└── /kapcsolat/                    Cím, nyitvatartás, térkép, parkolás
 ```
 
-**URL-enkénti indoklás:**
+### 4.3 Miért pont ezek az URL-ek
 
-| URL | Miért van | Miért nem másképp |
+| URL | Indok | Alternatíva, amit elvetettem, és miért |
 |---|---|---|
-| `/` | A listing „Webhely" gombjának landolása. Egyetlen dolga: állapot + foglalás. | Alternatíva: a `/` legyen az étlap. Elvetve — az étlapot linkelik és mentik, saját URL-t érdemel. |
-| `/etlap/` | Már indexelt, már ez a legkeresettebb aloldal. | Alternatíva: kategóriánként külön URL (`/etlap/pizzak/`). Elvetve — ~4 kategóriánál ez vékony tartalmú oldalakat szülne, és megtörné a „végiggörgetem az egészet" mintát. Horgonyok elegek. |
-| `/itallap/` | Már indexelt; a csapolt sör és a koktél külön keresési szándék. | Elvetve az `/etlap/`-ba olvasztás: külön indexelt URL-t megölni ok nélkül SEO-veszteség. |
-| `/asztalfoglalas/` | A konverziónak saját, linkelhető, hirdethető, mérhető URL kell (Google Cégprofil „Foglalás" link, QR a asztalokon). | Alternatíva: csak modal a főoldalon. Elvetve — nem linkelhető, nem mérhető, nem oszthatóformában. |
-| `/kulonterem/` | A legmagasabb értékű, jelenleg nem létező termék. Saját keresési szándék: „különterem Pécs", „céges vacsora Pécs". | Alternatíva: bekezdés az „Elérhetőség" alján. Elvetve — nem rangsorol, és nem lehet rá hirdetni. |
-| `/jatekterem/` | Ez a márka egyedi eszköze. Külön szándék: „csocsó Pécs", „biliárd Pécs". | Alternatíva: hazai szekció a főoldalon. Részben megmarad: a főoldalon van kivonat, a mélytartalom itt. |
-| `/allergenek/` | Jogszabályi elvárás + valós vendégkérdés; külön URL-en frissíthető anélkül, hogy az étlaphoz nyúlnánk. | Alternatíva: PDF. Elvetve — a PDF nem indexelhető jól, mobilon rossz, nem akadálymentes. |
+| `/` | A Cégprofilról érkező forgalom itt landol; három ajtót kell nyitnia, nem elmesélnie a céget. | *Egyoldalas (one-page) megtartása:* elvetve — S2 miatt 14 szolgáltatás nem fér egy rangsorolható URL-be. |
+| `/uvegtores/` | A legmagasabb szándékú keresés („betört ablak Pécs", „üveges azonnal"). Külön URL kell, mert külön hirdetési célpont és külön schema (`EmergencyService`-szerű `availableChannel`). | *`/kapcsolat/#surgos` horgony:* elvetve — horgonyra nem lehet hirdetni és nem rangsorol önállóan. |
+| `/uvegtores/biztositas/` | A biztosítós ügyintézés a legfélelmetesebb rész a laikusnak, és **dokumentált erősség** (48 órás beépítés). Külön oldal, mert külön keresés: „biztosító fizeti az ablakot". | *A sürgősségi oldal egy szekciója:* elvetve — hosszú, folyamatábrás tartalom, elnyomná a hívásra ösztönzést. |
+| `/uvegezes/*` | A meglévő szakmai szókincs (J5) csak akkor ér valamit, ha van hova rangsorolnia. Öt aloldal = öt kulcsszócsoport. | *Egy nagy `/szolgaltatasok/` oldal:* elvetve — ez a jelenlegi hiba nagyobb betűvel. |
+| `/tukor/` **nem** `/uvegezes/tukor/` | A tükör önálló vásárlói szándék („tükör méretre vágás Pécs", „aerobik tükörfal"), és a Google-kategória is „Üveg- **és tükörbolt**". Nem alárendelt. | *Alárendelés az üvegezésnek:* elvetve — mélyebb URL, gyengébb belső linkerő, rosszabb címezhetőség. |
+| `/kepkeretezes/` | Az ügyfél maga nevezi „egyedi erősségünknek". Jelenleg egy bekezdés. Ez a második üzletág, saját közönséggel (C állapot), saját szezonnal. | *Beolvasztás a főoldalba:* elvetve — U8. |
+| `/kepkeretezes/paszpartu/` | A „paszpartú" önálló, alacsony versenyű, magas szándékú kifejezés. Aki ezt keresi, tudja mit akar. | — |
+| `/muanyag-es-hoallo/` | A plexi/polikarbonát/kandallóüveg nem „üveg" a vevő fejében, más keresési nyelv. A kandallóüveg erősen szezonális (őszi csúcs). | *Szétbontás három URL-re:* elvetve — jelenleg nincs elég tartalom három oldalhoz; ez §14 F3 fázisban újranyitható. |
+| `/videk/` | J3, a költségmegosztás. Emellett ez a horgony a környékbeli településnevekhez (Kozármisleny, Pécsvárad, Szentlőrinc, Bogád – §15-ben megerősítendő hatókör). | *Csak a főoldalon említve:* elvetve — S6. |
+| `/arajanlat/` | Önálló URL kell, mert (a) hirdetési célpont, (b) köszönőoldal-mérés, (c) minden aloldalról ide mutat a másodlagos CTA. | *Csak modális űrlap:* elvetve — nem megosztható, nem mérhető, nem működik JS nélkül. |
+| `/rolunk/` | O4: a bizalom áthordása. Két nevesített ember, 2000 óta. | — |
+| `/kapcsolat/` | NAP-konzisztencia egyetlen kanonikus helyen, ahonnan minden katalógus másolható. | — |
 
-**Amit szándékosan NEM építek meg:** saját rendelési/fizetési rendszer. Indok:
-a foodora már működik 4,7 ★-gal; egy saját checkout fejlesztése, PCI-terhe és
-karbantartása nincs arányban egy kertvárosi pizzéria volumenével. Ha ez mégis cél,
-az külön projekt (§15).
+**Ami tudatosan NINCS benne:** blog, hírek, galéria-aloldal, „Miért minket
+válasszon" oldal, árlista-oldal. Indoklás: egy kétfős műhelynél a nem
+karbantartott blog kárt okoz (O3 megismétlődik), a galéria pedig a
+szolgáltatásoldalakon belül a helyén van, ahol konvertál is. Árlista-oldal csak
+akkor, ha valódi árak vannak (§15 Q3) — kitalált árat nem teszek ki.
+
+### 4.4 Navigáció
+
+Fő navigáció, öt elem (a `bottom-nav-limit` és `overflow-menu` elv szerint a
+kognitív terhelés miatt 5 a plafon):
+
+`Üvegezés · Tükör · Képkeretezés · Vidékre is · Kapcsolat`
+mellette elkülönítve: **`Hívás: 06 30 267 6709`** (elsődleges, jelzőszínű).
+
+Az `/uvegtores/` **nem** a főmenüben van, hanem a fejléc alatti, mindig látható
+**állapotsávban**: „Most nyitva 17:00-ig · Törés esetén non-stop: 06 30 267 6709".
+Indok: aki bajban van, nem menüt olvas, hanem a legkontrasztosabb elemre néz.
 
 ---
 
@@ -204,477 +344,419 @@ az külön projekt (§15).
 
 ### 5.1 Főoldal (`/`) — ez készül el prototípusként
 
-| # | Szekció | Cél | Kulcselem | CTA |
+| # | Szekció | Cél | Fő tartalom | CTA |
 |---|---|---|---|---|
-| 0 | Skip-link + fejléc | navigáció, azonnali hívás | logó, 5 menüpont, `tel:` | „Asztalt foglalok" |
-| 1 | Hajtás (hero) | „nyitva vagytok?" + „mi ez a hely?" | H1, **élő állapotjelző** (nyitva/zárva, óráig pontosan), 3 tényadat | 2 egyenrangú: Foglalás / Hívás |
-| 2 | **Alaprajz** (szignatúra) | „hol fogok ülni?" | interaktív SVG zónatérkép, 4 zóna | zónaválasztás → űrlap előtöltése |
-| 3 | Étlap-kivonat | „mit eszem, mennyiért?" | 4 kategória + ársáv | „Teljes étlap" → `/etlap/` |
-| 4 | Csapolt és koktél | italkínálat, ami a listingben highlight | 3 nevesített csapolt tétel | „Itallap" → `/itallap/` |
-| 5 | Játéksarok | differenciátor | 4 saját rajzú SVG ikon | „Mi van még" → `/jatekterem/` |
-| 6 | Különterem | csoportos foglalás | kapacitás (placeholder), mire jó | „Ajánlatot kérek" → űrlap, tárgy előtöltve |
-| 7 | Vélemények | bizalom | 4,5 ★ / 1 339, **forrásmegjelöléssel** | „Olvasd el a Google-on" |
-| 8 | Foglalási űrlap | **a konverzió** | 6 mező, inline validáció | „Foglalás elküldése" |
-| 9 | Gyakori kérdések | súrlódásoldás | 5 kérdés | — |
-| 10 | Elérhetőség | hely + idő | cím, térképlink, nyitvatartási táblázat | „Útvonal" |
-| 11 | Lábléc | jog, kapcsolat | impresszum, adatkezelés, közösségi | — |
-| — | Mobil sticky sáv | mindig elérhető konverzió | „Hívás" + „Foglalás" | — |
+| 1 | Állapotsáv | Azonnali elérhetőség | Élő nyitva/zárva állapot a H–P 9–17-ből számolva + non-stop szám | `tel:` |
+| 2 | Fejléc | Navigáció | Logó (szöveges), 5 menüpont, téma-váltó, hívógomb | `tel:` |
+| 3 | **Hero + „A tábla"** | A szolgáltatás lényegének megmutatása | H1, egy mondatos ígéret, és a **méretre húzható üvegtábla** (§ Szignatúra) | Méret átvitele az űrlapba |
+| 4 | Három ajtó | A látogató szétválogatása (O2) | Baj van / Tervezek / Keretezek — három kártya, mindegyik konkrét első lépéssel | 3 különböző |
+| 5 | Bizonyíték-sáv | O4: bizalomáthordás | 4,7 ★ / 66 vélemény (Google-ra mutatva), 2000 óta, Nagy Imre út 29., non-stop | Google-profil |
+| 6 | Mit csinálunk | J5 megőrzése rangsorolható formában | Üvegezés / Tükör / Képkeretezés / Műanyag és hőálló — 4 blokk, mindegyikben a valódi szakmai felsorolás | aloldalak |
+| 7 | Hogyan zajlik | U5 | 4 lépés: hívás → helyszíni felmérés azonnali áregyeztetéssel → gyártás → beépítés | `/arajanlat/` |
+| 8 | Vidékre is | J3 szó szerint | A költségmegosztás ajánlata, idézetként | `/videk/` |
+| 9 | Kik jövünk | J2 | Váradi Ferenc és Váradiné Czike Éva; fotóhely fenntartva | `/rolunk/` |
+| 10 | Ajánlatkérés | K3 megoldása | Akadálymentes űrlap, a táblából jövő mérettel előtöltve | küldés |
+| 11 | Kapcsolat + nyitvatartás | J6 | Cím, két szám, e-mail, nyitvatartási táblázat, térképhely | útvonalterv |
+| 12 | Lábléc | NAP-kanonizálás | Egységes NAP, sitemap-linkek, adatkezelés | — |
 
-### 5.2 `/etlap/`
+### 5.2 A többi oldal sablonjai
 
-| # | Szekció | Cél |
-|---|---|---|
-| 1 | H1 + rövid vezető | „Étlap — Giovanni Pizzéria, Pécs Kertváros" |
-| 2 | Szűrősor (chip) | Mind / Pizzák / Roston sültek / Levesek / Saláták / Vegetáriánus |
-| 3 | Kategórialisták | tételnév, rövid összetevő-sor, ár, allergénkód |
-| 4 | Allergén-jelmagyarázat | link `/allergenek/`-re |
-| 5 | Kiszállítás-sáv | foodora-link, egyértelműsítve, melyik listing |
-| 6 | CTA | „Inkább itt eszünk → Foglalás" |
-
-### 5.3 `/kulonterem/`
-
-| # | Szekció | Cél |
-|---|---|---|
-| 1 | H1 + kapacitásadat | „Különterem Pécsen — [X] főig" *(placeholder)* |
-| 2 | Mire jó | céges vacsora, ballagás, szülinap, klubest |
-| 3 | Mi jár hozzá | asztalrend, projektor?, zene?, minimumfogyasztás? *(mind placeholder)* |
-| 4 | Menüajánlatok | fix csomagok *(placeholder árakkal)* |
-| 5 | Ajánlatkérő űrlap | dátum, létszám, alkalom, kapcsolat |
-| 6 | GYIK | lemondás, előleg, saját torta |
-
-### 5.4 `/jatekterem/`, `/itallap/`, `/elerhetoseg/`, `/allergenek/`
-Egyszerű, egy-célú oldalak: H1 → tényleges tartalom → egy CTA. Nincs hero,
-nincs karusszel.
+| Oldaltípus | Szekciósor |
+|---|---|
+| **Sürgősségi** (`/uvegtores/`) | Hívósáv → Mit tegyen most (3 pont: biztonság, fotó, méret) → Mit csinálunk mi → Biztosítós ügy → Rövid GYIK → Hívás |
+| **Szolgáltatás-gyűjtő** (`/uvegezes/`, `/tukor/`) | H1 + egymondatos definíció → aloldal-kártyák → mikor melyiket → munkafolyamat → ajánlatkérés |
+| **Szolgáltatás-levél** (`/uvegezes/hoszigetelo-uveg/`) | H1 → mire jó, laikusul → műszaki táblázat (vastagság, felépítés, mit old meg) → tipikus esetek → mit kell megadnia → ajánlatkérés |
+| **Képkeretezés** | H1 → mit hozhat be → keret- és paszpartúválaszték → példahely (fotó) → átfutás → ajánlatkérés |
+| **Vidék** | H1 → a költségmegosztás ajánlata → hogyan szervezze meg a szomszédokkal → hatókör-lista → hívás |
+| **Rólunk** | H1 → két ember, névvel → 2000 óta → a műhely → értékelések → hívás |
+| **Kapcsolat** | H1 → NAP-blokk → nyitvatartás-táblázat → térkép → megközelítés/parkolás → űrlap |
 
 ---
 
-## 6. Wireframe
+## 6. Wireframe-leírás (ASCII)
 
-### 6.1 Desktop (≥1024px)
-
-```
-┌───────────────────────────────────────────────────────────────────────────┐
-│ [skip a tartalomra]                                                       │
-├───────────────────────────────────────────────────────────────────────────┤
-│ GIOVANNI   Étlap  Itallap  Játékterem  Különterem  Kapcsolat              │
-│                                    (06 72) 446 000   [ Asztalt foglalok ] │
-├───────────────────────────────────────────────────────────────────────────┤
-│                                                                           │
-│  ● MOST NYITVA · zárás 23:00-kor          H1                              │
-│  ┌──────────────────────────────┐   Pizza, csapolt sör és csocsó          │
-│  │                              │   Pécs Kertvárosában.                   │
-│  │   Nagy Imre út 43. óta       │                                         │
-│  │   ugyanaz a cím.             │   Lead: 2 mondat, konkrét.              │
-│  │                              │                                         │
-│  │  [ Asztalt foglalok ]        │   ┌──────┬──────────┬─────────────┐     │
-│  │  [ (06 72) 446 000 ]         │   │ 4,5★ │ 2–6 e Ft │ Nyitás 12:00│     │
-│  └──────────────────────────────┘   │ 1339 │  / fő    │  minden nap │     │
-│                                     └──────┴──────────┴─────────────┘     │
-├───────────────────────────────────────────────────────────────────────────┤
-│  SZIGNATÚRA — „Hol ülnél?"  (interaktív alaprajz, inline SVG)             │
-│                                                                           │
-│  ┌─────────────────────────────────────────────┐  ┌─────────────────────┐ │
-│  │  ─ ─ ─ utca felőli oldal ─ ─ ─              │  │ TERASZ              │ │
-│  │  ┌───────────┐  ┌────────────────────────┐  │  │ Utca felőli kiülős  │ │
-│  │  │  TERASZ   │  │ BELSŐ TÉR              │  │  │ rész.               │ │
-│  │  │ • • • •   │  │ ▭ ▭ ▭ ▭                │  │  │ [X] asztal (egyezt.)│ │
-│  │  │ • • • •   │  │ ▭ ▭ ▭ ▭      ▂▂▂ pult  │  │  │                     │ │
-│  │  └───────────┘  └────────────────────────┘  │  │ [ Ide foglalok ]    │ │
-│  │        ┃ bejárat                            │  └─────────────────────┘ │
-│  │  ┌───────────┐  ┌────────────────────────┐  │                          │
-│  │  │ JÁTÉK-    │  │ KÜLÖNTEREM             │  │  (a jobb oldali panel a  │
-│  │  │ SAROK     │  │ ○○○○○                  │  │   kijelölt zónához       │
-│  │  │ ▭biliárd  │  │ ▭▭▭▭▭ hosszú asztal    │  │   frissül; a kiválasztás │
-│  │  │ ⌗csocsó   │  │ ○○○○○                  │  │   előtölti az űrlapot)   │
-│  │  │ ◎darts    │  └────────────────────────┘  │                          │
-│  │  │ ⬡flipper  │                              │                          │
-│  │  └───────────┘  ─ sematikus, nem méretarányos ─                        │
-│  └─────────────────────────────────────────────┘                          │
-├───────────────────────────────────────────────────────────────────────────┤
-│  ÉTLAP-KIVONAT            ┌────────┐┌────────┐┌────────┐┌────────┐        │
-│                           │ Pizzák ││ Roston ││ Levesek││Saláták │        │
-│                           │ [ár]   ││ [ár]   ││ [ár]   ││ [ár]   │        │
-│                           └────────┘└────────┘└────────┘└────────┘        │
-│                                              [ Teljes étlap → ]           │
-├───────────────────────────────────────────────────────────────────────────┤
-│  SÖTÉT SÁV — CSAPOLVA        Staropramen · Stella Artois · Jägermeister    │
-│                              + koktélok             [ Itallap → ]         │
-├───────────────────────────────────────────────────────────────────────────┤
-│  JÁTÉKSAROK   [ikon] Biliárd  [ikon] Csocsó  [ikon] Darts  [ikon] Flipper │
-├───────────────────────────────────────────────────────────────────────────┤
-│  KÜLÖNTEREM              │  VÉLEMÉNYEK                                     │
-│  [X] főig, saját tér.    │  4,5 ★ — 1 339 vélemény a Google-on             │
-│  [ Ajánlatot kérek ]     │  (forrás megjelölve, nem saját mérés)           │
-├───────────────────────────────────────────────────────────────────────────┤
-│  FOGLALÁS                                                                 │
-│  ┌───────────────┬───────────────┐   Mit csinálunk az adataiddal:          │
-│  │ Név*          │ Telefon*      │   csak visszaigazolunk, aztán töröljük. │
-│  ├───────────────┼───────────────┤                                         │
-│  │ Dátum*        │ Időpont*      │   [ Foglalás elküldése ]                │
-│  ├───────────────┼───────────────┤   vagy hívj: (06 72) 446 000            │
-│  │ Fő*           │ Hol ülnétek   │                                         │
-│  ├───────────────┴───────────────┤                                         │
-│  │ Megjegyzés                    │                                         │
-│  └───────────────────────────────┘                                         │
-├───────────────────────────────────────────────────────────────────────────┤
-│  GYIK (5 db, ⌄ nyitható)        │  ELÉRHETŐSÉG + nyitvatartási táblázat    │
-├───────────────────────────────────────────────────────────────────────────┤
-│  Lábléc: cím · telefon · impresszum · adatkezelés · Facebook · foodora     │
-└───────────────────────────────────────────────────────────────────────────┘
-```
-
-### 6.2 Mobil (360–430px)
+### 6.1 Desktop, ≥1024px — főoldal első két képernyője
 
 ```
-┌───────────────────────────┐
-│ [skip]                    │
-│ GIOVANNI            [☰]   │
-├───────────────────────────┤
-│ ● MOST NYITVA             │
-│   zárás 23:00-kor         │
-│                           │
-│ Pizza, csapolt sör        │
-│ és csocsó Pécs            │   ← H1, clamp() → ~34px
-│ Kertvárosában.            │
-│                           │
-│ Lead, 2 mondat.           │
-│                           │
-│ ┌───────────────────────┐ │
-│ │ 4,5 ★ · 1 339 vélem.  │ │
-│ ├───────────────────────┤ │
-│ │ 2 000–6 000 Ft / fő   │ │
-│ ├───────────────────────┤ │
-│ │ Nyitás 12:00, minden  │ │
-│ │ nap                   │ │
-│ └───────────────────────┘ │
-├───────────────────────────┤
-│ HOL ÜLNÉL?                │
-│ ┌───────────────────────┐ │
-│ │ ┌────────┐ ┌────────┐ │ │  ← ugyanaz az SVG,
-│ │ │ TERASZ │ │ BELSŐ  │ │ │    változatlan viewBox,
-│ │ │ • • •  │ │ ▭ ▭ ▭  │ │ │    arányosan kicsinyítve
-│ │ └────────┘ └────────┘ │ │    (a rajz eleve 2×2)
-│ │ ┌────────┐ ┌────────┐ │ │
-│ │ │ JÁTÉK- │ │ KÜLÖN- │ │ │    Érintőcél 360px-en:
-│ │ │ SAROK  │ │ TEREM  │ │ │    ~118×113 CSS px
-│ │ └────────┘ └────────┘ │ │
-│ └───────────────────────┘ │
-│ ┌───────────────────────┐ │
-│ │ TERASZ — leírás       │ │  ← a panel az ábra ALÁ
-│ │ [ Ide foglalok ]      │ │    kerül, nem mellé
-│ └───────────────────────┘ │
-├───────────────────────────┤
-│ ÉTLAP                     │
-│ ┌───────────────────────┐ │
-│ │ Pizzák          [ár]  │ │  ← 1 oszlop, nem
-│ ├───────────────────────┤ │    vízszintes karusszel
-│ │ Roston sültek   [ár]  │ │
-│ ├───────────────────────┤ │
-│ │ Levesek         [ár]  │ │
-│ ├───────────────────────┤ │
-│ │ Saláták         [ár]  │ │
-│ └───────────────────────┘ │
-│ [ Teljes étlap → ]        │
-├───────────────────────────┤
-│ CSAPOLVA (sötét sáv)      │
-│ Staropramen               │
-│ Stella Artois             │
-│ Jägermeister              │
-├───────────────────────────┤
-│ JÁTÉKSAROK  2×2 rács      │
-├───────────────────────────┤
-│ KÜLÖNTEREM                │
-├───────────────────────────┤
-│ VÉLEMÉNYEK                │
-├───────────────────────────┤
-│ FOGLALÁS                  │
-│ Név*                      │  ← 1 oszlop, 16px input
-│ [_____________________]   │    (iOS zoom ellen)
-│ Telefon*                  │
-│ [_____________________]   │
-│ Dátum*      Időpont*      │  ← ez a kettő maradhat
-│ [_______]   [_________]   │    egy sorban
-│ Fő*                       │
-│ [_____________________]   │
-│ Hol ülnétek?              │
-│ [ Terasz          ▾ ]     │
-│ [ Foglalás elküldése ]    │
-├───────────────────────────┤
-│ GYIK / ELÉRHETŐSÉG        │
-│ Lábléc                    │
-├───────────────────────────┤
-│ ╔═══════════╦═══════════╗ │  ← sticky, csak akkor
-│ ║  Hívás    ║  Foglalás ║ │    jelenik meg, ha a
-│ ╚═══════════╩═══════════╝ │    hero elhagyta a nézetet
-└───────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ ● Most nyitva · 17:00-ig      Törés esetén non-stop: 06 30 267 6709      [☀/☾]│ ← állapotsáv, 36px
+├──────────────────────────────────────────────────────────────────────────────┤
+│  VÁRADI FERENC          Üvegezés  Tükör  Képkeretezés  Vidékre is  Kapcsolat │
+│  ÜVEGES · Pécs, Kertváros                              [  HÍVÁS: 30 267 6709 ]│ ← fejléc, ragadós
+├──────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│   ┌───────────────────────────────┐   ┌──────────────────────────────────┐   │
+│   │                               │   │  ↕ 400 mm                        │   │
+│   │  Üveg, méretre vágva.         │   │   ┌────────────────────────┐▲    │   │
+│   │  Pécsett, 2000 óta.           │   │   │                        ││    │   │
+│   │  ────────────────────         │   │   │   A TÁBLA              ││    │   │
+│   │  Ablak, kirakat, tükör,       │   │   │   (húzható üvegtábla,  ││    │   │
+│   │  hőszigetelő üveg és          │   │   │    zöld vágott éllel,  ││    │   │
+│   │  képkeretezés. Helyszíni      │   │   │    fénycsíkkal)        ││    │   │
+│   │  felmérés, azonnali           │   │   │                        ││    │   │
+│   │  áregyeztetéssel.             │   │   └────────────────────────┘▼◄──┐│   │
+│   │                               │   │   ◄────── 600 mm ──────►    ↖húzd│   │
+│   │  [ Ajánlatot kérek ]  [Hívás] │   │  ├┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┤ mérce │   │
+│   │                               │   │  600 × 400 mm  → [Átveszem]      │   │
+│   └───────────────────────────────┘   └──────────────────────────────────┘   │
+│    max 34rem szövegoszlop              a tábla: max 520×420, arányt tart     │
+├──────────────────────────────────────────────────────────────────────────────┤
+│  ┌────────────────────┐  ┌────────────────────┐  ┌────────────────────┐      │
+│  │ [!] BAJ VAN        │  │ [▭] TERVEZEK       │  │ [◱] KERETEZEK      │      │
+│  │ Betört, repedt,    │  │ Hőszigetelő csere, │  │ Kép, gobelin,      │      │
+│  │ kiesett.           │  │ tükörfal, kirakat. │  │ festmény, tükör.   │      │
+│  │ → Hívás most       │  │ → Ajánlatot kérek  │  │ → Keretválaszték   │      │
+│  └────────────────────┘  └────────────────────┘  └────────────────────┘      │
+├──────────────────────────────────────────────────────────────────────────────┤
+│   ★ 4,7 / 66 vélemény (Google)  │  2000 óta  │  Nagy Imre út 29.  │  Non-stop │
+└──────────────────────────────────────────────────────────────────────────────┘
+```
+
+### 6.2 Mobil, 375px — ugyanaz a tartalom, más sorrend
+
+```
+┌──────────────────────────┐
+│ ● Nyitva · 17:00-ig  [☾] │  36px, ragadós
+├──────────────────────────┤
+│ VÁRADI FERENC ÜVEGES  [≡]│  56px
+├──────────────────────────┤
+│                          │
+│  Üveg, méretre vágva.    │  H1, clamp 36→60px
+│  Pécsett, 2000 óta.      │
+│                          │
+│  Ablak, kirakat, tükör,  │  17px, max 60ch
+│  hőszigetelő üveg és     │
+│  képkeretezés.           │
+│                          │
+│  ┌────────────────────┐  │  ← A TÁBLA mobilon
+│  │  ↕300              │  │    a szöveg ALATT,
+│  │ ┌────────────┐▲    │  │    de a hajtás
+│  │ │            ││    │  │    felett még
+│  │ │  üvegtábla ││    │  │    belóg (affordancia)
+│  │ │            ││    │  │
+│  │ └────────────┘▼    │  │
+│  │ ◄──── 450 ────►    │  │
+│  │ 450 × 300 mm       │  │
+│  │ [ Átveszem ]       │  │
+│  └────────────────────┘  │
+│                          │
+│  ┌────────────────────┐  │
+│  │ [!] BAJ VAN        │  │  egymás alatt,
+│  │ Betört, repedt.    │  │  nem vízszintes
+│  │ → Hívás most       │  │  görgetés
+│  └────────────────────┘  │
+│  ┌────────────────────┐  │
+│  │ [▭] TERVEZEK       │  │
+│  └────────────────────┘  │
+│  ┌────────────────────┐  │
+│  │ [◱] KERETEZEK      │  │
+│  └────────────────────┘  │
+│                          │
+│  ★ 4,7 · 66 vélemény     │  a bizonyítéksáv
+│  2000 óta · Kertváros    │  2 sorba tördel
+│                          │
+│         ⋮ (görgetés)     │
+├──────────────────────────┤
+│ [ 📞 HÍVÁS ] [ AJÁNLAT ] │  ← ragadós alsó sáv,
+└──────────────────────────┘    56px, safe-area-inset
+```
+
+**Mobil-döntés, amit külön indokolok:** a hero-szöveg a tábla **fölé** kerül,
+mert a H1-nek kell az LCP-elemnek lennie, és mert egy stresszes látogatónál a
+szöveg + a hívógomb fontosabb, mint az interakció. A tábla teteje viszont még
+belóg a hajtás fölé, hogy legyen affordanciája („van itt még valami").
+Az alsó ragadós sáv **két** gombot tart, nem egyet: a hívás (A állapot) és az
+ajánlatkérés (B/C állapot) nem ugyanaz a szándék.
+
+### 6.3 Az ajánlatkérő űrlap wireframe-je (mindkét méret)
+
+```
+┌─ Ajánlatkérés ──────────────────────────────────────────┐
+│                                                          │
+│  Miben segíthetünk? *                                    │
+│  ( ) Törés, sürgős   ( ) Üvegezés   ( ) Tükör            │
+│  ( ) Képkeretezés    ( ) Egyéb                           │
+│                                                          │
+│  Név *                          Telefonszám *            │
+│  ┌───────────────────────┐      ┌──────────────────────┐ │
+│  │                       │      │ 06 30 …              │ │
+│  └───────────────────────┘      └──────────────────────┘ │
+│  ↳ hiba ide, a mező ALÁ, role="alert"                    │
+│                                                          │
+│  Méret (mm)          Hol van? (irányítószám)             │
+│  ┌─────┐ × ┌─────┐   ┌──────────────────────┐            │
+│  │ 600 │   │ 400 │   │ 7632                 │            │
+│  └─────┘   └─────┘   └──────────────────────┘            │
+│  ↳ „A táblából átvéve" — ha onnan jött                   │
+│                                                          │
+│  Leírás                                                  │
+│  ┌────────────────────────────────────────────────────┐  │
+│  │                                                    │  │
+│  └────────────────────────────────────────────────────┘  │
+│  Ha tud, írja meg az üveg vastagságát és a keret          │
+│  anyagát — így pontosabb árat tudunk mondani.             │
+│                                                          │
+│  [ Elküldöm ]      Vagy hívjon: 06 30 267 6709           │
+│                                                          │
+│  ┌── aria-live="polite" ─────────────────────────────┐   │
+│  │ Összefoglaló hibalista / sikerüzenet ide           │   │
+│  └────────────────────────────────────────────────────┘   │
+└──────────────────────────────────────────────────────────┘
 ```
 
 ---
 
 ## 7. Design system
 
-### 7.0 A vizuális kiindulópont — egy mondatban
-
-> **A lisztes rozsdamentes pult és a mellette álló, évek óta koptatott flipper- és
-> csocsóasztal fém-üveg világa: hűvös acélszürkék, krétafehér lisztpor, és egyetlen
-> meleg jel — a csapolt sör borostyánja.**
-
-Ez a hely nem toszkán trattoria és nem „prémium gasztroélmény". Egy kertvárosi
-pizzéria, ahol csapolt sör van és flipper. A vizuális rendszer ebből épül:
-**munkaeszköz-esztétika, nem étterem-katalógus.**
-
-**Amit ezért kizártam:**
-
-| Elvetett irány | Miért nem |
-|---|---|
-| Krém háttér + magas kontrasztú serif + terrakotta accent | Ez az „olasz étterem" alapértelmezett AI-sablonja. Egy 2 000–6 000 Ft-os kertvárosi pizzériát fine-diningnak öltöztet — hazugság, és a vendég azonnal drágának olvassa. |
-| Fekete + egy neon accent | Bár a játéksarok kísérti, ez sportbár-klisé, és a magyar szöveg (ő, ű) sötét alapon nagy méretben nehezen tördelhető olvashatóan. |
-| Piros-fehér-zöld / kockás abrosz | A „Giovanni" név miatt kézenfekvő, ezért is elvetve: nulla megkülönböztetés a másik hat pécsi pizzériához képest. |
-| Ételfotó-vezérelt hero | Nincs jogtiszta, jó minőségű saját fotókészletünk (a listing egyetlen említett fotója a „Málnás Lávasüti"). Stock-fotó pizzával azonnal lebukik. |
-
-**Amit választottam:** világos alap (lisztpor), egyetlen sötét sáv az itallapnak
-(este, pult), és **egy** meleg akcentus. A merészség egy helyre megy: az Alaprajzba.
-
-**Korrekció, miután megkaptam a valódi fotókat (2026-09-04).** A hely melegebb, mint
-ahogy az anyagból kiolvastam: vörösre pácolt fateraszok, narancssárga falak, téglapult.
-A hűvös, kékes-zöldes szürke alap (`#E7EAE7`) ezekkel a képekkel hidegen ütközött.
-Ezért a semleges alapot **meleg irányba hangoltam** — `#E9E5E0` —, és vele az egész
-szürkeskálát. Ez **nem** a tiltott krém (`#F4F1EA` környéke): sötétebb, jóval kevésbé
-sárga, és továbbra is szürke, nem homok. A tipográfia (grotesque, nem serif) és az
-egyetlen akcentus változatlan, tehát a tiltott hármas nem áll össze. A semleges szín
-így nem örökölt, hanem választott: az akcentus felé billen, ahogy a képek is.
-
 ### 7.1 Színtokenek
 
-Alap: 9 tokenből álló skála. A kontrasztértékek WCAG 2.2 szerint számítva
-(relatív luminancia, 8-bit sRGB).
+Kilenc nevesített token. Mindegyik egy **konkrét anyaghoz** kötődik a műhelyből,
+nem hangulathoz. A kontrasztértékeket kiszámoltam (WCAG 2.x relatív luminancia),
+nem becsültem.
 
-| Token | Hex | Szerep | Kontraszt | Megfelelés |
+| Token | Név | Light | Dark | Mire való |
 |---|---|---|---|---|
-| `--szen` | `#191714` | fő szöveg világos alapon; sötét sáv háttere | **14,27 : 1** a `--liszt`-en; **17,15 : 1** a `--lap`-on | AAA |
-| `--grafit` | `#26221D` | emelt felület a sötét sávban | `--liszt` szöveg rajta **12,60 : 1** | AAA |
-| `--acel` | `#5C564E` | másodlagos szöveg világos alapon | **5,78 : 1** a `--liszt`-en; **6,95 : 1** a `--lap`-on | AA |
-| `--acel-vil` | `#B2AAA0` | másodlagos szöveg sötét alapon | **7,79 : 1** a `--szen`-en; **6,89 : 1** a `--grafit`-on | AAA |
-| `--liszt` | `#E9E5E0` | oldalháttér — **meleg** krétaszürke, nem krém | referencia-alap | — |
-| `--lap` | `#FBFAF8` | kártya, űrlapmező | referencia-alap | — |
-| `--vonal` | `#7D7770` | input- és kártyakeret | **3,53 : 1** a `--liszt`-en; **4,24 : 1** a `--lap`-on | AA nem-szöveges (≥3:1) |
-| `--parazs` | `#9C5406` | elsődleges CTA háttere, link | fehér szöveg rajta **5,70 : 1**; szövegként a `--liszt`-en **4,55 : 1** | AA |
-| `--parazs-vil` | `#F0A93C` | akcentus sötét alapon, fókuszgyűrű | **8,90 : 1** a `--szen`-en; **7,86 : 1** a `--grafit`-on | AAA |
+| `--el` | **élzöld** — a float üveg vágott élének színe | `#14544C` | `#6FC0B2` | elsődleges: gombok, linkek, fókusz |
+| `--el-mely` | **mélység** — egymásra rakott üvegtáblák | `#0B2E2A` | `#071110` | sötét felületek, lábléc, hover |
+| `--el-tint` | **üvegtónus** — egyetlen tábla átnézetben | `#CFE3DE` | `#16332E` | kiemelt blokkok, idézetek |
+| `--paszpartu` | **paszpartúkarton** | `#F2EEE4` | `#0C1513` | oldalháttér |
+| `--papir` | **papír** — a keretbe kerülő lap | `#FCFAF5` | `#13201D` | kártya, űrlap, felület |
+| `--tinta` | **tinta** | `#15201E` | `#E9E6DC` | szövegtörzs |
+| `--gitt` | **gitt** — az ablakgitt meleg szürkéje | `#55605C` | `#9DA8A3` | másodlagos szöveg, ikon |
+| `--gitt-vonal` | **gittvonal** | `#8C8474` | `#63776F` | űrlapmező-keret, elválasztó |
+| `--jelzo` | **jelzőszalag** — a frissen beépített üvegre ragasztott figyelmeztető szalag | `#A33512` | `#F5804F` | **kizárólag** sürgősség |
 
+#### Kontrasztarányok — kiszámolva
 
-**Felületfüggő variáns** (nem új márkaszín, hanem egy meglévő sötétebb változata):
+**Light mód** (háttér `#F2EEE4`, felület `#FCFAF5`):
 
-| Token | Hex | Szerep | Kontraszt |
+| Előtér | Háttéren | Arány | Szint |
 |---|---|---|---|
-| `--acel-mely` | `#46413A` | mikrofelirat az Alaprajz tintázott zónáin | **5,53 : 1** a legsötétebb (28% parázs) zónán; 7,47 : 1 a `--liszt`-en |
+| `--tinta` `#15201E` | `--papir` `#FCFAF5` | **16,01 : 1** | AAA |
+| `--tinta` `#15201E` | `--paszpartu` `#F2EEE4` | **14,42 : 1** | AAA |
+| `--gitt` `#55605C` | `--papir` `#FCFAF5` | **6,26 : 1** | AAA (normál szöveg) |
+| `--gitt` `#55605C` | `--paszpartu` `#F2EEE4` | **5,64 : 1** | AA+ |
+| `--el` `#14544C` | `--papir` `#FCFAF5` | **8,38 : 1** | AAA |
+| `--el` `#14544C` | `--el-tint` `#CFE3DE` | **6,53 : 1** | AAA |
+| `--jelzo` `#A33512` | `--papir` `#FCFAF5` | **6,55 : 1** | AAA |
+| `#FFFFFF` | `--el` `#14544C` | **8,74 : 1** | AAA |
+| `#FFFFFF` | `--jelzo` `#A33512` | **6,83 : 1** | AAA |
+| `--gitt-vonal` `#8C8474` | `--papir` `#FCFAF5` | **3,55 : 1** | AA (UI-komponens, ≥3:1) |
+| `--el` fókuszgyűrű | `--papir` | **8,38 : 1** | ≫3:1 |
 
-Miért kellett: a `--acel` (#56616A) a `--liszt`-en 5,23:1, de a zónatónusokon 4,5 alá esik
-(15% tintán 3,84; 28% parázson 3,57). A 11px-es feliratok kis szövegnek számítanak, tehát
-4,5:1 kell. Ez a token csak az alaprajzon él.
+**Dark mód** (háttér `#0C1513`, felület `#13201D`):
 
-**Állapotszínek** (szemantikusak, nem márkaszínek — mindig ikonnal/szöveggel
-párosítva, sosem önmagukban hordoznak információt):
-
-| Token | Hex | Szerep | Kontraszt a `--liszt`-en |
+| Előtér | Háttéren | Arány | Szint |
 |---|---|---|---|
-| `--nyitva` | `#14663F` | „Most nyitva" | **5,58 : 1** — AA |
-| `--zarva` | `#96262B` | „Most zárva" | **6,42 : 1** — AA |
+| `--tinta` `#E9E6DC` | `--paszpartu` `#0C1513` | **14,85 : 1** | AAA |
+| `--tinta` `#E9E6DC` | `--papir` `#13201D` | **13,43 : 1** | AAA |
+| `--gitt` `#9DA8A3` | `--paszpartu` `#0C1513` | **7,56 : 1** | AAA |
+| `--gitt` `#9DA8A3` | `--papir` `#13201D` | **6,84 : 1** | AAA |
+| `--el` `#6FC0B2` | `--paszpartu` `#0C1513` | **8,71 : 1** | AAA |
+| `--jelzo` `#F5804F` | `--paszpartu` `#0C1513` | **7,14 : 1** | AAA |
+| `#0C1513` | `--el` `#6FC0B2` | **8,71 : 1** | AAA (sötét szöveg világos gombon) |
+| `--gitt-vonal` `#63776F` | `--papir` `#13201D` | **3,51 : 1** | AA (UI-komponens) |
 
-**Miért nem `--parazs` a zárt állapot is?** Mert akkor a CTA és a
-figyelmeztetés ugyanúgy nézne ki. Az akcentus *mindig* és *csak* cselekvést jelent.
+**Döntés, amit külön indoklok:** dark módban a gombfelirat **nem fehér**, hanem
+`--paszpartu` (`#0C1513`) a világosított élzöldön. A fehér szöveg világos
+telített felületen kápráztat, és a `color-dark-mode` elv szerint sötét módban
+nem invertálni kell, hanem tónusváltozatot használni.
 
-### 7.2 Típusskála
+### 7.2 Tipográfia
 
-**Két variable betűcsalád, mindkettő teljes latin-ext lefedettséggel** (ő, ű valódi
-kettős hosszú ékezettel, nem összeollózott glifával):
+**Két variable betűcsalád, mindkettő teljes latin-ext lefedettséggel** — az
+`ő` (U+0151) és `ű` (U+0171) mindkettőben megvan, ez volt a kizáró feltétel
+(K1 után ez nem elhanyagolható részlet).
 
-| Szerep | Család | Tengelyek | Miért ez |
-|---|---|---|---|
-| Display | **Bricolage Grotesque** | `wght 200–800`, `opsz 12–96`, `wdth 75–100` | Utcai tábla- és automata-feliratok logikájából épített grotesque: kissé szabálytalan, „csinált", nem semleges. Pontosan a koptatott flipper- és cégértipográfia regisztere. Az `opsz` tengely miatt nagy méretben szorosabbra, kis méretben nyitottabbra állítható. |
-| Szöveg | **Source Sans 3** | `wght 200–900` | Kifejezetten képernyős folyószövegre tervezett humanista sans, magas x-magassággal és **valódi tabuláris számokkal** — ez az árlistánál és a nyitvatartási táblázatnál nem díszítés, hanem funkció. Latin-ext fedése teljes és jól hintelt 14–16px-en. |
+| Szerep | Család | Tengelyek | Licenc | Miért ez |
+|---|---|---|---|---|
+| Display, címsor, számok | **Archivo** | `wght 100–900`, `wdth 62–125` | OFL | Grotesque, amit eredetileg **nagyméretű, nyomtatott és táblás megjelenítésre** terveztek — ugyanaz a műfaj, mint egy műhely cégtáblája vagy egy kirakatra festett felirat. A `wdth` tengely miatt **egyetlen fájlból** kapok keskenyített feliratot a mércéhez és normál szélességet a címsorhoz — nincs második letöltés. Latin-ext teljes. |
+| Szövegtörzs | **Source Serif 4** | `wght 200–900`, `opsz 8–60` | OFL | Talpas törzs, mert (a) hosszabb magyarázó szövegnél kevésbé fárasztó, (b) egy 2000 óta működő családi műhelynél „levélpapír"-hangot ad, nem startupot, (c) az `opsz` tengely miatt a 17px-es törzs és a 13px-es képaláírás **külön optikai rajzot** kap ugyanabból a fájlból. Adobe, kifogástalan latin-ext. |
 
-**A display face minimális használati mérete: 24px / 1,5rem.**
-Ez alatt a Bricolage jellegzetes vágásai (a `g` és az `ő` ékezetének viszonya, a
-szűk belső terek) 1× DPR-en összemosódnak. 24px alatt **mindig** Source Sans 3.
+**A display face minimális használati mérete.** Az Archivo `wdth < 85`
+beállításban a magyar kettős ékezet (`ő`, `ű`) fölött a két vonás összezár:
 
-**Elvetett alternatívák:**
+- `wdth 100` (normál): **14px-től** használható.
+- `wdth 88` (címsor-keskenyítés): **24px-től**.
+- `wdth 75` (mérce, számok): **13px-től, de csak verzálban és számokkal** —
+  ékezetes kisbetűt ilyen szélességben nem szedek.
+- `wdth < 70`: **nem használom.** Nincs olyan méret, ahol a magyar ékezet
+  biztonságos.
 
-| Alternatíva | Miért nem |
-|---|---|
-| Playfair Display + Inter | A default AI-páros. Ráadásul a Playfair vékony vonalvezetése kis méretben eltűnik, és a hangneme fine-dining. |
-| Archivo / Archivo Expanded | Kiváló latin-ext, variable — de túl semleges, „agency-alapértelmezés". Nem hordoz karaktert. |
-| Figtree szövegre | Jó, de nincs valódi tabuláris számkészlete, és a nyitvatartási táblázat emiatt ugrálna. |
-| Egyetlen családdal megoldani | Olcsóbb lenne (egy woff2), de akkor a szignatúra-elem tipográfiai súlya elveszne. A két család együtt is elfér a KB-büdzsében (§11). |
+Ez nem elméleti óvatosság: pont az `ő`/`ű` az a két karakter, amivel ennek az
+oldalnak eddig baja volt (K1). Nem szeretném tipográfiával megismételni azt,
+amit a kódolás elrontott.
+
+**Típusskála `clamp()`-pel** (360px → 1440px között folyamatos):
 
 ```css
---t-display: clamp(2.25rem, 1.4rem + 3.6vw, 4.5rem);   /* H1 — 36 → 72px */
---t-h2:      clamp(1.75rem, 1.35rem + 1.8vw, 2.75rem); /* 28 → 44px */
---t-h3:      clamp(1.25rem, 1.13rem + 0.55vw, 1.5rem); /* 20 → 24px */
---t-lead:    clamp(1.0625rem, 1rem + 0.35vw, 1.25rem); /* 17 → 20px */
---t-body:    1rem;      /* 16px — soha nem kisebb a folyószöveg */
---t-small:   0.875rem;  /* 14px — másodlagos, sosem kritikus infó */
---t-label:   0.75rem;   /* 12px — CSAK nagybetűs címke, 0.08em letter-spacing */
+--t-xs:   clamp(0.8125rem, 0.79rem + 0.11vw, 0.875rem);   /* 13 → 14 */
+--t-sm:   clamp(0.875rem,  0.85rem + 0.12vw, 0.9375rem);  /* 14 → 15 */
+--t-base: clamp(1rem,      0.96rem + 0.20vw, 1.125rem);   /* 16 → 18 */
+--t-md:   clamp(1.125rem,  1.06rem + 0.31vw, 1.3125rem);  /* 18 → 21 */
+--t-lg:   clamp(1.375rem,  1.25rem + 0.63vw, 1.75rem);    /* 22 → 28 */
+--t-xl:   clamp(1.75rem,   1.50rem + 1.25vw, 2.5rem);     /* 28 → 40 */
+--t-2xl:  clamp(2.25rem,   1.75rem + 2.50vw, 3.75rem);    /* 36 → 60 */
 ```
 
-Sormagasság: display `1.02`, H2 `1.1`, folyószöveg `1.6`, mérőszám `1.15`.
-Maximális sorhossz folyószövegen: `66ch`.
+Sormagasság: törzs `1.6`, címsor `1.08`, mérce `1`. Sorhossz: `max-width: 62ch`
+törzsre, `18ch` H1-re.
 
-### 7.3 Térköz — 8px alapú
+### 7.3 Térköz — 8px-alap
 
 ```css
---s-1: 4px;  --s-2: 8px;  --s-3: 16px; --s-4: 24px; --s-5: 32px;
---s-6: 48px; --s-7: 64px; --s-8: 96px; --s-9: 128px;
+--s1: 4px;   --s2: 8px;   --s3: 12px;  --s4: 16px;  --s5: 24px;
+--s6: 32px;  --s7: 48px;  --s8: 64px;  --s9: 96px;  --s10: 128px;
 ```
-4px csak ikon-szöveg összetartozásra. Szekcióközi függőleges ritmus:
-mobil `--s-7`, desktop `--s-8`. Kártya belső: `--s-4` mobil, `--s-5` desktop.
-Minden érték a skáláról jön; egyedi pixelérték nem megengedett.
 
-### 7.4 Elevation — 3 szint, szűken
+Szekcióritmus: mobil `--s8` (64px), desktop `--s9`/`--s10`. Kártyabelső `--s5`.
+Űrlapmezők közötti függőleges térköz `--s4`, csoportok között `--s6`.
+Érintőcélpontok között minimum `--s2` (8px), méret minimum **48×48px**.
 
-| Szint | Érték | Mikor |
+### 7.4 Elevation — üveglogika, nem árnyéklogika
+
+Ez a rendszer egyik tudatos eltérése a szokásos „elevation = shadow" mintától.
+Üvegnél a mélységet nem az árnyék jelzi, hanem **az él, ahol a fény megtörik**.
+
+| Szint | Light | Dark | Hol |
+|---|---|---|---|
+| `e0` | nincs keret, `--paszpartu` háttér | ugyanaz | oldalalap |
+| `e1` | `1px solid --gitt-vonal/40%` + `0 1px 2px rgb(21 32 30 / .06)` | `1px solid --gitt-vonal/50%` + **felső 1px élfény** `inset 0 1px 0 rgb(255 255 255 / .06)` | kártya, űrlap |
+| `e2` | `0 6px 20px -12px rgb(21 32 30 / .22)` | felület egy fokkal világosabb (`#1A2926`) + élfény | ragadós fejléc, alsó sáv |
+| `e3` | `0 24px 48px -24px rgb(21 32 30 / .30)` | `#1A2926` + erősebb élfény + scrim `rgb(0 0 0 / .55)` | mobil menü |
+
+**Indoklás:** sötét módban az árnyék fizikailag láthatatlan (fekete a feketén).
+A `border-and-divider-visibility` elv szerint a mélységet ott a **felület
+világossága + egy 1px-es felső élfény** hordozza — ez pont az, amit egy
+üvegtábla tetején lát az ember, amikor fény éri. A metafora és az akadálymentesség
+itt ugyanazt kívánja.
+
+### 7.5 Komponenslista
+
+| Komponens | Állapotok | Megjegyzés |
 |---|---|---|
-| `--e-0` | `0 0 0 1px var(--vonal-halvany)` | alapértelmezett: **hajszálvonal, nem árnyék**. Kártyák, mezők. |
-| `--e-1` | `0 1px 2px rgb(21 24 26 / .07), 0 4px 12px -6px rgb(21 24 26 / .14)` | hover-állapot, kiválasztott zóna |
-| `--e-2` | `0 -1px 0 var(--vonal-halvany), 0 -8px 24px -12px rgb(21 24 26 / .28)` | csak a mobil sticky sáv |
+| `Gomb / elsődleges` | rest, hover, active, focus-visible, disabled | 48px magas, `--el` háttér |
+| `Gomb / jelző` | ugyanaz | csak hívásra és sürgősségre, oldalanként **egyszer** |
+| `Gomb / másodlagos` | ugyanaz | keretes, átlátszó háttér |
+| `Hívólink` | + `:visited` semleges | `tel:` séma, `aria-label`-lel kimondva a számot |
+| `Állapotsáv` | nyitva / zárva / mindjárt zár | szín **és** szöveg **és** pont-ikon (nem csak szín) |
+| `Ajtókártya` (A/B/C) | rest, hover, focus-within | teljes felület kattintható, de a link a címben van |
+| `Bizonyítéksáv` | — | 4 elem, mobilon 2×2 |
+| `Szolgáltatásblokk` | — | ikon + cím + valódi szakmai felsorolás |
+| `Lépéslista` | — | számozott, mert **valódi sorrend** (§ tiltólista: számozás csak itt) |
+| `Idézetblokk` | — | `--el-tint` háttér, bal oldali `--el` él |
+| **`A tábla`** | rest, drag, focus, reduced-motion | §Szignatúra |
+| `Mérce` | — | Archivo `wdth 75`, `tnum` |
+| `Űrlapmező` | rest, focus, hiba, kitöltött, tiltott | címke **fölötte**, hiba **alatta** |
+| `Rádiócsoport` | — | `fieldset`+`legend` |
+| `Hibaösszefoglaló` | — | `role="alert"`, horgonyokkal a mezőkre |
+| `Nyitvatartás-táblázat` | mai nap kiemelve | `<table>`, nem div |
+| `Téma-váltó` | világos / sötét / rendszer | 3 állás, `aria-pressed` |
+| `Mobil menü` | zárva / nyitva | `<dialog>`-szerű, fókuszcsapda, `Esc` |
+| `Ragadós alsó sáv` | — | csak mobil, `env(safe-area-inset-bottom)` |
 
-Indoklás: papíralapú szórólap-esztétika. Az árnyék drága (festési költség, és
-vizuális zaj), a hajszálvonal ugyanazt a szeparációt adja. Árnyék csak akkor, ha
-valami tényleg *lebeg* a tartalom fölött.
+---
 
-### 7.5 Egyéb tokenek
+## 7.6 A szignatúra elem — „A tábla"
 
-```css
---r-sm: 3px;   --r-md: 6px;   --r-lg: 10px;   --r-pill: 999px;
---fokusz: 3px solid var(--parazs-vil);  --fokusz-offset: 2px;
---tartalom-max: 1200px;  --szoveg-max: 66ch;
-```
-Kis lekerekítés (3–10px), mert a nagy radius „app-os"; ez nyomdai, nem app.
+### 7.6.1 Mi ez
 
-### 7.6 Komponenslista
+A hero jobb oldalán egy **valódi méretre húzható üvegtábla**. A jobb alsó
+sarkában fogantyú; húzásra a tábla mérete változik, a két oldalán futó **mérce**
+élőben írja ki a méretet **milliméterben**. A tábla:
 
-| Komponens | Változatok | Állapotok |
+- **átlátszó** — átlátszik rajta a mögötte lévő háttér,
+- **csak az élén zöld** — pontosan úgy, ahogy a float üveg,
+- és lassan végigfut rajta **egy fénycsík**, mert egy üvegtáblát a valóságban is
+  csak a rajta megcsillanó fényről vesz észre az ember.
+
+Alatta egy sor: **„600 × 400 mm"** és egy gomb: **„Átveszem az ajánlatkérésbe"**.
+
+### 7.6.2 Miért pont ez
+
+A brief azt kérte, hogy az elem **mutassa meg** a szolgáltatás lényegét, ne
+elmondja. Ennek a műhelynek — mindkét üzletágának — egyetlen közös lényege van:
+**minden darab a megrendelő saját méretére készül.** Nincs raktári termék, nincs
+szabvány. Az ablakbetét, a kirakat, a tükörfal, a paszpartú és a keret: mind
+egyedi méret, milliméterben.
+
+Ezt eddig az oldal így mondta el: *„méretre vágva"*, *„egyedi méretre"*,
+*„méretre vágott"* — háromszor, szövegben. A tábla ehelyett **a látogató kezébe
+adja a mérőszalagot**. Aki egyszer meghúzta a sarkát, az megértette a
+szolgáltatást, és — ez a lényeg — **már meg is adta az első adatot az
+ajánlatkéréshez.** A szignatúra elem és a konverziós elem ugyanaz az elem.
+
+A második réteg — hogy a tábla átlátszó és csak az éle látszik — az üvegezés
+szakmai igazsága: **ha jól van beépítve, nem látja.** Ezt sem kell leírni, mert
+a látogató a saját szemével tapasztalja: mozgatja, és közben szinte nincs is ott.
+
+### 7.6.3 Miért nem fotón múlik
+
+Nincs egyetlen jogtiszta fotóm sem erről a műhelyről (§15 Q1), és egy stock-fotós
+üvegtábla pont az ellenkezőjét bizonyítaná annak, amit ez a vállalkozás elad
+(hogy ez itt egy konkrét ember konkrét munkája). A tábla **négy `div` és néhány
+CSS-gradiens** — nem kell hozzá se fotós, se jogdíj, se ügyfélvárakozás. Az első
+naptól élesíthető.
+
+### 7.6.4 Mibe kerül LCP-ben
+
+Őszinte válasz, három részre bontva:
+
+| Tétel | Költség | Magyarázat |
 |---|---|---|
-| Gomb | elsődleges (tömör `--parazs`), másodlagos (keretes), szöveges | rest / hover / active / focus-visible / disabled / loading |
-| Állapot-chip | nyitva / zárva | statikus + `aria-live="polite"` frissítés |
-| Tényadat-kártya | 1–3 oszlop | — |
-| **Zónakártya (Alaprajz)** | terasz / belső / különterem / játéksarok | rest / hover / **kiválasztott** / fókusz |
-| Étlap-kategóriakártya | — | hover / fókusz |
-| Ital-tétel (sötét sávon) | csapolt / koktél | — |
-| Ikon (saját rajzú SVG) | biliárd, csocsó, darts, flipper | `currentColor`-t örököl |
-| Űrlapmező | szöveg / tel / dátum / idő / szám / select / textarea | rest / fókusz / **hiba** / kitöltött |
-| Hibaüzenet | inline, mező alatt | `role="alert"`, `aria-describedby` |
-| Hibaösszegző | űrlap tetején | rejtett / látható, `tabindex="-1"`, küldéskor fókuszt kap |
-| GYIK-tétel | `<details>` | nyitva / zárva |
-| Nyitvatartási táblázat | — | „ma" sor kiemelve |
-| Sticky mobil akciósáv | — | rejtett / látható |
-| Skip-link | — | csak fókuszban látható |
+| **LCP-elem** | **0 ms** | Az LCP-jelölt a hero **H1-e** marad. A tábla háttere `linear-gradient` — a CSS-gradiens **nem LCP-jelölt** a specifikáció szerint, a benne lévő szövegek pedig kicsik. A tábla tehát nem versenyez az LCP-ért, és nem is halasztja el: ugyanabban a festési körben rajzolódik ki. |
+| **Hálózat** | **0 byte extra** | Nincs kép, nincs betűtípus-extra, nincs könyvtár. |
+| **JS** | **~1,6 KB** (nem tömörítve, a teljes JS-ből) | Pointer-események + `requestAnimationFrame`-mel csoportosított DOM-írás. `defer`-rel töltve, nem blokkolja a festést. |
+| **CLS** | **0** | A tábla konténerének fix `aspect-ratio` és `min-height` van; a méretváltozás **kizárólag `transform: scale()` és a konténeren belüli `width/height`**, ami saját `contain: layout` blokkban van — a dokumentumfolyam nem mozdul. |
+| **INP** | cél **< 100 ms** | A húzás során csak `transform` és két `textContent` frissül; nincs elrendezés-olvasás a hurokban. |
+| **Kockázat** | mobil hüvelykujj | A fogantyú 48×48px tapintófelületet kap (a látható rész kisebb), `touch-action: none` csak a fogantyún. |
 
-### 7.7 A SZIGNATÚRA-ELEM — „Az Alaprajz"
+### 7.6.5 Akadálymentesség — enélkül nem szignatúra, hanem gimmick
 
-**Mi ez.** A hajtás alatt egy **sematikus, interaktív SVG alaprajz**, amin a hely
-négy zónája szerepel: **Terasz**, **Belső tér**, **Különterem**, **Játéksarok**. A
-zónák kattinthatók/tabbal bejárhatók; a kiválasztás egyszerre (a) kinyit egy leíró
-panelt, és (b) **előtölti a foglalási űrlap „Hol ülnétek?" mezőjét**. A játéksarokban
-a biliárd-, csocsó-, darts- és flipperasztal a saját alakjával, méretarányosan jelenik
-meg a többi asztal között.
-
-**Miért pont ez.**
-
-1. **Megmutatja, nem elmondja.** A „hangulatos terasz és különterem" mondat semmit
-   nem közöl. Egy alaprajz, amin látszik, hogy a terasz kifelé néz, a különterem
-   külön ajtón nyílik, és a csocsóasztal *fizikailag ott van az asztalok között* —
-   az egyszerre válasz a „milyen hely ez?" és a „hova üljünk?" kérdésre.
-2. **A hely tényleges döntését modellezi.** Egy asztaltársaság nem „éttermet" választ,
-   hanem *helyet a helyen belül*: kint vagy bent, a gyerekekkel a játék mellé vagy a
-   különterembe. Ezt eddig telefonon kellett megbeszélni.
-3. **A márka saját világából jön**, nem designtrendből: a vendéglátós fejében
-   *tényleg* alaprajz van (asztalkiosztás, foglalási rend). Ezt hoztam ki a
-   pult mögül.
-4. **Nem fotón múlik.** Nincs szükség fotósra, jogtiszta készletre, és nem avul el,
-   ha átfestik a falat.
-5. **Egyedi.** Nulla pécsi pizzéria csinál ilyet — ellenőrizhetően nincs is honnan
-   másolni.
-
-**Mibe kerül LCP-ben: gyakorlatilag nullába.**
-
-- Inline `<svg>` elem, **nem** LCP-jelölt: az LCP-specifikáció szerint csak `<img>`,
-  `<svg>`-n *belüli* `<image>`, `<video>` poszter, CSS `background-image` és
-  blokkszintű szövegcsomó számít jelöltnek. A rajzolt `<path>`/`<rect>` nem.
-  Az LCP-elem így a hero H1 szövegcsomója marad.
-- **Hálózati költség: 0 kérés.** A markup a HTML-ben utazik: ~3,6 KB nyers, brotli
-  után ~0,9–1,1 KB.
-- **CLS: 0.** A `viewBox` + CSS `aspect-ratio` miatt a hely a first paintkor
-  végleges; semmi nem tolódik el.
-- **JS-költség: ~0,6 KB** (egy delegált `click`/`keydown` figyelő + osztálycsere).
-  Az elem **JS nélkül is teljes értékű**: a zónák valódi `<a href="#foglalas">`
-  hivatkozások leíró szöveggel, a panelek `<details>`-ként is működnek.
-- Egyetlen valós költség: ~4 KB extra HTML a fő dokumentumban, ami a
-  szerver-válaszidőhöz (TTFB) mérve mérhetetlen.
-
-**A tónus információt hordoz, nem díszít.** A négy zóna alapkitöltése a tér zártságát
-kódolja, ugyanabból a tintából, nem új színekből: terasz 3% (nyitott, utcára néz),
-belső tér 7%, játéksarok 10%, különterem 15% (külön ajtó). Így az ábra helyként olvasható,
-nem wireframe-ként. A kódot a rajz alatti jegyzet ki is mondja — a vizuális rendszer
-nem lehet fejtörő.
-
-**A kiválasztott állapot hangos.** Tömör parázs-kitöltés (28%), 3px parázs keret, és a
-bútor tintára vált. Miért nem marad parázs a bútor is: a parázs a 28%-os parázs alapon
-csak 3,22:1 lenne, a tinta 10,06:1. Az első verzió 16%-os kitöltése mobilon egy
-pillantásra alig látszott — a szignatúra-elem legfontosabb visszajelzése nem lehet halk.
-
-**Egy buktató, amibe beleestem:** a zónatónusokat először `#z-terasz`-szerű ID-szelektorral
-írtam meg. Az ID (1,0,1) legyőzte a `.zona[aria-pressed="true"] .fal` szabályt (0,3,0), így
-a kiválasztás vizuálisan nem történt meg, pedig az `aria-pressed` helyesen váltott. A javítás
-`[data-zona="…"]` attribútumszelektor, hogy mind (0,3,0) legyen és a forrássorrend döntsön.
-
-**Ami placeholder marad:** a valódi geometria és az asztalszámok. A prototípusban
-szándékosan `[egyeztetendő]` jelöléssel szerepelnek — nem találtam ki asztalszámot.
-
-**Elvetett szignatúra-alternatívák:**
-
-| Alternatíva | Miért nem |
-|---|---|
-| Élő „kemence-hőmérő" a nyitásig visszaszámolva | Nem tudom, van-e kemencéjük és milyen — kitalált tény lett volna. |
-| Animált pizza-összeállító (feltétválasztó) | Játék, de nem visz konverzió felé, és 15+ KB JS. |
-| „Az est íve" — 12:00→24:00 idővonal hangulatokkal | Szép, de kitalált tartalom kellene hozzá óránként. |
-| Nagy fotómozaik | Tiltott irány (fotófüggő), és nincs jogtiszta készlet. |
-
-**Máshol a design csendes.** Egy akcentus, hajszálvonalak, árnyék alig, animáció
-alig. A merészség teljes egészében az Alaprajzba megy.
+- A fogantyú **fókuszálható** (`tabindex="0"`), `role="slider"`-szerű
+  szemantikával: `aria-label="Tábla mérete, nyílbillentyűkkel állítható"`,
+  `aria-valuetext="600 × 400 milliméter"`.
+- **Nyílbillentyűk**: ±10 mm, `Shift`+nyíl ±100 mm, `Home`/`End` a szélső értékek.
+- A méret **szám formájában is** ott van két `<output>` elemben, felolvasható.
+- Aki nem tud vagy nem akar húzni, az ugyanazt a két számot **beírhatja az
+  űrlapon** — a tábla nem az egyetlen út.
+- `prefers-reduced-motion: reduce` esetén a **fénycsík megáll** (a húzás marad).
 
 ---
 
 ## 8. Animációk és mikrointerakciók
 
-Alapelv: minden mozgás **állapotváltozást magyaráz**, nem díszít. Az egész oldal
-mozgáskészlete elfér három tokenben, és `prefers-reduced-motion: reduce` esetén
-minden időzítés `0.01ms`-ra esik (a `transitionend` eseményekre épülő logika így is fut).
+Alapelv: **minden animáció ok-okozatot fejez ki.** Egyetlen díszítő mozgás sincs
+a rendszerben. Globális tokenek:
 
 ```css
---gyors: 120ms;  --alap: 200ms;  --lassu: 320ms;
---gorbe: cubic-bezier(.2,.7,.3,1);   /* gyors indulás, lágy megállás */
+--gyors:  120ms;  --alap: 200ms;  --lassu: 320ms;
+--be:  cubic-bezier(.16,.84,.44,1);    /* ease-out, belépés */
+--ki:  cubic-bezier(.55,.06,.68,.19);  /* ease-in, kilépés */
 ```
 
-| Elem | Interakció | Változás | Időzítés | Miért |
-|---|---|---|---|---|
-| Gomb (elsődleges) | hover | háttér −6% világosság | `120ms` `--gorbe` | azonnali visszajelzés, nem játék |
-| Gomb | active | `translateY(1px)` | `60ms` linear | fizikai megnyomás-érzet |
-| Bármi fókuszálható | `:focus-visible` | 3px `--parazs-vil` gyűrű, 2px offset | **0ms** | a fókusz sosem animált — késleltetve nem látszik, hova ugrott |
-| Zónakártya (Alaprajz) | hover | parázs-kitöltés 18% | `120ms` | „ez kattintható" |
-| Zónakártya | kiválasztás | 28% parázs kitöltés + 3px keret + a bútor tintára vált | `200ms` | Az állapotváltás egy pillantásra olvasható legyen mobilon is. |
-| Zónapanel | csere | opacitás 0→1 + `translateY(6px→0)` | `200ms` `--gorbe` | jelzi, hogy *új* tartalom jött, nem a régi módosult |
-| Állapot-chip pont | folyamatos | opacitás 1 → .45 → 1 | `2400ms` végtelen | „élő adat" jelzés. **Reduced motion esetén kikapcsol** — az információt a szöveg hordozza |
-| Sticky mobil sáv | hero elhagyása | `translateY(100%→0)` | `320ms` `--gorbe` | ne takarja a herót, de utána mindig kéznél legyen |
-| Űrlapmező | hiba megjelenése | keret- és `box-shadow`-szín vált, a hibaszöveg **animáció nélkül** jelenik meg | `200ms` (csak a keret) | A szöveg magasságának animálása (`max-height`) reflow-t okoz, és ütközik a „csak `transform`/`opacity`" szabállyal. A keretszín-váltás elég visszajelzés. |
-| Küldés gomb | küldés alatt | `disabled`, opacitás .45, felirat → „Küldés…" | azonnali | Dupla beküldés megelőzése; a felhasználó látja, hogy történik valami. |
-| Űrlapmező | hiba javítása | keret vissza alapra | `200ms` | pozitív megerősítés |
-| GYIK `<details>` | nyitás | natív; `content-visibility` nélkül | natív | nem éri meg egyedi animációt írni rá |
-| Belső horgonyugrás | kattintás | `scroll-behavior: smooth` | natív, reduced-motion esetén `auto` | kontextusőrzés |
-| Étlapkártya | hover | hajszálvonal `--vonal` → `--szen` | `120ms` | minimális, hogy ne vonja el a figyelmet a CTA-ról |
+| # | Elem | Interakció | Mit fejez ki | Tulajdonság | Időzítés |
+|---|---|---|---|---|---|
+| A1 | **A tábla fénycsíkja** | automatikus, 7 s-onként | „ez itt üveg" — a valóságban is a csillanás árulja el | `transform: translateX()` + `opacity` | 2400 ms `linear`, 7 s szünet |
+| A2 | **A tábla húzása** | pointer / nyílbillentyű | közvetlen fizikai megfelelés | `width`/`height` `contain: layout` blokkban | **0 ms** (követi az ujjat) |
+| A3 | **A mérce számai** | húzás közben | visszajelzés | `textContent`, `tnum` | 0 ms, rAF-hoz igazítva |
+| A4 | **„Átveszem" gomb** | kattintás | a méret **átment** az űrlapba | a mérőszám 320 ms alatt az űrlapmezőhöz „úszik", majd a mező kerete 2× felvillan | 320 ms `--be` + 2×160 ms |
+| A5 | Ajtókártya (A/B/C) | hover / focus | „ez kattintható" | `translateY(-2px)` + `border-color` | 200 ms `--be` |
+| A6 | Elsődleges gomb | `:active` | tapintási visszajelzés | `scale(.97)` | 120 ms |
+| A7 | Szekció belépés | görgetés (IntersectionObserver) | „új gondolat kezdődik" | `opacity 0→1`, `translateY(12px→0)` | 320 ms `--be`, **elemenként 40 ms késleltetés**, maximum 4 elem |
+| A8 | Állapotpont (nyitva/zárva) | betöltés + percenként | „élő adat, nem statikus felirat" | `opacity` lüktetés 2 s | csak nyitva állapotban |
+| A9 | Téma-váltás | kattintás | „ugyanaz az oldal, más fény" | `background-color`, `color`, `border-color` | 200 ms — **csak az első 200 ms-ban**, utána kikapcsol, hogy a görgetés ne legyen ragacsos |
+| A10 | Űrlaphiba | `blur` után | „ezt a mezőt nézd meg" | `border-color` + a hibaszöveg `height 0→auto` helyett `grid-template-rows 0fr→1fr` | 200 ms `--be` |
+| A11 | Űrlap-siker | küldés után | „megkaptuk" | pipa-SVG `stroke-dashoffset` rajzolódik | 400 ms |
+| A12 | Mobil menü | kattintás | térbeli folytonosság a `≡` gombtól | `translateY(-8px)+opacity` + scrim `opacity` | be 200 ms `--be`, **ki 130 ms** `--ki` (~65%) |
+| A13 | Ragadós fejléc | görgetés > 80px | „elváltál a lap tetejétől" | `box-shadow` + `backdrop-filter` | 200 ms |
+| A14 | Fókuszgyűrű | `:focus-visible` | — | **nincs animáció**, azonnal | 0 ms |
 
-Ami **nincs**: scroll-triggerelt beúszás, parallax, számláló-animáció, hero-videó,
-betűnkénti szövegfelfedés. Mind lassít, mind bosszant másodjára, és egyikük sem
-segít eldönteni, hogy hova üljünk le vacsorázni.
+**`prefers-reduced-motion: reduce` esetén:** A1 megáll (a tábla marad, csak nem
+csillan), A4 azonnali (a mérőszám ugrik), A5/A6/A7/A12 `transform`-jai kikapcsolnak,
+`opacity`-átmenet marad 120 ms-ban, A8 lüktetés megáll (a pont marad), A11 pipa
+azonnal kirajzolva. **A2 és A3 soha nem kapcsol ki** — az a funkció, nem animáció.
+A14 amúgy sem animált.
 
 ---
 
@@ -682,414 +764,492 @@ segít eldönteni, hogy hova üljünk le vacsorázni.
 
 ### 9.1 Stack
 
-**Javaslat: Astro statikus build → GitLab → Netlify, Formspree űrlap-végponttal.**
-Ez a stúdió meglévő eszközkészlete; nincs benne semmi, amit külön be kellene vezetni
-vagy karbantartani.
+**Statikus HTML + CSS + egy kis vanilla JS, build-lépéssel, de framework nélkül.**
+Konkrétan: **Eleventy (11ty)** sablonok → statikus HTML, kiszolgálás CDN-ről
+(Cloudflare Pages / Netlify), az űrlap egy szerver nélküli végponton keresztül.
 
-| Réteg | Választás | Indoklás | Elvetett alternatíva |
-|---|---|---|---|
-| Renderelés | **Astro** statikus build | 9 oldal, ritkán változó tartalom. Nulla futásidejű PHP, nulla adatbázis. Az étlap komponensbe és `Menu` schemába is egy adatforrásból generálódik. | **WordPress megtartása**: ismerős a tulajdonosnak, de minden látogató kifizeti a futásidőt (§3, Ok #5). Ha a szerkeszthetőség kritikus → §15/19. **Sima HTML+CSS**: 9 oldalnál a fejléc/lábléc duplikálódna. |
-| Verziókezelés | **GitLab**, privát repó (`giovanni-web`) | Ügyfelenként külön repó; a Netlify erről deploy-ol. | — |
-| Hosting / deploy | **Netlify**, GitLab-ról auto-deploy | Ingyenes SSL, CDN, és **branch-enkénti preview URL** — az ügyfél éles domain előtt ezen látja az oldalt. | **FTP/kézi feltöltés**: nincs verzió, nincs preview, nincs visszaállítás. |
-| JS | vanilla, **4 976 B** (mért) | Ennyi funkcióhoz (állapotóra, zónaválasztás, validáció, menü) a keretrendszer tiszta veszteség. | **React/Vue**: +40 KB minimum, semmiért. |
-| CSS | egyetlen kézzel írt lap, custom property-kkel | A design system 30 tokenből áll, ehhez nem kell utility-keretrendszer. | **Tailwind**: build-lánc és osztálynév-zaj egy 9 oldalas oldalért. |
-| Animáció | **nincs könyvtár** | A teljes mozgáskészlet 3 CSS-tokenből elfér (§8). | **AOS / GSAP**: scroll-animációkhoz való, itt nincs egy sem — és a Lighthouse-célt (§11) rontaná. |
-| Tartalom | JSON az étlaphoz, Markdown a szövegoldalakhoz | Az étlap adat, nem szöveg: egy JSON-ból generálódik a HTML **és** a `Menu` schema — nem lehet elcsúszni egymástól. | **Kézi HTML-szerkesztés**: az étlap és a schema garantáltan szétcsúszik. |
-| Űrlap | **Formspree** végpont → e-mail az étterem címére | Nincs backend, nincs adattárolás, beépített spamszűrés, és az étterem bármikor átállíthatja a fogadó e-mail-címet. GDPR: csak továbbít, nem tárol tartósan. | **Cloudflare Worker / saját serverless**: több karbantartás, több hozzáférés, ugyanaz az eredmény. **`mailto:`**: mobilon a felhasználók fele elakad. |
-| Foglalás | **a saját űrlap**, nem foglalómotor | Az étterem foglalása nem időpontfoglalás: létszám + zóna + időpont, fix slothossz nélkül, és telefonos visszaigazolással zárul. | **Cal.com**: fix hosszú slotokra tervezett időpontfoglaló (konzultáció, fodrász). Egy asztaltársaságra ráerőltetve fals kapacitást ígér, amit az étterem nem tud tartani. Akkor jön szóba, ha az ügyfél tényleg slot-alapú foglalást akar (→ §15/5). |
+**Indoklás:**
 
-**Ha a foglalás volumene később indokolja** (napi 20+ online foglalás), a következő lépés
-Supabase-tábla + visszaigazoló e-mail, nem egy dobozos foglalórendszer — de ez a
-2. fázisban még biztosan felesleges.
+1. **A jelenlegi oldal legnagyobb erénye a súlytalansága** (§1.3). Egy
+   React/Next.js redesign 90–200 KB JS-t hoz oda, ahol jelenleg ~0 van. Az
+   üzleti tartalom **11 statikus oldal**, ami havonta legfeljebb egyszer változik.
+2. **O3 a valódi kockázat**: az oldal azért romlott el, mert senki nem nyúlt
+   hozzá. Egy olyan stack kell, ami **öt év múlva is buildel**. Egy 11ty +
+   Markdown projekt igen; egy 2026-os Next.js-projekt 2031-ben függőségi
+   pokol.
+3. **A karakterkódolás soha többé**: a build minden fájlt UTF-8-ban olvas és ír,
+   a kiszolgáló `Content-Type: text/html; charset=utf-8` fejlécet küld, és a
+   CI-ban egy 5 soros ellenőrzés elbukik, ha `õ` vagy `û` bekerül a forrásba.
+   **Ez a K1 strukturális megoldása, nem a tünet javítása.**
+4. Az ügyfél szerkeszthetősége: a szolgáltatásoldalak Markdownban, a NAP-adatok
+   **egyetlen `adatok.json`-ban**, ahonnan a lábléc, a JSON-LD, a
+   nyitvatartás-táblázat és az állapotsáv egyaránt táplálkozik — így K4
+   (telefonszám-inkonzisztencia) fizikailag nem tud újra előfordulni.
 
-### 9.2 Fontkezelés
+**Alternatívák, amiket elvetettem:**
 
-- **Önhosztolt woff2**, saját domainről. Google Fonts CDN-ről betölteni ma
-  (a) egy extra kapcsolat, (b) adatvédelmi kockázat EU-ban.
-- **Subsetting**: `latin` + `latin-ext` **csak** (unicode-range-dzsel két fájlra
-  bontva, hogy az ékezetes blokk külön töltődjön). A magyar `ő`/`ű` a `latin-ext`
-  blokkban van — ezt kihagyni a leggyakoribb hiba, aminek eredménye a
-  fallback-glifás „ő".
-- **Variable fájlok**, statikus vágatok helyett: Source Sans 3 VF ~38 KB,
-  Bricolage Grotesque VF ~34 KB (`wght` tengelyre szűkítve, `wdth`/`opsz`
-  instanceolva a buildben, ha nem használjuk dinamikusan).
-- `font-display: swap` + `<link rel="preload" as="font" crossorigin>` **csak a
-  szövegcsaládra**. A display face nem preloadolódik: a H1 fallbackkel is
-  olvasható, és így nem versenyez az LCP-ért.
-- `size-adjust` / `ascent-override` a fallback stacken (`@font-face` fallback
-  metrikamásolattal), hogy a betűcsere ne okozzon elrendezés-ugrást (CLS).
+| Alternatíva | Miért nem |
+|---|---|
+| **WordPress** | A magyar kisvállalkozói alapértelmezés. Elvetve: karbantartatlan WP a legjobb módja annak, hogy 2 éven belül feltört oldal legyen belőle — pontosan az O3 mintázat, csak nagyobb kárral. Egy kétfős műhelynek nincs, aki frissítse. |
+| **Next.js / Astro islands** | Túlméretezett. 11 statikus oldalhoz nem kell hidratálás. Az Astro reális második hely lenne, de a 11ty kevesebb mozgó alkatrész. |
+| **Kizárólag kézzel írt HTML, build nélkül** | Csábító (nulla függőség), de 11 oldalon a fejléc/lábléc/NAP duplikálódna — és pont a duplikáció okozta az eredeti bajt (U2). |
+| **Oldalkészítő (Wix/Webnode)** | Elvetve: nem kontrollálható a JSON-LD, a betűtöltés és a CLS, és a `pecsiuveges.hu` régi linkprofilját kockáztató migráció. |
+
+### 9.2 Betűkezelés
+
+```
+/f/archivo-var.latin-ext.woff2       ~28 KB   (wght+wdth, subset: latin + latin-ext)
+/f/sourceserif4-var.latin-ext.woff2  ~34 KB   (wght+opsz, subset: latin + latin-ext)
+```
+
+- **Önhosztolás**, nem Google Fonts CDN. Indok: egy külső kapcsolat (`preconnect`
+  + DNS + TLS) mobilhálózaton 150–300 ms, és a Google Fonts amúgy sem oszt meg
+  gyorsítótárat domainek között 2020 óta. Nincs mit nyerni rajta.
+- **Subset**: `U+0000-00FF, U+0100-017F, U+02C7, U+02D8-02DB, U+2010-2015,
+  U+2018-201E, U+20AC, U+2212` — vagyis latin + latin-ext + a magyar
+  idézőjelek (`„ "`) + gondolatjel + euró. Az `ő`/`ű` benne van. Cirill,
+  görög, vietnámi **kivéve** — ez felezi a fájlméretet.
+- `font-display: swap` — a törzsön elfogadható a FOUT. **Fallback-metrikák
+  igazítva** (`size-adjust`, `ascent-override`), hogy a csere ne okozzon CLS-t:
 
 ```css
-@font-face{font-family:"Source Sans 3";src:url(/f/ss3.woff2)format("woff2-variations");
-  font-weight:200 900;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,...}
-@font-face{font-family:"Source Sans 3";src:url(/f/ss3-ext.woff2)format("woff2-variations");
-  font-weight:200 900;font-display:swap;unicode-range:U+0100-024F,U+0259,U+1E00-1EFF,...}
+@font-face{font-family:"Archivo Fallback";src:local("Arial");
+  size-adjust:97%;ascent-override:92%;descent-override:24%;line-gap-override:0%}
 ```
+
+- `<link rel="preload" as="font" type="font/woff2" crossorigin>` **csak a
+  két variable fájlra** — semmi másra (a `font-preload` túlhasználat elv).
+- **A prototípus szándékosan nem tölt le betűt.** Rendszerbetűkkel fut
+  (`system-ui`, `Georgia`), és a fenti `@font-face` blokk kommentben van benne.
+  Így a demó offline is azonos, és az „azonnal megnyitható" követelmény teljesül.
 
 ### 9.3 Képek
 
-- Formátum: **AVIF** elsődleges, WebP fallback, `<picture>`-rel.
-- Minden `<img>`-en kötelező `width`, `height`, `alt` (dekoratívnál `alt=""`).
-- `loading="lazy"` + `decoding="async"` mindenen, ami a hajtás alatt van;
-  a hajtás fölötti kép (ha lesz) `fetchpriority="high"`, `loading="eager"`.
-- `srcset` 3 lépcsőben (480 / 960 / 1440 px).
-- Ételfotó **csak saját, friss felvételből**. Stock nincs.
-- **Ami megvan (2026-09-04):** öt saját fotó — terasz kétféle nézetből, játéksarok
-  biliárdasztallal, téglapult, és a bejárat. Mind **600×450**, ami a felhasználást
-  behatárolja: hero oldalsó képként ~520 px-ig, zónapanelben ~340 px-ig, kapcsolatnál
-  ~420 px-ig marad éles. Teljes szélességű használat nem lehetséges.
-- **Ami nincs:** egyetlen ételfotó sem. Az étlap-szekció ezért ma is fotó nélküli —
-  és ez így helyes, mert stockkal helyettesíteni azonnal lebukna.
-- Méretek: AVIF 17–33 KB / kép, összesen **124 KB**; WebP fallback 143 KB.
-- Az ikonok mind inline SVG-k, `currentColor`-ral — nincs ikonfont, nincs sprite-kérés.
+Fotó jelenleg **nincs** (§15 Q1). A prototípus **helyet tart** nekik, nem tölt ki
+stockkal. Éles specifikáció:
 
-### 9.4 Cache
+- Formátum: **AVIF** elsődleges, **WebP** fallback, `<picture>`-rel.
+- `srcset` 4 lépcsőben: 480 / 768 / 1200 / 1800 px, `sizes` a tényleges
+  elrendezés szerint.
+- **Minden `<img>`-en kötelező `width` + `height`** → CLS 0. A prototípusban
+  ezt `aspect-ratio` box helyettesíti.
+- A hajtás alatt `loading="lazy" decoding="async"`. A hajtás fölött **nincs**
+  lazy (ott amúgy sincs kép — a hero szöveg + a tábla).
+- Költségvetés: **oldalanként legfeljebb 250 KB kép összesen**.
+- Amit fotózni kell: a műhely bejárata, a keretminta-fal, egy beépítés közbeni
+  kép, egy elkészült tükörfal, és **a két ember** (J2 miatt ez a legfontosabb).
+
+### 9.4 Gyorsítótár
 
 | Erőforrás | Fejléc |
 |---|---|
-| HTML | `Cache-Control: public, max-age=0, must-revalidate` + `ETag` |
-| CSS/JS (hasholt fájlnév) | `public, max-age=31536000, immutable` |
-| Fontok | `public, max-age=31536000, immutable` |
-| Képek (hasholt) | `public, max-age=31536000, immutable` |
-| Űrlap-végpont | `no-store` |
+| HTML | `Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400` |
+| CSS/JS (hash-elt névvel) | `public, max-age=31536000, immutable` |
+| WOFF2 (hash-elt) | `public, max-age=31536000, immutable` |
+| Képek (hash-elt) | `public, max-age=31536000, immutable` |
+| Mindenhol | `Content-Type: …; charset=utf-8` — **K1 ellen szerveroldalról is** |
 
-A kritikus CSS (~7 KB) **inline** a `<head>`-ben, a maradék elhalasztva
-(`media="print" onload="this.media='all'"` mintával, `<noscript>` fallbackkel).
+Továbbá: HTTPS + HSTS (K2), `301` a `http://` és a `www` nélküli változatról a
+kanonikusra, HTTP/2 vagy /3.
 
-### 9.5 Űrlap
+### 9.5 Az űrlap
 
-- Natív HTML-validáció **alapnak** (`required`, `type="tel"`, `min`, `max`,
-  `pattern`), és JS-réteg *fölé*, ami:
-  - `novalidate`-tel átveszi a hibamegjelenítést, hogy magyar, konkrét
-    üzenetet adjon (a böngésző saját szövege lokalizált, de generikus);
-  - **`blur`-kor validál először, utána `input`-ra újraértékel** — nem
-    kiabál gépelés közben;
-  - **a nyitvatartásból validál, nem beégetett értékből.** A nyitvatartási táblázat
-    (`ORAK`) az oldal egyetlen forrása: ebből dolgozik az élő állapotjelző **és** az
-    űrlap is. Az időpont-mező a *kiválasztott dátum napjának* nyitva–zárva sávját nézi,
-    és a dátum megváltoztatása újraértékeli az időpontot. Enélkül vasárnap 22:30-ra
-    lehetett foglalni, pedig vasárnap 22:00-kor zár — az ilyen foglalást telefonon
-    kell visszamondani, ami rosszabb, mint el sem fogadni;
-  - **a mai napon a már elmúlt időpontot elutasítja;**
-  - küldéskor **hibaösszegzőt** épít az űrlap tetején (GOV.UK-minta): felsorolja,
-    hány mező hibás, mindegyikhez horgonylinkkel, és a fókuszt az összegzőre viszi.
-    Így a képernyőolvasó és a nagyítót használó felhasználó egyszerre látja az összes
-    hibát, nem csak az elsőt (WCAG G139).
-- **Dupla beküldés ellen**: a küldés gomb a beküldés idejére `disabled`, a felirata
-  „Küldés…", és csak a szerverválasz után áll vissza. Enélkül a lassú hálózaton
-  türelmetlen felhasználó két foglalást küld.
-- Minden mezőnek valódi `<label for>`; a placeholder soha nem címke.
-- Hiba: `aria-invalid="true"` + `aria-describedby` a hibaszövegre,
-  a hibaszöveg `role="alert"`.
-- Az űrlap **JS nélkül is elküldhető** (`method="post"` a végpontra).
-- Spam: rejtett honeypot mező + időbélyeg-ellenőrzés a szerveren.
-  **CAPTCHA nincs** — akadálymentességi és konverziós költsége nagyobb, mint a haszna
-  ezen a volumenen.
-- GDPR: egy mondat az űrlap mellett arról, mit csinálunk az adattal, + link az
-  adatkezelési tájékoztatóra. Marketing-hozzájárulás **külön, opcionális** jelölő.
+- **Progresszív**: sima `<form method="post" action="/arajanlat/koszonjuk/">`,
+  ami **JS nélkül is elküldhető**. A JS csak inline validációt és `fetch`-es
+  küldést ad hozzá.
+- Végpont: szerver nélküli függvény (Cloudflare Worker / Netlify Function), ami
+  **e-mailt küld egy saját domainnevű postafiókba** (`ajanlat@pecsiuveges.hu`) —
+  nem `freemail.hu`-ra (K3). SPF + DKIM + DMARC beállítva.
+- **Mézesbödön** (`honeypot`) mező + időbélyeg-ellenőrzés spam ellen. Nem CAPTCHA:
+  egy 66 értékeléses helyi üvegesnél a CAPTCHA több valódi ajánlatkérést öl meg,
+  mint amennyi spamot kiszűr, és akadálymentességi kockázat.
+- Fotófeltöltés: `<input type="file" accept="image/*" capture="environment">` —
+  mobilon azonnal a kamerát nyitja. **Ez az egyik legnagyobb gyakorlati nyereség**:
+  egy törött ablakról készült fotó + egy méret gyakran elég a pontos árhoz.
+- Adatkezelés: a beküldött adat célja, megőrzési ideje és jogalapja a mező
+  mellett egy sorban, nem külön oldalon elrejtve.
 
 ---
 
 ## 10. SEO-specifikáció
 
-### 10.1 Title / meta minta
+### 10.1 Title és meta minták
 
-| Oldal | `<title>` (≤ 60 kar.) | `meta description` (≤ 155 kar.) |
+Minta: `{Szolgáltatás} {Város} – {Konkrét megkülönböztető} | Váradi Ferenc Üveges`
+Maximum ~60 karakter a levágás előtt, a **város a látható részben** (S3 javítása).
+
+| URL | `<title>` | `<meta name="description">` |
 |---|---|---|
-| `/` | `Giovanni Pizzéria Pécs – Nagy Imre út 43. | Asztalfoglalás` | `Pizza, roston sültek, csapolt sör és csocsó Pécs Kertvárosában. Terasz, különterem, játéksarok. Nyitás minden nap 12:00. Foglalj asztalt online.` |
-| `/etlap/` | `Étlap – Giovanni Pizzéria, Pécs Kertváros` | `Pizzák, roston sültek, levesek és saláták árakkal. Allergéninformáció minden tételnél. Helyben és kiszállítással.` |
-| `/itallap/` | `Itallap – csapolt sörök és koktélok | Giovanni Pécs` | `Staropramen és Stella Artois csapolva, Jägermeister, koktélok. A teljes itallap árakkal.` |
-| `/asztalfoglalas/` | `Asztalfoglalás – Giovanni Pizzéria Pécs` | `Foglalj asztalt teraszra, a belső térbe vagy a különterembe. Visszaigazolás telefonon.` |
-| `/kulonterem/` | `Különterem Pécsen [X] főig – Giovanni Pizzéria` | `Céges vacsora, ballagás, szülinap Pécs Kertvárosában. Saját különterem, fix menüajánlatok. Kérj ajánlatot.` |
-| `/jatekterem/` | `Biliárd, csocsó, darts, flipper – Giovanni Pécs` | `Játéksarok a pizzéria mellett: biliárd, csocsóasztal, darts, flipper. Csapolt sör mellé.` |
+| `/` | `Üveges Pécs – üvegezés, tükör, képkeretezés \| Váradi Ferenc` | `Ablak, kirakat, hőszigetelő üveg, tükör méretre vágva és képkeretezés Pécsett, Kertvárosban. Helyszíni felmérés azonnali áregyeztetéssel. Hívjon: 06 30 267 6709.` |
+| `/uvegtores/` | `Betört ablak, kirakat? Üveges Pécsett – non-stop hívható` | `Törés, kiesett üveg, kirakatkár Pécsett és környékén. Rendkívüli esetben non-stop elérhető. Ideiglenes lezárás, felmérés, csere.` |
+| `/uvegezes/hoszigetelo-uveg/` | `Hőszigetelő üveg csere Pécs – méretre gyártva \| Váradi Üveges` | `Hőszigetelő üvegezés és üvegcsere Pécsett: felmérés, méretre gyártás, beépítés. Fa, műanyag és fém nyílászáróhoz egyaránt.` |
+| `/tukor/tukorfal/` | `Tükörfal készítés Pécs – aerobik és edzőtermi tükör` | `Élcsiszolt, fazettázott tükörfalak sportoláshoz és testmozgáshoz, méretre. Beépítés, tükörcsempézés, tükörfűtés Pécsett.` |
+| `/kepkeretezes/` | `Képkeretezés Pécs – nagy keretválaszték, paszpartú` | `Kép, gobelin, festmény keretezése Pécsett, Kertvárosban. Nagy keretválaszték, paszpartú és mozaikkép-háttér. Gyors, szakszerű munka.` |
+| `/videk/` | `Üveges vidékre is – megosztott kiszállási költség \| Pécs` | `Vidéki üvegezést is vállalunk. Ha a szomszédokkal vagy a rokonsággal egyeztet, a kiszállási költség megoszlik a megrendelők között.` |
 
-Elv: **a márkanév hátul, a differenciátor elöl**, kivéve a főoldalt. Ne ismételjük
-a WP-alapértelmezést (P8).
+**Ami a jelenlegi címhez képest változik:** eltűnik a vesszős kulcsszólista, és
+minden cím egyetlen szándékot céloz. A `Pécs` minden címben szerepel — a
+jelenlegi indexelt címben (`Pécsi Üveges - képkeretezés, üveg, üvegezés, tükör ...`)
+a város csak a márkanév részeként van benne, a szolgáltatáshoz nem kötve.
 
 ### 10.2 Heading-hierarchia (főoldal)
 
 ```
-H1  Pizza, csapolt sör és csocsó Pécs Kertvárosában   (pontosan egy H1)
-├ H2  Hol ülnél?                    (Alaprajz)
-│  └ H3  Terasz / Belső tér / Különterem / Játéksarok   (a panelekben)
-├ H2  Étlap
-│  └ H3  Pizzák / Roston sültek / Levesek / Saláták
-├ H2  Csapolva és koktélok
-├ H2  Játéksarok
-│  └ H3  Biliárd / Csocsó / Darts / Flipper
-├ H2  Különterem
-├ H2  Mit mondanak a vendégek
-├ H2  Asztalfoglalás
-├ H2  Gyakori kérdések
-│  └ H3  (kérdésenként)
-└ H2  Elérhetőség és nyitvatartás
+h1  Üveg, méretre vágva. Pécsett, 2000 óta.        ← EGYETLEN h1
+├── h2  Miben segíthetünk?                          (három ajtó)
+│   ├── h3  Betört, repedt, kiesett
+│   ├── h3  Tervezett munka
+│   └── h3  Képkeretezés
+├── h2  Amit csinálunk
+│   ├── h3  Üvegezés
+│   ├── h3  Tükör
+│   ├── h3  Képkeretezés
+│   └── h3  Műanyag és hőálló üvegek
+├── h2  Hogyan zajlik
+├── h2  Vidékre is kimegyünk
+├── h2  Kik jövünk
+├── h2  Kérjen ajánlatot
+│   └── h3  (fieldset legendák nem headingek)
+└── h2  Elérhetőség és nyitvatartás
+    ├── h3  Cím és telefon
+    └── h3  Nyitvatartás
 ```
-Szint kihagyása nincs. A lábléc navigációs címei `H2`-k, vizuálisan kicsik.
 
-### 10.3 Strukturált adat — teljes gráf
+Szintugrás nincs. A bizonyítéksáv és az állapotsáv **szándékosan nem kap
+headinget** — nem tartalomszakaszok, hanem kiegészítő adatok (`role="note"` /
+`aria-label`).
 
-Egyetlen `<script type="application/ld+json">`, `@graph` szerkezetben,
-`@id`-kkal összekötve:
+### 10.3 Strukturált adat — a teljes JSON-LD gráf
 
-| `@type` | `@id` | Mit tartalmaz |
+Egyetlen `@graph` a főoldalon, egymásra hivatkozó `@id`-kkal:
+
+| Típus | `@id` | Miért kell |
 |---|---|---|
-| `WebSite` | `#website` | `name`, `url`, `inLanguage: hu-HU`, `publisher` → `#restaurant` |
-| `WebPage` | `#webpage` | `isPartOf` → `#website`, `about` → `#restaurant`, `primaryImageOfPage`, `breadcrumb` |
-| `Restaurant` | `#restaurant` | `name`, `image`, `telephone`, `url`, `priceRange`, `servesCuisine: ["Pizza","Olasz","Magyar"]`, `currenciesAccepted: HUF`, `paymentAccepted`, `address` → `PostalAddress`, `geo` → `GeoCoordinates`, `openingHoursSpecification` (7 nap), `acceptsReservations: true`, `hasMenu` → `#menu`, `amenityFeature` → `LocationFeatureSpecification[]`, `potentialAction` → `ReserveAction`, `sameAs` (Facebook, foodora, Google) |
-| `Menu` | `#menu` | **24 `MenuSection`, 225 `MenuItem`**, mind valós `offers.price` értékkel (HUF). A háromméretű pizzák három `Offer`-t kapnak, `name`-ben a mérettel. Élesben ez a `/etlap/` oldalra kerül, nem a főoldalra. |
-| `BreadcrumbList` | `#breadcrumb` | `Főoldal` (a főoldalon 1 elem) |
-| `FAQPage` | `#faq` | 5 `Question`/`Answer` |
-| `ImageObject` | `#logo` | logó, `width`/`height` |
+| `WebSite` | `#website` | `name`, `inLanguage: hu-HU`, `publisher` |
+| `WebPage` | `#webpage` | oldalanként, `breadcrumb`, `primaryImageOfPage` |
+| `BreadcrumbList` | `#breadcrumb` | aloldalakon; a főoldalon elhagyva |
+| `LocalBusiness` + `HomeAndConstructionBusiness` | `#uzlet` | **a gráf magja** — lásd alább |
+| `Person` (Váradi Ferenc) | `#varadiferenc` | `founder` / `employee`; J2 gépi megfelelője |
+| `Person` (Váradiné Czike Éva) | `#czikeeva` | `employee` |
+| `PostalAddress` | `#cim` | Nagy Imre út 29., 7632 Pécs, HU |
+| `GeoCoordinates` | `#geo` | **§15 Q6 — pontos koordináta megerősítendő**, nem találom ki |
+| `OpeningHoursSpecification` ×2 | — | (1) `Mo–Fr 09:00–17:00`; (2) a non-stop sürgősségi elérhetőség **nem** nyitvatartás, hanem `ContactPoint` |
+| `ContactPoint` ×2 | `#telefon`, `#surgos` | `contactType: "customer service"` ill. `"emergency"`, `availableLanguage: hu`, `hoursAvailable` |
+| `Service` ×6 | `#szolg-uvegezes` stb. | üvegezés, tükör, képkeretezés, hőszigetelő, biztonsági üveg, műanyag/hőálló |
+| `OfferCatalog` | `#kinalat` | a `Service`-eket fogja össze, `itemListElement`-tel |
+| `GeoCircle` / `areaServed` | `#hatokor` | Pécs + a vállalt vidéki hatókör (**§15 Q4: hány km?**) |
+| `FAQPage` | `#gyik` | a `/uvegtores/` és a szolgáltatásoldalak GYIK-jei; a főoldalon nem |
+| `ImageObject` | `#logo` | ha lesz logó (§15 Q2) |
 
-**`amenityFeature` tételek** (a `LocationFeatureSpecification` `name` + `value`
-párokkal, mert ezek a Google-attribútumok gépi megfelelői):
-`Szabadtéri asztalok`, `Különterem`, `Terasz`, `Biliárd`, `Csocsó`, `Darts`,
-`Flipper`, `Kártyás fizetés`, `Akadálymentes bejárat *(ellenőrizendő)*`.
+**A `LocalBusiness` magja (kivonat):**
 
-**Amit szándékosan NEM teszek bele: `aggregateRating`.**
-A 4,5 ★ / 1 339 vélemény a Google Cégprofilból származik. A saját oldalon
-sajátként megjelölt `aggregateRating` **önkiszolgáló értékelés-jelölés**, amit a
-Google strukturált adat irányelvei tiltanak a saját entitásra, és amiért kézi
-büntetés jár. A számot **szövegként, forrásmegjelöléssel** jelenítjük meg —
-ugyanaz a bizalmi hatás, nulla kockázat.
-*(Ha később valódi, oldalon gyűjtött vendégértékelés lesz `Review` elemekkel,
-az újratárgyalható.)*
+```json
+{
+  "@type": ["LocalBusiness","HomeAndConstructionBusiness"],
+  "@id": "https://www.pecsiuveges.hu/#uzlet",
+  "name": "Váradi Ferenc Üveges",
+  "url": "https://www.pecsiuveges.hu/",
+  "telephone": "+36302676709",
+  "email": "ajanlat@pecsiuveges.hu",
+  "address": {"@id":"…#cim"},
+  "openingHoursSpecification": [{
+    "@type":"OpeningHoursSpecification",
+    "dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],
+    "opens":"09:00","closes":"17:00"
+  }],
+  "priceRange": "[MEGERŐSÍTENDŐ — §15 Q3]",
+  "foundingDate": "[MEGERŐSÍTENDŐ — a daibau szerint 2000, §15 Q5]"
+}
+```
 
-### 10.4 Local SEO — a listing mint csatorna
+**Amit tudatosan KIHAGYOK a gráfból, és ezt indoklom:**
 
-| Teendő | Miért |
-|---|---|
-| Google Cégprofil: **„Foglalás" link** beállítása → `/asztalfoglalas/` | Ezzel lesz a listingnek olyan gombja, ami a saját oldalra visz konverzióval (P1). |
-| Cégprofil: **Étlap-link** → `/etlap/`, **Attribútumok** kiegészítése (biliárd, csocsó, darts, flipper) | A Google ma nem tudja a legfontosabb differenciátort. |
-| **NAP-konzisztencia** (Név / Cím / Telefon) minden aggregátoron: hovamenjek, etterem.hu, nyitva.hu, cylex, firmania, gastro.hu, ittjartam | A név ma háromféleképp szerepel: „Giovanni", „Giovanni Pizzéria", „Giovanni étterem". Ez hígítja az entitást. |
-| **A két foodora-listing tisztázása** (összevonás vagy egyértelmű elnevezés) | P4 — közvetlen rendelésvesztés. |
-| Cím: `Nagy Imre út 43.` — az aggregátorokon `Nagy Imre Utca 43` is szerepel | Következetlen cím → gyengébb helyi jelzés. |
-| Heti fotófeltöltés a Cégprofilra | A listing fotógalériája ma szinte üres („Málnás Lávasüti"). |
-| `sameAs` a schema-ban minden hiteles profilra | Entitás-összekötés. |
+> **`aggregateRating` — nem kerül bele.** Kézenfekvő lenne kiírni a 4,7 / 66-ot
+> strukturált adatként, hiszen ez a legerősebb bizonyíték. A Google
+> keresési-értékelés irányelve viszont a `LocalBusiness` és `Organization`
+> típusnál **tiltja az önmagáról szóló (self-serving) értékelés jelölését** —
+> vagyis azt, hogy a vállalkozás a saját oldalán a saját magáról szóló
+> értékelést jelölje. Ennek kockázata kézi büntetés a strukturált adatra, ami
+> **több kárt okoz, mint amennyi hasznot a csillag hozna.**
+>
+> *Amit helyette csinálok:* az értékelés **vizuálisan** ott van az első
+> képernyőn, és **hivatkozásként a Google Cégprofilra mutat**, ahol ellenőrizhető.
+> A csillagok a találati listában a Cégprofilon keresztül amúgy is megjelennek —
+> ott, ahol jogszerűen a helyük van.
+>
+> *(Bizonyosság: a szabály léte magas; a pontos megfogalmazás változhat —
+> élesítés előtt a Google aktuális „Review snippet" dokumentációja ellenőrizendő.)*
 
-**Amit nem csinálunk:** kulcsszóhalmozás („pizza Pécs, pizza rendelés Pécs, pizzéria
-Pécs…"), városonkénti álodalak, vélemény-kérés jutalomért.
+### 10.4 Local SEO
+
+**A legnagyobb egyszeri nyereség itt van, nem a saját oldalon.** A 66 értékelés
+és a 4,7 csillag már megvan; a Cégprofil kihasználatlan.
+
+| # | Teendő | Miért |
+|---|---|---|
+| L1 | **NAP-kanonizálás.** Egyetlen írásmód mindenhol: `Váradi Ferenc Üveges` / `7632 Pécs, Nagy Imre út 29.` / `+36 30 267 6709` és `+36 72 321 316`. A „Rádió telefon" megnevezés törlendő. | K4. A local rangsorolás a citációk egyezésén áll. |
+| L2 | Frissítés a talált katalógusokban: `uzleti.hu`, `cylex.hu`, `yoys.hu`, `szakkatalogus.hu`, `daibau.hu`, `joszaki.hu`, `bonumventus.hu` | ugyanaz |
+| L3 | **Cégprofil-szolgáltatások feltöltése** a valódi szakmai szókinccsel (drótüveg, fazettázott tükör, paszpartú, kandallóüveg…) | J5 — a Cégprofil szolgáltatáslistája is rangsorolási jel |
+| L4 | **Fotók a Cégprofilra**, havi ütemben | a fotózott profilok mérhetően több útvonaltervet kapnak |
+| L5 | **Kérdések és válaszok** feltöltése a profilra: „Kijönnek felmérni?", „Biztosítós kárt intéznek?", „Vidékre is jönnek?" | ezek a valós kérdések, és a válaszok a profilon jelennek meg |
+| L6 | **Értékeléskérés folyamattá tétele**: minden befejezett munka után egy rövid link | 66-ról feljebb; a friss értékelések súlyozottak |
+| L7 | `/videk/` + településnév-említések a valódi hatókörben (§15 Q4) | S6 |
+| L8 | A weboldal → Cégprofil és Cégprofil → weboldal **kölcsönös** hivatkozása, UTM-mel a mérhetőségért | a forgalmi forrás jelenleg nem mérhető |
+
+**Amit NEM javaslok:** külön landing oldal minden környékbeli településre
+(„üveges Kozármisleny", „üveges Bogád" …) ugyanazzal a szöveggel. Ez doorway-oldal,
+a Google bünteti, és egy kétfős műhely nem tudja valódi tartalommal feltölteni.
+Egyetlen, tisztességes `/videk/` oldal a valós hatókörrel többet ér.
 
 ---
 
-## 11. Performance-célok
+## 11. Teljesítménycélok
 
-Mérési alap: **Moto G Power-osztályú eszköz, lassú 4G (400 kbps down, 400 ms RTT)**,
-Lighthouse mobil profil; és mezei CrUX (75. percentilis).
+Mérési feltétel: **Moto G4-osztályú mobil, 4G lassítás (Lighthouse mobil profil)**,
+hidegindítás, `/` és `/uvegezes/hoszigetelo-uveg/` mérve.
 
-| Metrika | Cél | Jelenlegi (becsült, WP-alapon) |
+| Metrika | Cél | Küszöb, ami alatt hibának tekintem | Hogyan érem el |
+|---|---|---|---|
+| **LCP** | **≤ 1,2 s** | 2,0 s | Az LCP-elem a hero **H1 szövege**. Nincs hero kép, nincs render-blokkoló külső CSS, a kritikus CSS inline. Betű `swap` + metrikaigazított fallback. |
+| **CLS** | **≤ 0,02** | 0,05 | Minden képnek `width`/`height`; a tábla `contain: layout`; a betűcsere metrikaigazított; az állapotsáv fix magasságú (nem tolja le a fejlécet, amikor betölt az élő adat). |
+| **INP** | **≤ 120 ms** | 200 ms | A húzás rAF-fal csoportosított, nincs layout-olvasás a hurokban; nincs harmadik féltől származó szkript. |
+| **TTFB** | ≤ 200 ms | 600 ms | statikus fájl CDN-ről, `s-maxage` |
+| **FCP** | ≤ 0,9 s | — | inline kritikus CSS |
+| **TBT** | ≤ 50 ms | 200 ms | a teljes JS `defer`, nincs framework |
+
+**Byte-költségvetés oldalanként (tömörítve):**
+
+| Erőforrás | Költségvetés | Megjegyzés |
 |---|---|---|
-| **LCP** | **≤ 1,6 s** lab, ≤ 2,0 s CrUX p75 | 3,5–6 s *(mérendő)* |
-| **CLS** | **≤ 0,02** | ismeretlen, fontcsere+képek miatt vsz. > 0,1 |
-| **INP** | **≤ 120 ms** (cél: ≤ 200 ms határ jóval alatta) | ismeretlen |
-| **TTFB** | ≤ 200 ms (statikus, CDN) | 400–900 ms |
-| **FCP** | ≤ 1,0 s | — |
-| **TBT** | ≤ 80 ms | — |
+| HTML | **≤ 16 KB** | benne az inline kritikus CSS és a JSON-LD |
+| CSS (külső, hash-elt) | ≤ 12 KB | a hajtás alatti rész |
+| JS | **≤ 8 KB** | a teljes oldal minden interakciója |
+| Betűk | ≤ 62 KB | 2 × variable woff2, latin+latin-ext subset |
+| Képek | ≤ 250 KB | ha lesznek (§15 Q1) |
+| **Összes, első betöltés** | **≤ 350 KB** | fotókkal együtt |
+| **Harmadik fél** | **0 byte** | nincs analitika-tag, nincs betűtípus-CDN, nincs chat-widget, nincs cookie-banner (mert nincs mit bejelenteni) |
 
-**KB-büdzsé, első betöltés (tömörítve, hálózaton):**
+**A prototípus MÉRT számai** (nem becslés — a fájlon lefuttatva):
 
-| Erőforrás | Büdzsé |
+| Tétel | Érték |
 |---|---|
-| HTML (kritikus CSS inline-nal, JSON-LD-vel, az Alaprajz SVG-vel) | **≤ 18 KB** br — a demó **18,8 KB**, lásd a jegyzetet |
-| Elhalasztott CSS | ≤ 6 KB br |
-| JS (összesen) | cél **≤ 5 KB**; a prototípus tömörítetlenül **5 115 B** (≈1,8 KB brotli) — lásd a lenti jegyzetet |
-| Font: Source Sans 3 VF (latin) | ≤ 26 KB |
-| Font: Source Sans 3 VF (latin-ext) | ≤ 12 KB |
-| Font: Bricolage Grotesque VF (latin+ext, `wght` tengelyre szűkítve) | ≤ 30 KB |
+| Letöltendő külső erőforrás | **0 db** (nincs kép, betű, könyvtár, tag) |
+| JS kód, kommentek nélkül | **9,68 KB** — a brief ≤10 KB-os keretén belül |
+| JS forrás, kommentekkel együtt | 13,2 KB — a kommentek élesben nem kerülnek ki |
+| JS gzip | **3,88 KB** — ennyi megy át a hálózaton |
+| Teljes HTML gzip (CSS + JSON-LD + JS együtt) | **24,1 KB** |
+| Vízszintes görgetés 375 / 768 / 1024 / 1280 px-en | nincs (mérve) |
+| Konzolhiba / JS-kivétel | nincs (mérve) |
+| Valódi kontraszthiba light + dark módban | **0** (a renderelt színekből számolva, alfa-kompozitálással) |
 
-| Hajtás fölötti hero-kép (AVIF, 600×450) | **33 KB** — mért |
-| Hajtás alatti képek (lazy, AVIF) | 17–31 KB / kép, összesen 91 KB |
-| **Első nézet, hajtás fölött összesen** | **≤ 95 KB** |
-| Teljes főoldal, minden lusta erőforrással | ≤ 320 KB |
+*A méréseket headless Chromiumban futtattam a kész fájlon; a kontrasztaudit a
+tényleges számított színeket olvassa vissza a DOM-ból, nem a tervezett értékeket.*
 
-**Kérésszám a hajtás fölött: 4** (HTML, 2 font, 1 JS). Nincs harmadik felű kérés
-az első nézetben — analitika `defer`-rel, a `load` után.
-
-**A demó HTML-mérete.** A prototípus a teljes étlapot (168 tétel) **és** a teljes
-`Menu` schemát egyetlen fájlban hordozza, hogy egy linkkel végignézhető legyen:
-117 KB nyersen, **18,8 KB brotli után**. Élesben ez a kettő nem a főoldalon él:
-
-| Rész | nyers | brotli |
-|---|---|---|
-| Teljes oldal (demó) | 168 KB | **20,4 KB** |
-| ebből: `Menu` JSON-LD → `/etlap/` | 73 KB | −5,0 KB |
-| ebből: nyitható teljes étlap → `/etlap/` | 31 KB | −3,9 KB |
-| ebből: teljes itallap → `/itallap/` | 15 KB | −2,1 KB |
-| **Éles főoldal (kivonattal)** | ~35 KB | **~9,4 KB** |
-
-Vagyis a §4-es információs architektúra nem esztétikai döntés: a menü saját URL-re
-mozgatása önmagában több mint felezi a főoldal HTML-jét (20,4 → 9,4 KB brotli). A demó szándékosan sérti ezt,
-mert ott egy link a cél.
-
-**A JS-büdzsé túllépéséről.** Az 5 KB-os cél és a nyitvatartás-alapú űrlapvalidáció ezen
-a funkciókészleten kizárja egymást: a helyes validáció ~500 bájt. Kivettem, ami fájdalommentesen
-kivehető (a magyarázó kommentek átkerültek ebbe a dokumentumba, ahová valók; a validátor a
-hibaszöveget adja vissza, így a küldés nem kérdezi le újra a DOM-ot), és így **5 115 bájtnál**
-állt meg. A maradék 115 bájt csak a változónevek minifikálásával vagy a magyar hibaszövegek
-csonkolásával jönne ki — mindkettő rosszabb átadható prototípust ad, mint amennyit
-115 bájt ér. Hálózaton ez brotli után ~40 bájt különbség a 95 KB-os első nézetben.
-**Ha a limit kemény, a helyes lépés a build-lépcsőben minifikálni, nem a forrást rontani.**
-
-**Hogyan tartjuk:** a hero szándékosan **szöveges** (nincs hero-kép), így az LCP
-egy szövegcsomó, ami a fallback fonttal azonnal fest, és `size-adjust`-tal nem ugrik
-a csere. Ez az egyetlen legnagyobb hozamú döntés az egész projektben.
+**Mérési ritmus:** havi Lighthouse + a Search Console Core Web Vitals riportja.
+Ha három hónapig zöld, negyedévesre ritkítható.
 
 ---
 
 ## 12. CRO — konverziós elemek
 
-Az oldal EGY dolga: **asztalfoglalás**. Minden alábbi elem ezt szolgálja vagy
-akadályt bont el előle.
+Kiindulás: **a jelenlegi oldalon egy konverziós elem van** (egy telefonszám
+szövegként), és az is csak 9 és 17 óra között működik.
 
-| # | Elem | Hol | Miért működik |
+| # | Elem | Hol | Miért működik — a mögöttes mechanizmus |
 |---|---|---|---|
-| 1 | **Élő nyitva/zárva chip zárási idővel** | hero, első sor | Az első kérdésre válaszol, és az egyetlen valós ok, amiért a Google-ról átjön valaki. Ha „zárva", akkor is konverzió: „nyitás 12:00" + „foglalj mára" — nem elveszett látogató, hanem eltolt konverzió. |
-| 2 | **Két egyenrangú CTA: Foglalás / Hívás** | hero | A vendéglátásban a hívás valós konverzió, nem kudarc. Elrejteni a telefonszámot a foglalás javára = elvesztett foglalás. Egyenrangúak, nem versenyeznek. |
-| 3 | **Alaprajz mint választó** | 2. szekció | Zérus kognitív költséggel kvalifikálja a foglalást: a látogató kimondja magának, mit akar (terasz / különterem), és ezzel elköteleződik. A kiválasztás előtölti az űrlapot → megkezdett folyamat, amit nehezebb elhagyni. |
-| 4 | **Ársáv a hajtás fölött (2 000 Ft-tól)** | tényadat-kártya | Az ár elrejtése súrlódás. Kimondva kiszűri a rossz illeszkedésű látogatót, és a maradéknál eltünteti a legnagyobb belső ellenvetést. |
-| 5 | **4,5 ★ / 1 339 vélemény, forrásmegjelöléssel** | tényadat + külön szekció | A darabszám itt fontosabb, mint az átlag: 1 339 vélemény ellenőrizhetetlenül nagy szám egy kertvárosi helynél. A forrás megnevezése (Google) növeli a hitelt, nem csökkenti. |
-| 6 | **Rövid, 6 mezős űrlap** | 8. szekció | Minden extra mező mérhetően csökkenti a kitöltést. Csak az kerül bele, ami nélkül nem lehet asztalt lefoglalni: név, telefon, dátum, idő, létszám, zóna. E-mail **nem kötelező**. |
-| 7 | **Inline validáció `blur`-re, nem gépelés közben** | űrlap | A gépelés közbeni pirosítás büntetésként hat és növeli az elhagyást; a `blur`-validáció ugyanazt a hibát fogja el, negatív érzelem nélkül. |
-| 7b | **Az űrlap ismeri a nyitvatartást** | űrlap | A vendég nem tud olyan időpontot beküldeni, amikor zárva van — és rögtön megtudja, mikor mehet („Aznap 12:00 és 22:00 között várunk"). Egy visszamondott foglalás drágább, mint egy meg nem történt: az elsőnél a vendég már számított rátok. |
-| 8 | **„vagy hívj: (06 72) 446 000" a küldés gomb alatt** | űrlap | Kiút azoknak, akik megakadnak. Az űrlapot elhagyók egy része így is konvertál. |
-| 9 | **Adatkezelési mikroszöveg az űrlapnál** | űrlap | „Csak visszaigazolunk, aztán töröljük." — a magyar felhasználó legnagyobb űrlapfélelme, hogy hírlevelet kap. Egy mondat oldja. |
-| 10 | **Sticky mobil sáv (Hívás / Foglalás)** | mobil, hero után | Mobilon a látogatók többsége az oldal közepén dönt. Ne kelljen visszagörgetni. |
-| 11 | **Különterem-blokk saját CTA-val** | 6. szekció | A legmagasabb kosárértékű szegmens külön útvonalat kap, mert más a szándéka (ajánlatkérés, nem foglalás). |
-| 12 | **GYIK a foglalás után** | 9. szekció | Az itt maradt kifogásokat (parkolás, gyerekek, kutya, saját torta, kártyás fizetés) *az űrlap után* oldjuk fel, hogy a kifogások ne előzzék meg a döntést. |
-| 13 | **Nyitvatartási táblázat kiemelt „ma" sorral** | 10. szekció | Csökkenti a „mikor mehetek?" miatti visszalépést a Google-hoz. |
-| 13b | **A teljes étlap minden ára kiírva, a főoldalról nyithatóan** | étlap-szekció | Az étterem-keresés legnagyobb súrlódása a „mennyibe fog kerülni". 348 kiírt ár ezt megszünteti, és három olyan tényt hoz felszínre, ami eddig sehol nem szerepelt: **fél adag a teljes ár 70%-áért**, **háromféle pizzaalap** (paradicsomos / tejfölös / csípős), és a **40 cm-es méret**. Mindhárom vásárlási érv, és mindhárom ingyen volt — csak le kellett írni. |
-| 13c | **„Hat csap, és két villányi pincészet"** | italok sávja | Leffe Dark, Belle-Vue Kriek és Hoegaarden csapon egy kertvárosi pizzériában szokatlan; a folyóborok a Lelovits és a Kovács-Harmath pincészettől jönnek. Ez a szekció eddig három sör nevét sorolta — most egy állítás, amit a konkurencia nem tud lemásolni. |
-| 14 | **Egyetlen akcentusszín, csak cselekvésre** | mindenütt | Ha minden kiemelt, semmi sem az. A `--parazs` kizárólag kattintható dolgokon jelenik meg — az oldal így „megtanítja", hova kell nyúlni. |
+| C1 | **Élő nyitvatartási állapot** („Most nyitva · 17:00-ig" / „Zárva · nyitás P 9:00") | állapotsáv, minden oldalon | A telefonálás előtti legnagyobb súrlódás a bizonytalanság, hogy *felveszi-e valaki*. A statikus „H–P 9–17" felirat ezt nem oldja fel — a látogatónak fejben kell számolnia. A kiszámolt állapot **átveszi ezt a munkát**. Zárás után nem tiltja a hívást, hanem átirányítja a figyelmet az űrlapra és a non-stop számra. |
+| C2 | **`tel:` hívógomb, jelzőszínnel, oldalanként egyszer** | fejléc + mobil alsó sáv | Egy elsődleges CTA per képernyő (`primary-action`). Ha minden gomb kiabál, egyik sem hallatszik. A jelzőszín itt **kizárólag** a sürgősséget jelenti — így megőrzi a jelzésértékét. |
+| C3 | **A tábla → „Átveszem" gomb** | hero | Elköteleződési lépcső (foot-in-the-door): a látogató **már megadott egy adatot**, mielőtt űrlapot látott volna. A megkezdett feladatot nehezebb elhagyni, mint egy üres űrlapot elkezdeni. Ez a szignatúra elem és a konverzió találkozása. |
+| C4 | **Három ajtó (A/B/C)** | hajtás alatt közvetlenül | A látogató nem „üvegest keres", hanem **egy konkrét bajt akar megoldani**. Aki magára ismer az egyik kártyában, az elköteleződik az útvonal mellett. Ez a §3/O2 közvetlen javítása. |
+| C5 | **4,7 ★ / 66 vélemény, a Google-profilra mutatva** | bizonyítéksáv, első képernyő alja | Társas bizonyíték, **ellenőrizhető forrással**. Az ellenőrizhetőség itt fontosabb, mint a szám: egy kattintással látja, hogy nem az oldal állítja magáról. |
+| C6 | **Névvel vállalt szolgáltatás** (két ember, fotóval) | „Kik jövünk" | A lakásba beengedett iparosnál a fő kockázat érzelmi, nem anyagi. Az arc és a név ezt csökkenti. J2 kiaknázása. |
+| C7 | **„Hogyan zajlik" négy lépés** | a szolgáltatások után | Bizonytalanság-csökkentés (U5). Aki tudja, mi következik, hamarabb indítja el. A negyedik lépés kimondja azt is, ami **nem** történik: „a felmérés nem kötelezettség". |
+| C8 | **Méret + fotó az űrlapon** | ajánlatkérés | Az üvegesnek pont ez a két bemenet kell az árhoz. Ha megkapja, **azonnal** tud árat mondani — ez pedig a dokumentált erősség („órákon belül árajánlat"). A gyors válasz maga a konverziós tényező. |
+| C9 | **A vidéki költségmegosztás, szó szerint idézve** | önálló szekció | Konkrét pénzügyi ajánlat, ami **az ügyfél saját szavaival** van megfogalmazva. Az ilyen mondat hihetőbb, mint bármilyen újraírt marketingváltozat. Ezért nem írom át. |
+| C10 | **Sürgősségi útvonal a nyitvatartáson kívül** | állapotsáv + `/uvegtores/` | 17:00 után a legmagasabb szándékú látogató érkezik (most történt a baj). Jelenleg pont ekkor van a legkevesebb kapaszkodója. |
+| C11 | **Ragadós alsó sáv mobilon, két gombbal** | mobil | A hívás (A) és az ajánlatkérés (B/C) nem ugyanaz a szándék; egy gomb az egyik felét elveszíti. 56px magas, `safe-area-inset` figyelembe véve. |
+| C12 | **Nulla akadály**: nincs cookie-banner, nincs chat-widget, nincs hírlevél-popup | mindenhol | Minden megszakítás konverziót visz. Mivel nincs harmadik féltől származó szkript, **nincs is mit bejelenteni** — ez egyszerre jogi és konverziós előny. |
+
+**Mérés (harmadik fél nélkül):** a `tel:` kattintás, az „Átveszem" gomb és az
+űrlapküldés egy saját, cookie nélküli végpontra küld eseményt (Cloudflare Web
+Analytics vagy egy 1 KB-os saját beacon). Nincs személyes adat, nincs profilozás.
 
 ---
 
-## 13. Design-döntések összefoglaló táblázata
+## 13. Minden fontos design-döntés — összefoglaló táblázat
 
-| # | Döntés | Alternatíva | Miért nem az alternatíva |
-|---|---|---|---|
-| D1 | A redesign tárgya a saját oldal, a listing csak csatorna | A hovamenjek-listing „újratervezése" | Nincs hozzá hozzáférés; a layoutot a platform adja. |
-| D2 | Az oldal egy dolga: asztalfoglalás | Online rendelés/fizetés | A foodora ezt már megoldja 4,7 ★-gal; saját checkout ROI-ja negatív ezen a méreten. |
-| D3 | ~~Szöveges hero, hero-kép nélkül~~ → **hero fotóval, kétoszlopos** | Teljes szélességű hero-kép | **Megfordítva 2026-09-04-én**, miután megkaptam az öt valódi fotót. A teraszkép a legerősebb meggyőző eszköz, amit egy étterem oldala használhat. Teljes szélességű hero mégsem lehet: **a rendelkezésre álló képek 600×450-esek**, nagyobb méretben elmosódnának. Ezért oldalsó kép ~520 px-en, ahol a forrásfelbontás még kitart. AVIF 33 KB, `fetchpriority=high`, fix `width`/`height` → CLS 0. |
-| D4 | Szignatúra: interaktív SVG alaprajz | Fotómozaik / kemence-animáció / pizza-építő | Fotófüggő vagy kitalált tényre épülne; az alaprajz konverziót visz és 0 LCP. |
-| D5 | Hűvös krétaszürke alap, egy borostyán akcentus | Krém + serif + terrakotta | Fine-dining regisztert hazudna egy 2–6 e Ft-os helyre; ráadásul tiltott irány. |
-| D6 | Bricolage Grotesque + Source Sans 3 | Playfair + Inter; egy család | Az első a default AI-páros; az egy család esetén elvész a szignatúra súlya. |
-| D7 | Astro statikus build, Netlify-on | WordPress megtartása | Minden látogató kifizeti a CMS futásidejét (§3 Ok #5). *Feltételes — §15.* |
-| D8 | Hajszálvonal-alapú elevation, alig árnyék | Kártyás, árnyékos „app"-look | Nyomdai/szórólap-regiszter; kevesebb festési költség. |
-| D9 | `aggregateRating` nincs a schema-ban | Csillagok kiírása rich snippetért | Önkiszolgáló értékelés-jelölés, Google-irányelvbe ütközik. |
-| D10 | Meglévő URL-ek megtartása (`/etlap/`, `/itallap/`, `/elerhetoseg/`) | Új, „szebb" URL-struktúra | Indexelt oldalakat átirányítani ok nélkül nettó veszteség. |
-| D11 | Külön `/kulonterem/` és `/jatekterem/` oldal | Minden a főoldalon | Külön keresési szándék, külön hirdethető landing, külön mérhető. |
-| D12 | Telefonszám végig egyenrangú a foglalással | „Digitális-first", telefon elrejtve | Vendéglátásban a hívás valós, gyakran domináns konverzió. |
-| D13 | Nincs CAPTCHA | reCAPTCHA / hCaptcha | Akadálymentességi és konverziós költsége meghaladja a spam kárát ezen a volumenen. Honeypot + időbélyeg elég. |
-| D14 | Nincs cookie-alapú analitika az első nézetben | GA4 azonnal | Cookie-banner = az első interakció egy elutasítás. Szerveroldali/cookieless mérés, `load` után. |
-| D15 | Az étlap adatból (JSON) generálódik | Kézi HTML | A schema és a látható étlap különben szétcsúszik. |
-| D16 | Zöld/piros állapotszín ikonnal és szöveggel párosítva | Csak színnel jelzett állapot | Színvakság; a szín sosem lehet egyedüli információhordozó. |
+Minden sorban ott az **alternatíva**, amit elvetettem, és hogy miért.
+
+| # | Döntés | Miért ez | Az alternatíva, amit elvetettem | Miért nem az |
+|---|---|---|---|---|
+| D1 | **Vizuális alap: a float üveg élének zöldje + paszpartúkarton + gitt** | Anyagi tény a műhelyből; a szakmán kívül senki nem használja; igaz és ellenőrizhető | „Bizalmi kék", ami minden iparos-oldal alapértelmezése | Megkülönböztethetetlen. A pécsi mezőny (`pecsiuvegmester.hu`, `uvegker.hu`, `ÜVEGKOVÁCS`) pontosan ebben a sávban mozog. |
+| D2 | **A jelzőszín a beépített üvegre ragasztott figyelmeztető szalag narancsa, és csak sürgősségre** | A szín jelentése a szakmából jön, nem a design-divatból; és mert egyetlen helyen használom, megőrzi a jelzésértékét | Neonzöld/cinóber akcent fekete alapon | A brief kifejezetten tiltja, és okkal: ez a 2024–26-os alapértelmezett AI-esztétika. Egy 2000 óta működő üvegesműhelyhez nincs köze. |
+| D3 | **Archivo + Source Serif 4** | Két variable család, teljes latin-ext (`ő`, `ű`); a `wdth` tengely egy fájlból ad cégtábla-feliratot és mércét; az `opsz` tengely külön optikai rajzot ad a 17px-es törzsnek és a 13px-es képaláírásnak | Playfair Display + Inter | A brief tiltja, és jogosan: ez a legelnyűttebb páros. Ráadásul a Playfair vékony vonásai 16px alatt a magyar ékezeteknél összeesnek. |
+| D3b | ugyanaz | — | Amatic SC + Cabin (a design-system-generátor javaslata „craft/handmade" kulcsszavakra) | **A generátor javaslatát elvetettem.** Az Amatic SC kézírásos display face, ami (a) 20px alatt olvashatatlan, (b) latin-ext lefedettsége nem megbízható a magyar kettős ékezetre, (c) „kézműves kávézó" konnotációt hoz egy olyan szakmához, ahol a milliméteres pontosság az érték. |
+| D4 | **Talpas szövegtörzs** | Egy 2000 óta működő családi műhelyhez levélpapír-hang illik; hosszabb magyarázó szövegnél kevésbé fárasztó | Sans törzs mindenhol | Semlegesebb, de a display-től nem különül el; a két grotesque egymás mellett „elmosódik" |
+| D5 | **Elevation = üvegél, nem árnyék** (sötét módban felület-világosság + 1px élfény) | Sötétben az árnyék fizikailag láthatatlan; a metafora és az akadálymentesség itt ugyanazt kívánja | Ugyanaz az árnyékskála mindkét módban | Sötét módban a kártyák elolvadnak a háttérben; ez a leggyakoribb dark-mode hiba |
+| D6 | **Szignatúra: méretre húzható üvegtábla** | Megmutatja mindkét üzletág közös lényegét (minden darab egyedi méret), közben adatot gyűjt az ajánlatkéréshez | Törésanimáció a heroban („kattints, és reped az üveg") | Látványos, de a **problémát** mutatja, nem a szolgáltatást; egy stresszes látogatónál ízléstelen; és semmilyen adatot nem gyűjt |
+| D6b | ugyanaz | — | Előtte/utána képcsúszka | Fotófüggő (nincs fotó), és a legelcsépeltebb iparos-oldal elem |
+| D7 | **Az IA a látogató állapota szerint tagol, nem szolgáltatás szerint** | A látogató nem „üvegest keres", hanem egy bajt akar megoldani (§3/O2) | Klasszikus szolgáltatás-menü a főoldalon | Ez a jelenlegi hiba, csak rendezettebben. A szolgáltatás-tagolás a második szinten megvan. |
+| D8 | **11ty statikus generálás, framework nélkül** | Megőrzi a régi oldal egyetlen erényét (súlytalanság), és **öt év múlva is buildel** | WordPress / Next.js | WP: karbantartás nélkül biztonsági kockázat — pont az O3 mintázat. Next: túlméretezett 11 statikus oldalhoz. |
+| D9 | **Nincs `aggregateRating` a JSON-LD-ben** | A Google tiltja az önmagáról szóló értékelés jelölését `LocalBusiness`-nél; a kézi büntetés kockázata nagyobb a nyereségnél | Kiírni a 4,7 / 66-ot strukturált adatként | Rövid távon csillag a találatban, hosszú távon kockázat. A csillag a Cégprofilon keresztül amúgy is megjelenik. |
+| D10 | **A vidéki költségmegosztás szó szerint idézve** | Az ügyfél saját mondata hihetőbb, mint bármely újraírt változat; ez valódi USP (J3) | Marketinges újrafogalmazás („Rugalmas kiszállási feltételek") | Elveszne a konkrétum, ami az egészet érdekessé teszi |
+| D11 | **Nincs cookie-banner, nincs chat-widget, nincs analitika-tag** | Nincs harmadik féltől származó szkript → nincs mit bejelenteni; minden megszakítás konverziót visz | GA4 + cookie-banner | 45+ KB JS, egy megszakítás a legfontosabb pillanatban, és jogi felület a semmiért |
+| D12 | **A prototípus nem tölt le betűt, és nem tesz bele fotót** | Offline is azonos, azonnal megnyitható, és nem hazudik fotóval, ami nem az ügyfélé | Google Fonts + stock-fotók a demóhoz | A stock-fotó pont azt rombolja, amit ez a vállalkozás elad; a betű-CDN pedig külső függőség |
+| D13 | **Számozás csak a „Hogyan zajlik" lépéseinél** | Ott valódi sorrend van | 01 / 02 / 03 a szolgáltatásoknál | A brief tiltja, és jogosan: hamis sorrendet sugall ott, ahol nincs |
+| D14 | **Kézzel rajzolt inline SVG ikonok, egységes 1,5px vonással** | Egy vonalvastagság, egy sarokrádiusz, téma-követő `currentColor` | Emoji ikonok / ikonkészlet-CDN | Az emoji platformfüggő és nem tokenizálható; a CDN külső függőség |
+| D15 | **A sürgősségi útvonal nincs a főmenüben, hanem az állapotsávban** | Aki bajban van, nem menüt olvas, hanem a legkontrasztosabb elemre néz | Hatodik menüpont: „Vészhelyzet" | Felhígítja az ötelemű menüt, és pont a legrosszabb pillanatban kényszerít keresésre |
+| D16 | **Mobilon a hero szöveg a tábla fölött** | Az LCP-elemnek a H1-nek kell lennie; stresszes látogatónál a szöveg + hívógomb fontosabb az interakciónál | Tábla legfelül, „wow-hatás" | Az LCP-t egy interaktív elemre bízni kockázat, és a sürgős látogatót elveszítjük |
+| D17 | **Két gomb a mobil alsó sávban** | A hívás (A állapot) és az ajánlatkérés (B/C) különböző szándék | Egy nagy hívógomb | A látogatók egyharmadát (képkeretezés, tervezett munka) rossz útra tereli |
 
 ---
 
 ## 14. Bevezetési ütemterv
 
-| Fázis | Tartalom | Kimenet | Előfeltétel |
-|---|---|---|---|
-| **0. Audit és adatgyűjtés** | Élő mérés (Lighthouse, CrUX), a §15 kérdéslista lefuttatása az ügyféllel, meglévő URL-ek és forgalmi adatok kinyerése, fotóleltár | mérési alapvonal + kitöltött tényadatlap | ügyfél-hozzáférés az analitikához és a Cégprofilhoz |
-| **1. Gyors nyereségek — a saját oldal érintése nélkül** | Google Cégprofil: foglalás-link, étlap-link, attribútumok, fotók; NAP-konzisztencia az aggregátorokon; a két foodora-listing rendezése | mérhető listing-forgalom-emelkedés 2–3 héten belül | 0. fázis |
-| **2. Alap: főoldal + foglalás** | A jelen prototípus véglegesítése valós adatokkal, Alaprajz valós geometriával, űrlap-végpont, analitika | élő `/` és `/asztalfoglalas/` | valós asztalkiosztás, nyitvatartás, foglalási folyamat |
-| **3. Tartalmi oldalak** | `/etlap/` JSON-ból, `/itallap/`, `/allergenek/`, `/elerhetoseg/` | teljes étlap + allergén | árlista, allergénadatok |
-| **4. Bevételi oldalak** | `/kulonterem/` (kapacitás, csomagok, ajánlatkérő), `/jatekterem/` | két új landing | kapacitás, csomagárak, fotók |
-| **5. Fotó és tartalom** | Fotózás (terek, 8–10 étel, játéksarok), szövegek véglegesítése | képkészlet, AVIF-pipeline | fotós, egy zárva töltött délelőtt |
-| **6. Mérés és finomítás** | Konverziókövetés, a foglalási űrlap elhagyási pontjai, GYIK bővítése valós kérdésekből | havi riport | 2. fázis óta eltelt ≥ 4 hét |
+Fázisokra bontva, mindegyik önmagában is értéket ad — ha bármelyik után leáll a
+projekt, az addigi állapot jobb, mint a mai.
 
-Fázis 1 és 2 párhuzamosítható; 1 azonnali hozamot ad, amíg 2 készül.
+### F0 — Vérzéscsillapítás (0–3 nap, a redesigntól függetlenül)
+
+**Ez a legjobb megtérülésű munka az egész anyagban, és nem kell hozzá új oldal.**
+
+| Teendő | Miért most |
+|---|---|
+| `<meta charset="utf-8">` + szerveroldali `Content-Type` javítása a **meglévő** oldalon, és a szöveg újramentése UTF-8-ban | K1 — a fő kulcsszavak azonnal egyeznek |
+| HTTPS-tanúsítvány + `301` átirányítás | K2 — megszűnik a „Nem biztonságos" jelzés |
+| `<meta name="viewport">` ellenőrzése/pótlása | U7 |
+| A telefonszámok `tel:` linkké alakítása | mobilon egy kattintás |
+| Az elgépelések javítása (`problámáit`, `mozaikképe`) és a duplikált blokk törlése | U2, U3 |
+| Google Cégprofil: szolgáltatáslista + fotók + Q&A feltöltése | L3–L5 — a forgalom nagyobb része itt jár |
+
+### F1 — Az új főoldal (2–3 hét)
+
+Design system, prototípus élesítése, a tábla, az űrlap végponttal, JSON-LD,
+`/kapcsolat/`, `/rolunk/`. A régi tartalom megmarad egy `/regi/` archívumban,
+amíg a szolgáltatásoldalak el nem készülnek — hogy egyetlen kulcsszó se essen ki.
+
+### F2 — Szolgáltatásoldalak (3–5 hét)
+
+`/uvegtores/`, `/uvegezes/*` (5 db), `/tukor/*` (3 db), `/kepkeretezes/*` (2 db),
+`/muanyag-es-hoallo/`, `/videk/`. Belső linkhálózat, `BreadcrumbList`, GYIK-ek.
+**Itt kerül vissza a helyére a J5 szakmai szókincs.** A `/regi/` archívum
+lezárása, `301`-ekkel.
+
+### F3 — Bizonyíték (párhuzamosan, az ügyféltől függ)
+
+Fotózás (§15 Q1): a két ember, a műhely, a keretminta-fal, 4–6 referenciamunka.
+Amíg nincs fotó, a helyek fenntartva maradnak — **nem töltjük ki stockkal.**
+Ide tartozik a `/uvegtores/biztositas/` folyamatábra is, ha a dokumentált
+48 órás átfutás megerősíthető (§15 Q7).
+
+### F4 — Karbantartási ritmus (folyamatos) — ez a legfontosabb fázis
+
+O3 azt mondja: az oldal nem attól romlott el, hogy rossz volt, hanem hogy senki
+nem nézett rá. Ezért a szállítmány része:
+
+- **Negyedéves 30 perces ellenőrzőlista** (linkek, nyitvatartás, telefonszám,
+  Search Console hibák, Core Web Vitals).
+- **CI-ellenőrzés**, ami elbukik, ha `õ` vagy `û` bekerül a forrásba (K1 soha többé).
+- **Havi Cégprofil-fotó** — egy telefonos kép egy elkészült munkáról.
+- Egy oldalankénti „utoljára ellenőrizve" dátum a build-idejéből, ami láthatóvá
+  teszi az elavulást.
 
 ---
 
 ## 15. Nyitott kérdések — ehhez ügyfél-input kell
 
-**Blokkoló (enélkül nem élesíthető):**
+### 15.1 Amit meg kell kérdezni, mielőtt ez élesíthető
 
-1. **Pontos nyitvatartás minden napra**, ünnepnapi eltérésekkel. *(Az aggregátorok
-   ellentmondanak; a prototípus élő állapotjelzője ezt az adatot használja.)*
-2. **A konyha záró időpontja** — eltér-e a hely zárásától? (A vendég ezt kérdezi 22:15-kor.)
-3. **Asztalkiosztás és férőhely zónánként**: terasz / belső / különterem / játéksarok
-   asztal- és fő-szám. *(Az Alaprajz szignatúra-elem ezen áll vagy bukik.)*
-4. **Különterem**: hány főig, van-e külön ajtó, minimumfogyasztás, előleg,
-   lemondási feltétel, fix menücsomagok és áraik.
-5. **Fogadtok-e egyáltalán asztalfoglalást?** Ha igen: telefonon, e-mailben, vagy
-   mindkettőn? Ki és mikor igazolja vissza? *(Az egész oldal fő konverziója ez.)*
-6. ~~Étlap és itallap árakkal~~ — **megvan** (2026-09-04). Ami továbbra sem: **allergénadat tételenként**, és hogy az árak meddig érvényesek.
-7. **A két foodora-listing** („Giovanni Pizzéria" és „Giovanni étterem") — ugyanaz a
-   konyha? Melyik az elsődleges? Összevonható?
+| # | Kérdés | Mi múlik rajta |
+|---|---|---|
+| **Q1** | Van fotó a műhelyről, a két emberről, elkészült munkákról? Lehet újat készíteni? | U6, C6, F3. A prototípusban 6 fenntartott képhely van. **Enélkül a bizalomépítés fele hiányzik.** |
+| **Q2** | Van logó, cégtábla, bármilyen meglévő arculati elem, amit meg kell tartani? | A brief „nem változtatható" mezője üres maradt. A prototípus szöveges logót használ. |
+| **Q3** | Mondható-e bármilyen ár- vagy ártartomány? Kirakatüveg m²-ár, keretezés kiindulóár, kiszállási díj Pécsen belül? | C7, C8, a `priceRange` a JSON-LD-ben, és egy esetleges `/arak/` oldal. **Árat nem találtam ki sehol.** |
+| **Q4** | Meddig megy ki vidékre? Konkrét településnevek vagy km-sugár? | `/videk/`, `areaServed`, L7, S6 |
+| **Q5** | Tényleg 2000-ben nyílt a műhely? (Ezt a daibau-profil állítja, nem az ügyfél.) | A H1-ben és a JSON-LD `foundingDate`-jében szerepel. **Ha nem igaz, azonnal ki kell venni.** |
+| **Q6** | Pontos koordináta a bejárathoz (nem a háztömb közepéhez)? | `GeoCoordinates`, útvonalterv |
+| **Q7** | A „órákon belül árajánlat, 48 órán belül beépítés" vállalható általános ígéretként, vagy egyetlen szerencsés eset volt? | C8, `/uvegtores/biztositas/`. **Vállalhatatlan ígéretet nem teszek ki.** |
+| **Q8** | Tényleg csinál üvegteraszt, üvegkorlátot, télikertet, üvegtetőt? (daibau) Ha igen, miért nincs a saját oldalán? | U9. Ezek a legmagasabb kosárértékű munkák — ha igen, saját oldalt érdemelnek. |
+| **Q9** | Melyik a fontosabb üzletág ma: üvegezés vagy képkeretezés? Van-e szezonalitás? | A főoldali sorrend és a hirdetési költés |
+| **Q10** | Milyen kapacitás van? Hány munkát tud egy héten? | Ha szűk, a „gyors kiszállás" ígéret visszaüt. Ez befolyásolja, mennyire toljuk a sürgősségi útvonalat. |
+| **Q11** | Lehet saját domainnevű e-mail (`ajanlat@pecsiuveges.hu`)? | K3, kézbesíthetőség, szakmai megítélés |
+| **Q12** | Ki fogja frissíteni az oldalt, és milyen gyakran? | F4. Ha a válasz „senki", akkor a stack-döntés (D8) még fontosabb, és a tartalmat még statikusabbra kell tervezni. |
+| **Q13** | Van cégjegyzék-/nyilvántartási szám, adószám, amit a láblécre kell tenni? | Jogi kötelezettség és bizalmi jel |
+| **Q14** | Van meglévő Google Analytics / Search Console hozzáférés? Mekkora ma a forgalom? | A mérés nulláról indul-e, és van-e viszonyítási alap |
 
-**Erős hatású (a tartalom minőségét dönti el):**
+### 15.2 Amit **le kell ellenőrizni az élő oldalon**, mert a HTML-t nem láttam
 
-8. Mióta működik a hely, ugyanazon a címen, ugyanazzal a tulajdonossal? *(Számot
-   nem találtam ki — pedig egy „1998 óta" a legerősebb bizalmi elem lenne.)*
-9. Van-e ebédmenü? Meddig, mennyiért?
-10. A játéksarok tényleg működik? Biliárd, csocsó, darts, flipper — melyik van *ma*
-    a helyszínen, és fizetős-e?
-11. „Nagyszerű koktélok" — a Google-attribútum szerint van koktélkínálat, a saját
-    oldalon csak csapolt sör szerepel. Melyik igaz?
-12. Kutya bemehet? Gyerekszék, pelenkázó? Akadálymentes bejárat és mosdó?
-13. Parkolás: van saját parkoló? Fizetős zóna? Melyik buszjárat áll a legközelebb?
-14. Kártyás fizetés, SZÉP-kártya elfogadás (melyik zseb)?
-15. ~~Van-e saját fotókészlet?~~ — **öt fotó megérkezett**, de mind 600×450, ami
-    hero-méretben kevés. Kérdés: **van-e nagyobb felbontású eredeti** ugyanezekről?
-    És: **készül-e ételfotó?** Ma egyetlen fogásról sincs képünk, pedig a pizza a
-    fő termék.
-
-**Technikai / hozzáférési:**
-
-16. Ki fér hozzá a `giovannipecs.hu` tárhelyéhez, domainjéhez, és a Google Cégprofilhoz?
-17. Tényleg WordPress? Milyen téma, milyen pluginok, ki karbantartja? *(Ettől függ,
-    hogy D7 statikus generálás lehet-e, vagy a WP-t kell optimalizálni.)*
-18. Van-e ma analitika, és **mennyi a jelenlegi forgalom**? Enélkül a redesign
-    hatását nem lehet bizonyítani.
-19. Szerkeszthetőségi elvárás: ki fogja frissíteni az árakat, és milyen felületen?
-20. Van-e márkakönyv, logó vektorosan? **A briefben nem szerepelt, mit tilos
-    megváltoztatni** — én a márkanevet, a telefonszámot, a címet és a meglévő
-    URL-eket vettem érinthetetlennek. Megerősítendő.
+| # | Ellenőrzendő | Ha kiderül, hogy… |
+|---|---|---|
+| V1 | Van-e `<meta name="viewport">`? | …van, akkor U7 törlendő a hibalistáról |
+| V2 | Van-e bármilyen kép az oldalon, és mekkora? | …van, akkor §2.4 P2 újraértékelendő |
+| V3 | Van-e már valamilyen strukturált adat? | …van, akkor S4 törlendő |
+| V4 | Mi a tényleges `<title>` és `<meta description>`? | S3 pontosítása |
+| V5 | Vannak-e aloldalak, amiket a keresőindex nem hozott elő? | …vannak, akkor a §4 sitemap `301`-térképe bővül |
+| V6 | Mekkora a valódi LCP/CLS a mai oldalon? | Viszonyítási alap a §11 célokhoz |
+| V7 | Ki a domain- és tárhely-tulajdonos, van-e hozzáférés? | F0 egyáltalán elvégezhető-e |
 
 ---
 
-## 16. Az anyag leggyengébb pontja — őszintén
+## 16. Mi ennek az anyagnak a leggyengébb pontja
 
-**A leggyengébb pont: az egész stratégia egy nem ellenőrzött feltevésen áll — hogy
-a Giovanni fogad asztalfoglalást, és hogy a különterem valóban létező, eladható
-termék.**
+Őszintén, sorrendben:
 
-Ha kiderül, hogy nem fogadnak foglalást (sok kertvárosi pizzéria nem: „gyere és
-ülj le"), akkor az oldal „EGY dolga" hibás, és az Alaprajz-szignatúra egy olyan
-folyamat elé épített kapu, ami nem létezik. Ebben az esetben a helyes fókusz a
-*kiszállítás* és a *„most nyitva, gyere"* lenne, és a szignatúra-elemnek is más
-kimenete kellene legyen. Ezt a kockázatot a §15/5. kérdés zárja le, és amíg nincs
-válasz, minden §12-es CRO-állítás feltételes.
+**1. Nem láttam a HTML-t.** Ez a legsúlyosabb korlát. A karakterkódolási hibát
+(K1) a beillesztett szövegből bizonyítani tudom, és a HTTPS hiányát is látom a
+keresőindexből — de a viewport, a strukturált adat, a képek és a tényleges
+teljesítmény ügyében **feltételezésekkel dolgoztam, és ezt mindenhol jelöltem**
+(§15.2). Ha kiderül, hogy az oldal reszponzív, a hibalistám egy pontja elesik.
+Ettől a stratégia nem dől meg, de a diagnózis pontossága sérül.
 
-Két további gyengeség, kisebb súllyal:
+**2. Nincs egyetlen valódi fotó sem, és ez nem kozmetikai hiány.** Az üvegezés és
+a képkeretezés is **vizuális szakma**, és a bizalom fele a munka látványán múlik.
+A prototípus szándékosan fenntartott helyeket mutat, nem stockot — ez tisztességes,
+de a demó ettől **soványabb, mint amilyen az éles oldal lesz.** Ha az ügyfél
+holnap küld 20 telefonos fotót a műhelyből, ez az anyag azonnal 30%-kal erősebb.
 
-- **Az elemzés rekonstrukció.** A hálózati blokk miatt nem láttam sem a listing,
-  sem a saját oldal valódi DOM-ját, se egyetlen Lighthouse-mérést. A §2 P11–P13
-  performance- és akadálymentességi állításai stack-alapú inferenciák, nem mérések.
-  Bizonyíték nélkül ezeket **állításként kezelni hiba lenne** — a 0. fázis első
-  napján mérni kell.
-- **A prototípus szövegei tényszegények.** Mivel nem találtam ki számot, a
-  legmeggyőzőbb mondatok (mióta működnek, hány főig megy a különterem, mennyibe
-  kerül egy pizza) placeholderként állnak. Egy tényadatokkal feltöltött verzió
-  érezhetően erősebb lesz, mint ami most a `index.html`-ben látszik — az anyag
-  jelenlegi meggyőző ereje ezért alulmutatja a végleges potenciált.
+**3. Nincs egyetlen ár sem, és emiatt a legfontosabb vevői kérdés
+megválaszolatlan marad.** A laikus első kérdése: „mennyibe kerül egy ablaküveg?"
+Kitalált számot nem írok le, tehát ez a kérdés **nyitva marad az anyag végéig**
+(Q3). Egy ártartomány — akár csak „kirakatüveg m²-ára [x]-től" — mérhetően
+javítaná a konverziót, és nélküle a §12 CRO-fejezet egy lábon áll.
+
+**4. A 2000-es évszám a H1-ben egy harmadik fél állításán nyugszik.** A
+`daibau.hu` profilja írja, nem az ügyfél. Beleírtam, mert erős, de **ha nem igaz,
+azonnal ki kell venni** (Q5). Egy hamis évszám a főcímben pont azt a bizalmat
+rombolja, amit építeni akar.
+
+**5. A tábla (a szignatúra elem) egy fogadás.** Azt feltételezi, hogy a látogató
+kíváncsi, és megpróbálja meghúzni. Ha nem — mert sürgős a baja, mert mobilon
+nem veszi észre a fogantyút, mert nem szokott hozzá —, akkor a hero fele
+dekoráció marad, és a C3 konverziós elem nem működik. **Ezt mérni kell**, nem
+hinni: ha az „Átveszem" gomb 8 hét után a látogatók 3%-a alatt marad, a táblát
+statikus, feliratozott illusztrációra kell cserélni, és a méretbekérést az
+űrlapba visszatolni. Az elemet úgy építettem, hogy ez a csere **egy szekció
+cseréje** legyen, ne az egész hero újratervezése.
+
+**6. A verseny elemzése hiányos.** A pécsi mezőnyt (`pecsiuvegmester.hu`,
+`uvegker.hu`, ÜVEGKOVÁCS, Üveges Gyorsszolgálat) a keresőtalálatok szintjén
+azonosítottam, de az oldalaikat **nem tudtam megnyitni** — ugyanaz az egress-tiltás.
+A „mitől néznek ki mind egyformán" állításom (D1) ezért **hipotézis**, nem
+megfigyelés. Élesítés előtt fél óra manuális átnézés kell.
 
 ---
 
-### Források
+## Források
 
-Rekonstrukció alapjául szolgáló, indexelt tartalom:
-[hovamenjek.hu listing](https://hovamenjek.hu/pecs/giovanni-pizzeria) ·
-[giovannipecs.hu](https://giovannipecs.hu/) ·
-[giovannipecs.hu/etlap/](https://giovannipecs.hu/etlap/) ·
-[giovannipecs.hu/itallap/](https://giovannipecs.hu/itallap/) ·
-[giovannipecs.hu/elerhetoseg/](https://giovannipecs.hu/elerhetoseg/) ·
-[etterem.hu/giovanni](https://etterem.hu/giovanni) ·
-[foodora – Giovanni Pizzéria](https://www.foodora.hu/restaurant/z28z/giovanni-pizzeria) ·
-[foodora – Giovanni étterem](https://www.foodora.hu/restaurant/xxsj/giovanni-etterem) ·
-[ittjartam.hu vélemények](https://www.ittjartam.hu/pecs/ettermek/giovanni-pizzeria-pecs/) ·
-[nyitvatartas24.hu](https://www.nyitvatartas24.hu/uzlet/P%C3%A9cs-Giovanni%20Pizz%C3%A9ria-38465F.html) ·
-[nyitva.hu](https://nyitva.hu/p%C3%A9cs/giovanni-pizz%C3%A9ria-81019) ·
-[yably.hu](https://yably.hu/%C3%A9rt%C3%A9kel%C3%A9sek/pecs/giovanni-pizzeria-nagy-imre-utca-43)
+Az anyag a következő, indexelt forrásokra épül (közvetlen lekérés nélkül):
+
+- `http://www.pecsiuveges.hu/` — indexelt oldalcím és a briefbe illesztett teljes oldalszöveg
+- Google Cégprofil kivonata (a briefben szó szerint): 4,7 · 66 vélemény, „Üveg- és tükörbolt", nyitvatartás, `06 30 267 6709`
+- [daibau.hu — Váradi Ferenc EV](https://www.daibau.hu/varadi_ferenc_ev) — 2000-es alapítás, üvegterasz/üvegkorlát/télikert/üvegtető
+- [varadi-uveges.uzleti.hu](https://varadi-uveges.uzleti.hu/) — szolgáltatáslista, elérhetőségek
+- [Cylex — Váradi Ferenc Üveges Vállalkozó](https://xn--pcs-bma.cylex.hu/ceg-info/v%C3%A1radi-ferenc-%C3%BCveges-v%C3%A1llalkoz%C3%B3-676585.html)
+- [Yoys — Üveg- és tükörbolt, Pécs](https://www.yoys.hu/phone-36-72321316-%C3%BCveg--%C3%A9s-t%C3%BCk%C3%B6rbolt-P%C3%A9cs-HU36071.html) — vezetékes szám, nyitvatartás
+- [szakkatalogus.hu — Váradi Ferenc, kertvárosi üveges](https://www.szakkatalogus.hu/infok/V%C3%A1radi_Ferenc_kertv%C3%A1rosi_%C3%BCveges-513408)
+- [bonumventus.hu](https://bonumventus.hu/12225274097285326723/) — vásárlói visszajelzések
+- Versenytársként azonosítva: [pecsiuvegmester.hu](https://pecsiuvegmester.hu/), [uvegker.hu](https://uvegker.hu/), [uveg-kovacs-pecs.uzleti.hu](https://uveg-kovacs-pecs.uzleti.hu/), [joszaki.hu/szakemberek/uveges/pecs](https://joszaki.hu/szakemberek/uveges/pecs)
+
+---
+
+**Kapcsolódó fájl:** `index.html` — a főoldal működő, egyfájlos prototípusa.
